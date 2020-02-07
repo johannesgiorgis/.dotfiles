@@ -1,0 +1,98 @@
+#!/bin/sh
+
+###################################################################
+#
+# dot
+#
+# `dot` handles installation, updates, things like that.
+# Run it periodically to make sure you're on 
+# the latest and greatest.
+#
+###################################################################
+
+set -e
+
+parentDirectory="$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd -P)"
+dotfilesDirectory="$(cd "$( dirname "$parentDirectory" )" && pwd -P)"
+
+displayUsageAndExit() {
+	echo "dot -- dotfiles management"
+	echo ""
+	echo "Usage: dot [options]"
+	echo ""
+	echo "Options:"
+	echo "  -e, --edit    Open dotfiles directory for editing"
+	echo "  -h, --help    Show this help message and exit"
+	exit
+}
+
+while test $# -gt 0; do
+	case "$1" in
+		"-h"|"--help")
+			displayUsageAndExit
+			;;
+		"-e"|"--edit")
+			exec "$EDITOR" "$dotfilesDirectory"
+			exit
+			;;
+		*)
+			echo "Invalid option: $1"
+			displayUsageAndExit
+			;;
+	esac
+	shift
+done
+
+export DOT_FILES=$HOME/.dotfiles
+
+# Helper Functions
+function install_mac () {
+	echo -e "\n› installing mac os software..."
+	# Set macOS defaults
+	# $DOT_FILES/macos/set-defaults.sh
+
+	# Install homebrew
+	# $DOT_FILES/homebrew/install.sh 2>&1
+
+	# Upgrade homebrew
+	# echo -e "\n› brew update"
+	# brew update
+	echo -e "› completed installing mac os software"
+}
+
+function install_linux () {
+	echo -e "\n› installing linux software..."
+	# Set macOS defaults
+	# $DOT_FILES/macos/set-defaults.sh
+
+	# Install programs via apt
+	$DOT_FILES/linux/install_via_apt.sh 2>&1
+
+	# Install custom programs
+	$DOT_FILES/linux/install-custom-programs.sh 2>&1
+
+	echo -e "\n› completed installing linux software"
+}
+
+kernel_name="$(uname -s)"
+
+echo "Kernel Name:${kernel_name}"
+
+# If we're on a Mac, let's install and setup homebrew.
+if [ "${kernel_name}" == "Darwin" ]
+then
+  info "installing mac os dependencies"
+  install_mac
+  success "mac os dependencies installed"
+fi
+
+if [ "${kernel_name}" == "Linux" ]
+then
+  info "installing linux dependencies..."
+  install_linux
+  success "linux dependencies installed"
+fi
+
+# Install software
+echo -e "\n› $DOT_FILES/scripts/install_all.sh"
+$DOT_FILES/scripts/install_all.sh

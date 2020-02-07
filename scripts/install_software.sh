@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#################################################
+###################################################################
 #
 # Setup Ubuntu Laptop
 #
@@ -9,7 +9,7 @@
 #
 # 2019-08-06: v0.1
 #
-#################################################
+###################################################################
 
 LINE_BREAK="===================================================================================="
 function print_stamp() { echo -e "\n$(date +'%F %T') $@"; }
@@ -55,22 +55,16 @@ function install {
 	which $1 &> /dev/null
 
 	if [ $? -ne 0 ]; then
-		echo "Installing: ${1}..."
-		sudo apt install --yes "${1}"
-		echo "Completed installing ${1}!"
+		print_stamp "Installing: ${@}..."
+		sudo apt install --yes "${@}"
+		print_stamp "Completed installing ${@}!"
 	else
-		echo "Already installed: ${1}"
+		print_stamp "Already installed: ${@}"
 	fi
 }
 
 # Basics
-install awscli
-install python3-pip
-install xclip
-install curl
-install git
-install tmux
-install vim
+install awscli python3-pip xclip curl git tmux vim figlet
 
 print_stamp "$0 Completed"
 echo "$LINE_BREAK"
