@@ -1,0 +1,92 @@
+#!/bin/bash
+
+# Parse arguments:
+FLAGS=""
+if ! TEMP=$(getopt -n "$0" -o ckvimnpsx -- "$@"); then exit 1; fi
+eval set -- "$TEMP"
+while true; do
+  case "$1" in
+    -c) COMMANDS=1;;
+    -k) KEYS=1;;
+    -v) VALUES=1;;
+    -i|-m|-n|-p|-s|-x) FLAGS+=$(echo "$1" | sed 's/^-//');;
+    --) shift;break;;
+    *) echo "got star"; break;;
+  esac
+  shift
+done
+
+if [[ "$KEYS" == "" && "$VALUES" == "" ]]; then
+  KEYS=1
+  VALUES=1
+fi
+
+PATTERN="$1"
+FILE="$2"
+if [[ "$PATTERN" == "" ]]; then
+  echo "Usage: ${0##*/} [-c|-k|-v|-i|-m|-n|-p|-s|-x] pattern [json-files...]
+  This program will search json files for the given pattern as a key or
+  value and optionally print the jq command for retrieving it.
+
+Options:
+    -c: Show matches as jq commands
+    -k: Only match keys
+    -v: Only match values
+    -i: Case insensitive search
+    -n: Ignore empty matches
+    -s: Single line mode (´^´ -> ´\\A´, ´\$´ -> ´\\Z´)
+    -m: Multi line mode (´.´ will match newlines)
+    -p: Both s and m modes are enabled
+    -x: Extended regex format (ignore whitespace and comments)"
+  exit 1
+fi
+
+if ! which jq > /dev/null 2>&1; then echo "The 'jq' command is not installed, aborting." >&2; exit 1; fi
+
+shift
+
+jq -r \
+  --arg pattern "$PATTERN" \
+  --arg commands "$COMMANDS" \
+  --arg keys "$KEYS" \
+  --arg values "$VALUES" \
+  --arg flags "$FLAGS" \
+  '
+def jqpath:
+  def t: test("^[A-Za-z_][A-Za-z0-9_]*$");
+  reduce .[] as $x
+    ("";
+     if ($x|type) == "string"
+     then . + ($x | if t then ".\(.)" else  ".[" + tojson + "]" end)
+     else . + "[\($x)]"
+     end);
+
+  paths as $path | getpath($path) as $myval | select(
+    (
+      (
+        $values != ""
+      ) and (
+        (
+          ( getpath($path) | type ) == "string"
+        ) or (
+          ( getpath($path) | type ) == "number"
+        )
+      ) and (
+        getpath($path) | tostring | test($pattern;$flags)
+      )
+    ) or (
+      (
+        $keys != ""
+      ) and (
+        "\($path[-1])" | test($pattern;$flags)
+      )
+    )
+    ) | $path | . as $gp | jqpath 
+    | (input_filename | sub( "^(<stdin>|/dev/fd/[0-9]*)$" ; "" )) as $input
+    | if $commands != ""
+        then
+          "jq \u0027\(.)\u0027\(if $input == "" then "" else " "+$input end) # \"\($myval)\""
+        else
+          "\(if $input == "" then "" else $input + ": " end)\(.) == \"\($myval)\""
+        end
+' "$@"
