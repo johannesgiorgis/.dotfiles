@@ -8,7 +8,8 @@ case $- in
       *) return;;
 esac
 
-# >>> History
+############################################################################################################################
+# >>> HISTORY
 
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
@@ -22,7 +23,9 @@ HISTSIZE=1000
 HISTFILESIZE=2000
 HISTTIMEFORMAT="%F_%T "
 
-# <<< History
+# <<< HISTORY
+############################################################################################################################
+
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
@@ -34,6 +37,9 @@ shopt -s checkwinsize
 
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+
+############################################################################################################################
+# >>> PROMPT
 
 # set variable identifying the chroot you work in (used in the prompt below)
 if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
@@ -96,7 +102,7 @@ function seconds2daysago() {
 
 # <<< customize git prompts
 
-# Enable tab completion
+# Enable git tab completion
 if [[ -f ~/.git-completion.bash ]]; then source ~/.git-completion.bash; fi
 
 # colors!
@@ -141,6 +147,7 @@ if [ "$color_prompt" = yes ]; then
 
     PS1="(\$(seconds2daysago 1))$green\$(__git_ps1) \[\033[01;32m\]\u@\h:\[\033[01;34m\]\w \[\033[00m\]\n\$ "
 
+    # yellow and red, or yellow and green for root:
     #if [ -w / ]; then
 	#    PS1="(\$(seconds2daysago 1))$colorflag$green\$(__git_ps1) \[\e[1;33m\]\u@\h:\[\e[32;7m\]\w/\[\e[0m\]\n> "
     #fi
@@ -151,6 +158,8 @@ else
     #PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
     #PS1='${debian_chroot:+($debian_chroot)}johannesg:\W\$ '
     PS1="(\$(seconds2daysago 1)) \h:\w/> "
+    
+    # ROOT
     if [ -w / ]; then
       PS1="(\$(seconds2daysago 1))ROOT \h:\w/> "
     fi
@@ -166,6 +175,13 @@ xterm*|rxvt*)
 *)
     ;;
 esac
+
+# <<< PROMPT
+############################################################################################################################
+
+
+############################################################################################################################
+# >>> ALIASES
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
@@ -191,9 +207,6 @@ alias l='ls -CF'
 #   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
-#alias python='python3'
-
-# >>> Alias definitions.
 # You may want to put all your additions into a separate file like
 # ~/.bash_aliases, instead of adding them here directly.
 # See /usr/share/doc/bash-doc/examples in the bash-doc package.
@@ -226,14 +239,38 @@ alias ll='ls -ltra'
 # count files
 alias count='find . -type f | wc -l'
 
+alias rd=rmdir
+alias md=mkdir
+alias so=source
+
 # create python virtual environment
 alias ve='virtualenv -p /usr/bin/python3.7 ./venv'
 alias ve3.6='virtualenv -p /usr/bin/python3.6 ./venv'
 #alias ve3.6='python3 -m venv ./venv'
 alias va='source ./venv/bin/activate'
+#alias venv='python3 -m venv ./venv && source ./venv/bin/activate && pip install --upgrade pip setuptools > /dev/null'
 
-# pip
+# python + pip
 #alias pip='pip3'
+#alias python='python3'
+
+# I type more (or mroe), but I want less:
+export PAGER=more
+#if ! which less | grep 'no less' > /dev/null; then
+if which less > /dev/null; then
+  alias mroe=less more=less
+  export PAGER=less
+  export LESS=FRdiX
+  export LESSCHARSET=utf-8
+fi
+
+# set vi as default editor
+export EDITOR=vim
+export VISUAL=vim
+alias vi=vim
+
+alias md5=md5sum
+
 
 # add a copy progress bar
 alias cpv='rsync -ah --info=progress2'
@@ -244,41 +281,29 @@ alias tcn='mv --force -v -t ~/.local/share/Trash '
 # tailf
 alias tailf='tail -f'
 
-# <<< Alias definitions.
+# ssh to opsbox
+alias o='ssh o'
 
+# <<< ALIASES
+############################################################################################################################
+
+
+# LEAVE FOR NOW - EVALUATE REMOVAL LATER !
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
-if ! shopt -oq posix; then
-  if [ -f /usr/share/bash-completion/bash_completion ]; then
-    . /usr/share/bash-completion/bash_completion
-  elif [ -f /etc/bash_completion ]; then
-    . /etc/bash_completion
-  fi
-fi
+#if ! shopt -oq posix; then
+#  if [ -f /usr/share/bash-completion/bash_completion ]; then
+#    . /usr/share/bash-completion/bash_completion
+#  elif [ -f /etc/bash_completion ]; then
+#    . /etc/bash_completion
+#  fi
+#fi
 
-# set vi as default editor
-export EDITOR=vi
-export VISUAL=vi
 
-# added by Anaconda3 5.3.1 installer
-# >>> conda init >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$(CONDA_REPORT_ERRORS=false '/home/johannes/anaconda3/bin/conda' shell.bash hook 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    \eval "$__conda_setup"
-else
-    if [ -f "/home/johannes/anaconda3/etc/profile.d/conda.sh" ]; then
-        . "/home/johannes/anaconda3/etc/profile.d/conda.sh"
-        CONDA_CHANGEPS1=false conda activate base
-    else
-        \export PATH="/home/johannes/anaconda3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda init <<<
 
-# >>> bash functions
+############################################################################################################################
+# >>> BASH FUNCTIONS
 
 # change directories and view the contents at the same time
 function cl() {
@@ -312,7 +337,7 @@ function sgrep () {
 }
 
 # ssh tunnel
-sshn() {
+function sshn() {
   # set your desired host and port forwarding as default
   # and allow them to be passed in if you should need it
 
@@ -392,20 +417,39 @@ function hoursdiff()     { timediff "$1" "$2" "/ 3600" "hours difference" | sed 
 function minutesdiff()   { timediff "$1" "$2" "/ 60" "minutes difference" | sed 's/^-//'; }
 function secondsdiff()   { timediff "$1" "$2" "" "seconds difference" | sed 's/^-//'; }
 
-# ssh to opsbox
-alias o='ssh o'
 
-cproj() {
+function cproj() {
 	# create project directory
 	mkdir $(date +%F)-$@
 }
 
 # convert markdown to mediawiki files
-ctmk() {
+function ctmk() {
 	input_file=$1
 	output_file="$(basename $input_file .md).mediawiki"
 	echo "Converting '${input_file}' to '${output_file}'..."
 	pandoc -f markdown -t mediawiki < $input_file > $output_file
+}
+
+# cd to the git root of the current repo:
+function cdgr() {
+  local a
+  if a=$(git root); then cd $a; fi
+}
+
+function pip-info() {
+  if [[ "$1" == "" ]]; then
+    echo "Usage: ${FUNCNAME[0]} pythonpackage"
+    echo "  This will print the summary of the given python package."
+    return 1
+  fi
+  local a=$(curl -L -sS "https://pypi.python.org/pypi/$1/json")
+  if [[ "$a" =~ ^\{ ]]; then 
+    echo "$a" | jq -r '.info? | "pip3 install \(.name?)\n  # \(.summary?)"'
+  else
+    echo "Package $1 not found on https://pypi.python.org" >&2
+    return 1
+  fi
 }
 
 # >>> AWS CLI
@@ -440,7 +484,12 @@ complete -C aws_completer awsp awsd awsud awspc awsap awsj
 #complete -C aws_completer awsp awsd awsud awsudfe  awsdi awsdp awsct awspc  awsap awsapj awsbi awscc awsqs
 # >>> AWS CLI
 
-# <<< bash functions
+# <<< BASH FUNCTIONS
+############################################################################################################################
+
+
+############################################################################################################################
+# >>> PATH MODIFICATIONS
 
 # >>> Powerline Tools
 #export PATH=$PATH:$HOME/.local/bin
@@ -455,28 +504,22 @@ export PATH=$PATH:$HOME/tools/
 export PATH=$PATH:$HOME/work/aws-powertools/
 # <<< tools
 
-# cd to the git root of the current repo:
-function cdgr() {
-  local a
-  if a=$(git root); then cd $a; fi
-}
-
-function pip-info() {
-  if [[ "$1" == "" ]]; then
-    echo "Usage: ${FUNCNAME[0]} pythonpackage"
-    echo "  This will print the summary of the given python package."
-    return 1
-  fi
-  local a=$(curl -L -sS "https://pypi.python.org/pypi/$1/json")
-  if [[ "$a" =~ ^\{ ]]; then 
-    echo "$a" | jq -r '.info? | "pip3 install \(.name?)\n  # \(.summary?)"'
-  else
-    echo "Package $1 not found on https://pypi.python.org" >&2
-    return 1
-  fi
-}
-
-
+# added by Anaconda3 5.3.1 installer
+# >>> conda init >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$(CONDA_REPORT_ERRORS=false '/home/johannes/anaconda3/bin/conda' shell.bash hook 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/home/johannes/anaconda3/etc/profile.d/conda.sh" ]; then
+        . "/home/johannes/anaconda3/etc/profile.d/conda.sh"
+        CONDA_CHANGEPS1=false conda activate base
+    else
+        export PATH="/home/johannes/anaconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda init <<<
 
 export PATH=/usr/local/cuda/bin:$PATH
 export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH
@@ -494,3 +537,5 @@ export SPARK_HOME="/home/johannes/spark-2.4.0-bin-hadoop2.6/"
 #CDPATH=.:~/work:~/personal
 #set -P # # Make cd show the physical path, not logical path; useful for cdpath
 
+# <<< PATH MODIFICATIONS
+############################################################################################################################
