@@ -10,6 +10,29 @@
 #
 ###################################################################
 
+# LINE_BREAK="===================================================================================="
+function print_stamp() { echo -e "\n$(date +'%F %T') $@"; }
+
+function print_info () { printf "\r  [ \033[00;34m..\033[0m ] $1\n"; }
+
+user () {
+  printf "\r  [ \033[0;33m??\033[0m ] $1\n"
+}
+
+success () {
+  printf "\r\033[2K  [ \033[00;32mOK\033[0m ] $1\n"
+}
+
+fail () {
+  printf "\r\033[2K  [\033[0;31mFAIL\033[0m] $1\n"
+  echo ''
+  exit
+}
+
+print_stamp "$0 Started"
+
+echo ''
+
 set -e
 
 parentDirectory="$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd -P)"
@@ -51,12 +74,16 @@ function install_mac () {
 	# Set macOS defaults
 	# $DOT_FILES/macos/set-defaults.sh
 
+	# Run software updates
+	$DOT_FILES/macos/install-software-updates.sh 2>&1
+
 	# Install homebrew
-	# $DOT_FILES/homebrew/install.sh 2>&1
+	$DOT_FILES/homebrew/install_homebrew.sh 2>&1
 
 	# Upgrade homebrew
-	# echo -e "\n› brew update"
-	# brew update
+	echo -e "\n› brew update"
+	brew update
+	
 	echo -e "› completed installing mac os software"
 }
 
@@ -81,14 +108,14 @@ echo "Kernel Name:${kernel_name}"
 # If we're on a Mac, let's install and setup homebrew.
 if [ "${kernel_name}" == "Darwin" ]
 then
-  info "installing mac os dependencies"
+  print_info "installing mac os dependencies"
   install_mac
   success "mac os dependencies installed"
 fi
 
 if [ "${kernel_name}" == "Linux" ]
 then
-  info "installing linux dependencies..."
+  print_info "installing linux dependencies..."
   install_linux
   success "linux dependencies installed"
 fi

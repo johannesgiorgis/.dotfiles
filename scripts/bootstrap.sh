@@ -23,7 +23,7 @@ set -e
 
 echo ''
 
-info () {
+print_info () {
   printf "\r  [ \033[00;34m..\033[0m ] $1\n"
 }
 
@@ -44,7 +44,7 @@ fail () {
 setup_gitconfig () {
   if ! [ -f git/gitconfig.local.symlink ]
   then
-    info 'setup gitconfig'
+    print_info 'setup gitconfig'
 
     git_credential='cache'
     if [ "$(uname -s)" == "Darwin" ]
@@ -140,7 +140,7 @@ link_file () {
 }
 
 install_dotfiles () {
-  info 'installing dotfiles'
+  print_info 'installing dotfiles'
 
   local overwrite_all=false backup_all=false skip_all=false
 
@@ -150,23 +150,36 @@ install_dotfiles () {
     echo "Linking '$src' to '$dst'"
     link_file "$src" "$dst"
   done
+
+  success 'installing dotfiles'
 }
 
 make_sh_files_executable () {
-	info 'making *.sh files executable'
+	print_info 'making *.sh files executable'
 
-	find $HOME -name '*.sh' | xargs chmod +x
+	find . -name '*.sh' | xargs chmod +x
 
-	info 'completed making *.sh files executable'
+	success 'completed making *.sh files executable'
 }
 
 # setup_gitconfig
 make_sh_files_executable
+
+print_info 'Sourcing bin/dot...'
 source bin/dot
+success 'Completed sourcing bin/dot!'
 
 # remove .zsh
-rm -v ~/.zshrc
+print_info 'Removing ~/.zshrc file and installing dot files...'
+if [[ -f ~/.zshrc ]]
+then
+  rm -v ~/.zshrc
+else
+  echo "No ~/.zshrc file found!"
+fi
+
 install_dotfiles
+success 'Completed removing ~/.zshrc file and installing dot files!'
 
 # zsh
 sudo chsh -s $(which zsh)
