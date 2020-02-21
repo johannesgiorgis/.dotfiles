@@ -2,21 +2,28 @@
 
 Various settings for the tools I use. My dotfile repository was initially created by a combination of following Victoria's excellent [How to set up a fresh Ubuntu Desktop using only dotfiles and bash scripts] and structured to match Holman's dotfiles ([Github - Holman's Dotfiles]).
 
-
-
-# Testing
+## Testing
 
 Run the following:
 
 ```bash
-# build docker image and run docker container 
+# build docker image and run docker container
 $ make docker-all
 
 # once in the docker container, run
 $ bash scripts/bootstrap.sh | tee setup_log.log
 ```
 
-# Reference
+## Installation Order
+
+```bash
+scripts/bootstrap.sh -> bin/dot -> install_dotfiles
+  - bin/dot -> install OS specific (Mac OS or Linux) -> install_all.sh
+  - install_all.sh - sequentially runs all files ending with install.sh
+    - currently: ./zsh/oh_my_zsh_install.sh
+```
+
+## Reference
 
 - [Automated Testing of dotfiles]
 - [How to set up a fresh Ubuntu Desktop using only dotfiles and bash scripts]
@@ -24,12 +31,11 @@ $ bash scripts/bootstrap.sh | tee setup_log.log
 - [Github - Victoria Drake's Dotfiles]
 - [Moving to ZSH: Customizing the ZSH Prompt]
 
-
 ---
 
 Below is from the original Holman dotfiles README.md:
 
-# holman does dotfiles
+## holman does dotfiles
 
 Your dotfiles are how you personalize your system. These are mine.
 
