@@ -34,4 +34,3 @@ apt_install awscli python3.7 python3-pip python3-venv xclip curl git tmux vim fi
 sudo apt upgrade --yes
 
 print_stamp "$0 Completed"
-echo "$LINE_BREAK"
