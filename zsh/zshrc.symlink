@@ -147,18 +147,22 @@ if command -v pyenv 1>/dev/null 2>&1; then
 	eval "$(pyenv init -)"
 fi
 
-# >>> CDPATH
+# >>> CDPATH - https://jcode.me/cdpath-with-zsh/
 
 typeset -U path cdpath fpath
 
 setopt auto_cd
-cdpath=($HOME/work)
+cdpath=($HOME/work $HOME/work/github)
 
 zstyle ':completion:*' group-name ''
 zstyle ':completion:*:descriptions' format %d
-zstyle ':completion:*:descriptions' format %B%d%b
+zstyle ':completion:*:descriptions' format %B%d%b 				# bold
+zstyle ':completion:*:descriptions' format %S%d%s        # invert/standout
+# zstyle ':completion:*:descriptions' format %U%d%u        # underline
+zstyle ':completion:*:descriptions' format %F{green}%d%f # green foreground
+# zstyle ':completion:*:descriptions' format %K{blue}%d%k  # blue background
 zstyle ':completion:*:complete:(cd|pushd):*' tag-order \
-	'local-directories named-directories'
+'local-directories named-directories path-directories'
 
 # <<< CDPATH
 
