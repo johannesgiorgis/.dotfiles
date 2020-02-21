@@ -67,6 +67,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # or set a custom format using the strftime function format specifications,
 # see 'man strftime' for details.
 # HIST_STAMPS="mm/dd/yyyy"
+HIST_STAMPS="%F_%T"
 
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
@@ -119,6 +120,13 @@ function addcmd() { # Add a command to ~/.zshrc and use it
 	vim + ~/.zshrc
 	source ~/.zshrc
 }
+
+function mydate() { date +"%Y-%m-%d %H:%M:%S %Z"; } # Date in my format
+function note() { echo `date +"%Y-%m-%d %H:%M:%S  "`"$*" >> ~/notes; } # Add a note to my file
+function notes() { vim + ~/notes; } # View/edit notes
+
+# add - to 2 and changed head to tail to make it zsh compatible
+function gotit() { history -2 | tail -n 1 | cut -c 8- >> ~/notes; }
 
 # added by Anaconda3 5.3.1 installer
 # >>> conda init >>>
