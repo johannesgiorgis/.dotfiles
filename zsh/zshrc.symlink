@@ -149,6 +149,7 @@ DEFAULT_USER=$(whoami)
 
 # PATH MODIFICATIONS
 export PATH=~/bin:$PATH
+export PATH=~/.bin:$PATH
 
 # PYENV - Add pyenv init to your shell to enable shims and autocompletion
 if command -v pyenv 1>/dev/null 2>&1; then
