@@ -28,10 +28,11 @@ function brew_cask_install {
 brew_install cask pipenv pyenv openssl \
     readline sqlite3 xz zlib tree entr \
     black flake8 htop wget watch \
-    wifi-password tldr youtube-dl speedtest-cli
+    wifi-password tldr youtube-dl speedtest-cli \
+    jq
 
 # Brew Cask
-brew_cask_install google-chrome iterm2 lepton sublime-text dropbox meld
+brew_cask_install google-chrome iterm2 lepton sublime-text dropbox meld tunnelblick rectangle
 
 brew upgrade
 brew cleanup
