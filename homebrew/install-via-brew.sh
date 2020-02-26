@@ -24,6 +24,16 @@ function brew_cask_install {
 	print_stamp "Completed installing via brew cask: '${@}'!"
 }
 
+function brew_custom_install {
+    print_stamp "Installing via custom brew..."
+
+    echo -e "\n› Installing displacer..."
+    brew tap jakehilborn/jakehilborn && brew install displayplacer
+    echo -e "\n› Completed installing displacer!"
+    
+    print_stamp "Completed installing via custom brew!"
+}
+
 # Basics
 brew_install cask pipenv pyenv openssl \
     readline sqlite3 xz zlib tree entr \
@@ -34,7 +44,10 @@ brew_install cask pipenv pyenv openssl \
 # Brew Cask
 brew_cask_install google-chrome iterm2 lepton \
     sublime-text dropbox meld tunnelblick rectangle \
-    postman simplenote firefox
+    postman simplenote firefox joplin
+
+# Brew Custom
+brew_custom_install
 
 echo "Running 'brew upgrade' and 'brew cleanup'"
 brew upgrade
