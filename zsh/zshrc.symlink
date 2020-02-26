@@ -82,6 +82,7 @@ plugins=(
 	zsh-autosuggestions
 	zsh-syntax-highlighting
 	docker
+	docker-compose
 	virtualenv
 )
 
@@ -119,6 +120,11 @@ alias va='source ./venv/bin/activate'
 function addcmd() { # Add a command to ~/.zshrc and use it
 	vim + ~/.zshrc
 	source ~/.zshrc
+}
+
+function cproj() {
+	# create dated project directory
+	mkdir $(date +%F)-$@
 }
 
 function mydate() { date +"%Y-%m-%d %H:%M:%S %Z"; } # Date in my format
