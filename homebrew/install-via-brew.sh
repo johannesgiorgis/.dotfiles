@@ -39,21 +39,21 @@ function brew_custom_install {
 }
 
 # Basics
-brew_install cask pipenv pyenv openssl \
-    readline sqlite3 xz zlib tree entr \
-    black flake8 htop wget watch \
-    wifi-password tldr youtube-dl speedtest-cli \
-    jq postgresql
+brew_install black cask entr flake8 htop jq openssl \
+    pipenv postgresql pyenv readline speedtest-cli \
+    sqlite3 tldr tree watch wget wifi-password \
+    xz youtube-dl zlib
 
 # Brew Cask
-brew_cask_install google-chrome iterm2 lepton \
-    sublime-text dropbox meld tunnelblick rectangle \
-    postman simplenote firefox joplin
+brew_cask_install dropbox firefox google-chrome \
+    iterm2 joplin lepton meld postman \
+    rectangle simplenote sublime-merge \
+    sublime-text tunnelblick
 
 # Brew Custom
 brew_custom_install
 
-echo "Running 'brew upgrade' and 'brew cleanup'"
+echo "\n› Running 'brew upgrade' and 'brew cleanup'"
 brew upgrade
 brew cleanup
 
