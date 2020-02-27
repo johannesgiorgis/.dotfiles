@@ -30,7 +30,11 @@ function brew_custom_install {
     echo -e "\n› Installing displacer..."
     brew tap jakehilborn/jakehilborn && brew install displayplacer
     echo -e "\n› Completed installing displacer!"
-    
+
+    echo -e "\n› Installing Fira Code..."
+    brew tap homebrew/cask-fonts && brew cask install font-fira-code
+    echo -e "\n› Completed installing Fira Code!"
+
     print_stamp "Completed installing via custom brew!"
 }
 
