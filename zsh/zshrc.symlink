@@ -124,10 +124,16 @@ function addcmd() { # Add a command to ~/.zshrc and use it
 
 function cproj() {
 	# create dated project directory
-	new_project_dir="$(date +%F)-$@"
+	project_name="$@"
+	# echo "Project:$project_name"
+	new_project_dir="$(date +%F)-${project_name}"
 	mkdir -v "$new_project_dir"
-	touch "${new_project_dir}/${new_project_dir}-readme.md"
+
+	readme_file="${new_project_dir}/${new_project_dir}-readme.md"
+	touch "$readme_file"
 	ls -d ${new_project_dir}/*
+
+	echo -e "# $(date +%F): ${(C)project_name/-/ } Project Overview\n" > "${readme_file}"
 }
 
 function mydate() { date +"%Y-%m-%d %H:%M:%S %Z"; } # Date in my format
