@@ -46,8 +46,9 @@ brew_install black cask entr flake8 htop jq openssl \
 
 # Brew Cask
 brew_cask_install dropbox firefox google-chrome \
-    iterm2 joplin lepton meld postman \
-    rectangle simplenote sublime-merge \
+    iterm2 joplin lepton logitech-options \
+    logitech-unifying logitech-control-center \
+    meld postman rectangle simplenote sublime-merge \
     sublime-text tunnelblick
 
 # Brew Custom
