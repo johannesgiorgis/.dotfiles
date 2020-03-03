@@ -49,7 +49,7 @@ brew_cask_install dropbox firefox google-chrome \
     iterm2 joplin lepton logitech-options \
     logitech-unifying logitech-control-center \
     meld postman rectangle simplenote sublime-merge \
-    sublime-text tunnelblick
+    sublime-text tunnelblick vlc
 
 # Brew Custom
 brew_custom_install
