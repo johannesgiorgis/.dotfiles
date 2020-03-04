@@ -39,7 +39,7 @@ function brew_custom_install {
 }
 
 # Basics
-brew_install black cask entr flake8 htop jq openssl \
+brew_install black cask entr ffmpeg flake8 htop jq openssl \
     pipenv postgresql pyenv readline speedtest-cli \
     sqlite3 tldr tree watch wget wifi-password \
     xz youtube-dl zlib
