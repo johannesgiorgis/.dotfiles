@@ -116,6 +116,14 @@ source $ZSH/oh-my-zsh.sh
 alias venv='python3 -m venv ./venv && source ./venv/bin/activate && pip install --upgrade pip setuptools > /dev/null'
 alias va='source ./venv/bin/activate'
 
+
+# Youtube Download to MP3 :)
+if command -v youtube-dl 1>/dev/null 2>&1; then
+	function yda() {
+		youtube-dl -cix --audio-format mp3 "$@"
+	}
+fi
+
 # Helper Functions
 function addcmd() { # Add a command to ~/.zshrc and use it
 	vim + ~/.zshrc
