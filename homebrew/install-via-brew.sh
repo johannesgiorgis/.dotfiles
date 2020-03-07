@@ -38,20 +38,46 @@ function brew_custom_install {
     print_stamp "Completed installing via custom brew!"
 }
 
-# Basics
-brew_install black cask entr ffmpeg flake8 htop jq openssl \
-    pipenv postgresql pyenv readline speedtest-cli \
-    sqlite3 tldr tree watch wget wifi-password \
-    xz youtube-dl zlib
+# ################### BREW INSTALL #################################
 
-# Brew Cask
+# general tools
+brew_install cask htop jq speedtest-cli tldr tree watch wget wifi-password
+
+# development
+brew_install black flake8 pipenv pyenv # python
+brew_install entr
+brew_install postgresql
+brew_install go
+
+# Additional system dependencies needed for Python compilation by pyenv (optional, but recommended)
+# https://github.com/pyenv/pyenv/wiki
+$ brew install openssl readline sqlite3 xz zlib
+
+# download youtube - ffmpeg needed for converting to audio files :)
+brew_install youtube-dl ffmpeg
+
+
+# ################### BREW CASK #################################
+
+# general tools
 brew_cask_install dropbox firefox google-chrome \
-    iterm2 joplin lepton logitech-options \
-    logitech-unifying logitech-control-center \
-    meld postman rectangle simplenote sublime-merge \
-    sublime-text tunnelblick vlc
+    tunnelblick vlc zoomus
 
-# Brew Custom
+# note taking
+brew_cask_install simplenote sublime-merge sublime-text joplin
+
+# development
+brew_cask_install iterm2 lepton meld postman
+
+# mac window management
+brew install rectangle
+
+# logitech
+brew_cask_install logitech-options logitech-unifying logitech-control-center
+
+
+# ################### BREW CUSTOM #################################
+
 brew_custom_install
 
 echo "\n› Running 'brew upgrade' and 'brew cleanup'"
