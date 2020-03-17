@@ -70,7 +70,7 @@ brew_cask_install simplenote sublime-merge sublime-text joplin
 brew_cask_install iterm2 lepton meld postman
 
 # mac window management
-brew install rectangle
+brew_cask_install rectangle
 
 # logitech
 brew_cask_install logitech-options logitech-unifying logitech-control-center
