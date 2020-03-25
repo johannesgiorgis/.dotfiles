@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+
+###########################################
+#
+# Set Git Remote URL to Personal Github
+# -------------------------------------
+#
+# Example:
+# git remote set-url origin git@github.com-personal:johannesgiorgis/dotfiles.git
+#
+###########################################
+
+# GLOBAL VARIABLES
+PERSONAL_GITHUB_URL="github.com-personal"
+
+# HELPER FUNCTIONS
+function print_stamp() { echo -e "\n$(date +'%F %T') $@"; }
+
+print_stamp "$0 Started"
+
+fetch_url=$(git remote -v | head -1 | awk -F' ' '{print $2}')
+push_url=$(git remote -v | tail -1 | awk -F' ' '{print $2}')
+
+# Verify no difference between fetch and push URLs
+if [[ "$fetch_url" != "$push_url" ]]
+then
+	echo "ERROR: Fetch URL doesn't match Push URL!"
+	echo -e "\tFetch URL:'${fetch_url}'"
+	echo -e "\tPush URL:'${push_url}'"
+	echo "Exiting script..."
+	exit 1
+else
+	echo "Fetch URL matches Push URL"
+fi
+
+# Verify git repo hasn't already been set to personal git URL
+current_git_url=$(echo "$fetch_url" | cut -d':' -f1 | cut -d'@' -f2)
+
+if [[ "$current_git_url" == "$PERSONAL_GITHUB_URL" ]]
+then
+	echo "ERROR: Git repo has already been set to Personal Github URL"
+	echo "Exiting script..."
+	exit 1
+else
+	echo "Git will be set to the Personal Github URL"
+fi
+
+new_git_url=$(echo "$fetch_url" | sed "s/github.com/$PERSONAL_GITHUB_URL/g")
+echo "New Git URL:$new_git_url"
+
+echo -e 'SET:\n'
+echo "git remote set-url origin $new_git_url"
+echo "git config user.name 'Johannes Giorgis'"
+echo "git config user.email 'johannesgiorgis@users.noreply.github.com'"
+
+echo -e '\n\nVERIFY:\n'
+echo "git config --local --list | grep user"
+echo "git remote -v"
+
+print_stamp "$0 Completed"
