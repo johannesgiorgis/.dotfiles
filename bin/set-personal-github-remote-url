@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-###########################################
+#################################################################################
 #
 # Set Git Remote URL to Personal Github
 # -------------------------------------
@@ -8,7 +8,7 @@
 # Example:
 # git remote set-url origin git@github.com-personal:johannesgiorgis/dotfiles.git
 #
-###########################################
+#################################################################################
 
 # GLOBAL VARIABLES
 PERSONAL_GITHUB_URL="github.com-personal"
@@ -46,9 +46,9 @@ else
 fi
 
 new_git_url=$(echo "$fetch_url" | sed "s/github.com/$PERSONAL_GITHUB_URL/g")
-echo "New Git URL:$new_git_url"
+echo -e "\nNew Git URL:$new_git_url"
 
-echo -e 'SET:\n'
+echo -e '\nSET:\n'
 echo "git remote set-url origin $new_git_url"
 echo "git config user.name 'Johannes Giorgis'"
 echo "git config user.email 'johannesgiorgis@users.noreply.github.com'"
