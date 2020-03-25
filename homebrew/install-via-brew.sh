@@ -51,7 +51,7 @@ brew_install go
 
 # Additional system dependencies needed for Python compilation by pyenv (optional, but recommended)
 # https://github.com/pyenv/pyenv/wiki
-$ brew install openssl readline sqlite3 xz zlib
+brew_install openssl readline sqlite3 xz zlib
 
 # download youtube - ffmpeg needed for converting to audio files :)
 brew_install youtube-dl ffmpeg
@@ -67,17 +67,10 @@ brew_cask_install dropbox firefox google-chrome \
 brew_cask_install simplenote sublime-merge sublime-text joplin
 
 # development
-<<<<<<< HEAD
 brew_cask_install iterm2 lepton meld postman visual-studio-code
 
 # mac window management
-brew install rectangle
-=======
-brew_cask_install iterm2 lepton meld postman
-
-# mac window management
 brew_cask_install rectangle
->>>>>>> 8e9194130ff62c7ddbb90de678235ff51146c17f
 
 # logitech
 brew_cask_install logitech-options logitech-unifying logitech-control-center
