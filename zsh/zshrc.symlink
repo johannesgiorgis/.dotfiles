@@ -145,6 +145,7 @@ function cproj() {
 }
 
 function mydate() { date +"%Y-%m-%d %H:%M:%S %Z"; } # Date in my format
+function today() { date +"%A, %B %d, %Y"; } # Date in secondary format
 function note() { echo `date +"%Y-%m-%d %H:%M:%S  "`"$*" >> ~/notes; } # Add a note to my file
 function notes() { vim + ~/notes; } # View/edit notes
 
