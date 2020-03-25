@@ -67,10 +67,17 @@ brew_cask_install dropbox firefox google-chrome \
 brew_cask_install simplenote sublime-merge sublime-text joplin
 
 # development
+<<<<<<< HEAD
 brew_cask_install iterm2 lepton meld postman visual-studio-code
 
 # mac window management
 brew install rectangle
+=======
+brew_cask_install iterm2 lepton meld postman
+
+# mac window management
+brew_cask_install rectangle
+>>>>>>> 8e9194130ff62c7ddbb90de678235ff51146c17f
 
 # logitech
 brew_cask_install logitech-options logitech-unifying logitech-control-center
