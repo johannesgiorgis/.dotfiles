@@ -170,6 +170,16 @@ function dot() {
 	fi
 }
 
+# copy to clipboard on linux
+kernel_name="$(uname -s)"
+
+if [ "${kernel_name}" = "Linux" ]
+then
+	function copy() {
+		cat "$@" | xclip -i -selection clipboard
+	}
+fi
+
 DEFAULT_USER=$(whoami)
 
 # PATH MODIFICATIONS
