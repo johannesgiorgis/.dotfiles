@@ -152,22 +152,23 @@ function notes() { vim + ~/notes; } # View/edit notes
 # add - to 2 and changed head to tail to make it zsh compatible
 function gotit() { history -2 | tail -n 1 | cut -c 8- >> ~/notes; }
 
-# added by Anaconda3 5.3.1 installer
-# >>> conda init >>>
-# !! Contents within this block are managed by 'conda init' !!
-# __conda_setup="$(CONDA_REPORT_ERRORS=false '${HOME}/anaconda3/bin/conda' shell.bash hook 2> /dev/null)"
-# if [ $? -eq 0 ]; then
-#     \eval "$__conda_setup"
-# else
-#     if [ -f "${HOME}/anaconda3/etc/profile.d/conda.sh" ]; then
-#         . "${HOME}/anaconda3/etc/profile.d/conda.sh"
-#         CONDA_CHANGEPS1=false conda activate base
-#     else
-#         \export PATH="${HOME}/anaconda3/bin:$PATH"
-#     fi
-# fi
-# unset __conda_setup
-# <<< conda init <<<
+function colors() {
+	for i in {0..255}
+	do
+		print -Pn "%K{$i} %k%F{$i}${(l:3::0:)i}%f " ${${(M)$((i%8)):#7}:+$'\n'}
+	done
+}
+
+function dot() {
+	dir="${HOME}/.dotfiles"
+	if [[ -d "${dir}" ]]
+	then
+		echo "Navigating to '${dir}'"
+		cd "${dir}"
+	else
+		echo "ERROR: Directory '${dir}' doesn't exist!"
+	fi
+}
 
 DEFAULT_USER=$(whoami)
 
