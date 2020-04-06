@@ -819,6 +819,14 @@
   # Custom icon.
   # typeset -g POWERLEVEL9K_TASKWARRIOR_VISUAL_IDENTIFIER_EXPANSION='⭐'
 
+  # Root segment
+  POWERLEVEL9K_ROOT_INDICATOR_BACKGROUND='red'
+  POWERLEVEL9K_ROOT_INDICATOR_FOREGROUND='black'
+  #POWERLEVEL9K_ROOT_ICON="\uF21b"
+  POWERLEVEL9K_ROOT_ICON="\uF09C"
+  POWERLEVEL9K_ALWAYS_SHOW_USER=true
+  PS1="%~ %{%(#~$fg[red]~$fg[blue])%}%#%{$fg[default]%} "
+
   ##################################[ context: user@hostname ]##################################
   # Context color when running with privileges.
   typeset -g POWERLEVEL9K_CONTEXT_ROOT_FOREGROUND=178
