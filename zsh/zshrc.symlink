@@ -235,6 +235,15 @@ if command -v aws 1>/dev/null 2>&1; then
 fi
 # <<< AWS COMPLETION
 
+# >>> LOCALSTACK AWS LOCAL
+
+if [[ -f "/usr/local/venv/bin/awslocal" ]]
+then
+	alias awslocal=/usr/local/venv/bin/awslocal
+fi
+
+# <<< LOCALSTACK AWS LOCAL
+
 # Control output of less
 if command -v less 1>/dev/null 2>&1; then
 	alias mroe=less more=less
