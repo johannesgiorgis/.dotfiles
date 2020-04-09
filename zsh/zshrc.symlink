@@ -84,6 +84,7 @@ plugins=(
 	docker
 	docker-compose
 	virtualenv
+	nvm
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -235,14 +236,15 @@ if command -v aws 1>/dev/null 2>&1; then
 fi
 # <<< AWS COMPLETION
 
-# >>> LOCALSTACK AWS LOCAL
+# >>> Common Python Virtual Environment
 
-if [[ -f "/usr/local/venv/bin/awslocal" ]]
+if [[ -d "/usr/local/venv/" ]]
 then
 	alias awslocal=/usr/local/venv/bin/awslocal
+	alias yq=/usr/local/venv/bin/yq
 fi
 
-# <<< LOCALSTACK AWS LOCAL
+# <<< Common Python Virtual Environment
 
 # Control output of less
 if command -v less 1>/dev/null 2>&1; then
