@@ -42,12 +42,14 @@ function brew_custom_install {
 
 # general tools
 brew_install cask htop jq speedtest-cli tldr tree watch wget wifi-password
+brew_install putty xmlstarlet
 
 # development
 brew_install black flake8 pipenv pyenv # python
 brew_install entr
 brew_install postgresql
 brew_install go
+brew_install mysql
 
 # Additional system dependencies needed for Python compilation by pyenv (optional, but recommended)
 # https://github.com/pyenv/pyenv/wiki
