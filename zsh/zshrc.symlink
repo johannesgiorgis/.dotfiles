@@ -242,6 +242,7 @@ if [[ -d "/usr/local/venv/" ]]
 then
 	alias awslocal=/usr/local/venv/bin/awslocal
 	alias yq=/usr/local/venv/bin/yq
+	alias xq=/usr/local/venv/bin/xq
 fi
 
 # <<< Common Python Virtual Environment
