@@ -2,19 +2,31 @@
 
 # Parse arguments:
 FLAGS=""
-if ! TEMP=$(getopt -n "$0" -o ckvimnpsx -- "$@"); then exit 1; fi
-eval set -- "$TEMP"
-while true; do
-  case "$1" in
-    -c) COMMANDS=1;;
-    -k) KEYS=1;;
-    -v) VALUES=1;;
-    -i|-m|-n|-p|-s|-x) FLAGS+=$(echo "$1" | sed 's/^-//');;
-    --) shift;break;;
-    *) echo "got star"; break;;
+# if ! TEMP=$(getopt -n "$0" -o ckvimnpsx -- "$@"); then exit 1; fi
+# eval set -- "$TEMP"
+# while true; do
+#   case "$1" in
+#     -c) COMMANDS=1;;
+#     -k) KEYS=1;;
+#     -v) VALUES=1;;
+#     -i|-m|-n|-p|-s|-x) FLAGS+=$(echo "$1" | sed 's/^-//');;
+#     --) shift;break;;
+#     *) echo "got star"; break;;
+#   esac
+#   shift
+# done
+
+# Parse arguments:
+while getopts ":r:p:v" opt; do
+  case $opt in
+    r) REGION="-r $OPTARG";;
+    p) PROF="$OPTARG";;
+    v) VERBOSE=$(( VERBOSE + 1 ));;
+    :) echo "Option -$OPTARG requires an argument." >&2; exit 1;;
+    \?) echo "Invalid option: -$OPTARG" >&2;;
   esac
-  shift
 done
+shift $((OPTIND-1))
 
 if [[ "$KEYS" == "" && "$VALUES" == "" ]]; then
   KEYS=1
