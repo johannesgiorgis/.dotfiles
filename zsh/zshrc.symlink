@@ -278,3 +278,5 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
+# Disabled shared history acrosst terminal tabs
+unsetopt SHARE_HISTORY
