@@ -255,6 +255,16 @@ if command -v less 1>/dev/null 2>&1; then
 	export LESSCHARSET=utf-8
 fi
 
+# Brew
+
+if command -v brew 1>/dev/null 2>&1; then
+	alias brewup='brew update; brew upgrade; brew cleanup; brew doctor'
+fi
+
+# ls
+alias lt='ls -lahtFr'
+#alias ltr='lt -r'
+
 # nvm
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
