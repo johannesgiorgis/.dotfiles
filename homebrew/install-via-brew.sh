@@ -69,7 +69,7 @@ brew_cask_install dropbox firefox google-chrome \
 brew_cask_install simplenote sublime-merge sublime-text joplin
 
 # development
-brew_cask_install iterm2 lepton meld postman visual-studio-code
+brew_cask_install iterm2 lepton meld postman visual-studio-code pgadmin4
 
 # mac window management
 brew_cask_install rectangle
