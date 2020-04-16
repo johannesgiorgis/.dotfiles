@@ -131,6 +131,10 @@ function addcmd() { # Add a command to ~/.zshrc and use it
 	source ~/.zshrc
 }
 
+function ushell { # update shell
+	source ~/.zshrc
+}
+
 function cproj() {
 	# create dated project directory
 	project_name="$@"
