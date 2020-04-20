@@ -279,14 +279,14 @@ export NVM_DIR="$HOME/.nvm"
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/home/johannes/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+__conda_setup="$('/Users/jgiorgis/.pyenv/versions/miniconda3-4.7.12/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
 else
-    if [ -f "/home/johannes/anaconda3/etc/profile.d/conda.sh" ]; then
-        . "/home/johannes/anaconda3/etc/profile.d/conda.sh"
+    if [ -f "/Users/jgiorgis/.pyenv/versions/miniconda3-4.7.12/etc/profile.d/conda.sh" ]; then
+        . "/Users/jgiorgis/.pyenv/versions/miniconda3-4.7.12/etc/profile.d/conda.sh"
     else
-        export PATH="/home/johannes/anaconda3/bin:$PATH"
+        export PATH="/Users/jgiorgis/.pyenv/versions/miniconda3-4.7.12/bin:$PATH"
     fi
 fi
 unset __conda_setup
