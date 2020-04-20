@@ -63,7 +63,7 @@ brew_install youtube-dl ffmpeg
 
 # general tools
 brew_cask_install dropbox firefox google-chrome \
-    tunnelblick vlc zoomus
+    tunnelblick vlc zoomus omnidisksweeper
 
 # note taking
 brew_cask_install simplenote sublime-merge sublime-text joplin
