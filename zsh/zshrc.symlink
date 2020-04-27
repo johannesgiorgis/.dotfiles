@@ -273,6 +273,10 @@ fi
 alias lt='ls -lahtFr'
 #alias ltr='lt -r'
 
+# docker
+alias dka='docker ps -aq | xargs -I{} docker kill {}'		# kill all running docker containers
+alias dra='docker ps -aq | xargs -I{} docker rm {}'			# remove all docker containers
+
 # nvm
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
