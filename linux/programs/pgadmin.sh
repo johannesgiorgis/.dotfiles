@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Install PGAdmin
+# Install PGAdmin 4 _ PostgreSQL 11
 
 sudo apt-get install curl ca-certificates --yes
 curl https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -

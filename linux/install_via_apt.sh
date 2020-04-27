@@ -13,7 +13,7 @@ function print_stamp() { echo -e "\n$(date +'%F %T') $@"; }
 # echo "$LINE_BREAK"
 print_stamp "$0 Started"
 
-sudo apt update
+sudo apt-get update
 
 
 function apt_install {
@@ -21,7 +21,7 @@ function apt_install {
 
 	if [ $? -ne 0 ]; then
 		print_stamp "Installing: ${@}..."
-		sudo apt install --yes "${@}"
+		sudo apt-get install --yes "${@}"
 		print_stamp "Completed installing ${@}!"
 	else
 		print_stamp "Already installed: ${@}"
@@ -29,8 +29,10 @@ function apt_install {
 }
 
 # Basics
-apt_install awscli python3.7 python3-pip python3-venv xclip curl git tmux vim figlet entr meld jq man zsh tree man
+# apt_install awscli python3.7 python3-pip python3-venv xclip curl git tmux vim figlet entr meld jq man zsh tree man
+apt_install xclip curl git tmux vim figlet entr meld jq man zsh tree man
 
-sudo apt upgrade --yes
+
+sudo apt-get upgrade --yes
 
 print_stamp "$0 Completed"

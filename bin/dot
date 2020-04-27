@@ -89,14 +89,15 @@ function install_mac () {
 
 function install_linux () {
 	echo -e "\n› installing linux software..."
-	# Set macOS defaults
-	# $DOT_FILES/macos/set-defaults.sh
 
 	# Install programs via apt
 	$DOT_FILES/linux/install_via_apt.sh 2>&1
 
 	# Install custom programs
 	$DOT_FILES/linux/install-custom-programs.sh 2>&1
+
+	sudo apt upgrade --yes
+	sudo apt autoremove --yes
 
 	echo -e "\n› completed installing linux software"
 }

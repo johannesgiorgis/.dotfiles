@@ -17,9 +17,15 @@ function print_stamp() { echo -e "\n$(date +'%F %T') $@"; }
 echo "$LINE_BREAK"
 print_stamp "$0 Started"
 
-cd programs/
+export PROGRAMS_DIR="${HOME}/.dotfiles/linux/programs"
 
-for f in $(ls *.sh)
+# echo "CURRENT DIR:"
+# pwd
+# cd programs/
+cd "${PROGRAMS_DIR}"
+
+
+for f in $(ls *.sh | egrep -v 'serverless|flux|docker')
 do
     base_name=${f%%.*}
     print_stamp "Installing '$base_name'..."

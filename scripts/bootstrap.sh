@@ -149,6 +149,13 @@ install_dotfiles () {
     dst="$HOME/.$(basename "${src%.*}")"
     echo "Linking '$src' to '$dst'"
     link_file "$src" "$dst"
+
+    if [[ "${src}" == *"vim"* ]]
+    then
+        # echo "Linking '$src' to '/root/.vimrc'"
+        echo -e "\RUN: sudo ln -s \"$src\" \"/root/.vimrc\""
+
+    fi
   done
 
   success 'installing dotfiles'
@@ -160,6 +167,23 @@ make_sh_files_executable () {
 	find . -name '*.sh' | xargs chmod +x
 
 	success 'completed making *.sh files executable'
+}
+
+set_zsh_shell_as_default () {
+  # If we're on a Mac, let's install and setup homebrew.
+  if [ "${kernel_name}" == "Darwin" ]
+  then
+    print_info "setting zsh as default for mac..."
+    sudo chsh -s $(which zsh)
+    success "Completed setting zsh as default for mac"
+  fi
+
+  if [ "${kernel_name}" == "Linux" ]
+  then
+    print_info "setting zsh as default for linux..."
+    chsh -s $(which zsh)
+    success "Completed setting zsh as default for linux"
+  fi
 }
 
 # setup_gitconfig
@@ -182,7 +206,9 @@ install_dotfiles
 success 'Completed removing ~/.zshrc file and installing dot files!'
 
 # zsh
-sudo chsh -s $(which zsh)
+print_info "changing default shell to zsh"
+set_zsh_shell_as_default
+success "Completed changing default shell to zsh"
 
 echo ''
 echo '  All installed!'
