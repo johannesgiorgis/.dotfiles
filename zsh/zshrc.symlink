@@ -85,6 +85,7 @@ plugins=(
 	docker-compose
 	virtualenv
 	nvm
+	golang
 )
 
 source $ZSH/oh-my-zsh.sh
