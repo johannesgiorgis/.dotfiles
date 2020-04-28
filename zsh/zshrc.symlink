@@ -121,7 +121,35 @@ export VISUAL=/usr/bin/vim
 alias venv='python3 -m venv ./venv && source ./venv/bin/activate && pip install --upgrade pip setuptools > /dev/null'
 alias va='source ./venv/bin/activate'
 
+# >>> Common Python Virtual Environment
 
+if [[ -d "/usr/local/venv/" ]]
+then
+    alias awslocal=/usr/local/venv/bin/awslocal
+    alias yq=/usr/local/venv/bin/yq
+    alias xq=/usr/local/venv/bin/xq
+fi
+
+# <<< Common Python Virtual Environment
+
+# Brew
+
+if command -v brew 1>/dev/null 2>&1; then
+	alias brewup='brew update; brew upgrade; brew cleanup; brew doctor'
+fi
+
+# ls
+alias lt='ls -lahtFr'
+#alias ltr=' -r'
+
+# docker
+alias dka='docker ps -aq | xargs -I{} docker kill {}'		# kill all running docker containers
+alias dra='docker ps -aq | xargs -I{} docker rm {}'			# remove all docker containers
+
+# <<< ALIAS
+
+
+# >>> FUNCTIONS
 # Youtube Download to MP3 :)
 if command -v youtube-dl 1>/dev/null 2>&1; then
 	function yda() {
@@ -236,7 +264,7 @@ fi
 
 if command -v aws 1>/dev/null 2>&1; then
 
-		function awsm() { aws --profile main "$@"; }
+    function awsm() { aws --profile main "$@"; }
 
 	if test -f "/usr/local/bin/aws_completer"; then
 		complete -C '/usr/local/bin/aws_completer' aws awsm
@@ -244,16 +272,8 @@ if command -v aws 1>/dev/null 2>&1; then
 fi
 # <<< AWS COMPLETION
 
-# >>> Common Python Virtual Environment
+# <<< FUNCTIONS
 
-if [[ -d "/usr/local/venv/" ]]
-then
-	alias awslocal=/usr/local/venv/bin/awslocal
-	alias yq=/usr/local/venv/bin/yq
-	alias xq=/usr/local/venv/bin/xq
-fi
-
-# <<< Common Python Virtual Environment
 
 # Control output of less
 if command -v less 1>/dev/null 2>&1; then
@@ -263,19 +283,9 @@ if command -v less 1>/dev/null 2>&1; then
 	export LESSCHARSET=utf-8
 fi
 
-# Brew
-
-if command -v brew 1>/dev/null 2>&1; then
-	alias brewup='brew update; brew upgrade; brew cleanup; brew doctor'
+if command -v jump 1>/dev/null 2>&1; then
+    eval "$(jump shell)"
 fi
-
-# ls
-alias lt='ls -lahtFr'
-#alias ltr='lt -r'
-
-# docker
-alias dka='docker ps -aq | xargs -I{} docker kill {}'		# kill all running docker containers
-alias dra='docker ps -aq | xargs -I{} docker rm {}'			# remove all docker containers
 
 # nvm
 export NVM_DIR="$HOME/.nvm"
