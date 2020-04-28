@@ -42,7 +42,7 @@ function brew_custom_install {
 
 # general tools
 brew_install cask htop jq speedtest-cli tldr tree watch wget wifi-password
-brew_install putty csvkit
+brew_install putty csvkit ack jump
 
 # development
 brew_install black flake8 pipenv pyenv # python
