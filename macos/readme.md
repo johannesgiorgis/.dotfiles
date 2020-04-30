@@ -1,6 +1,6 @@
-# Homebrew Installation
+# MacOS - Homebrew Installation
 
-This directory deals with installing [Homebrew] and the packages that are installed via Homebrew and Homebrew Cask.
+This directory deals with installing [Homebrew] and the packages that are installed via Homebrew and Homebrew Cask. Homebrew is used soley on Mac OS.
 
 ## Regular Brew
 

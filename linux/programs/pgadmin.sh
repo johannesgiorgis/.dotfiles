@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Install PGAdmin 4 _ PostgreSQL 11
 

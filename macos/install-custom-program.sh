@@ -2,11 +2,13 @@
 
 ###################################################################
 #
-# Install Custom Programs
-# -----------------------
+# Install Custom Programs for Mac OS
+# ----------------------------------
 #
 # Install custom 3rd party software
 # through additional packages
+# These programs are either not available on Homebrew
+# or its better to install them outside of Homebrew
 #
 ###################################################################
 
@@ -17,7 +19,7 @@ function print_stamp() { echo -e "\n$(date +'%F %T') $@"; }
 echo "$LINE_BREAK"
 print_stamp "$0 Started"
 
-export PROGRAMS_DIR="${HOME}/.dotfiles/linux/programs"
+export PROGRAMS_DIR="${HOME}/.dotfiles/macos/programs"
 
 # echo "CURRENT DIR:"
 # pwd
@@ -25,7 +27,7 @@ export PROGRAMS_DIR="${HOME}/.dotfiles/linux/programs"
 cd "${PROGRAMS_DIR}"
 
 
-for f in $(ls *.sh | egrep -v 'serverless|flux|docker')
+for f in $(ls *.sh)
 do
     base_name=${f%%.*}
     print_stamp "Installing '$base_name'..."
