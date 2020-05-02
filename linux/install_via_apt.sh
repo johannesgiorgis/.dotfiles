@@ -3,17 +3,45 @@
 ###################################################################
 #
 # Install Programs via Apt
+# ------------------------
 #
 ###################################################################
 
-LINE_BREAK="===================================================================================="
-function print_stamp() { echo -e "\n$(date +'%F %T') $@"; }
+export SUPPORT_DIR="${HOME}/.dotfiles/support"
+source "${SUPPORT_DIR}/common_utilities.sh"
 
 
-# echo "$LINE_BREAK"
-print_stamp "$0 Started"
+main() {
+    start=$(date +%s)
+	echo "$LINE_BREAK"
+	print_stamp "$0 Started"
 
-sudo apt-get update
+	sudo apt-get update
+
+    # Basics
+	apt_install xclip
+	apt_install curl
+	apt_install git
+	apt_install tmux
+	apt_install vim
+	apt_install figlet
+	apt_install entr
+	apt_install meld
+	apt_install jq
+	apt_install man
+	apt_install zsh
+	apt_install tree
+	apt_install man
+    
+    sudo apt-get upgrade --yes
+    
+    end=$(date +%s)
+    runtime=$((end-start))
+    runtime_min=$(convert_seconds_to_min $runtime)
+
+    finished "$0 Completed with $runtime seconds ($runtime_min mins)"
+    echo "${LINE_BREAK}"
+}
 
 
 function apt_install {
@@ -28,11 +56,4 @@ function apt_install {
 	fi
 }
 
-# Basics
-# apt_install awscli python3.7 python3-pip python3-venv xclip curl git tmux vim figlet entr meld jq man zsh tree man
-apt_install xclip curl git tmux vim figlet entr meld jq man zsh tree man
-
-
-sudo apt-get upgrade --yes
-
-print_stamp "$0 Completed"
+main

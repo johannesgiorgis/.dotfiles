@@ -9,42 +9,62 @@
 #
 ###################################################################
 
-
-LINE_BREAK="===================================================================================="
-function print_stamp() { echo -e "\n$(date +'%F %T') $@"; }
-
-echo "$LINE_BREAK"
-print_stamp "$0 Started"
-
-cd "$(dirname "$0")/.."
-DOTFILES_ROOT=$(pwd -P)
-
 set -e
 
-echo ''
+export SUPPORT_DIR="${HOME}/.dotfiles/support"
+source "${SUPPORT_DIR}/common_utilities.sh"
 
-print_info () {
-  printf "\r  [ \033[00;34m..\033[0m ] $1\n"
+
+main() {
+    start=$(date +%s)
+    echo "$LINE_BREAK"
+    print_info "$0 Started"
+
+    cd "$(dirname "$0")/.."
+    DOTFILES_ROOT=$(pwd -P)
+
+    echo ''
+
+    # setup_gitconfig
+    make_sh_files_executable
+    source_dot
+    clean_dotfiles_install
+    set_zsh_shell_as_default
+
+    echo ''
+    echo '  All installed!'
+
+    end=$(date +%s)
+    runtime=$((end-start))
+    runtime_min=$(convert_seconds_to_min $runtime)
+
+    finished "$0 Completed with $runtime seconds ($runtime_min mins)"
+    echo "${LINE_BREAK}"
 }
 
-user () {
-  printf "\r  [ \033[0;33m??\033[0m ] $1\n"
+source_dot () {
+    print_info '› Sourcing bin/dot...'
+    source bin/dot
+    success '› Completed sourcing bin/dot!'
 }
 
-success () {
-  printf "\r\033[2K  [ \033[00;32mOK\033[0m ] $1\n"
-}
+clean_dotfiles_install () {
+    print_info '› Removing ~/.zshrc file and installing dot files...'
+    if [[ -f ~/.zshrc ]]
+    then
+        rm -v ~/.zshrc
+    else
+        warn "› No ~/.zshrc file found!"
+    fi
 
-fail () {
-  printf "\r\033[2K  [\033[0;31mFAIL\033[0m] $1\n"
-  echo ''
-  exit
+    install_dotfiles
+    success '› Completed removing ~/.zshrc file and installing dot files!'
 }
 
 setup_gitconfig () {
   if ! [ -f git/gitconfig.local.symlink ]
   then
-    print_info 'setup gitconfig'
+    print_info '› setup gitconfig'
 
     git_credential='cache'
     if [ "$(uname -s)" == "Darwin" ]
@@ -59,7 +79,7 @@ setup_gitconfig () {
 
     sed -e "s/AUTHORNAME/$git_authorname/g" -e "s/AUTHOREMAIL/$git_authoremail/g" -e "s/GIT_CREDENTIAL_HELPER/$git_credential/g" git/gitconfig.local.symlink.example > git/gitconfig.local.symlink
 
-    success 'gitconfig'
+    success '› gitconfig'
   fi
 }
 
@@ -140,7 +160,7 @@ link_file () {
 }
 
 install_dotfiles () {
-  print_info 'installing dotfiles'
+  print_info '› Installing dotfiles'
 
   local overwrite_all=false backup_all=false skip_all=false
 
@@ -158,60 +178,35 @@ install_dotfiles () {
     fi
   done
 
-  success 'installing dotfiles'
+  success '› Completed installing dotfiles'
 }
 
 make_sh_files_executable () {
-	print_info 'making *.sh files executable'
+	print_info '› Making *.sh files executable'
 
 	find . -name '*.sh' | xargs chmod +x
 
-	success 'completed making *.sh files executable'
+	success '› Completed making *.sh files executable'
 }
 
 set_zsh_shell_as_default () {
-  # If we're on a Mac, let's install and setup homebrew.
-  if [ "${kernel_name}" == "Darwin" ]
-  then
-    print_info "setting zsh as default for mac..."
-    sudo chsh -s $(which zsh)
-    success "Completed setting zsh as default for mac"
-  fi
+    # If we're on a Mac, let's install and setup homebrew.
+    print_info "› changing default shell to zsh"
 
-  if [ "${kernel_name}" == "Linux" ]
-  then
-    print_info "setting zsh as default for linux..."
-    chsh -s $(which zsh)
-    success "Completed setting zsh as default for linux"
-  fi
+    if test "$(uname)" = "Darwin"
+    then
+        print_info "› setting zsh as default for mac..."
+        sudo chsh -s $(which zsh)
+        success "› Completed setting zsh as default for mac"
+
+    elif test "$(expr substr $(uname -s) 1 5)" = "Linux"
+    then
+        print_info "› setting zsh as default for linux..."
+        chsh -s $(which zsh)
+        success "› Completed setting zsh as default for linux"
+    fi
+    success "› Completed changing default shell to zsh"
 }
 
-# setup_gitconfig
-make_sh_files_executable
 
-print_info 'Sourcing bin/dot...'
-source bin/dot
-success 'Completed sourcing bin/dot!'
-
-# remove .zsh
-print_info 'Removing ~/.zshrc file and installing dot files...'
-if [[ -f ~/.zshrc ]]
-then
-  rm -v ~/.zshrc
-else
-  echo "No ~/.zshrc file found!"
-fi
-
-install_dotfiles
-success 'Completed removing ~/.zshrc file and installing dot files!'
-
-# zsh
-print_info "changing default shell to zsh"
-set_zsh_shell_as_default
-success "Completed changing default shell to zsh"
-
-echo ''
-echo '  All installed!'
-
-print_stamp "$0 Completed"
-echo "$LINE_BREAK"
+main

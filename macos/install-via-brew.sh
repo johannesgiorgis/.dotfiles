@@ -6,14 +6,15 @@
 #
 ###################################################################
 
-LINE_BREAK="===================================================================================="
-function print_stamp() { echo -e "\n$(date +'%F %T') $@"; }
+export SUPPORT_DIR="${HOME}/.dotfiles/support"
+source "${SUPPORT_DIR}/common_utilities.sh"
 
 
 main() {
+    start=$(date +%s)
     echo "${LINE_BREAK}"
-    print_stamp "$0 Started"
-    brew update
+    print_info "$0 Started"
+    brew_update
 
     # brew install
     install_general_tools
@@ -27,29 +28,45 @@ main() {
     cask_install_logitech
 
     # brew custom tap
-    brew_custom_install
+    brew_custom_install_displacer
+    brew_custom_install_font_fira_code
+
+    brew_upgrade_cleanup
     
-    echo "\n› Running 'brew upgrade' and 'brew cleanup'"
-    brew upgrade
-    brew cleanup
-    
-    print_stamp "$0 Completed"
+    end=$(date +%s)
+    runtime=$((end-start))
+    runtime_min=$(convert_seconds_to_min $runtime)
+
+    finished "$0 Completed with $runtime seconds ($runtime_min mins)"
     echo "${LINE_BREAK}"
 }
 
 
 # ################### BREW UTILITIES #################################
 
+function brew_update {
+    print_info "› Running 'brew update'..."
+    brew update
+    success "› Completed running 'brew update'!"
+}
+
 function brew_install {
-    print_stamp "Installing via brew: '${@}'..."
+    print_info "› Installing via brew: '${@}'..."
     brew install "${@}"
-	print_stamp "Completed installing via brew: '${@}'!"
+	success "› Completed installing via brew: '${@}'!"
 }
 
 function brew_cask_install {
-    print_stamp "Installing via brew cask: '${@}'..."
+    print_info "› Installing via brew cask: '${@}'..."
     brew cask install "${@}"
-    print_stamp "Completed installing via brew cask: '${@}'!"
+    success "› Completed installing via brew cask: '${@}'!"
+}
+
+function brew_upgrade_cleanup {
+    print_info "› Running 'brew upgrade' and 'brew cleanup'"
+    brew upgrade
+    brew cleanup
+    success "› Completed running 'brew upgrade' and 'brew cleanup'!"
 }
 
 
@@ -126,24 +143,25 @@ cask_install_development_tools() {
 }
 
 cask_install_logitech() {
-    brew_cask_install logitech-options logitech-unifying logitech-control-center
+    brew_cask_install logitech-options
+    brew_cask_install logitech-unifying
+    brew_cask_install logitech-control-center
 }
 
 
 # ################### BREW CUSTOM #################################
 
-function brew_custom_install {
-    print_stamp "Installing via custom brew..."
 
-    echo -e "\n› Installing displacer..."
+function brew_custom_install_displacer() {
+    print_info "› Installing displacer..."
     brew tap jakehilborn/jakehilborn && brew install displayplacer
-    echo -e "\n› Completed installing displacer!"
+    success "› Completed installing displacer!"
+}
 
-    echo -e "\n› Installing Fira Code..."
+function brew_custom_install_font_fira_code() {
+    print_info "› Installing Font Fira Code..."
     brew tap homebrew/cask-fonts && brew cask install font-fira-code
-    echo -e "\n› Completed installing Fira Code!"
-
-    print_stamp "Completed installing via custom brew!"
+    success "› Completed installing Font Fira Code!"
 }
 
 main

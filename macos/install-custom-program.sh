@@ -12,52 +12,34 @@
 #
 ###################################################################
 
-LINE_BREAK="===================================================================================="
-function print_stamp() { echo -e "\n$(date +'%F %T') $@"; }
+export SUPPORT_DIR="${HOME}/.dotfiles/support"
+source "${SUPPORT_DIR}/common_utilities.sh"
 
 
-echo "$LINE_BREAK"
-print_stamp "$0 Started"
+main() {
+    start=$(date +%s)
+    echo "$LINE_BREAK"
+    print_info "$0 Started"
+    
+    export PROGRAMS_DIR="${HOME}/.dotfiles/macos/programs"
+    
+    cd "${PROGRAMS_DIR}"
+    
+    for f in $(ls *.sh)
+    do
+        base_name=${f%%.*}
+        print_info "Installing '$base_name'..."
+        bash $f
+        success "Completed installing '$base_name'!"
+    done
+    
+    end=$(date +%s)
+    runtime=$((end-start))
+    runtime_min=$(convert_seconds_to_min $runtime)
 
-export PROGRAMS_DIR="${HOME}/.dotfiles/macos/programs"
-
-# echo "CURRENT DIR:"
-# pwd
-# cd programs/
-cd "${PROGRAMS_DIR}"
-
-
-for f in $(ls *.sh)
-do
-    base_name=${f%%.*}
-    print_stamp "Installing '$base_name'..."
-    bash $f
-    print_stamp "Completed installing '$base_name'!"
-done
-
-# print_stamp "Installing F.Lux..."
-# ./flux.sh
-# print_stamp "Completed installing F.Lux!"
-
-
-# print_stamp "Installing PGAdmin 4..."
-# ./pgadmin.sh
-# print_stamp "Completed installing PGAdmin 4!"
+    finished "$0 Completed with $runtime seconds ($runtime_min mins)"
+    echo "${LINE_BREAK}"
+}
 
 
-# print_stamp "Installing NodeJS and NPM..."
-# ./nodejs.sh
-# print_stamp "Completed installing NodeJS and NPM!"
-
-
-# print_stamp "Installing Serverless Framework..."
-# ./serverless.sh
-# print_stamp "Completed installing Serverless Framework!"
-
-
-# print_stamp "Installing Miniconda..."
-# ./miniconda.sh
-# print_stamp "Completed installing Miniconda!"
-
-print_stamp "$0 Completed"
-echo "$LINE_BREAK"
+main
