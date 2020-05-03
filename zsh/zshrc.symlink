@@ -110,6 +110,10 @@ export VISUAL=/usr/bin/vim
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
 
+
+###############################################################################################
+# >>> ##################################### ALIAS
+
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
@@ -146,10 +150,13 @@ alias lt='ls -lahtFr'
 alias dka='docker ps -aq | xargs -I{} docker kill {}'		# kill all running docker containers
 alias dra='docker ps -aq | xargs -I{} docker rm {}'			# remove all docker containers
 
-# <<< ALIAS
+# <<< ##################################### ALIAS
+###############################################################################################
 
 
-# >>> FUNCTIONS
+###############################################################################################
+# >>> ##################################### FUNCTIONS 
+
 # Youtube Download to MP3 :)
 if command -v youtube-dl 1>/dev/null 2>&1; then
 	function yda() {
@@ -163,7 +170,7 @@ function addcmd() { # Add a command to ~/.zshrc and use it
 	source ~/.zshrc
 }
 
-function ushell { # update shell
+function ushell() { # update shell
 	source ~/.zshrc
 }
 
@@ -196,7 +203,7 @@ function colors() {
 	done
 }
 
-function dot() {
+function cdot() {
 	dir="${HOME}/.dotfiles"
 	if [[ -d "${dir}" ]]
 	then
@@ -217,9 +224,28 @@ then
 	}
 fi
 
+# >>> AWS COMPLETION - https://github.com/aws/aws-cli/issues/4656
+
+if command -v aws 1>/dev/null 2>&1; then
+
+    function awsm() { aws --profile main "$@"; }
+
+	if test -f "/usr/local/bin/aws_completer"; then
+		complete -C '/usr/local/bin/aws_completer' aws awsm
+	fi
+fi
+# <<< AWS COMPLETION
+
+# <<< ##################################### FUNCTIONS 
+###############################################################################################
+
 DEFAULT_USER=$(whoami)
 
-# PATH MODIFICATIONS
+
+###############################################################################################
+# >>> ##################################### PATH MODIFICATIONS
+
+
 export PATH=~/bin:$PATH
 export PATH=~/.bin:$PATH
 
@@ -264,21 +290,6 @@ then
 fi
 
 # <<< ANACONDA
-
-# >>> AWS COMPLETION - https://github.com/aws/aws-cli/issues/4656
-
-if command -v aws 1>/dev/null 2>&1; then
-
-    function awsm() { aws --profile main "$@"; }
-
-	if test -f "/usr/local/bin/aws_completer"; then
-		complete -C '/usr/local/bin/aws_completer' aws awsm
-	fi
-fi
-# <<< AWS COMPLETION
-
-# <<< FUNCTIONS
-
 
 # Control output of less
 if command -v less 1>/dev/null 2>&1; then

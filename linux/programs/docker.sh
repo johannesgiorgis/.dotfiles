@@ -4,6 +4,12 @@
 # src: https://phoenixnap.com/kb/how-to-install-docker-on-ubuntu-18-04
 # src: https://www.digitalocean.com/community/questions/how-to-fix-docker-got-permission-denied-while-trying-to-connect-to-the-docker-daemon-socket
 
+if command -v docker 1>/dev/null 2>&1
+then
+    echo "INFO: docker already installed"
+    exit 0
+fi
+
 echo -e "\nInstalling Docker..."
 
 # Uninstall Old Versions of Docker

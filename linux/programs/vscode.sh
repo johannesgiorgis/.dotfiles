@@ -3,6 +3,12 @@
 # Install VS Code
 # src: https://linuxize.com/post/how-to-install-visual-studio-code-on-ubuntu-18-04/
 
+if dpkg -s code &> /dev/null
+then
+    echo "INFO: VS Code is already installed"
+    exit 0
+fi
+
 # update the packages index and install the dependencies
 sudo apt-get update
 sudo apt-get install software-properties-common apt-transport-https wget --yes

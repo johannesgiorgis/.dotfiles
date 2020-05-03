@@ -13,7 +13,7 @@
 ###################################################################
 
 export SUPPORT_DIR="${HOME}/.dotfiles/support"
-source "${SUPPORT_DIR}/common_utilities.sh"
+source "${SUPPORT_DIR}/common-utilities.sh"
 
 
 main() {

@@ -10,35 +10,80 @@
 #
 ###################################################################
 
-# LINE_BREAK="===================================================================================="
-function print_stamp() { echo -e "\n$(date +'%F %T') $@"; }
-
-function print_info () { printf "\r  [ \033[00;34m..\033[0m ] $1\n"; }
-
-user () {
-  printf "\r  [ \033[0;33m??\033[0m ] $1\n"
-}
-
-success () {
-  printf "\r\033[2K  [ \033[00;32mOK\033[0m ] $1\n"
-}
-
-fail () {
-  printf "\r\033[2K  [\033[0;31mFAIL\033[0m] $1\n"
-  echo ''
-  exit
-}
-
-print_stamp "$0 Started"
-
-echo ''
-
 set -e
+
+export SUPPORT_DIR="${HOME}/.dotfiles/support"
+source "${SUPPORT_DIR}/common-utilities.sh"
 
 parentDirectory="$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd -P)"
 dotfilesDirectory="$(cd "$( dirname "$parentDirectory" )" && pwd -P)"
 
-displayUsageAndExit() {
+export INSTALL_COMMON="${dotfilesDirectory}/scripts/install-common.sh"
+export INSTALL_VIA_APT="${dotfilesDirectory}/linux/install-via-apt.sh"
+export INSTALL_LINUX_CUSTOM_PROGRAMS="${dotfilesDirectory}/linux/install-custom-programs.sh"
+export MACOS_SOFTWARE_UPDATES="${dotfilesDirectory}/macos/install-software-updates.sh"
+export INSTALL_HOMEBREW="${dotfilesDirectory}/homebrew/install-homebrew.sh"
+
+while test $# -gt 0; do
+    case "$1" in
+        "-h"|"--help")
+            displayUsageAndExit
+            ;;
+        "-e"|"--edit")
+            exec "$EDITOR" "$dotfilesDirectory"
+            exit
+            ;;
+        *)
+            echo "Invalid option: $1"
+            displayUsageAndExit
+            ;;
+    esac
+    shift
+done
+
+
+main() {
+	start=$(date +%s)
+	echo "${LINE_BREAK}"
+	start "dot started"
+
+    install_system_dependencies
+	install_common_software
+
+	end=$(date +%s)
+    runtime=$((end-start))
+    runtime_min=$(convert_seconds_to_min $runtime)
+
+    finished "dot completed with $runtime seconds ($runtime_min mins)"
+    echo "${LINE_BREAK}"
+}
+
+
+# Helper Functions
+
+function install_system_dependencies() {
+    kernel_name="$(uname -s)"
+
+	print_info "› Kernel Name:${kernel_name}"
+
+	# If we're on a Mac, let's install and setup homebrew.
+	if [ "${kernel_name}" == "Darwin" ]
+	then
+		install_mac
+	fi
+
+	if [ "${kernel_name}" == "Linux" ]
+	then
+		install_linux
+	fi
+}
+
+function install_common_software() {
+	print_info "› running '$INSTALL_COMMON'"
+    $INSTALL_COMMON 2>&1
+}
+
+function displayUsageAndExit() {
 	echo "dot -- dotfiles management"
 	echo ""
 	echo "Usage: dot [options]"
@@ -49,78 +94,45 @@ displayUsageAndExit() {
 	exit
 }
 
-while test $# -gt 0; do
-	case "$1" in
-		"-h"|"--help")
-			displayUsageAndExit
-			;;
-		"-e"|"--edit")
-			exec "$EDITOR" "$dotfilesDirectory"
-			exit
-			;;
-		*)
-			echo "Invalid option: $1"
-			displayUsageAndExit
-			;;
-	esac
-	shift
-done
-
-export DOT_FILES=$HOME/.dotfiles
-
 # Helper Functions
-function install_mac () {
-	echo -e "\n› installing mac os software..."
+function install_mac() {
+    print_info "› installing mac os dependencies"
+
 	# Set macOS defaults
 	# $DOT_FILES/macos/set-defaults.sh
 
 	# Run software updates
-	$DOT_FILES/macos/install-software-updates.sh 2>&1
+	# $DOT_FILES/macos/install-software-updates.sh 2>&1
+    $MACOS_SOFTWARE_UPDATES 2>&1
 
 	# Install homebrew
-	$DOT_FILES/homebrew/install_homebrew.sh 2>&1
+	# $DOT_FILES/homebrew/install_homebrew.sh 2>&1
+    $INSTALL_HOMEBREW 2>&1
 
 	# Upgrade homebrew
-	echo -e "\n› brew update"
+	print_info "› running 'brew update'"
 	brew update
 	
-	echo -e "› completed installing mac os software"
+    success "› mac os dependencies installed"
 }
 
-function install_linux () {
-	echo -e "\n› installing linux software..."
+
+function install_linux() {
+    print_info "› installing linux dependencies..."
 
 	# Install programs via apt
-	$DOT_FILES/linux/install_via_apt.sh 2>&1
+    $INSTALL_VIA_APT 2>&1
 
 	# Install custom programs
-	$DOT_FILES/linux/install-custom-programs.sh 2>&1
+    $INSTALL_LINUX_CUSTOM_PROGRAMS 2>&1
 
-	sudo apt upgrade --yes
-	sudo apt autoremove --yes
+	print_info "› upgrading and autoremoving via apt..."
+    sudo apt-get upgrade --yes
+	sudo apt-get autoremove --yes
 
-	echo -e "\n› completed installing linux software"
+    success "› linux dependencies installed"
 }
 
-kernel_name="$(uname -s)"
 
-echo "Kernel Name:${kernel_name}"
 
-# If we're on a Mac, let's install and setup homebrew.
-if [ "${kernel_name}" == "Darwin" ]
-then
-  print_info "installing mac os dependencies"
-  install_mac
-  success "mac os dependencies installed"
-fi
-
-if [ "${kernel_name}" == "Linux" ]
-then
-  print_info "installing linux dependencies..."
-  install_linux
-  success "linux dependencies installed"
-fi
-
-# Install software
-echo -e "\n› $DOT_FILES/scripts/install_all.sh"
-$DOT_FILES/scripts/install_all.sh
+main

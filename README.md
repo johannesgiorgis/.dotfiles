@@ -2,6 +2,23 @@
 
 Various settings for the tools I use. My dotfile repository was initially created by a combination of following Victoria's excellent [How to set up a fresh Ubuntu Desktop using only dotfiles and bash scripts] and structured to match Holman's dotfiles ([Github - Holman's Dotfiles]).
 
+## Dotfiles V2
+
+This is currently a wishlist.
+
+As I continue to customize the various scripts, I wanted more control over certain functionality - let user choose which custom program to install, not install, etc. Yet I don't want to write and go throught the trial and error of bash scripting.
+
+This led me to research how to manage dotfiles and found several options - ansible, dotstow. I came across several articles:
+
+- https://medium.com/espinola-designs/manage-your-dotfiles-with-ansible-6dbedd5532bb
+- https://github.com/sloria/dotfiles
+- https://github.com/elnappo/dotfiles
+- https://dev.to/alexdesousa/managing-dotfiles-with-ansible-3kbg
+- https://github.com/alexdesousa/dotfiles
+- https://medium.com/@codejamninja/dotstow-the-smart-way-to-manage-your-dotfiles-8a0a8b6d984c
+
+Folks are using Python, Typescript to write wrapper programs around their .dotfiles management. Maybe some combination of bash + ansible could work.
+
 ## Testing
 
 Run the following:

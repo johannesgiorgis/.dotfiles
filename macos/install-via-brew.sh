@@ -7,7 +7,7 @@
 ###################################################################
 
 export SUPPORT_DIR="${HOME}/.dotfiles/support"
-source "${SUPPORT_DIR}/common_utilities.sh"
+source "${SUPPORT_DIR}/common-utilities.sh"
 
 
 main() {
@@ -44,25 +44,28 @@ main() {
 
 # ################### BREW UTILITIES #################################
 
-function brew_update {
+function brew_update() {
     print_info "› Running 'brew update'..."
     brew update
     success "› Completed running 'brew update'!"
 }
 
-function brew_install {
+
+function brew_install() {
     print_info "› Installing via brew: '${@}'..."
     brew install "${@}"
 	success "› Completed installing via brew: '${@}'!"
 }
 
-function brew_cask_install {
+
+function brew_cask_install() {
     print_info "› Installing via brew cask: '${@}'..."
     brew cask install "${@}"
     success "› Completed installing via brew cask: '${@}'!"
 }
 
-function brew_upgrade_cleanup {
+
+function brew_upgrade_cleanup() {
     print_info "› Running 'brew upgrade' and 'brew cleanup'"
     brew upgrade
     brew cleanup
@@ -72,7 +75,7 @@ function brew_upgrade_cleanup {
 
 # ################### BREW INSTALL #################################
 
-install_general_tools() {
+function install_general_tools() {
     brew_install cask
     brew_install htop
     brew_install jq
@@ -92,7 +95,8 @@ install_general_tools() {
     brew_install youtube-dl ffmpeg
 }
 
-install_programming_languages() {
+
+function install_programming_languages() {
     # golang
     brew_install go
 
@@ -107,7 +111,8 @@ install_programming_languages() {
     brew_install openssl readline sqlite3 xz zlib
 }
 
-install_databases() {
+
+function install_databases() {
     brew_install postgresql
     brew_install mysql
 }
@@ -115,7 +120,7 @@ install_databases() {
 
 # ################### BREW CASK #################################
 
-cask_install_general_tools() {
+function cask_install_general_tools() {
     brew_cask_install dropbox
     brew_cask_install firefox
     brew_cask_install google-chrome
@@ -126,14 +131,16 @@ cask_install_general_tools() {
     brew_cask_install rectangle         # mac window management
 }
 
-cask_install_note_taking() {
+
+function cask_install_note_taking() {
     brew_cask_install simplenote
     brew_cask_install sublime-merge
     brew_cask_install sublime-text
     brew_cask_install joplin 
 }
 
-cask_install_development_tools() {
+
+function cask_install_development_tools() {
     brew_cask_install iterm2
     brew_cask_install lepton
     brew_cask_install meld
@@ -142,7 +149,8 @@ cask_install_development_tools() {
     brew_cask_install pgadmin4
 }
 
-cask_install_logitech() {
+
+function cask_install_logitech() {
     brew_cask_install logitech-options
     brew_cask_install logitech-unifying
     brew_cask_install logitech-control-center
@@ -157,6 +165,7 @@ function brew_custom_install_displacer() {
     brew tap jakehilborn/jakehilborn && brew install displayplacer
     success "› Completed installing displacer!"
 }
+
 
 function brew_custom_install_font_fira_code() {
     print_info "› Installing Font Fira Code..."

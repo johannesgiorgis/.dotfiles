@@ -14,7 +14,7 @@
 ###################################################################
 
 export SUPPORT_DIR="${HOME}/.dotfiles/support"
-source "${SUPPORT_DIR}/common_utilities.sh"
+source "${SUPPORT_DIR}/common-utilities.sh"
 
 
 main() {
@@ -23,16 +23,7 @@ main() {
     print_info "Installing Oh My ZSH! and plugins..."
 
     ensure_fresh_oh_my_zsh_directory
-
-    if test "$(uname)" = "Darwin"
-    then
-        print_info "You can install Meslo Nerd Font via 'p10k configure' on MacOS"
-
-    elif test "$(expr substr $(uname -s) 1 5)" = "Linux"
-    then
-        manual_install_meslo_nerd_font
-    fi
-
+    install_meslo_nerd_font
     install_oh_my_zsh
     install_plugins
 
@@ -44,8 +35,11 @@ main() {
     echo "${LINE_BREAK}"
 }
 
-ensure_fresh_oh_my_zsh_directory() {
-    print_info "› Ensuring OMZ directoryis removed to ensure fresh installation"
+
+# Helper Functions
+
+function ensure_fresh_oh_my_zsh_directory() {
+    print_info "› Ensuring OMZ directory is removed to ensure fresh installation"
     OMZ_DIR="${HOME}/.oh-my-zsh"
 
     print_info "Checking for directory '${OMZ_DIR}'..."
@@ -57,10 +51,21 @@ ensure_fresh_oh_my_zsh_directory() {
         warn "› Directory '${OMZ_DIR}' doesn't exist"
     fi
 
-    success "› Ensuring OMZ directoryis removed to ensure fresh installation"
+    success "› Ensuring OMZ directory is removed to ensure fresh installation"
 }
 
-manual_install_meslo_nerd_font() {
+function install_meslo_nerd_font() {
+    if test "$(uname)" = "Darwin"
+    then
+        print_info "You can install Meslo Nerd Font via 'p10k configure' on MacOS"
+
+    elif test "$(expr substr $(uname -s) 1 5)" = "Linux"
+    then
+        manual_install_meslo_nerd_font
+    fi
+}
+
+function manual_install_meslo_nerd_font() {
     print_info "› Manually installing Meslo Nerd Font..."
     dest="${HOME}/.fonts/"
 
@@ -78,21 +83,21 @@ manual_install_meslo_nerd_font() {
         mkdir -v "${dest}"
     fi
 
-    wget -P "${dest}" "${regular}"
-    wget -P "${dest}" "${bold}"
-    wget -P "${dest}" "${italic}"
-    wget -P "${dest}" "${italic_bold}"
+    wget -nv -P "${dest}" "${regular}"
+    wget -nv -P "${dest}" "${bold}"
+    wget -nv -P "${dest}" "${italic}"
+    wget -nv -P "${dest}" "${italic_bold}"
 
     success "› Completed manually installing Meslo Nerd Font!"
 }
 
-install_oh_my_zsh() {
+function install_oh_my_zsh() {
     print_info "› Installing Oh My ZSH..."
     sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
     success "› Completed installing Oh My ZSH!"
 }
 
-install_plugins() {
+function install_plugins() {
     print_info "› Installing plugins..."
 
     print_info "› Installing 'powerlevel10k' theme..."
