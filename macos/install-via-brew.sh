@@ -93,18 +93,21 @@ function install_general_tools() {
 
     # download youtube - ffmpeg needed for converting to audio files :)
     brew_install youtube-dl ffmpeg
+
+    brew_install gpg
+    brew_install coreutils
 }
 
 
 function install_programming_languages() {
     # golang
-    brew_install go
+    # brew_install go
 
     # ruby
-    brew_install rbenv
+    # brew_install rbenv
 
     # python
-    brew_install black flake8 pipenv pyenv
+    brew_install black flake8 pipenv #pyenv
 
     # Additional system dependencies needed for Python compilation by pyenv (optional, but recommended)
     # https://github.com/pyenv/pyenv/wiki
