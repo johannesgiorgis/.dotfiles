@@ -77,6 +77,7 @@ function brew_upgrade_cleanup() {
 
 function install_general_tools() {
     brew_install cask
+    brew_install gpg
     brew_install htop
     brew_install jq
     brew_install speedtest-cli
