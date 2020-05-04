@@ -84,7 +84,6 @@ plugins=(
 	docker
 	docker-compose
 	virtualenv
-	nvm
 	golang
 	asdf
 )

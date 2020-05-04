@@ -1,0 +1,8 @@
+version: "3"
+
+services:
+  dotfilestest:
+    image: dotfilestest:1.0
+    volumes:
+      - .:/home/tester/.dotfiles-original
+    command: tail -f /dev/null
