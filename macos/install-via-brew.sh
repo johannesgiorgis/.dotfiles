@@ -101,14 +101,8 @@ function install_general_tools() {
 
 
 function install_programming_languages() {
-    # golang
-    # brew_install go
-
-    # ruby
-    # brew_install rbenv
-
     # python
-    brew_install black flake8 pipenv #pyenv
+    brew_install black flake8 pipenv
 
     # Additional system dependencies needed for Python compilation by pyenv (optional, but recommended)
     # https://github.com/pyenv/pyenv/wiki
