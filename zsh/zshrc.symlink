@@ -142,6 +142,10 @@ if command -v brew 1>/dev/null 2>&1; then
 	alias brewup='brew update; brew upgrade; brew cleanup; brew doctor'
 fi
 
+if command -v apt 1>/dev/null 2>&1; then
+	alias aptup='sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y'
+fi
+
 # ls
 alias lt='ls -lahtFr'
 #alias ltr=' -r'
