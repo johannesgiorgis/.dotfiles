@@ -28,12 +28,21 @@ main() {
         fi
 
         plugin=$(echo "${line}" | cut -d' ' -f1)
-        plugin_version=$(echo "${line}" | awk -F' ' '{print $2}')
+        plugin_git_url=$(echo "${line}" | awk -F' ' '{print $2}')
+        plugin_version=$(echo "${line}" | awk -F' ' '{print $3}')
 
         echo "-----------------------------------------------------------------"
-        print_info "› PLUGIN:${plugin}|PLUGIN_VERSION:${plugin_version}"
+        print_info "› PLUGIN:${plugin}|PLUGIN_VERSION:${plugin_version}|PLUGIN_GIT_URL:${plugin_git_url}"
 
-        asdf_add_plugin "${plugin}"
+        asdf_add_plugin "${plugin}" "${plugin_git_url}"
+
+        # check plugin version
+        if [[ "${plugin_version}" == '' ]]
+        then
+            print_info "› No plugin version set. Finding latest version..."
+            plugin_version=$(asdf latest "${plugin}")
+            print_info "› Plugin version set to '$plugin_version'"
+        fi
 
         # check if installed
         result=$(asdf where "${plugin}" "${plugin_version}" 2>&1)
@@ -67,6 +76,7 @@ main() {
 
 function asdf_add_plugin() {
     local plugin=$1
+    local plugin_git_url=$2
     print_info "› Trying to add '${plugin}'..."
     is_present=$(asdf plugin-list | grep "${plugin}" | wc -l | sed 's/ //g')
     print_info "› Result: ${plugin}|${is_present}"
@@ -78,7 +88,7 @@ function asdf_add_plugin() {
     fi
 
     print_info "› Plugin '${plugin}' is not list. Adding plugin..."
-    asdf plugin-add "${plugin}"
+    asdf plugin-add "${plugin}" "${plugin_git_url}"
     success "› Completed adding '${plugin}'!"
 }
 
