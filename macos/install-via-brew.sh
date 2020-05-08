@@ -77,9 +77,10 @@ function brew_upgrade_cleanup() {
 
 function install_general_tools() {
     brew_install cask
+    brew_install coreutils
     brew_install gpg
     brew_install htop
-    brew_install jq
+    # brew_install jq
     brew_install speedtest-cli
     brew_install tldr
     brew_install tree
@@ -94,9 +95,6 @@ function install_general_tools() {
 
     # download youtube - ffmpeg needed for converting to audio files :)
     brew_install youtube-dl ffmpeg
-
-    brew_install gpg
-    brew_install coreutils
 }
 
 
@@ -111,8 +109,8 @@ function install_programming_languages() {
 
 
 function install_databases() {
-    brew_install postgresql
-    brew_install mysql
+    # brew_install postgresql
+    # brew_install mysql
 }
 
 
