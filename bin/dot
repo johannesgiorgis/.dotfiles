@@ -24,6 +24,17 @@ export INSTALL_LINUX_CUSTOM_PROGRAMS="${dotfilesDirectory}/linux/install-custom-
 export MACOS_SOFTWARE_UPDATES="${dotfilesDirectory}/macos/install-software-updates.sh"
 export INSTALL_HOMEBREW="${dotfilesDirectory}/homebrew/install-homebrew.sh"
 
+function displayUsageAndExit() {
+	echo "dot -- dotfiles management"
+	echo ""
+	echo "Usage: dot [options]"
+	echo ""
+	echo "Options:"
+	echo "  -e, --edit    Open dotfiles directory for editing"
+	echo "  -h, --help    Show this help message and exit"
+	exit
+}
+
 while test $# -gt 0; do
     case "$1" in
         "-h"|"--help")
@@ -81,17 +92,6 @@ function install_system_dependencies() {
 function install_common_software() {
 	print_info "› running '$INSTALL_COMMON'"
     $INSTALL_COMMON 2>&1
-}
-
-function displayUsageAndExit() {
-	echo "dot -- dotfiles management"
-	echo ""
-	echo "Usage: dot [options]"
-	echo ""
-	echo "Options:"
-	echo "  -e, --edit    Open dotfiles directory for editing"
-	echo "  -h, --help    Show this help message and exit"
-	exit
 }
 
 # Helper Functions
