@@ -29,6 +29,9 @@ $ make docker-all
 
 # once in the docker container, run
 $ bash scripts/bootstrap.sh | tee setup_log.log
+
+# another testing
+$ bash scripts/bootstrap.sh | tee log-2020-05-10-bootstrap-v<num>.log 2>&1
 ```
 
 ## Installation Order

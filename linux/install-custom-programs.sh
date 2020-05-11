@@ -13,23 +13,30 @@
 export SUPPORT_DIR="${HOME}/.dotfiles/support"
 source "${SUPPORT_DIR}/common-utilities.sh"
 
+CONFIG_FILE="${dotfilesDirectory}/linux/config-custom-programs"
+PROGRAMS_DIR="${dotfilesDirectory}/linux/programs"
+
 
 main() {
     start=$(date +%s)
     echo "$LINE_BREAK"
     start "$0 Started"
 
-    export PROGRAMS_DIR="${HOME}/.dotfiles/linux/programs"
-
-    cd "${PROGRAMS_DIR}"
-
-    for f in $(ls *.sh | egrep -v 'serverless|flux|pgadmin')
+    print_info "› Reading config file '${CONFIG_FILE}'..."
+    while read -r line
     do
-        base_name=${f%%.*}
-        print_info "Installing '$base_name'..."
-        bash $f
-        success "Completed installing '$base_name'!"
-    done
+        # Skip header file
+        if [[ "${line}" == "#"* ]]
+        then
+            continue
+        fi
+
+        installer=$"${PROGRAMS_DIR}/$line.sh"
+        print_info "› Running installer '${installer}'"
+        bash "${installer}"
+        success "› Running installer '${installer}'"
+        
+    done < "${CONFIG_FILE}"
 
     end=$(date +%s)
     runtime=$((end-start))

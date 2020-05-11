@@ -12,9 +12,11 @@
 
 # VARIABLES
 
-SCRIPT_BREAK="=========================================================================================================================="
-LINE_BREAK="----------------------------------------------------------------------------------------------------"
+SCRIPT_BREAK="========================================================================================================================================="
+LINE_BREAK="------------------------------------------------------------------------------------------------------------"
 
+parentDirectory="$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd -P)"
+dotfilesDirectory="$(cd "$( dirname "$parentDirectory" )" && pwd -P)"
 
 
 # FUNCTIONS
@@ -73,3 +75,7 @@ function finished() {
 }
 
 # <<< OUTPUT DISPLAY FUNCTIONS
+
+
+print_info "Parent Directory:'$parentDirectory'"
+print_info "Dotfiles Directory:'$dotfilesDirectory'"

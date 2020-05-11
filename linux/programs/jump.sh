@@ -11,4 +11,6 @@ fi
 
 echo "Installing jump"
 
-wget https://github.com/gsamokovarov/jump/releases/download/v0.30.1/jump_0.30.1_amd64.deb -P /tmp && sudo dpkg -i /tmp/jump_0.30.1_amd64.deb && rm -v /tmp/jump_0.30.1_amd64.deb 
+wget https://github.com/gsamokovarov/jump/releases/download/v0.30.1/jump_0.30.1_amd64.deb -P /tmp \
+    && sudo dpkg -i /tmp/jump_0.30.1_amd64.deb \
+    && rm -v /tmp/jump_0.30.1_amd64.deb 

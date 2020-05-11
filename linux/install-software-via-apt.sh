@@ -2,13 +2,15 @@
 
 ###################################################################
 #
-# Install Programs via Apt
+# Install Software via Apt
 # ------------------------
 #
 ###################################################################
 
 export SUPPORT_DIR="${HOME}/.dotfiles/support"
 source "${SUPPORT_DIR}/common-utilities.sh"
+
+CONFIG_FILE="${dotfilesDirectory}/linux/config-apt"
 
 
 main() {
@@ -18,9 +20,21 @@ main() {
 
     apt_update
 
-    # Basics
-	install_general_tools
-    
+    print_info "› Reading config file '${CONFIG_FILE}'..."
+    while read -r line
+    do
+        # Skip header and empty lines
+        if [[ "${line}" == "#"* ]] || [[ "${line}" == "" ]]
+        then
+            continue
+        fi
+
+        package=$(echo "${line}" | cut -d ' ' -f1)
+
+        apt_install "${package}"
+
+    done < "${CONFIG_FILE}"
+
     sudo apt-get upgrade --yes
     
     end=$(date +%s)
@@ -43,36 +57,23 @@ function apt_update() {
 function apt_install() {
 	which $@ &> /dev/null
 
-	if [ $? -ne 0 ]; then
-		print_info "› Installing: ${@}..."
-		sudo apt-get install --yes "${@}"
-		success "› Completed installing ${@}!"
-	else
+    if [ $? -eq 0 ]
+    then
 		print_info "› Already installed: ${@}"
+        return
 	fi
-}
 
+    print_info "› Installing: ${@}..."
+    sudo apt-get install --yes "${@}"
+    result=$?
+    print_info "› result:'$result'"
 
-# ################### BREW INSTALL #################################
-
-function install_general_tools() {
-    print_info "› installing general tools"
-    apt_install ack
-    apt_install curl
-    apt_install entr
-    apt_install figlet
-    apt_install git
-    apt_install jq
-    apt_install man
-    apt_install meld
-    apt_install rename
-    apt_install tldr
-    apt_install tmux
-    apt_install tree
-    apt_install vim
-    apt_install xclip
-    apt_install zsh
-    success "› installing general tools"
+    if [ $result -ne 0 ]
+    then
+        warn "Package '${@}' was not installed"
+        return
+    fi
+    success "› Completed installing ${@}!"
 }
 
 

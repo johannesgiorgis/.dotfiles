@@ -153,7 +153,9 @@ alias lt='ls -lahtFr'
 # docker
 alias dka='docker ps -aq | xargs -I{} docker kill {}'		# kill all running docker containers
 alias dra='docker ps -aq | xargs -I{} docker rm {}'			# remove all docker containers
+alias dsp='docker system prune'
 
+alias tailf='tail -f'
 # <<< ##################################### ALIAS
 ###############################################################################################
 

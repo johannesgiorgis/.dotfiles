@@ -18,18 +18,19 @@ source "${SUPPORT_DIR}/common-utilities.sh"
 parentDirectory="$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd -P)"
 dotfilesDirectory="$(cd "$( dirname "$parentDirectory" )" && pwd -P)"
 
-export INSTALL_COMMON="${dotfilesDirectory}/scripts/install-common.sh"
-export INSTALL_VIA_APT="${dotfilesDirectory}/linux/install-via-apt.sh"
+export INSTALL_COMMON="${dotfilesDirectory}/scripts/install-common-software.sh"
+export INSTALL_VIA_APT="${dotfilesDirectory}/linux/install-software-via-apt.sh"
 export INSTALL_LINUX_CUSTOM_PROGRAMS="${dotfilesDirectory}/linux/install-custom-programs.sh"
 export MACOS_SOFTWARE_UPDATES="${dotfilesDirectory}/macos/install-software-updates.sh"
 export INSTALL_HOMEBREW="${dotfilesDirectory}/homebrew/install-homebrew.sh"
+export INSTALL_SOFTWARE_VIA_ASDF="${dotfilesDirectory}/asdf/install-software-via-asdf.sh"
 
 function displayUsageAndExit() {
 	echo "dot -- dotfiles management"
 	echo ""
 	echo "Usage: dot [options]"
 	echo ""
-	echo "Options:"
+	echo "Options:upgrading and autoremoving via apt"
 	echo "  -e, --edit    Open dotfiles directory for editing"
 	echo "  -h, --help    Show this help message and exit"
 	exit
@@ -60,6 +61,7 @@ main() {
 
     install_system_dependencies
 	install_common_software
+	# install_software_via_asdf
 
 	end=$(date +%s)
     runtime=$((end-start))
@@ -73,6 +75,7 @@ main() {
 # Helper Functions
 
 function install_system_dependencies() {
+	print_info "› Installing system dependencies..."
     kernel_name="$(uname -s)"
 
 	print_info "› Kernel Name:${kernel_name}"
@@ -87,14 +90,23 @@ function install_system_dependencies() {
 	then
 		install_linux
 	fi
+	success "› Completed installing system dependencies!"
 }
+
 
 function install_common_software() {
 	print_info "› running '$INSTALL_COMMON'"
     $INSTALL_COMMON 2>&1
+	success "› running '$INSTALL_COMMON'"
 }
 
-# Helper Functions
+function install_software_via_asdf() {
+	print_info "› running '$INSTALL_SOFTWARE_VIA_ASDF'"
+    $INSTALL_SOFTWARE_VIA_ASDF 2>&1
+	success "› running '$INSTALL_SOFTWARE_VIA_ASDF'"
+}
+
+
 function install_mac() {
     print_info "› installing mac os dependencies"
 
@@ -121,14 +133,19 @@ function install_linux() {
     print_info "› installing linux dependencies..."
 
 	# Install programs via apt
+    print_info "› installing via apt..."
     $INSTALL_VIA_APT 2>&1
+    success "› installing via apt..."
 
 	# Install custom programs
+    print_info "› installing linux custom programs..."
     $INSTALL_LINUX_CUSTOM_PROGRAMS 2>&1
+    success "› installing linux custom programs..."
 
 	print_info "› upgrading and autoremoving via apt..."
     sudo apt-get upgrade --yes
 	sudo apt-get autoremove --yes
+	success "› upgrading and autoremoving via apt..."
 
     success "› linux dependencies installed"
 }

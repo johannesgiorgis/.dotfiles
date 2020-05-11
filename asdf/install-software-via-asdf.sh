@@ -14,11 +14,14 @@
 export SUPPORT_DIR="${HOME}/.dotfiles/support"
 source "${SUPPORT_DIR}/common-utilities.sh"
 
+CONFIG_FILE="${dotfilesDirectory}/asdf/config-asdf"
+
 main() {
     start=$(date +%s)
     echo "$LINE_BREAK"
     start "$0 Started"
 
+    print_info "› Reading config file '${CONFIG_FILE}'..."
     while read -r line
     do
         # Skip header file
@@ -57,7 +60,8 @@ main() {
         asdf_install_plugin "${plugin}" "${plugin_version}"
 
         asdf_set_global "${plugin}" "${plugin_version}"
-    done < "${HOME}/.dotfiles/asdf/asdf-config"
+
+    done < "${CONFIG_FILE}"
 
     print_info "› Show 'asdf current' output:"
     asdf current

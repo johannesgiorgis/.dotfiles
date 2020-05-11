@@ -1,15 +1,15 @@
 
 IMAGE_NAME:=dotfilestest
 
-docker-build-no-cache:
+build-no-cache:
 	docker build --rm --no-cache -t $(IMAGE_NAME):1.0 .
 
-docker-build:
+build:
 	docker build --rm -t $(IMAGE_NAME):1.0 .
 
-docker-run:
-	docker run -it --rm $(IMAGE_NAME):1.0 zsh
+run:
+	docker run -it --name $(IMAGE_NAME) -v ~/.dotfiles:/home/tester/.dotfiles --rm $(IMAGE_NAME):1.0 zsh
 
-docker-all: docker-build docker-run
+all: build run
 
-docker-all-dev: docker-build-no-cache docker-run
+all-dev: build-no-cache run

@@ -4,5 +4,5 @@ services:
   dotfilestest:
     image: dotfilestest:1.0
     volumes:
-      - .:/home/tester/.dotfiles-original
+      - .:/home/tester/.dotfiles
     command: tail -f /dev/null
