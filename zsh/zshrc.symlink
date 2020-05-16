@@ -78,16 +78,17 @@ HIST_STAMPS="%F_%T"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
-	git
-	zsh-autosuggestions
-	zsh-syntax-highlighting
-	docker
-	docker-compose
-	virtualenv
-	golang
-	asdf
-	taskwarrior
+    git
+    zsh-autosuggestions
+    zsh-syntax-highlighting
+    docker
+    docker-compose
+    virtualenv
+    golang
+    asdf
+    taskwarrior
     pipenv
+    ansible
 )
 
 source $ZSH/oh-my-zsh.sh
