@@ -86,6 +86,8 @@ plugins=(
 	virtualenv
 	golang
 	asdf
+	taskwarrior
+    pipenv
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -156,6 +158,7 @@ alias dra='docker ps -aq | xargs -I{} docker rm {}'			# remove all docker contai
 alias dsp='docker system prune'
 
 alias tailf='tail -f'
+alias tt='timetrap'
 # <<< ##################################### ALIAS
 ###############################################################################################
 
@@ -191,7 +194,8 @@ function cproj() {
 	touch "$readme_file"
 	ls -d ${new_project_dir}/*
 
-	echo -e "# $(date +%F): ${(C)project_name/-/ } Project Overview\n" > "${readme_file}"
+	# capitalize each word + replace all '-' with ' ' in $project_name
+	echo -e "# $(date +%F): ${(C)project_name//-/ } Project Overview" > "${readme_file}"
 }
 
 function mydate() { date +"%Y-%m-%d %H:%M:%S %Z"; } # Date in my format
@@ -241,6 +245,10 @@ if command -v aws 1>/dev/null 2>&1; then
 	fi
 fi
 # <<< AWS COMPLETION
+
+function update_p10k() {
+	git -C $ZSH_CUSTOM/themes/powerlevel10k pull
+}
 
 # <<< ##################################### FUNCTIONS 
 ###############################################################################################
