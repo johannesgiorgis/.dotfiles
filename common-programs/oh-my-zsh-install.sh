@@ -109,6 +109,9 @@ function install_plugins() {
     print_info "› Getting 'zsh-syntax-highlighting' plugin..."
     git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 
+    print_info "› Getting 'timewarrior' plugin..."
+    git clone https://github.com/svenXY/timewarrior ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/timewarrior
+
     success "› Completed installing plugins"
 }
 

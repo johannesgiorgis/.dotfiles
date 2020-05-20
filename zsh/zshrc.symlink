@@ -87,6 +87,7 @@ plugins=(
     golang
     asdf
     taskwarrior
+    timewarrior
     pipenv
     ansible
 )
