@@ -92,6 +92,7 @@ function install_general_tools() {
     brew_install ack
     brew_install jump
     brew_install entr
+    brew_install shellcheck
 
     # download youtube - ffmpeg needed for converting to audio files :)
     brew_install youtube-dl ffmpeg
