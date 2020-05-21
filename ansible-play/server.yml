@@ -1,0 +1,8 @@
+---
+# run locally here
+- hosts: local
+  connection: local
+  become: yes
+  become_user: root
+  roles:
+    - nginx
