@@ -1,0 +1,44 @@
+# packages              # type
+cask
+coreutils
+gpg
+htop
+jq
+speedtest-cli
+tldr
+tree
+watch
+wget
+wifi-password
+putty
+csvkit
+ack
+jump
+entr
+
+# youtube-dl related
+youtube-dl
+ffmpeg
+
+# python
+black
+flake8
+pipenv
+
+# Additional system dependencies needed for Python compilation by pyenv (optional, but recommended)
+# https://github.com/pyenv/pyenv/wiki
+openssl
+readline
+sqlite3
+xz
+zlib
+
+# casks                 # type
+dropbox                 cask
+firefox
+google-chrome
+vlc
+zoomus
+tunnelblick       # vpn
+omnidisksweeper   # disk utility 
+rectangle         # mac window management

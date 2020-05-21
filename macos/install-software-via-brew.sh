@@ -3,18 +3,35 @@
 ###################################################################
 #
 # Install Programs via Homebrew
+# -----------------------------
 #
 ###################################################################
 
 export SUPPORT_DIR="${HOME}/.dotfiles/support"
 source "${SUPPORT_DIR}/common-utilities.sh"
 
+CONFIG_FILE="${dotfilesDirectory}/macos/config-brew"
 
 main() {
     start=$(date +%s)
     echo "${LINE_BREAK}"
     print_info "$0 Started"
+
     brew_update
+
+    print_info "› Reading config file '${CONFIG_FILE}'..."
+    while read -r line
+    do
+        # Skip header and empty lines
+        if [[ "${line}" == "#"* ]] || [[ "${line}" == "" ]]
+        then
+            continue
+        fi
+
+        echo $line
+    done < "${CONFIG_FILE}"
+
+    exit 1
 
     # brew install
     install_general_tools
@@ -41,6 +58,7 @@ main() {
     echo "${LINE_BREAK}"
 }
 
+main
 
 # ################### BREW UTILITIES #################################
 
@@ -169,4 +187,4 @@ function brew_custom_install_font_fira_code() {
     success "› Completed installing Font Fira Code!"
 }
 
-main
+# main
