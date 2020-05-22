@@ -90,6 +90,9 @@ plugins=(
     timewarrior
     pipenv
     ansible
+    command-not-found
+    brew
+    history
 )
 
 source $ZSH/oh-my-zsh.sh
