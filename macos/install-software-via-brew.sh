@@ -144,6 +144,7 @@ function cask_install_development_tools() {
     brew_cask_install postman
     brew_cask_install visual-studio-code
     brew_cask_install pgadmin4
+    brew_cask_install sourcetree
 }
 
 
