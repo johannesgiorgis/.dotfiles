@@ -19,6 +19,11 @@ This led me to research how to manage dotfiles and found several options - ansib
 
 Folks are using Python, Typescript to write wrapper programs around their .dotfiles management. Maybe some combination of bash + ansible could work.
 
+**Current**: Migrating to Ansible
+
+- https://github.com/kespinola/dotfiles
+- https://github.com/sloria/dotfiles
+
 ## Testing
 
 Run the following:
