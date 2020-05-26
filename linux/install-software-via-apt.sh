@@ -20,6 +20,11 @@ main() {
 
     apt_update
 
+    num_installed=0
+    num_already_installed=0
+    num_packages=0
+    total_packages=$(cat "${CONFIG_FILE}" | egrep -v '#|^$' | wc -l)
+
     print_info "› Reading config file '${CONFIG_FILE}'..."
     while read -r line
     do
@@ -29,14 +34,31 @@ main() {
             continue
         fi
 
+        num_packages=$((num_packages + 1))
+        status="${num_packages}/${total_packages}"
+
         package=$(echo "${line}" | cut -d ' ' -f1)
 
+        if which "${package}" &> /dev/null || dpkg -s "${package}" &> /dev/null
+        then
+            print_info "› $status - Package '${package}' is already installed"
+            num_already_installed=$((num_already_installed + 1))
+            continue
+        fi
+
+        print_info "› $status - Installing package '${package}'..."
         apt_install "${package}"
+        num_installed=$((num_installed + 1))
 
     done < "${CONFIG_FILE}"
 
     sudo apt-get upgrade --yes
     
+    report="Newly Installed:${num_installed}"
+    report="${report}|Already Installed:${num_already_installed}"
+    report="${report}|Total:${num_packages}"
+    print_info "${report}"
+
     end=$(date +%s)
     runtime=$((end-start))
     runtime_min=$(convert_seconds_to_min $runtime)

@@ -11,6 +11,8 @@ less
 man
 meld
 rename
+taskwarrior
+timewarrior
 tldr
 tmux
 tree
@@ -19,6 +21,9 @@ vim-nox
 xclip
 wget
 zsh
+
+# system management tools
+conky-all
 
 # dev stuff
 bison

@@ -92,6 +92,7 @@ function install_general_tools() {
     brew_install ack
     brew_install jump
     brew_install entr
+    brew_install shellcheck
 
     # download youtube - ffmpeg needed for converting to audio files :)
     brew_install youtube-dl ffmpeg
@@ -143,6 +144,7 @@ function cask_install_development_tools() {
     brew_cask_install postman
     brew_cask_install visual-studio-code
     brew_cask_install pgadmin4
+    brew_cask_install sourcetree
 }
 
 
