@@ -13,7 +13,7 @@ fi
 echo "Installing OBS Studio..."
 
 sudo add-apt-repository ppa:obsproject/obs-studio --yes
-sudo apt update
-sudo apt install obs-studio --yes
+sudo apt-get update
+sudo apt-get install obs-studio --yes
 
 echo "Completed installing OBS Studio"
