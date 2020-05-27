@@ -153,6 +153,10 @@ if command -v apt 1>/dev/null 2>&1; then
 	alias aptup='sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y'
 fi
 
+if command -v bat 1>/dev/null 2>&1; then
+    alias cat='bat'
+fi
+
 # ls
 alias lt='ls -lahtFr'
 #alias ltr=' -r'
