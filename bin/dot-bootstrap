@@ -20,11 +20,23 @@ fi
 if ! [ -x "$(command -v ansible)" ]
 then
     echo "Installing ansible..."
-    sudo apt install ansible -v 2.9.6
+    if [[ "$(uname)" == "Darwin" ]]
+    then
+        echo "On Mac..."
+        brew install ansible #@2.9.6
+        brew pin ansible
+    else
+        echo "On Linux..."
+        sudo apt install ansible -v 2.9.6
+    fi
 fi
 
 #ansible-playbook -i ~/.dotfiles/hosts ~/.dotfiles/dotfiles.yml --ask-become-pass --tags "$tags"
 ansible-playbook -i ~/.dotfiles/hosts ~/.dotfiles/dotfiles.yml --tags "$tags"
+
+end=$(date +%s)
+runtime=$((end-start))
+runtime_min=$(convert_seconds_to_min $runtime)
 
 finished "$0 Completed with $runtime seconds ($runtime_min mins)"
 echo "${SCRIPT_BREAK}"

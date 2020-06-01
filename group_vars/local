@@ -1,15 +1,47 @@
 dotfiles_user_home: "{{ '~' | expanduser }}"
 dotfiles_home: "{{ dotfiles_user_home }}/.dotfiles"
 
+
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+# Mac OS X
+
+mac_homebrew_taps:
+    - homebrew/cask-fonts       # fira code font
+    - homebrew/cask-drivers
+    - jakehilborn/jakehilborn   # displayplacer
+
 # Utilities that don't get installed by a role
 mac_homebrew_packages:
-    # general tools
+    # CLI Alternatives
+    - bat
+    - diff-so-fancy
+    - exa
+    - ripgrep
+    # Custom Taps
+    - displayplacer
+    # Development Tools
+    - openssl
+    - readline
+    - sqlite3
+    - xz
+    - zlib
+    # Python Utilities
+    - black
+    - flake8
+    - pipenv
+    # Task Management
+    - tasksh
+    - timewarrior
+    # Utilities
     - ack
+    - ansible
+    - cask
     - coreutils
     - csvkit
     - curl
     - entr
-    - gpg
+    - fzf
+    - gnupg     # gpg
     - htop
     - jump
     # For displaying a notification when a command finishes
@@ -17,30 +49,39 @@ mac_homebrew_packages:
     - putty
     - shellcheck
     - speedtest-cli
-    # User-contributed docs for Unix commands
     - tldr
     - tree
-    # For repeating commands
     - watch
     - wget
-    # what's the wifi password?
-    - wifi-password
+    - wifi-password     # what's the wifi password?
+    # Youtube download
+    - ffmpeg
+    - youtube-dl
+
 
 # Mac Apps to be installed with homebrew-cask
 mac_cask_packages:
     # Backup
-    #- dropbox
+    - dropbox
     # Browsers
-    #- firefox
-    #- google-chrome
+    - firefox
+    - google-chrome
+    # Custom Taps
+    - font-fira-code
     # Development Tools
-    #- iterm2
-    #- lepton
+    - beekeeper-studio
+    - iterm2
+    - jetbrains-toolbox
+    - lepton
     - meld
+    - omnidb
+    - openvpn-connect
+    - pgadmin4
     - postman
+    - pycharm
     - sourcetree
     - sublime-merge
-    #- visual-studio-code
+    - visual-studio-code
     # Logitech
     - logitech-control-center
     - logitech-options
@@ -48,13 +89,17 @@ mac_cask_packages:
     # Media
     - vlc
     # Note taking
+    - joplin
     - simplenote
     - sublime-text
-    - joplin
     # Window Management
+    - lg-onscreen-control
     - rectangle
     # Utilities
-    - tunnelblick
+    - aerial
     - omnidisksweeper
+    - tunnelblick
     # Video conferencing
     - zoomus
+
+# <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
