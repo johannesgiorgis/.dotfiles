@@ -96,6 +96,16 @@ function install_general_tools() {
 
     # download youtube - ffmpeg needed for converting to audio files :)
     brew_install youtube-dl ffmpeg
+
+    # cat alternative
+    brew_install bat
+
+    # ls alternative
+    brew_install exa
+    brew_install fzf
+
+    # diff alternative
+    brew_install diff-so-fancy
 }
 
 
@@ -123,15 +133,20 @@ function cask_install_general_tools() {
     brew_cask_install google-chrome
     brew_cask_install vlc
     brew_cask_install zoomus
-    brew_cask_install tunnelblick       # vpn
-    brew_cask_install omnidisksweeper   # disk utility 
-    brew_cask_install rectangle         # mac window management
+    # vpn
+    brew_cask_install tunnelblick
+    # disk utility
+    brew_cask_install omnidisksweeper
+    # mac window management
+    brew_cask_install rectangle
+    # aerial screen saver
+    brew_cask_install aerial
+    brew_cask_install lg-onscreen-control   
 }
 
 
 function cask_install_note_taking() {
     brew_cask_install simplenote
-    brew_cask_install sublime-merge
     brew_cask_install sublime-text
     brew_cask_install joplin 
 }
@@ -145,6 +160,8 @@ function cask_install_development_tools() {
     brew_cask_install visual-studio-code
     brew_cask_install pgadmin4
     brew_cask_install sourcetree
+    brew_cask_install sublime-merge
+    brew_cask_install beekeeper-studio
 }
 
 
