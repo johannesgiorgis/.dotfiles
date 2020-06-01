@@ -1,0 +1,10 @@
+# - name: Install apps via homebrew
+#   homebrew:
+#     name: "{{mac_homebrew_packages}}"
+#     state: present
+
+- name: Install apps via homebrew cask
+  homebrew_cask:
+    name: "{{ mac_cask_packages }}"
+    state: present
+    accept_external_apps: yes

@@ -2,6 +2,14 @@
 
 set -e
 
+start=$(date +%s)
+
+export SUPPORT_DIR="${HOME}/.dotfiles/support"
+source "${SUPPORT_DIR}/common-utilities.sh"
+
+echo "${SCRIPT_BREAK}"
+print_info "$0 Started"
+
 tags="$1"
 
 if [[ -z "$tags" ]]
@@ -17,3 +25,6 @@ fi
 
 #ansible-playbook -i ~/.dotfiles/hosts ~/.dotfiles/dotfiles.yml --ask-become-pass --tags "$tags"
 ansible-playbook -i ~/.dotfiles/hosts ~/.dotfiles/dotfiles.yml --tags "$tags"
+
+finished "$0 Completed with $runtime seconds ($runtime_min mins)"
+echo "${SCRIPT_BREAK}"

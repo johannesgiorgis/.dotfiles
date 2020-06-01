@@ -1,2 +1,60 @@
 dotfiles_user_home: "{{ '~' | expanduser }}"
 dotfiles_home: "{{ dotfiles_user_home }}/.dotfiles"
+
+# Utilities that don't get installed by a role
+mac_homebrew_packages:
+    # general tools
+    - ack
+    - coreutils
+    - csvkit
+    - curl
+    - entr
+    - gpg
+    - htop
+    - jump
+    # For displaying a notification when a command finishes
+    - noti
+    - putty
+    - shellcheck
+    - speedtest-cli
+    # User-contributed docs for Unix commands
+    - tldr
+    - tree
+    # For repeating commands
+    - watch
+    - wget
+    # what's the wifi password?
+    - wifi-password
+
+# Mac Apps to be installed with homebrew-cask
+mac_cask_packages:
+    # Backup
+    #- dropbox
+    # Browsers
+    #- firefox
+    #- google-chrome
+    # Development Tools
+    #- iterm2
+    #- lepton
+    - meld
+    - postman
+    - sourcetree
+    - sublime-merge
+    #- visual-studio-code
+    # Logitech
+    - logitech-control-center
+    - logitech-options
+    - logitech-unifying
+    # Media
+    - vlc
+    # Note taking
+    - simplenote
+    - sublime-text
+    - joplin
+    # Window Management
+    - rectangle
+    # Utilities
+    - tunnelblick
+    - omnidisksweeper
+    # Video conferencing
+    - zoomus
