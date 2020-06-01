@@ -262,6 +262,19 @@ function update_p10k() {
 	git -C $ZSH_CUSTOM/themes/powerlevel10k pull
 }
 
+function get_params () {
+  DEFAULT_ENV=dev
+  ENV=${2-$DEFAULT_ENV}
+  if [ -z "$1" ]
+  then
+    echo "No build yml supplied"
+    return 1
+  fi
+  echo 'using file' $1
+  echo "using environtment ${ENV}"
+  cat $1 |awk '/--name/{print $7}' | sed -e 's/\${[eE][nN][vV]}/'"${ENV}"'/g' | xargs -n10 aws ssm get-parameters --with-decryption --query "Parameters[*].{Name:Name,Value:Value}" --names
+}
+
 # <<< ##################################### FUNCTIONS 
 ###############################################################################################
 
