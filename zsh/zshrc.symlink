@@ -168,6 +168,9 @@ alias dsp='docker system prune'
 
 alias tailf='tail -f'
 alias tt='timetrap'
+alias c='code'
+alias ag='alias | grep'
+
 # <<< ##################################### ALIAS
 ###############################################################################################
 
