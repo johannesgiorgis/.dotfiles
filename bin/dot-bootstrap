@@ -27,7 +27,9 @@ then
         brew pin ansible
     else
         echo "On Linux..."
-        sudo apt install ansible -v 2.9.6
+        sudo apt-add-repository ppa:ansible/ansible -y
+        sudo apt update
+        sudo apt install ansible=2.9.9-1ppa~bionic -V -y
     fi
 fi
 

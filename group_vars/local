@@ -103,3 +103,53 @@ mac_cask_packages:
     - zoomus
 
 # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+# Ubuntu
+
+apt_packages:
+    # Development Stuff
+    - bison
+    - build-essential
+    - libbz2-dev
+    - libffi-dev
+    - liblzma-dev
+    - libncurses5-dev
+    - libncursesw5-dev
+    - libreadline-dev
+    - libssl-dev
+    - libsqlite3-dev
+    - llvm
+    - make
+    - python-openssl
+    - software-properties-common
+    - tk-dev
+    - xz-utils
+    - zlib1g-dev
+    # Packages
+    - ack
+    - curl
+    - entr
+    - figlet
+    - flex
+    - git
+    - gpg
+    - jq
+    - less
+    - man
+    - meld
+    - rename
+    - taskwarrior
+    - timewarrior
+    - tldr
+    - tmux
+    - tree
+    - vim-nox
+    - xclip
+    - wget
+    - zsh
+    # System management tools
+    - conky-all
+
+# <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
