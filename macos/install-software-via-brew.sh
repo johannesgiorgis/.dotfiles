@@ -19,6 +19,7 @@ main() {
     # brew install
     install_general_tools
     install_programming_languages
+    install_development_tools
     install_databases
 
     # brew cask install
@@ -108,6 +109,13 @@ function install_general_tools() {
     brew_install diff-so-fancy
 }
 
+function install_development_tools() {
+    # v1.0
+    brew install awscli@1
+    # v2.0
+    brew install aws
+    brew install neovim
+}
 
 function install_programming_languages() {
     # python
