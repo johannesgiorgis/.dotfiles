@@ -121,7 +121,7 @@ function install_programming_languages() {
 
 function install_databases() {
     # brew_install postgresql
-    # brew_install mysql
+    brew_install mysql
 }
 
 
@@ -142,6 +142,7 @@ function cask_install_general_tools() {
     # aerial screen saver
     brew_cask_install aerial
     brew_cask_install lg-onscreen-control   
+    brew install telnet
 }
 
 
