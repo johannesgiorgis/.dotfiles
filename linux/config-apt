@@ -6,6 +6,7 @@ figlet
 flex
 git
 gpg
+htop
 jq
 less
 man
@@ -43,3 +44,6 @@ software-properties-common
 tk-dev
 xz-utils
 zlib1g-dev
+
+# bluetooth manager
+blueman
