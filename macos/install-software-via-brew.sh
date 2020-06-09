@@ -81,7 +81,7 @@ function install_general_tools() {
     brew_install coreutils
     brew_install gpg
     brew_install htop
-    # brew_install jq
+    brew_install jq
     brew_install speedtest-cli
     brew_install tldr
     brew_install tree
@@ -128,7 +128,7 @@ function install_programming_languages() {
 
 
 function install_databases() {
-    # brew_install postgresql
+    brew_install postgresql
     brew_install mysql
 }
 
@@ -171,6 +171,7 @@ function cask_install_development_tools() {
     brew_cask_install sourcetree
     brew_cask_install sublime-merge
     brew_cask_install beekeeper-studio
+    brew_cask_install kite
 }
 
 
