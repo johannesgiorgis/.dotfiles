@@ -254,14 +254,36 @@ fi
 
 # >>> AWS COMPLETION - https://github.com/aws/aws-cli/issues/4656
 
-if command -v aws 1>/dev/null 2>&1; then
+# Mac - aws v1
+if [[ "${kernel_name}" = "Darwin" ]]; then
 
-    function awsm() { aws --profile main "$@"; }
+	# function awsh() { aws --profile hcareers "$@"; }
 
-	if test -f "/usr/local/bin/aws_completer"; then
-		complete -C '/usr/local/bin/aws_completer' aws awsm
+	if test -f "/usr/local/opt/awscli@1/bin/aws_completer"; then
+		complete -C '/usr/local/opt/awscli@1/bin/aws_completer' aws
 	fi
 fi
+
+# if command -v aws 1>/dev/null 2>&1; then
+
+#     function awsm() { aws --profile main "$@"; }
+
+# 	if test -f "/usr/local/bin/aws_completer"; then
+# 		complete -C '/usr/local/bin/aws_completer' aws awsm
+# 	fi
+# fi
+
+# aws v1
+#awsv1_dir="/usr/local/opt/awscli@1/"
+
+#if [[ -d "${awsv1_dir}" ]]; then
+#	alias aws="${awsv1_dir}bin/aws"
+#
+#	if test "${aws_dir}bin/aws_completer"; then
+#		complete -C '/usr/local/bin/aws_completer' aws
+#	fi
+#fi
+
 # <<< AWS COMPLETION
 
 function update_p10k() {
@@ -291,6 +313,8 @@ DEFAULT_USER=$(whoami)
 # >>> ##################################### PATH MODIFICATIONS
 
 
+# allow for aws v1 - /usr/local/opt/awscli@1/bin/
+export PATH=/usr/local/opt/awscli@1/bin:$PATH
 export PATH=~/bin:$PATH
 export PATH=~/.bin:$PATH
 

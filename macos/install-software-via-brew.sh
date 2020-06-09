@@ -19,6 +19,7 @@ main() {
     # brew install
     install_general_tools
     install_programming_languages
+    install_development_tools
     install_databases
 
     # brew cask install
@@ -80,7 +81,7 @@ function install_general_tools() {
     brew_install coreutils
     brew_install gpg
     brew_install htop
-    # brew_install jq
+    brew_install jq
     brew_install speedtest-cli
     brew_install tldr
     brew_install tree
@@ -108,6 +109,13 @@ function install_general_tools() {
     brew_install diff-so-fancy
 }
 
+function install_development_tools() {
+    # v1.0
+    brew install awscli@1
+    # v2.0
+    brew install aws
+    brew install neovim
+}
 
 function install_programming_languages() {
     # python
@@ -120,7 +128,7 @@ function install_programming_languages() {
 
 
 function install_databases() {
-    # brew_install postgresql
+    brew_install postgresql
     brew_install mysql
 }
 
@@ -163,6 +171,7 @@ function cask_install_development_tools() {
     brew_cask_install sourcetree
     brew_cask_install sublime-merge
     brew_cask_install beekeeper-studio
+    brew_cask_install kite
 }
 
 
