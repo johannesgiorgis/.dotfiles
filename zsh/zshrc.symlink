@@ -118,6 +118,9 @@ export VISUAL=/usr/bin/vim
 # export ARCHFLAGS="-arch x86_64"
 
 
+# kernel name
+kernel_name="$(uname -s)"
+
 ###############################################################################################
 # >>> ##################################### ALIAS
 
@@ -170,6 +173,11 @@ alias tailf='tail -f'
 alias tt='timetrap'
 alias c='code'
 alias ag='alias | grep'
+
+if [ "${kernel_name}" = "Linux" ]
+then
+    alias charm='/home/johannes/.local/bin/charm . > /dev/null 2>&1 &'
+fi
 
 # <<< ##################################### ALIAS
 ###############################################################################################
@@ -237,8 +245,6 @@ function cdot() {
 }
 
 # copy to clipboard on linux
-kernel_name="$(uname -s)"
-
 if [ "${kernel_name}" = "Linux" ]
 then
 	function copy() {
@@ -330,6 +336,15 @@ else
 	export PATH="$HOME/.asdf/installs/python/miniconda3-4.7.12/bin:$PATH"
 fi
 # <<< conda initialize <<<
+
+# rust binaries
+
+# /home/johannes/.asdf/installs/rust/stable/bin/rg
+# export PATH="$HOME/.asdf/installs/rust/stable/bin:$PATH"
+rust_install_dir="$HOME/.asdf/installs/rust/stable"
+if test -d "$rust_install_dir"; then
+    export PATH="${rust_install_dir}/bin:$PATH"
+fi
 
 # Disabled shared history across terminal tabs
 unsetopt SHARE_HISTORY
