@@ -107,6 +107,7 @@ function install_general_tools() {
 
     # diff alternative
     brew_install diff-so-fancy
+    brew install telnet
 }
 
 function install_development_tools() {
@@ -150,7 +151,8 @@ function cask_install_general_tools() {
     # aerial screen saver
     brew_cask_install aerial
     brew_cask_install lg-onscreen-control   
-    brew install telnet
+    # dock manager
+    brew_cask_install vanilla
 }
 
 
