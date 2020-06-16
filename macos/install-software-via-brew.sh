@@ -108,6 +108,9 @@ function install_general_tools() {
     # diff alternative
     brew_install diff-so-fancy
     brew install telnet
+
+    # find alternative
+    brew_install fd
 }
 
 function install_development_tools() {
