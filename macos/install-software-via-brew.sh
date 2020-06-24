@@ -111,6 +111,9 @@ function install_general_tools() {
 
     # find alternative
     brew_install fd
+
+    # mac app store command line tool
+    brew_install mas
 }
 
 function install_development_tools() {
