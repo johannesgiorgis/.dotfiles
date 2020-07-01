@@ -114,6 +114,9 @@ function install_general_tools() {
 
     # mac app store command line tool
     brew_install mas
+
+    # rename
+    brew_install rename
 }
 
 function install_development_tools() {
