@@ -107,7 +107,7 @@ function install_general_tools() {
 
     # diff alternative
     brew_install diff-so-fancy
-    brew install telnet
+    brew_install telnet
 
     # find alternative
     brew_install fd
@@ -117,14 +117,18 @@ function install_general_tools() {
 
     # rename
     brew_install rename
+
+    # grep/ack alternative
+    brew_install rg
 }
 
 function install_development_tools() {
     # v1.0
-    brew install awscli@1
+    brew_install awscli@1
     # v2.0
-    brew install aws
-    brew install neovim
+    brew_install aws
+    brew_install neovim
+    brew_install httpie
 }
 
 function install_programming_languages() {
@@ -210,3 +214,4 @@ function brew_custom_install_font_fira_code() {
 }
 
 main
+
