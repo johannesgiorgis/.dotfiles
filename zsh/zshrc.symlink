@@ -377,3 +377,5 @@ fi
 
 # Disabled shared history across terminal tabs
 unsetopt SHARE_HISTORY
+
+source /home/johannes/.config/broot/launcher/bash/br
