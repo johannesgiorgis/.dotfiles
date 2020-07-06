@@ -216,6 +216,7 @@ function cproj() {
 	new_project_dir="$(date +%F)-${project_name}"
 	mkdir -v "$new_project_dir"
 
+	read_me_file=$(echo "$project_name" | grep -o '^.\+\d')
 	readme_file="${new_project_dir}/${new_project_dir}-readme.md"
 	touch "$readme_file"
 	ls -d ${new_project_dir}/*
