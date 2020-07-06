@@ -93,6 +93,7 @@ plugins=(
     command-not-found
     brew
     history
+    poetry
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -374,6 +375,9 @@ rust_install_dir="$HOME/.asdf/installs/rust/stable"
 if test -d "$rust_install_dir"; then
     export PATH="${rust_install_dir}/bin:$PATH"
 fi
+
+# add poetry
+export PATH="$HOME/.poetry/bin:$PATH"
 
 # Disabled shared history across terminal tabs
 unsetopt SHARE_HISTORY
