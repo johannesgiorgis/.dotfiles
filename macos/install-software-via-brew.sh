@@ -125,7 +125,7 @@ function install_general_tools() {
     brew_install rename
 
     # grep/ack alternative
-    brew_install rg # ripgrep
+    brew_install ripgrep
 
     # cli messages
     brew_install fortune
@@ -139,6 +139,8 @@ function install_general_tools() {
     # task/time warrior
     brew_install tasksh
     brew_install timewarrior
+    brew_install ansible
+    brew_install curl
 }
 
 function install_development_tools() {
@@ -146,6 +148,8 @@ function install_development_tools() {
     brew_install aws
     brew_install neovim
     brew_install httpie
+    brew_install git
+    brew_install gnupg
 }
 
 function install_programming_languages() {
@@ -270,6 +274,7 @@ function install_software_on_work_mac() {
     brew_cask_install openvpn-connect
     brew_cask_install pycharm
     brew_cask_install tunnelblick
+    brew_cask_install karabiner-elements
 
     success "› Completed installing Software on Work Mac!"
 }
