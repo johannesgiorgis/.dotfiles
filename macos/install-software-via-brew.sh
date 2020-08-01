@@ -267,6 +267,7 @@ function install_software_on_work_mac() {
     brew_install awscli@1
     brew_install putty
     brew_install telnet
+    brew_install pandoc
 
     # cask
     brew_cask_install jetbrains-toolbox
@@ -275,6 +276,8 @@ function install_software_on_work_mac() {
     brew_cask_install pycharm
     brew_cask_install tunnelblick
     brew_cask_install karabiner-elements
+    brew_cask_install basictex
+    brew_cask_install wkhtmltopdf
 
     success "› Completed installing Software on Work Mac!"
 }
