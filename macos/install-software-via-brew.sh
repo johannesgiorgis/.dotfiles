@@ -268,8 +268,10 @@ function install_software_on_work_mac() {
     brew_install putty
     brew_install telnet
     brew_install pandoc
+    brew_install parquet-tools
 
     # cask
+    brew_cask_install alfred
     brew_cask_install jetbrains-toolbox
     # vpn
     brew_cask_install openvpn-connect

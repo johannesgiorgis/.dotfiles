@@ -59,6 +59,9 @@ function install_general_tools() {
 
     # Xcode (11.5)
     mas_install 497799835
+
+    # Lightshot Screenshot (2.22)
+    mas_install 526298438
 }
 
 main
