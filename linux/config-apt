@@ -47,3 +47,6 @@ zlib1g-dev
 
 # bluetooth manager
 blueman
+
+# screenshot
+flameshot
