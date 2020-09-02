@@ -172,7 +172,7 @@ alias lt='ls -lahtFr'
 # docker
 alias dka='docker ps -aq | xargs -I{} docker kill {}'		# kill all running docker containers
 alias dra='docker ps -aq | xargs -I{} docker rm {}'			# remove all docker containers
-alias dsp='docker system prune'
+alias dpa="echo 'pruning system...' && docker system prune -f && echo 'pruning volumes...' && docker volume prune -f"
 
 alias tailf='tail -f'
 alias tt='timetrap'
