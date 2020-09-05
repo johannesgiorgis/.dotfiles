@@ -43,7 +43,7 @@ then
 fi
 
 #ansible-playbook -i ~/.dotfiles/hosts ~/.dotfiles/ansible/dotfiles.yml --ask-become-pass --tags "$tags"
-ansible-playbook -i ~/.dotfiles/ansible/hosts ~/.dotfiles/ansible/dotfiles.yml --tags "$tags"
+ansible-playbook -i ~/.dotfiles/ansible/hosts ~/.dotfiles/ansible/dotfiles.yml --tags "$tags" --ask-become-pass
 
 end=$(date +%s)
 runtime=$((end-start))

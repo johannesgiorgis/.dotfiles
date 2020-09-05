@@ -26,18 +26,18 @@
     creates: "{{dotfiles_user_home}}.zshrc.bak"
   when: zshrc_stat.stat.exists
 
-- name: Remove .zshrc
-  command: rm ~/.zshrc
-  when: zshrc_stat.stat.exists
+# - name: Remove .zshrc
+#   command: rm ~/.zshrc
+#   when: zshrc_stat.stat.exists
 
 - name: Symlink .p10k.zsh
   file:
-    src: "{{ dotfiles_home }}/roles/zsh/files/p10k.zsh"
+    src: "{{ dotfiles_home }}/ansible/roles/zsh/files/p10k.zsh"
     dest: "{{dotfiles_user_home}}/.p10k.zsh"
     state: link
 
 - name: Symlink .zshrc
   file:
-    src: "{{ dotfiles_home }}/roles/zsh/files/zshrc"
+    src: "{{ dotfiles_home }}/ansible/roles/zsh/files/zshrc"
     dest: "{{dotfiles_user_home}}/.zshrc"
     state: link
