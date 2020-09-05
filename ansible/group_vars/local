@@ -1,6 +1,9 @@
 dotfiles_user_home: "{{ '~' | expanduser }}"
 dotfiles_home: "{{ dotfiles_user_home }}/.dotfiles"
 
+full_name: Johannes Giorgis
+git_user: johannesgiorgis
+git_email: johannesgiorgis@users.noreply.github.com
 
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 # Mac OS X
