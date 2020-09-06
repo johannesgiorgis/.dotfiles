@@ -1,0 +1,64 @@
+---
+- name: install dependencies for Antigen
+  become: yes
+  package:
+    name:
+      - git
+      - tar
+      - gzip
+      - zsh
+    state: present
+
+- name: create Antigen download directory
+  file:
+    path: '{{ antigen_download_dir }}'
+    state: directory
+    mode: 'u=rwx,go=rx'
+
+- name: download Antigen
+  get_url:
+    url: '{{ antigen_redis_mirror }}/{{ antigen_redis_filename }}'
+    dest: '{{ antigen_download_dir }}/{{ antigen_local_filename }}'
+    sha256sum: '{{ antigen_redis_sha256sum }}'
+    mode: 'u=rw,go=r'
+
+- name: Download Antigen Zsh File
+  get_url:
+    url: '{{ antigen_redis_mirror }}/{{ antigen_zsh_filename }}'
+    dest: '{{ antigen_download_dir }}/{{ antigen_zsh_filename }}'
+    mode: 'u=rw,go=r'
+
+- name: remove ~/.antigen folder to ensure clean install
+  file:
+    path: '{{ dotfiles_user_home }}/.antigen'
+    state: absent
+
+- name: remove ~/.antigen-etc folder to ensure clean install
+  file:
+    path: '{{ dotfiles_user_home }}/.antigen-etc'
+    state: absent
+
+- name: create install directory
+  file:
+    path: '{{ dotfiles_user_home }}/.antigen'
+    state: directory
+    mode: 'u=rwx,go=rx'
+
+- name: install Antigen
+  unarchive:
+    src: '{{ antigen_download_dir }}/{{ antigen_local_filename }}'
+    copy: no
+    dest: '{{ dotfiles_user_home }}/.antigen'
+    creates: '{{ dotfiles_user_home }}/.antigen/antigen.zsh'
+    mode: 'go-w'
+
+- name: copy Antigen Zsh File
+  copy:
+    src: '{{ antigen_download_dir }}/{{ antigen_zsh_filename }}'
+    dest: '{{ dotfiles_user_home }}/.antigen'
+    mode: 'go-w'
+
+
+- name: install oh-my-zsh
+  include_tasks: install-oh-my-zsh.yml
+  when: antigen_install_oh_my_zsh

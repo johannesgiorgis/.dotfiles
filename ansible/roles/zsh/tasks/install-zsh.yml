@@ -1,0 +1,16 @@
+---
+- name: install dependencies for zsh
+  become: yes
+  package:
+    name:
+      - git
+      - curl
+    state: present
+
+- name: install zsh
+  apt:
+    name: zsh
+    state: present
+  become: yes
+  become_user: root
+  become_method: sudo

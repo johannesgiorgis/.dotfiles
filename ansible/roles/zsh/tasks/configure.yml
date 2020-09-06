@@ -1,0 +1,69 @@
+---
+- name: Set zsh as default shell
+  user: 
+    name: '{{ ansible_user_id }}'
+    shell: /bin/zsh
+  become: true
+
+- name: write .antigenrc
+  # become: yes
+  template:
+    src: antigenrc.j2
+    dest: '{{ dotfiles_user_home }}/.antigenrc'
+    backup: yes
+    mode: 'u=rw,go=r'
+  when: (antigen_libraries is defined) or (antigen_theme is defined) or (antigen_bundles is defined)
+  
+
+- name: create library config directories
+  # become: yes
+  file:
+    path: '~/.antigen-etc/use.d'
+    state: directory
+    mode: 'u=rwx,go=rx'
+  when: (antigen_libraries is defined) or (antigen_theme is defined) or (antigen_bundles is defined)
+
+- name: write library config
+  template:
+    src: use.zsh.j2
+    dest: '~/.antigen-etc/use.d/{{ item.name }}.zsh'
+    backup: yes
+    mode: 'u=rwx,go=r'
+  vars:
+    antigen_library: '{{ item }}'
+  with_items: '{{ antigen_libraries }}'
+
+- name: create bundle config directories
+  file:
+    path: '~/.antigen-etc/bundle.d'
+    state: directory
+    mode: 'u=rwx,go=rx'
+  when: (antigen_libraries is defined) or (antigen_theme is defined) or (antigen_bundles is defined)
+
+- name: write bundle config
+  template:
+    src: bundle.zsh.j2
+    dest: '~/.antigen-etc/bundle.d/{{ item.name }}.zsh'
+    backup: yes
+    mode: 'u=rw,go=r'
+  vars:
+    antigen_bundle: '{{ item }}'
+  with_items: '{{ antigen_bundles }}'
+
+# - name: write theme config
+#   template:
+#     src: theme.zsh.j2
+#     dest: '{{ dotfiles_user_home }}/.antigen-etc/theme.zsh'
+#     backup: yes
+#     mode: 'u=rw,go=r'
+#   vars:
+#     antigen_theme: '{{ antigen_theme }}'
+#   when: antigen_theme is defined
+
+- name: add .antigenrc to .zshrc
+  lineinfile:
+    path: '~/.zshrc'
+    line: 'source ~/.antigenrc'
+    create: yes
+    mode: 'u=rw,go=r'
+  when: (antigen_libraries is defined) or (antigen_theme is defined) or (antigen_bundles is defined)

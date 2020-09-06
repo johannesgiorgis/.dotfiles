@@ -1,0 +1,23 @@
+---
+- name: clone oh-my-zsh
+  # core.autocrlf=input prevents https://github.com/robbyrussell/oh-my-zsh/issues/4402
+  command: 'git clone -c core.autocrlf=input --depth=1 https://github.com/robbyrussell/oh-my-zsh.git ~/.antigen/bundles/robbyrussell/oh-my-zsh'
+  args:
+    creates: '{{ dotfiles_user_home }}/.antigen/bundles/robbyrussell/oh-my-zsh'
+
+- name: set permissions of oh-my-zsh
+  file:
+    path: '{{ dotfiles_user_home }}/.antigen/bundles/robbyrussell/oh-my-zsh'
+    mode: 'go-w'
+    recurse: yes
+
+- name: get powerlevel10k theme
+  command: 'git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/.antigen/bundles/robbyrussell/oh-my-zsh/custom/themes/powerlevel10k'
+  args:
+    creates: '{{ dotfiles_user_home }}/.antigen/bundles/robbyrussell/oh-my-zsh/custom/themes/powerlevel10k'
+
+- name: set permissions of powerlevel10k theme
+  file:
+    path: '{{ dotfiles_user_home }}/.antigen/bundles/robbyrussell/oh-my-zsh/custom/themes/powerlevel10k'
+    mode: 'go-w'
+    recurse: yes

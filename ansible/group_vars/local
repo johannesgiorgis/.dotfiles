@@ -133,6 +133,7 @@ apt_packages:
     # Packages
     - ack
     - curl
+    - gzip
     - entr
     - figlet
     - flex
@@ -143,6 +144,7 @@ apt_packages:
     - man
     - meld
     - rename
+    - tar
     - taskwarrior
     - timewarrior
     - tldr

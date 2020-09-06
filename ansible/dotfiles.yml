@@ -4,7 +4,21 @@
     # - { role: git, tags: ["git"] }
     - { role: package_manager, tags: ["package_manager", "bootstrap"] }
     # - { role: apt, tags: ["apt"] }
-    - { role: zsh, tags: ['zsh'] }
+    - role: zsh
+      tags: ['zsh']
+      antigen_libraries:
+        - name: oh-my-zsh
+      # antigen_theme:
+        # name: romkatv/powerlevel10k
+      antigen_bundles:
+        # Syntax highlighting bundle
+        - name: zsh-syntax-highlighting
+          url: zsh-users/zsh-syntax-highlighting
+        - name: zsh-autosuggestions
+          url: zsh-users/zsh-autosuggestions
+        - name: timewarrior
+          url: svenXY/timewarrior
+      
     - { role: vscode, tags: ['vscode'] }
     - { role: asdf, tags: ["asdf"] }
     - { role: macos, tags: ["macos"], when: ansible_os_family == "Darwin" }
