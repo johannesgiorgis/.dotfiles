@@ -2,28 +2,6 @@
 
 Various settings for the tools I use. My dotfile repository was initially created by a combination of following Victoria's excellent [How to set up a fresh Ubuntu Desktop using only dotfiles and bash scripts] and structured to match Holman's dotfiles ([Github - Holman's Dotfiles]).
 
-## Dotfiles V2
-
-This is currently a wishlist.
-
-As I continue to customize the various scripts, I wanted more control over certain functionality - let user choose which custom program to install, not install, etc. Yet I don't want to write and go throught the trial and error of bash scripting.
-
-This led me to research how to manage dotfiles and found several options - ansible, dotstow. I came across several articles:
-
-- https://medium.com/espinola-designs/manage-your-dotfiles-with-ansible-6dbedd5532bb
-- https://github.com/sloria/dotfiles
-- https://github.com/elnappo/dotfiles
-- https://dev.to/alexdesousa/managing-dotfiles-with-ansible-3kbg
-- https://github.com/alexdesousa/dotfiles
-- https://medium.com/@codejamninja/dotstow-the-smart-way-to-manage-your-dotfiles-8a0a8b6d984c
-
-Folks are using Python, Typescript to write wrapper programs around their .dotfiles management. Maybe some combination of bash + ansible could work.
-
-**Current**: Migrating to Ansible
-
-- https://github.com/kespinola/dotfiles
-- https://github.com/sloria/dotfiles
-
 ## Testing
 
 Run the following:
@@ -47,6 +25,45 @@ scripts/bootstrap.sh -> bin/dot -> install_dotfiles
   - install_all.sh - sequentially runs all files ending with install.sh
     - currently: ./zsh/oh_my_zsh_install.sh
 ```
+
+## Dotfiles V2
+
+This is currently a wishlist.
+
+As I continue to customize the various scripts, I wanted more control over certain functionality - let user choose which custom program to install, not install, etc. Yet I don't want to write and go throught the trial and error of bash scripting.
+
+This led me to research how to manage dotfiles and found several options - ansible, dotstow. I came across several articles:
+
+- <https://medium.com/espinola-designs/manage-your-dotfiles-with-ansible-6dbedd5532bb>
+- <https://github.com/sloria/dotfiles>
+- <https://github.com/elnappo/dotfiles>
+- <https://dev.to/alexdesousa/managing-dotfiles-with-ansible-3kbg>
+- <https://github.com/alexdesousa/dotfiles>
+- <https://medium.com/@codejamninja/dotstow-the-smart-way-to-manage-your-dotfiles-8a0a8b6d984c>
+
+Folks are using Python, Typescript to write wrapper programs around their .dotfiles management. Maybe some combination of bash + ansible could work.
+
+**Current**: Migrating to Ansible
+
+- <https://github.com/kespinola/dotfiles>
+- <https://github.com/sloria/dotfiles>
+- VS Code Role Inspiration: <https://github.com/gantsign/ansible-role-visual-studio-code>
+- Zsh + Antigen + Oh-My-Zsh Role Inspiration: <https://github.com/gantsign/ansible_role_antigen>
+- Oh-My-Zsh Role Inspiration: <https://github.com/gantsign/ansible-role-oh-my-zsh>
+- Interesting organization: <https://github.com/tentacode/blacksmithery>
+
+### Issues
+
+I was unable to install my desired theeme `powerlevel10k` via antigen. I kept getting the following error:
+
+```sh
+➜ antigen theme https://github.com/romkatv/powerlevel10k powerlevel10k
+(anon):source:27: no such file or directory: /home/johannes/.antigen/internal/p10k.zsh
+```
+
+So I decided to use Oh-My-Zsh to manage my theme only to find out the theme wouldn't load.
+
+Googling around led me to this github issue thread <https://github.com/romkatv/powerlevel10k/issues/825> where the theme author himself says he doesn't use a plugin manager himself. Also it seems antigen hasn't been updated in a while. Since I had everything working perfectly via using Oh-My-Zsh, I'll set up Ansible to do just that.
 
 ## Reference
 
