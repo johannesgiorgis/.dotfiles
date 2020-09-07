@@ -1,43 +1,7 @@
-- name: Install zsh
-  apt:
-    name: zsh
-    state: present
-  become: yes
-  become_user: root
-  become_method: sudo
+---
 
-- name: Check for oh-my-zsh installation
-  stat:
-    path: ~/.oh-my-zsh
-  register: oh_my_zsh_stat
+- import_tasks: install-zsh.yml
 
-- name: Install oh-my-zsh
-  raw: 'sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"'
-  when: not oh_my_zsh_stat.stat.exists
+- import_tasks: install-oh-my-zsh.yml
 
-- name: Check for .zshrc
-  stat:
-    path: "{{dotfiles_user_home}}/.zshrc"
-  register: zshrc_stat
-
-- name: Back up .zshrc
-  command: mv ~/.zshrc ~/.zshrc.bak
-  args:
-    creates: "{{dotfiles_user_home}}.zshrc.bak"
-  when: zshrc_stat.stat.exists
-
-# - name: Remove .zshrc
-#   command: rm ~/.zshrc
-#   when: zshrc_stat.stat.exists
-
-- name: Symlink .p10k.zsh
-  file:
-    src: "{{ dotfiles_home }}/ansible/roles/zsh/files/p10k.zsh"
-    dest: "{{dotfiles_user_home}}/.p10k.zsh"
-    state: link
-
-- name: Symlink .zshrc
-  file:
-    src: "{{ dotfiles_home }}/ansible/roles/zsh/files/zshrc"
-    dest: "{{dotfiles_user_home}}/.zshrc"
-    state: link
+- import_tasks: configure.yml

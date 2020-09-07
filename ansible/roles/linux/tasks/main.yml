@@ -1,0 +1,29 @@
+---
+# > ensure vim is default editor
+- name: Install dependencies for zsh
+  become: yes
+  package:
+    name:
+      - vim-nox
+    state: present
+
+- name: Symlink .selected_editor
+  file:
+    src: "{{ dotfiles_home }}/ansible/roles/linux/files/selected_editor"
+    dest: "{{dotfiles_user_home}}/.selected_editor"
+    state: link
+
+- name: Set vim.nox as editor via update-alternatives
+  command: 'update-alternatives --set editor /usr/bin/vim.nox'
+  become: yes
+  become_user: root
+  become_method: sudo
+# < ensure vim is default editor
+
+- name: Allowing passwordless sudo
+  lineinfile:
+    path: '/etc/sudoers'
+    line: '{{ ansible_user_id }} ALL=(ALL) NOPASSWD: ALL'
+  become: yes
+  become_user: root
+  become_method: sudo

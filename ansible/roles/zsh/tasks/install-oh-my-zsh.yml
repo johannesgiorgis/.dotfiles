@@ -1,0 +1,13 @@
+---
+- name: Clone oh-my-zsh
+  # core.autocrlf=input prevents https://github.com/robbyrussell/oh-my-zsh/issues/4402
+  command: 'git clone -c core.autocrlf=input --depth=1 https://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh'
+  args:
+    creates: '{{ dotfiles_user_home }}/.oh-my-zsh'
+
+- name: Set permissions of oh-my-zsh
+  file:
+    path: '{{ dotfiles_user_home }}/.oh-my-zsh'
+    mode: 'go-w'
+    recurse: yes
+
