@@ -1,5 +1,13 @@
+---
+- name: assert supported build
+  assert:
+    that:
+        - "visual_studio_code_build in ('stable', 'insiders')"
+
 - import_tasks: debian.yml
   when: ansible_os_family == "Debian" or ansible_os_family == "Pop!_OS"
 
 - import_tasks: mac.yml
   when: ansible_os_family == "Darwin"
+
+- import_tasks: install-extensions.yml
