@@ -6,6 +6,12 @@
 - name: Import OpenPGP Key
   command: "bash ~/.asdf/plugins/nodejs/bin/import-release-team-keyring"
 
+- name: Symlink .default-npm-packages
+  file:
+    src: "{{ dotfiles_home }}/ansible/roles/infrastructure/nodejs/files/default-npm-packages"
+    dest: "{{ dotfiles_user_home }}/.default-npm-packages"
+    state: link
+
 - name: Install nodejs versions
   command: asdf install nodejs {{ item }}
   loop: "{{ nodejs_versions }}"
