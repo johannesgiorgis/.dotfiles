@@ -8,6 +8,8 @@
     - { role: vscode, tags: ["vscode"] }
     - { role: asdf, tags: ["asdf"] }
 
+    # cli
+    - { role: cli/vim, tags: vim }
     # programming languages
     - { role: infrastructure/golang, tags: golang }
     - { role: infrastructure/nodejs, tags: nodejs }
