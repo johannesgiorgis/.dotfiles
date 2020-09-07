@@ -1,0 +1,4 @@
+nodejs_plugin_url: https://github.com/asdf-vm/asdf-nodejs.git
+
+nodejs_versions:
+  - 12.18.3

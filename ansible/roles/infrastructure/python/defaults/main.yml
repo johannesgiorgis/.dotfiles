@@ -1,0 +1,5 @@
+python_plugin_url: https://github.com/danhper/asdf-python.git
+
+python_versions:
+  - 3.8.4
+  - miniconda3-4.7.12

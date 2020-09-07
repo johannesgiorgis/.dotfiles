@@ -8,7 +8,7 @@
 
 - name: Upgrade apt packages
   apt:
-    upgrade: yes
+    upgrade: "yes"
   when: package_upgrade
   become: yes
   become_user: root

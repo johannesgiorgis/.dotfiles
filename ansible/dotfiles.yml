@@ -4,9 +4,23 @@
     # - { role: git, tags: ["git"] }
     - { role: package_manager, tags: ["package_manager", "bootstrap"] }
     # - { role: apt, tags: ["apt"] }
-    - { role: zsh, tags: ['zsh'] }
-    - { role: vscode, tags: ['vscode'] }
+    - { role: zsh, tags: ["zsh"] }
+    - { role: vscode, tags: ["vscode"] }
     - { role: asdf, tags: ["asdf"] }
-    - { role: linux-installation, tags: ['linux'], when: ansible_os_family == "Debian" or ansible_os_family == "Pop!_OS" }
-    - { role: linux, tags: ['linux'], when: ansible_os_family == "Debian" or ansible_os_family == "Pop!_OS" }
+
+    # programming languages
+    - { role: infrastructure/golang, tags: golang }
+    - { role: infrastructure/nodejs, tags: nodejs }
+    - { role: infrastructure/python, tags: python }
+    - { role: infrastructure/rust, tags: rust }
+    - {
+        role: linux-installation,
+        tags: ["linux"],
+        when: ansible_os_family == "Debian" or ansible_os_family == "Pop!_OS",
+      }
+    - {
+        role: linux,
+        tags: ["linux"],
+        when: ansible_os_family == "Debian" or ansible_os_family == "Pop!_OS",
+      }
     - { role: macos, tags: ["macos"], when: ansible_os_family == "Darwin" }

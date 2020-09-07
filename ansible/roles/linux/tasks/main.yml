@@ -14,7 +14,7 @@
     state: link
 
 - name: Set vim.nox as editor via update-alternatives
-  command: 'update-alternatives --set editor /usr/bin/vim.nox'
+  command: "update-alternatives --set editor /usr/bin/vim.nox"
   become: yes
   become_user: root
   become_method: sudo
@@ -22,8 +22,11 @@
 
 - name: Allowing passwordless sudo
   lineinfile:
-    path: '/etc/sudoers'
-    line: '{{ ansible_user_id }} ALL=(ALL) NOPASSWD: ALL'
+    path: "/etc/sudoers"
+    line: "{{ ansible_user_id }} ALL=(ALL) NOPASSWD: ALL"
   become: yes
   become_user: root
   become_method: sudo
+
+- name: Modifying capslock behavior to match escape key
+  command: 'gsettings set org.gnome.desktop.input-sources xkb-options "[''caps:escape'']"'

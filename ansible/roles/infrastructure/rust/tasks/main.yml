@@ -1,0 +1,13 @@
+- name: Add rust plugin for asdf
+  command: "asdf plugin-add rust {{ rust_plugin_url }}"
+  register: rust_add
+  failed_when: rust_add == 2
+
+- name: Install rust versions
+  command: asdf install rust {{ item }}
+  loop: "{{ rust_versions }}"
+  loop_control:
+    label: "{{ item }}"
+
+- name: Set global version for rust to {{ rust_versions[0] }}
+  command: asdf global rust {{ rust_versions[0] }}

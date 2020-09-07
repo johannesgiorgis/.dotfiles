@@ -1,0 +1,19 @@
+- name: Add python plugin for asdf
+  command: "asdf plugin-add python {{ python_plugin_url }}"
+  register: python_add
+  failed_when: python_add == 1
+
+- name: Install python versions
+  command: asdf install python {{ item }}
+  loop: "{{ python_versions }}"
+  loop_control:
+    label: "{{ item }}"
+
+- name: Set global version for python to {{ python_versions[0] }}
+  command: asdf global python {{ python_versions[0] }}
+
+- name: Install pipx
+  tags: pipx
+  shell: "PYENV_VERSION=system python3 -m pip install --user pipx && PYENV_VERSION=system python3 -m pipx install pipx"
+  args:
+    creates: "{{ dotfiles_user_home }}/.local/bin/pipx"

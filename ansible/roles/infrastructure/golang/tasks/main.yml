@@ -1,0 +1,20 @@
+- name: Install dep apt package
+  apt:
+    name: go-dep
+  become: yes
+  become_user: root
+  become_method: sudo
+
+- name: Add golang plugin for asdf
+  command: "asdf plugin-add golang {{ golang_plugin_url }}"
+  register: golang_add
+  failed_when: golang_add == 2
+
+- name: Install golang versions
+  command: asdf install golang {{ item }}
+  loop: "{{ golang_versions }}"
+  loop_control:
+    label: "{{ item }}"
+
+- name: Set global version for golang to {{ golang_versions[0] }}
+  command: asdf global golang {{ golang_versions[0] }}
