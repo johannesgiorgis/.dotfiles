@@ -150,6 +150,7 @@ function install_development_tools() {
     brew_install httpie
     brew_install git
     brew_install gnupg
+    brew_install pipx
 }
 
 function install_programming_languages() {
@@ -192,6 +193,7 @@ function cask_install_general_tools() {
     brew_cask_install lg-onscreen-control   
     # dock manager
     # brew_cask_install vanilla
+    brew_cask_install authy
 }
 
 
@@ -199,6 +201,7 @@ function cask_install_note_taking() {
     brew_cask_install simplenote
     brew_cask_install sublime-text
     brew_cask_install joplin 
+    brew_cask_install macvim
 }
 
 
