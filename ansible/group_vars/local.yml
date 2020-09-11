@@ -157,6 +157,7 @@ apt_packages:
   - conky-all
   # Fonts
   - fonts-firacode
+  - gnome-tweaks
 
 # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 

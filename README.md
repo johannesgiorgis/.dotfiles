@@ -2,6 +2,44 @@
 
 Various settings for the tools I use. My dotfile repository was initially created by a combination of following Victoria's excellent [How to set up a fresh Ubuntu Desktop using only dotfiles and bash scripts] and structured to match Holman's dotfiles ([Github - Holman's Dotfiles]).
 
+## Setup
+
+### Linux - Debian
+
+To set up a new Debian based Linux system, do the following initial steps upon logging in:
+
+```
+# Downloads and install xclip BEFORE running any updates
+$ sudo apt-get install xclip
+
+# Run Updates
+$ sudo apt update -y && sudo apt upgrade -y
+
+# Navigate to GitHub and log in -> Settings -> SSH & GPG Keys -> New SSH Key
+
+# Generate new SSH Key
+$ ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
+
+# Add newly created SSH key to GitHub account
+
+# Use xclip to copy content of public key so you can paste it in GitHub
+$ xclip -sel clip < ~/.ssh/id_rsa.pub
+# Copies the contents of the id_rsa.pub file to your clipboard
+
+# Clone dotfiles
+$ git clone git@github.com:johannesgiorgis/dotfiles.git ~/.dotfiles
+
+# Run ansible playbook
+$ cd ~/.dotfiles
+$ bash bin/dot-bootstrap <tag>
+```
+
+Doing it this way ensures that you can run your updates while you get set up to clone the repo and start the rest of the set up.
+
+- [Connecting to GitHub with SSH]
+- [Generate a New SSH Key]
+- [Add new SSH key to GitHub account]
+
 ## Testing
 
 Run the following:
@@ -51,6 +89,8 @@ Folks are using Python, Typescript to write wrapper programs around their .dotfi
 - Zsh + Antigen + Oh-My-Zsh Role Inspiration: <https://github.com/gantsign/ansible_role_antigen>
 - Oh-My-Zsh Role Inspiration: <https://github.com/gantsign/ansible-role-oh-my-zsh>
 - Interesting organization: <https://github.com/tentacode/blacksmithery>
+- Gnome Extensions Inspiration: <https://github.com/jaredhocutt/ansible-gnome-extensions>
+- Customize Pop OS: <https://www.youtube.com/watch?v=LHj2ulIm7AQ>
 
 ### Issues
 
@@ -64,6 +104,12 @@ I was unable to install my desired theeme `powerlevel10k` via antigen. I kept ge
 So I decided to use Oh-My-Zsh to manage my theme only to find out the theme wouldn't load.
 
 Googling around led me to this github issue thread <https://github.com/romkatv/powerlevel10k/issues/825> where the theme author himself says he doesn't use a plugin manager himself. Also it seems antigen hasn't been updated in a while. Since I had everything working perfectly via using Oh-My-Zsh, I'll set up Ansible to do just that.
+
+### Unexpected Test
+
+On September 10th, I accidentally messed up my initial installation of Pop_OS! via trying to install some Virtual Machine related installations the Pop!_Shop prompted me with. Re-installing from the ISO image I originally used, there were too many updates so I grabbed a more recent ISO image from their website.
+
+Re-installing Pop_OS! was an unexpected test to see how my Ansible work was coming along. I was back to being productive on VS Code and adding more cool stuff before long. It's awesome!
 
 ## Reference
 
@@ -172,3 +218,6 @@ inspired from Ryan's original project.
 [Github - Holman's Dotfiles]: https://github.com/holman/dotfiles
 [Github - Victoria Drake's Dotfiles]: https://github.com/victoriadrake/dotfiles
 [Moving to ZSH: Customizing the ZSH Prompt]: https://scriptingosx.com/2019/07/moving-to-zsh-06-customizing-the-zsh-prompt/
+[Connecting to GitHub with SSH]: https://docs.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh
+[Generate a New SSH Key]: https://docs.github.com/en/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
+[Add new SSH key to GitHub account]: https://docs.github.com/en/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account

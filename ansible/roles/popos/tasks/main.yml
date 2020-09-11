@@ -1,0 +1,3 @@
+---
+- name: Enabling minimize, maximize, close buttons on the right of titlebar
+  command: 'gsettings set org.gnome.desktop.wm.preferences button-layout ":minimize,maximize,close"'

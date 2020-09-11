@@ -8,6 +8,8 @@
     - { role: vscode, tags: ["vscode"] }
     - { role: asdf, tags: ["asdf"] }
 
+    - { role: popos, tags: popos, when: ansible_os_family == "Pop!_OS" }
+
     # cli
     - { role: cli/vim, tags: vim }
     # programming languages
