@@ -1,4 +1,10 @@
 ---
+- name: Set zsh as default shell
+  user:
+    name: "{{ ansible_user_id }}"
+    shell: /bin/zsh
+  become: true
+
 - name: Check for .zshrc
   stat:
     path: "{{ dotfiles_user_home }}/.zshrc"
@@ -23,30 +29,30 @@
     state: link
 
 - name: Get powerlevel10k theme
-  command: 'git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/.oh-my-zsh/custom/themes/powerlevel10k'
+  command: "git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/.oh-my-zsh/custom/themes/powerlevel10k"
   args:
-    creates: '{{ dotfiles_user_home }}/.oh-my-zsh/custom/themes/powerlevel10k'
+    creates: "{{ dotfiles_user_home }}/.oh-my-zsh/custom/themes/powerlevel10k"
 
 - name: set permissions of powerlevel10k theme
   file:
-    path: '{{ dotfiles_user_home }}/.oh-my-zsh/custom/themes/powerlevel10k'
-    mode: 'go-w'
+    path: "{{ dotfiles_user_home }}/.oh-my-zsh/custom/themes/powerlevel10k"
+    mode: "go-w"
     recurse: yes
 
 - name: Get plugin zsh-autosuggestions
-  command: 'git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions'
+  command: "git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
   args:
-    creates: '{{ dotfiles_user_home }}/.oh-my-zsh/custom/plugins/zsh-autosuggestions'
+    creates: "{{ dotfiles_user_home }}/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
 
 - name: Get plugin zsh-syntax-highlighting
-  command: 'git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting'
+  command: "git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
   args:
-    creates: '{{ dotfiles_user_home }}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting'
+    creates: "{{ dotfiles_user_home }}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
 
 - name: Get plugin timewarrior
-  command: 'git clone https://github.com/svenXY/timewarrior ~/.oh-my-zsh/custom/plugins/timewarrior'
+  command: "git clone https://github.com/svenXY/timewarrior ~/.oh-my-zsh/custom/plugins/timewarrior"
   args:
-    creates: '{{ dotfiles_user_home }}/.oh-my-zsh/custom/plugins/timewarrior'
+    creates: "{{ dotfiles_user_home }}/.oh-my-zsh/custom/plugins/timewarrior"
 
 - name: Create ~/.fonts directory for Linux
   file:
@@ -64,11 +70,10 @@
     # italic
     - "MesloLGS%20NF%20Italic.ttf"
     # italic_bold
-    - 'MesloLGS%20NF%20Bold%20Italic.ttf'
+    - "MesloLGS%20NF%20Bold%20Italic.ttf"
   args:
     warn: false
   when: ansible_os_family == "Debian" or ansible_os_family == "Pop!_OS"
-
 # - name: Install Meslo Nerd Font for Linux
 #   get_url:
 #     url: 'https://github.com/romkatv/powerlevel10k-media/raw/master/{{ item }}'
