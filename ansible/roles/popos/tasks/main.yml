@@ -1,3 +1,11 @@
 ---
+# Handle customizing popos - gnome-tweaks + clean ups
 - name: Enabling minimize, maximize, close buttons on the right of titlebar
   command: 'gsettings set org.gnome.desktop.wm.preferences button-layout ":minimize,maximize,close"'
+
+- name: Install RestrictedFormats
+  apt:
+    name: ubuntu-restricted-extras
+  become: yes
+  bcome_user: root
+  become_method: sudo

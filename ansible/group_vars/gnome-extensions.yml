@@ -1,0 +1,7 @@
+# Gnome Extensions
+
+gnome_extension_ids:
+  # Dash to Dock
+  - 307
+  # Dash to Panel
+  - 1160

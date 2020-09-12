@@ -13,3 +13,6 @@ run:
 all: build run
 
 all-dev: build-no-cache run
+
+ansible-info:
+	ansible -m setup localhost

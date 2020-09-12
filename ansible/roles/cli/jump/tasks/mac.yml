@@ -1,0 +1,5 @@
+---
+- name: Install jump via homebrew
+  homebrew:
+    name: jump
+    state: present

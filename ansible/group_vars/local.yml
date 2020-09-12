@@ -94,7 +94,7 @@ mac_cask_packages:
   - vlc
   # Note taking
   - joplin
-  - simplenote
+  # - simplenote
   - sublime-text
   # Window Management
   - lg-onscreen-control
@@ -160,6 +160,9 @@ apt_packages:
   - gnome-tweaks
 
 # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+# vs code extensions
 
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 # vs code extensions

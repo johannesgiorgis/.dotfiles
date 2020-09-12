@@ -1,0 +1,7 @@
+---
+- name: Install terminator
+  apt:
+    name: terminator
+  become: yes
+  become_user: root
+  become_method: sudo
