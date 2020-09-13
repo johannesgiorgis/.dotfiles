@@ -66,6 +66,8 @@ scripts/bootstrap.sh -> bin/dot -> install_dotfiles
 
 ## Dotfiles V2
 
+= [to-do list](todo.md)
+
 This is currently a wishlist.
 
 As I continue to customize the various scripts, I wanted more control over certain functionality - let user choose which custom program to install, not install, etc. Yet I don't want to write and go throught the trial and error of bash scripting.
@@ -91,6 +93,9 @@ Folks are using Python, Typescript to write wrapper programs around their .dotfi
 - Interesting organization: <https://github.com/tentacode/blacksmithery>
 - Gnome Extensions Inspiration: <https://github.com/jaredhocutt/ansible-gnome-extensions>
 - Customize Pop OS: <https://www.youtube.com/watch?v=LHj2ulIm7AQ>
+- Dropbox Inspirations:
+    - <https://github.com/AlbanAndrieu/ansible-dropbox>
+    - <https://github.com/Oefenweb/ansible-dropbox>
 
 ### Issues
 

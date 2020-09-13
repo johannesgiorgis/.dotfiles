@@ -1,0 +1,46 @@
+# TODO - Dotfiles V2
+
+- Install List
+    - [x] Conky
+    - [x] dropbox
+    - [ ] zoom.us
+    - [ ] Sublime Text
+    - [ ] Joplin
+    - [ ] Slack
+    - [ ] Snap
+    - [ ] PyCharm
+    - [ ] Spotify
+    - [ ] jq, csvkit
+    - [ ] authy
+    - [ ] Sublime-text
+    - [ ] Sublime-merge
+    - [ ] Whatsdesk
+    - [ ] hugo
+    - [ ] brave-browser, chrome + extensions?
+    - [ ] cowsay
+    - [ ] docker
+    - [ ] youtube downloader + ffmpeg
+    - [ ] flameshot
+    - [ ] blueman - bluetooth manager
+    - [ ] htop
+    - [ ] meld
+    - [ ] mlocate
+    - [ ] logrotate
+    - [ ] ncdu
+    - [ ] openssh
+    - [ ] pandoc
+    - [ ] rename
+    - [ ] solaar - logitech Unifying Receiver
+    - [ ] sqlitebrowser
+    - [ ] postgres
+    - [ ] timewarrior/taskwarrior
+    - [ ] teamviewer
+    - [ ] thunderbird
+    - [ ] virtualbox
+    - [ ] vlc
+    - [ ] neofetch
+- Save
+    - [ ] terminator settings
+    - [ ] conky settings
+    - [ ] gnome extension settings
+    - [ ] combine ~/notes and put in ~/Dropbox/notes -> symlink to ~/
