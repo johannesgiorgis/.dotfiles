@@ -96,6 +96,7 @@ Folks are using Python, Typescript to write wrapper programs around their .dotfi
 - Dropbox Inspirations:
     - <https://github.com/AlbanAndrieu/ansible-dropbox>
     - <https://github.com/Oefenweb/ansible-dropbox>
+- Slack role Inspiration: <https://github.com/wtanaka/ansible-role-slack>
 
 ### Issues
 

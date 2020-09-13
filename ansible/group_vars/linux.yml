@@ -38,12 +38,12 @@ apt_packages:
   - tldr
   - tmux
   - tree
-  - vim-nox
+  # - vim-nox
   - xclip
   - wget
   - zsh
   # System management tools
-  - conky-all
+  # - conky-all
   # Fonts
   - fonts-firacode
   - gnome-tweaks

@@ -1,0 +1,7 @@
+---
+# mac tasks for whatsapp
+
+- name: Install whatsapp via homebrew cask
+  homebrew_cask:
+    name: whatsapp
+    state: present

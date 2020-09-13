@@ -1,0 +1,7 @@
+---
+# mac tasks for spotify
+
+- name: Install spotify via homebrew cask
+  homebrew_cask:
+    name: spotify
+    state: present

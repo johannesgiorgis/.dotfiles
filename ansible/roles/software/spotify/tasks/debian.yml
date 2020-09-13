@@ -1,0 +1,18 @@
+---
+# debian task for spotify
+
+- block:
+    - name: Install Spotify key
+      apt_key:
+        url: https://download.spotify.com/debian/pubkey.gpg
+        state: present
+
+    - name: Install Spotify repository
+      apt_repository:
+        repo: deb http://repository.spotify.com stable non-free
+        state: present
+
+    - name: Install Spotify
+      apt:
+        name: spotify-client
+        state: present

@@ -38,7 +38,7 @@ mac_homebrew_packages:
   - fzf
   - gnupg # gpg
   - htop
-  - jump
+  # - jump
   # For displaying a notification when a command finishes
   - noti
   - putty
@@ -94,4 +94,4 @@ mac_cask_packages:
   - omnidisksweeper
   - tunnelblick
   # Video conferencing
-  - zoomus
+  # - zoomus

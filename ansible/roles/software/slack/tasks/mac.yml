@@ -1,0 +1,7 @@
+---
+# mac tasks for slack
+
+- name: Install slack via homebrew cask
+  homebrew_cask:
+    name: slack
+    state: present

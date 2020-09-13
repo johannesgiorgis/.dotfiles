@@ -1,0 +1,6 @@
+---
+# debian task for slack
+
+- name: Install Slack Debian package from the internet
+  apt:
+    deb: "https://downloads.slack-edge.com/linux_releases/slack-desktop-{{ slack_version }}-{{ machine_map[ansible_machine] }}.deb"

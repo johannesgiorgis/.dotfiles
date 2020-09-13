@@ -3,18 +3,19 @@
 - Install List
     - [x] Conky
     - [x] dropbox
-    - [ ] zoom.us
+    - [x] zoom.us
     - [ ] Sublime Text
     - [ ] Joplin
-    - [ ] Slack
-    - [ ] Snap
+    - [x] Slack
+    - [x] Snap
+        - [x] authy
+        - [x] Whatsdesk
     - [ ] PyCharm
-    - [ ] Spotify
-    - [ ] jq, csvkit
-    - [ ] authy
+    - [x] Spotify
+    - [ ] jq
+    - [ ] csvkit
     - [ ] Sublime-text
     - [ ] Sublime-merge
-    - [ ] Whatsdesk
     - [ ] hugo
     - [ ] brave-browser, chrome + extensions?
     - [ ] cowsay

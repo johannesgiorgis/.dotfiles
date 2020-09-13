@@ -1,0 +1,6 @@
+---
+# debian task for zoom
+
+- name: Install Zoom Debian package from the internet
+  apt:
+    deb: "https://zoom.us/client/latest/zoom_{{ machine_map[ansible_machine] }}.deb"
