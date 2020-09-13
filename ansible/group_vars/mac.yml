@@ -56,7 +56,7 @@ mac_homebrew_packages:
 # Mac Apps to be installed with homebrew-cask
 mac_cask_packages:
   # Backup
-  - dropbox
+  # - dropbox
   # Browsers
   - firefox
   - google-chrome

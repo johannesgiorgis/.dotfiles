@@ -32,6 +32,7 @@
     - { role: cli/jump, tags: jump }
 
     # software
+    - { role: software/dropbox, tags: dropbox }
     - { role: software/vscode, tags: vscode }
     - { role: software/obs-studio, tags: obs-studio }
     - { role: software/simplenote, tags: simplenote }
@@ -40,6 +41,9 @@
         tags: linux,
         when: ansible_os_family == "Debian" or ansible_os_family == "Pop!_OS",
       }
+
+    # linnux
+    - { role: software/conky-manager, tags: conky-manager }
 
     # mac os x
     - { role: macos, tags: macos, when: ansible_os_family == "Darwin" }
