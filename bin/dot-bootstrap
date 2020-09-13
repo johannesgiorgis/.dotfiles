@@ -1,53 +1,99 @@
 #!/usr/bin/env bash
 
-set -e
+###################################################################
+#
+# dot-bootstrap Script
+# ----------------
+# Runs ansible playbooks for bootstrapping/updating system
+#
+###################################################################
 
-start=$(date +%s)
+set -e
 
 export SUPPORT_DIR="${HOME}/.dotfiles/support"
 source "${SUPPORT_DIR}/common-utilities.sh"
 
-echo "${SCRIPT_BREAK}"
-print_info "$0 Started"
+function usage() {
+  echo "ERROR: Script requires the following inputs:"
+  echo "Usage:
+    ${0##*/} -t zsh -a
+    "
+  echo "Options:
+    -t: tag for ansible (default: all)
+    -a: enable ask_become_pass"
+}
 
-tags="$1"
+main() {
 
-if [[ -z "$tags" ]]
-then
-    tags="all"
-fi
+  ask_become_pass="false"
+  tags="all"
 
-if ! [ -x "$(command -v ansible)" ]
-then
-    echo "Installing ansible..."
-    if [[ "$(uname)" == "Darwin" ]]
-    then
-        echo "On Mac..."
-        brew install ansible #@2.9.6
-        brew pin ansible
-    else
-        release_code=$(lsb_release -c -s)
-        echo "On Linux '$release_code'..."
-        if [[ "$release_code" == "bionic" ]]; then
-            sudo apt-add-repository ppa:ansible/ansible -y
-            sudo apt update
-            sudo apt install ansible=2.9.9-1ppa~bionic -V -y
-        elif [[ "$release_code" == "focal" ]]; then
-            sudo apt update
-            sudo apt install ansible -V -y
-        else
-            echo "ERROR: Unknown linux release code - '$release_code'. Exiting with error"
-            exit 1
-        fi
-    fi
-fi
+  options="t:a"
+  while getopts "$options" opt; do
+    case $opt in
+      a ) ask_become_pass="true" ;;
+      t ) tags="$OPTARG" ;;
+      : ) echo "Option -$OPTARG requires an argument." >&2; usage; exit 1 ;;
+      \? ) echo "Invalid option: -$OPTARG" >&2; usage; exit 1 ;;
+    esac
+  done
+  shift $((OPTIND -1))
 
-#ansible-playbook -i ~/.dotfiles/hosts ~/.dotfiles/ansible/dotfiles.yml --ask-become-pass --tags "$tags"
-ansible-playbook -i ~/.dotfiles/ansible/hosts ~/.dotfiles/ansible/dotfiles.yml --tags "$tags" --ask-become-pass
+  start=$(date +%s)
+  echo "${SCRIPT_BREAK}"
+  print_info "$0 Started"
+  
+  print_info "tags:${tags}"
+  print_info "ask_become_pass?${ask_become_pass}"
 
-end=$(date +%s)
-runtime=$((end-start))
-runtime_min=$(convert_seconds_to_min $runtime)
+  ensure_ansible_is_present
 
-finished "$0 Completed with $runtime seconds ($runtime_min mins)"
-echo "${SCRIPT_BREAK}"
+  if [[ "$ask_become_pass" == "true" ]]; then
+    ansible-playbook -i ~/.dotfiles/ansible/hosts ~/.dotfiles/ansible/dotfiles.yml --tags "$tags" --ask-become-pass
+  
+  else
+    ansible-playbook -i ~/.dotfiles/ansible/hosts ~/.dotfiles/ansible/dotfiles.yml --tags "$tags"
+  fi
+  
+  end=$(date +%s)
+  runtime=$((end-start))
+  runtime_min=$(convert_seconds_to_min $runtime)
+  
+  finished "$0 Completed with $runtime seconds ($runtime_min mins)"
+  echo "${SCRIPT_BREAK}"
+}
+
+
+function ensure_ansible_is_present() {
+  print_info "› Ensuring ansible is present..."
+  if [ -x "$(command -v ansible)" ]
+  then
+    success "ansible is present - proceeding..."
+    return 0
+  fi
+
+  # need to install ansible
+  print_info "› Installing ansible..."
+  if [[ "$(uname)" == "Darwin" ]]
+  then
+      print_info "› On Mac..."
+      brew install ansible #@2.9.6
+      brew pin ansible
+  else
+      release_code=$(lsb_release -c -s)
+      print_info "› On Linux '$release_code'..."
+      if [[ "$release_code" == "bionic" ]]; then
+          sudo apt-add-repository ppa:ansible/ansible -y
+          sudo apt update
+          sudo apt install ansible=2.9.9-1ppa~bionic -V -y
+      elif [[ "$release_code" == "focal" ]]; then
+          sudo apt update
+          sudo apt install ansible -V -y
+      else
+          fail "ERROR: Unknown linux release code - '$release_code'. Exiting with error"
+          exit 1
+      fi
+  fi
+}
+
+main "$@"
