@@ -1,7 +1,5 @@
 - name: Set up local workstation
   hosts: local
-  become: yes
-  become_method: sudo
   roles:
     # infrastructure
     - { role: package_manager, tags: ["package_manager", "bootstrap"] }
@@ -44,6 +42,7 @@
     - { role: software/spotify, tags: spotify }
     - { role: software/slack, tags: slack }
     - { role: software/zoom, tags: zoom }
+    - { role: software/kite, tags: kite }
     - {
         role: software/linux-installation,
         tags: linux,

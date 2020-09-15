@@ -1,0 +1,7 @@
+---
+# mac tasks for kite
+
+- name: Install kite via homebrew cask
+  homebrew_cask:
+    name: kite
+    state: present

@@ -1,0 +1,25 @@
+---
+# debian task for kite
+
+- block:
+    - name: Create temporary download directory
+      tempfile:
+        state: directory
+        suffix: ".kite_installation_download_dir"
+      register: kite_installation_download_dir
+
+    - name: Download kite installer to {{ kite_installation_download_dir.path }}
+      get_url:
+        url: https://linux.kite.com/dls/linux/current
+        dest: "{{ kite_installation_download_dir.path }}/"
+        mode: a+x
+      register: r_kite_installer_download
+
+    - name: Install kite via {{ r_kite_installer_download.dest }}
+      shell: "{{ r_kite_installer_download.dest }} --install"
+  always:
+    - name: Delete installation download directory - {{ kite_installation_download_dir.path }}
+      file:
+        path: "{{ kite_installation_download_dir.path }}"
+        state: absent
+      changed_when: no
