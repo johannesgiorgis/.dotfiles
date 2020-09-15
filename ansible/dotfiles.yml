@@ -42,6 +42,7 @@
     - { role: software/spotify, tags: spotify }
     - { role: software/slack, tags: slack }
     - { role: software/zoom, tags: zoom }
+    - { role: software/brave-browser, tags: brave-browser }
     - { role: software/kite, tags: kite }
     - {
         role: software/linux-installation,

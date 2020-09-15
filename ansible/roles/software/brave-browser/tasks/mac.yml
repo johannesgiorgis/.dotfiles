@@ -1,0 +1,7 @@
+---
+# mac tasks for brave-browser
+
+- name: Install brave-browser via homebrew cask
+  homebrew_cask:
+    name: brave-browser
+    state: present

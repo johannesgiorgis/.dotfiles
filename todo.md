@@ -4,8 +4,8 @@
     - [x] Conky
     - [x] dropbox
     - [x] zoom.us
-    - [ ] Sublime Text
     - [ ] Joplin
+    - [x] Kite
     - [x] Slack
     - [x] Snap
         - [x] authy
@@ -17,7 +17,8 @@
     - [ ] Sublime-text
     - [ ] Sublime-merge
     - [ ] hugo
-    - [ ] brave-browser, chrome + extensions?
+    - [x] brave-browser
+    - [ ] chrome + extensions?
     - [ ] cowsay
     - [ ] docker
     - [ ] youtube downloader + ffmpeg
