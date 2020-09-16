@@ -46,3 +46,4 @@
     - [ ] conky settings
     - [ ] gnome extension settings
     - [ ] combine ~/notes and put in ~/Dropbox/notes -> symlink to ~/
+    - [ ] set up Sublime-text packages

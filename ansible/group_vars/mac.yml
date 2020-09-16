@@ -85,7 +85,7 @@ mac_cask_packages:
   # Note taking
   - joplin
   # - simplenote
-  - sublime-text
+  # - sublime-text
   # Window Management
   - lg-onscreen-control
   - rectangle
