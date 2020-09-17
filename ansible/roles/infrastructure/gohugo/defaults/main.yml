@@ -1,0 +1,7 @@
+---
+# defaults for asdf-gohugo
+
+gohugo_plugin_url: https://bitbucket.org/mgladdish/asdf-gohugo.git
+
+gohugo_versions:
+  - extended_0.75.0

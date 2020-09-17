@@ -1,0 +1,9 @@
+---
+# debian task for jq
+
+- name: Install jq
+  apt:
+    name: jq
+  become: yes
+  become_user: root
+  become_method: sudo

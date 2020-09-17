@@ -1,0 +1,7 @@
+---
+# mac task for jq
+
+- name: Install jq via homebrew
+  homebrew:
+    name: jq
+    state: present

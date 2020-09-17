@@ -81,9 +81,9 @@ mac_cask_packages:
   - logitech-options
   - logitech-unifying
   # Media
-  - vlc
+  # - vlc
   # Note taking
-  - joplin
+  # - joplin
   # - simplenote
   # - sublime-text
   # Window Management

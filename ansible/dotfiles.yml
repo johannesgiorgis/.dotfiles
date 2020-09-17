@@ -24,6 +24,7 @@
     - { role: infrastructure/nodejs, tags: nodejs }
     - { role: infrastructure/python, tags: python }
     - { role: infrastructure/rust, tags: rust }
+    - { role: infrastructure/gohugo, tags: gohugo }
 
     # - { role: git, tags: ["git"] }
     # - { role: apt, tags: ["apt"] }
@@ -31,6 +32,7 @@
     # cli
     - { role: cli/vim, tags: vim }
     - { role: cli/jump, tags: jump }
+    - { role: cli/jq, tags: jq }
 
     # software
     - { role: software/authy, tags: authy }
@@ -45,6 +47,8 @@
     - { role: software/zoom, tags: zoom }
     - { role: software/brave-browser, tags: brave-browser }
     - { role: software/kite, tags: kite }
+    - { role: software/joplin, tags: joplin }
+    - { role: software/vlc, tags: vlc }
     - {
         role: software/linux-installation,
         tags: linux,

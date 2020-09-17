@@ -1,0 +1,7 @@
+---
+# mac tasks for vlc
+
+- name: Install vlc via homebrew cask
+  homebrew_cask:
+    name: vlc
+    state: present

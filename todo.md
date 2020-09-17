@@ -4,7 +4,7 @@
     - [x] Conky
     - [x] dropbox
     - [x] zoom.us
-    - [ ] Joplin
+    - [x] Joplin
     - [x] Kite
     - [x] Slack
     - [x] Snap
@@ -12,11 +12,11 @@
         - [x] Whatsdesk
     - [ ] PyCharm
     - [x] Spotify
-    - [ ] jq
+    - [x] jq
     - [ ] csvkit
-    - [ ] Sublime-text
+    - [x] Sublime-text
     - [ ] Sublime-merge
-    - [ ] hugo
+    - [x] hugo
     - [x] brave-browser
     - [ ] chrome + extensions?
     - [ ] cowsay
@@ -39,7 +39,7 @@
     - [ ] teamviewer
     - [ ] thunderbird
     - [ ] virtualbox
-    - [ ] vlc
+    - [x] vlc
     - [ ] neofetch
 - Save
     - [ ] terminator settings

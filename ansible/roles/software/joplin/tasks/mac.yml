@@ -1,0 +1,7 @@
+---
+# mac tasks for joplin
+
+- name: Install joplin via homebrew cask
+  homebrew_cask:
+    name: joplin
+    state: present
