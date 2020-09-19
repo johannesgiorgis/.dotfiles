@@ -13,6 +13,10 @@ set -e
 export SUPPORT_DIR="${HOME}/.dotfiles/support"
 source "${SUPPORT_DIR}/common-utilities.sh"
 
+ANSIBLE_DIR="${HOME}/.dotfiles/ansible"
+PLAYBOOK_FILE="${ANSIBLE_DIR}/dotfiles.yml"
+HOSTS_FILE="${ANSIBLE_DIR}/hosts"
+
 function usage() {
   echo "ERROR: Script requires the following inputs:"
   echo "Usage:
@@ -26,7 +30,7 @@ function usage() {
 main() {
 
   ask_become_pass="false"
-  tags="all"
+  tags=""
 
   options="t:a"
   while getopts "$options" opt; do
@@ -43,16 +47,27 @@ main() {
   echo "${SCRIPT_BREAK}"
   print_info "$0 Started"
   
-  print_info "tags:${tags}"
+  print_info "playbook_file:${PLAYBOOK_FILE}"
+  print_info "tags:'${tags}'"
   print_info "ask_become_pass?${ask_become_pass}"
 
   ensure_ansible_is_present
 
+  # list available tags
+  if [[ "$tags" == "" ]]; then
+    available_tags=$(cat "${PLAYBOOK_FILE}" | grep -o '\[\([^]]\+\)\]' | sed 's/\[//; s/\]//' | sort)
+    available_tags="all\n$available_tags"
+    echo -e "\nAvailable Tags:"
+    echo -e "$available_tags"
+    exit 0
+  fi
+
+
   if [[ "$ask_become_pass" == "true" ]]; then
-    ansible-playbook -i ~/.dotfiles/ansible/hosts ~/.dotfiles/ansible/dotfiles.yml --tags "$tags" --ask-become-pass
+    ansible-playbook -i "${HOSTS_FILE}" "${PLAYBOOK_FILE}" --tags "$tags" --ask-become-pass
   
   else
-    ansible-playbook -i ~/.dotfiles/ansible/hosts ~/.dotfiles/ansible/dotfiles.yml --tags "$tags"
+    ansible-playbook -i "${HOSTS_FILE}" "${PLAYBOOK_FILE}" --tags "$tags"
   fi
   
   end=$(date +%s)
