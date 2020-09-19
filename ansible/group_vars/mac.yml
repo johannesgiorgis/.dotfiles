@@ -21,28 +21,28 @@ mac_homebrew_packages:
   - xz
   - zlib
   # Python Utilities
-  - black
-  - flake8
-  - pipenv
+  # - black
+  # - flake8
+  # - pipenv
   # Task Management
   - tasksh
   - timewarrior
   # Utilities
   - ack
-  - ansible
+  # - ansible
   - cask
   - coreutils
-  - csvkit
+  # - csvkit
   - curl
   - entr
   - fzf
   - gnupg # gpg
-  - htop
+  # - htop
   # - jump
   # For displaying a notification when a command finishes
   - noti
   - putty
-  - shellcheck
+  # - shellcheck
   - speedtest-cli
   - tldr
   - tree
@@ -50,8 +50,8 @@ mac_homebrew_packages:
   - wget
   - wifi-password # what's the wifi password?
   # Youtube download
-  - ffmpeg
-  - youtube-dl
+  # - ffmpeg
+  # - youtube-dl
 
 # Mac Apps to be installed with homebrew-cask
 mac_cask_packages:
@@ -65,16 +65,16 @@ mac_cask_packages:
   # Development Tools
   - beekeeper-studio
   - iterm2
-  - jetbrains-toolbox
+  # - jetbrains-toolbox
   - lepton
   - meld
   - omnidb
   - openvpn-connect
   - pgadmin4
   - postman
-  - pycharm
+  # - pycharm
   - sourcetree
-  - sublime-merge
+  # - sublime-merge
   # - visual-studio-code
   # Logitech
   - logitech-control-center

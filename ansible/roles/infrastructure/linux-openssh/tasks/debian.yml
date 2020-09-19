@@ -1,0 +1,24 @@
+---
+# debian task for linux-openssh
+
+- name: Install openssh-server and openssh-client
+  package:
+    name: "{{ sshd_packages }}"
+    state: lastest
+
+  # example output: OpenSSH_5.3p1, OpenSSL 1.0.1e-fips 11 Feb 2013
+- name: register ssh version
+  command: ssh -V
+  register: sshd_version
+  check_mode: no
+  changed_when: False
+
+- name: template sshd_config
+- meta: flush_handlers
+
+- name: Install snap
+  apt:
+    name: snapd
+  # become: yes
+  # become_user: root
+  # become_method: sudo

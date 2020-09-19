@@ -1,0 +1,9 @@
+---
+# debian task for csvkit
+
+- name: Install csvkit
+  apt:
+    name: csvkit
+  become: yes
+  become_user: root
+  become_method: sudo

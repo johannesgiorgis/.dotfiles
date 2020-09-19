@@ -1,0 +1,7 @@
+---
+# mac task for sublime-merge
+
+- name: Install Sublime Merge (brew-cask)
+  homebrew_cask:
+    name: sublime-merge
+    state: present

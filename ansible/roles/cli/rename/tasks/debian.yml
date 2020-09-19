@@ -1,0 +1,9 @@
+---
+# debian task for rename
+
+- name: Install rename
+  apt:
+    name: rename
+  become: yes
+  become_user: root
+  become_method: sudo

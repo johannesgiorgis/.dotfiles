@@ -1,0 +1,9 @@
+---
+# debian task for ncdu
+
+- name: Install ncdu
+  apt:
+    name: ncdu
+  become: yes
+  become_user: root
+  become_method: sudo

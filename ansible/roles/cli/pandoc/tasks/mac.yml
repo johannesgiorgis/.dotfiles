@@ -1,0 +1,7 @@
+---
+# mac task for pandoc
+
+- name: Install pandoc via homebrew
+  homebrew:
+    name: pandoc
+    state: present

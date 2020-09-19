@@ -1,0 +1,9 @@
+---
+# debian task for neofetch
+
+- name: Install neofetch
+  apt:
+    name: neofetch
+  become: yes
+  become_user: root
+  become_method: sudo

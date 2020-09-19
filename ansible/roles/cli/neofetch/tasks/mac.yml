@@ -1,0 +1,7 @@
+---
+# mac task for neofetch
+
+- name: Install neofetch via homebrew
+  homebrew:
+    name: neofetch
+    state: present

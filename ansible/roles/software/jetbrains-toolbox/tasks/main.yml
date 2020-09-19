@@ -1,0 +1,8 @@
+---
+# main task for jetbrains-toolbox
+
+- import_tasks: debian.yml
+  when: ansible_os_family in ["Debian", "Pop!_OS"]
+
+- import_tasks: mac.yml
+  when: ansible_os_family == "Darwin"

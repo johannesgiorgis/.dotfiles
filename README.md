@@ -98,6 +98,9 @@ Folks are using Python, Typescript to write wrapper programs around their .dotfi
     - <https://github.com/Oefenweb/ansible-dropbox>
 - Slack role Inspiration: <https://github.com/wtanaka/ansible-role-slack>
 - Sublime-text role Inspiration: <https://github.com/chaosmail/ansible-roles-sublime-text>
+- Docker role: <https://github.com/geerlingguy/ansible-role-docker>
+- PyCharm role: <https://github.com/Oefenweb/ansible-pycharm>
+- Handle Apt & Homebrew with Package: <https://stackoverflow.com/questions/63242221/use-ansible-package-module-to-work-with-apt-and-homebrew>
 
 ### Issues
 

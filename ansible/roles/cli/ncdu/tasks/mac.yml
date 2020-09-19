@@ -1,0 +1,7 @@
+---
+# mac task for ncdu
+
+- name: Install ncdu via homebrew
+  homebrew:
+    name: ncdu
+    state: present

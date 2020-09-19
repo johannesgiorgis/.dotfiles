@@ -1,0 +1,7 @@
+---
+# mac task for youtube-dl
+
+- name: Install youtube-dl & ffmpeg via homebrew
+  homebrew:
+    name: youtube-dl, ffmpeg
+    state: present

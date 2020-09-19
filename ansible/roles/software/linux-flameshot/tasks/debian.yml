@@ -1,0 +1,11 @@
+---
+# debian task for flameshot
+
+- name: Install Flameshot
+  apt:
+    name: flameshot
+    state: present
+    update_cache: true
+  become: yes
+  become_user: root
+  become_method: sudo

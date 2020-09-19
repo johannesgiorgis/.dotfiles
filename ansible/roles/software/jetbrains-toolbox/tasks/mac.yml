@@ -1,0 +1,7 @@
+---
+# mac task for jetbrains-toolbox
+
+- name: Install Jetbrains Toolsbox (brew-cask)
+  homebrew_cask:
+    name: jetbrains-toolbox
+    state: present

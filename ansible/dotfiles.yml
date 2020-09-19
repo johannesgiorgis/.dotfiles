@@ -2,61 +2,71 @@
   hosts: local
   roles:
     # infrastructure
-    - { role: package_manager, tags: ["package_manager", "bootstrap"] }
-    - { role: infrastructure/terminator, tags: terminator }
-    - { role: infrastructure/gnome-extensions, tags: gnome-extensions }
-    - { role: infrastructure/zsh, tags: zsh }
-    - { role: infrastructure/snap, tags: snap }
-    - { role: infrastructure/asdf, tags: asdf }
-    - {
-        role: linux,
-        tags: linux,
-        when: ansible_os_family == "Debian" or ansible_os_family == "Pop!_OS",
-      }
+    - { role: package_manager, tags: [package_manager, bootstrap] }
+    - { role: infrastructure/terminator, tags: [terminator] }
+    - { role: infrastructure/gnome-extensions, tags: [gnome-extensions] }
+    - { role: infrastructure/zsh, tags: [zsh] }
+    - { role: infrastructure/linux-snap, tags: [linux-snap] }
+    - { role: infrastructure/asdf, tags: [asdf] }
+    # - {
+    #     role: linux,
+    #     tags: [linux],
+    #     when: ansible_os_family == "Debian" or ansible_os_family == "Pop!_OS",
+    #   }
     - {
         role: infrastructure/popos,
-        tags: popos,
+        tags: [popos],
         when: ansible_os_family == "Pop!_OS",
       }
 
     # programming languages
-    - { role: infrastructure/golang, tags: golang }
-    - { role: infrastructure/nodejs, tags: nodejs }
-    - { role: infrastructure/python, tags: python }
-    - { role: infrastructure/rust, tags: rust }
-    - { role: infrastructure/gohugo, tags: gohugo }
+    - { role: infrastructure/golang, tags: [golang] }
+    - { role: infrastructure/nodejs, tags: [nodejs] }
+    - { role: infrastructure/python, tags: [python] }
+    - { role: infrastructure/rust, tags: [rust] }
+    - { role: infrastructure/gohugo, tags: [gohugo] }
 
-    # - { role: git, tags: ["git"] }
-    # - { role: apt, tags: ["apt"] }
+    # - { role: git, tags: [git] }
+    # - { role: apt, tags: [apt] }
 
     # cli
-    - { role: cli/vim, tags: vim }
-    - { role: cli/jump, tags: jump }
-    - { role: cli/jq, tags: jq }
+    - { role: cli/vim, tags: [vim] }
+    - { role: cli/jump, tags: [jump] }
+    - { role: cli/htop, tags: [htop] }
+    - { role: cli/jq, tags: [jq] }
+    - { role: cli/rename, tags: [rename] }
+    - { role: cli/pandoc, tags: [pandoc] }
+    - { role: cli/youtube-dl, tags: [youtube-dl] }
+    - { role: cli/csvkit, tags: [csvkit] }
+    - { role: cli/neofetch, tags: [neofetch] }
+    - { role: cli/shellcheck, tags: [shellcheck] }
 
     # software
-    - { role: software/authy, tags: authy }
-    - { role: software/dropbox, tags: dropbox }
-    - { role: software/vscode, tags: vscode }
-    - { role: software/obs-studio, tags: obs-studio }
-    - { role: software/simplenote, tags: simplenote }
-    - { role: software/whatsapp, tags: whatsapp }
-    - { role: software/spotify, tags: spotify }
-    - { role: software/sublime-text, tags: sublime-text }
-    - { role: software/slack, tags: slack }
-    - { role: software/zoom, tags: zoom }
-    - { role: software/brave-browser, tags: brave-browser }
-    - { role: software/kite, tags: kite }
-    - { role: software/joplin, tags: joplin }
-    - { role: software/vlc, tags: vlc }
+    - { role: software/authy, tags: [authy] }
+    - { role: software/dropbox, tags: [dropbox] }
+    - { role: software/vscode, tags: [vscode] }
+    - { role: software/obs-studio, tags: [obs-studio] }
+    - { role: software/simplenote, tags: [simplenote] }
+    - { role: software/whatsapp, tags: [whatsapp] }
+    - { role: software/spotify, tags: [spotify] }
+    - { role: software/sublime-text, tags: [sublime-text] }
+    - { role: software/sublime-merge, tags: [sublime-merge] }
+    - { role: software/slack, tags: [slack] }
+    - { role: software/zoom, tags: [zoom] }
+    - { role: software/brave-browser, tags: [brave-browser] }
+    - { role: software/kite, tags: [kite] }
+    - { role: software/joplin, tags: [joplin] }
+    - { role: software/vlc, tags: [vlc] }
+    - { role: software/linux-flameshot, tags: [linux-flameshot] }
+    - { role: software/jetbrains-toolbox, tags: [jetbrains-toolbox] }
     - {
         role: software/linux-installation,
-        tags: linux,
+        tags: [linux],
         when: ansible_os_family == "Debian" or ansible_os_family == "Pop!_OS",
       }
 
     # linnux
-    - { role: software/conky-manager, tags: conky-manager }
+    - { role: software/conky-manager, tags: [conky-manager] }
 
     # mac os x
-    - { role: macos, tags: macos, when: ansible_os_family == "Darwin" }
+    - { role: macos, tags: [macos], when: ansible_os_family == "Darwin" }

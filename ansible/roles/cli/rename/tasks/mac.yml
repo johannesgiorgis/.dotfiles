@@ -1,0 +1,7 @@
+---
+# mac task for rename
+
+- name: Install rename via homebrew
+  homebrew:
+    name: rename
+    state: present

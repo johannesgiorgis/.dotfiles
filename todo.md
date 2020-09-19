@@ -10,28 +10,32 @@
     - [x] Snap
         - [x] authy
         - [x] Whatsdesk
-    - [ ] PyCharm
+    - [x] PyCharm
     - [x] Spotify
     - [x] jq
-    - [ ] csvkit
+    - [x] csvkit
     - [x] Sublime-text
-    - [ ] Sublime-merge
+    - [x] Sublime-merge
     - [x] hugo
     - [x] brave-browser
+    - [x] youtube downloader + ffmpeg
+    - [x] flameshot
+    - [x] htop
+    - [x] ncdu
+    - [x] pandoc
+    - [x] rename
+    - [x] vlc
+    - [x] neofetch
+    - [x] shellcheck
     - [ ] chrome + extensions?
     - [ ] cowsay
+    - [ ] fortune
     - [ ] docker
-    - [ ] youtube downloader + ffmpeg
-    - [ ] flameshot
     - [ ] blueman - bluetooth manager
-    - [ ] htop
     - [ ] meld
     - [ ] mlocate
     - [ ] logrotate
-    - [ ] ncdu
-    - [ ] openssh
-    - [ ] pandoc
-    - [ ] rename
+    - [ ] openssh (_in progress_)
     - [ ] solaar - logitech Unifying Receiver
     - [ ] sqlitebrowser
     - [ ] postgres
@@ -39,8 +43,6 @@
     - [ ] teamviewer
     - [ ] thunderbird
     - [ ] virtualbox
-    - [x] vlc
-    - [ ] neofetch
 - Save
     - [ ] terminator settings
     - [ ] conky settings

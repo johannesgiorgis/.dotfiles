@@ -1,0 +1,7 @@
+---
+# mac task for htop
+
+- name: Install htop via homebrew
+  homebrew:
+    name: htop
+    state: present
