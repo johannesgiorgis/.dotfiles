@@ -1,8 +1,29 @@
 ---
 # main task for youtube-dl
 
-- import_tasks: debian.yml
-  when: ansible_os_family in [ "Debian", "Pop!_OS" ]
+- name: youtube-dl and dependencies are present
+  become: "{{ should_be_root }}"
 
-- import_tasks: mac.yml
-  when: ansible_os_family == "Darwin"
+  block:
+    - name: ffmpeg is present
+      when: ansible_pkg_mgr != 'brew'
+      package:
+        name: ffmpeg
+        state: latest
+
+    - name: ffmpeg is present (brew)
+      when: ansible_pkg_mgr == 'brew'
+      homebrew:
+        name: ffmpeg
+        state: head
+        install_options: with-chromaprint, with-fdk-aac, with-etc-etc
+
+    - name: atomicparsley is present
+      package:
+        name: atomicparsley
+        state: latest
+
+    - name: youtube-dl is present
+      package:
+        name: youtube-dl
+        state: latest

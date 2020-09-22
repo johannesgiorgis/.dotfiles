@@ -1,0 +1,11 @@
+---
+# main task for meld
+
+- name: meld is present
+  become: "{{ should_be_root }}"
+
+  block:
+    - name: meld is present
+      package:
+        name: meld
+        state: latest

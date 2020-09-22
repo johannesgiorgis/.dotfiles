@@ -1,9 +1,0 @@
----
-# debian task for youtube-dl
-
-- name: Install youtube-dl & ffmpeg
-  apt:
-    name: youtube-dl,ffmpeg
-  become: yes
-  become_user: root
-  become_method: sudo

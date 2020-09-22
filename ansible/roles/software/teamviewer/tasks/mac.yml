@@ -1,0 +1,7 @@
+---
+# mac task for teamviewer
+
+- name: Install Teamviewer (brew-cask)
+  homebrew_cask:
+    name: teamviewer
+    state: present
