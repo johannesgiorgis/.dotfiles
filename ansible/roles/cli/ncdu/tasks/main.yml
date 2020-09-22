@@ -1,8 +1,11 @@
 ---
 # main task for ncdu
 
-- import_tasks: debian.yml
-  when: ansible_os_family in [ "Debian", "Pop!_OS" ]
+- name: ncdu is present
+  become: "{{ should_be_root }}"
 
-- import_tasks: mac.yml
-  when: ansible_os_family == "Darwin"
+  block:
+    - name: ncdu is present
+      package:
+        name: ncdu
+        state: latest

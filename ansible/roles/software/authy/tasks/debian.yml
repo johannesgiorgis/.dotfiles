@@ -1,7 +1,0 @@
----
-# debian task for authy
-
-- name: Install Authy via snap with option --channel=beta
-  snap:
-    name: authy
-    channel: beta

@@ -1,17 +1,13 @@
 ---
+# debian tasks for obs-studio
+
 - name: Add OBS Studio repository
   apt_repository:
     repo: "ppa:obsproject/obs-studio"
     state: present
     codename: trusty
-  become: yes
-  become_user: root
-  become_method: sudo
 
 - name: Update repositories cache and install obs-studio package
   apt:
     name: obs-studio
     update_cache: yes
-  become: yes
-  become_user: root
-  become_method: sudo

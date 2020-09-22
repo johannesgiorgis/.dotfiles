@@ -1,5 +1,0 @@
-- name: Install vim-nox with apt
-  apt:
-    name: vim-nox
-    state: present
-  become_method: sudo

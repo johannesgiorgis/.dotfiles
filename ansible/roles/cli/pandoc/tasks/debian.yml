@@ -1,9 +1,0 @@
----
-# debian task for pandoc
-
-- name: Install pandoc
-  apt:
-    name: pandoc
-  become: yes
-  become_user: root
-  become_method: sudo

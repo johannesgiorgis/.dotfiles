@@ -6,7 +6,8 @@
     path: ~/.local/share/JetBrains/Toolbox
   register: st_jetbrains_toolbox
 
-- block:
+- name: Installing JetBrains Toolbox
+  block:
     - name: Get available releases
       uri:
         url: https://data.services.jetbrains.com/products/releases?code=TBA&type=release

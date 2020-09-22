@@ -5,8 +5,11 @@
   roles:
     # infrastructure
     - { role: package_manager, tags: [package_manager, bootstrap] }
-    - { role: infrastructure/terminator, tags: [terminator] }
-    - { role: infrastructure/gnome-extensions, tags: [gnome-extensions] }
+    - { role: infrastructure/linux-terminator, tags: [linux-terminator] }
+    - {
+        role: infrastructure/linux-gnome-extensions,
+        tags: [linux-gnome-extensions],
+      }
     - { role: infrastructure/zsh, tags: [zsh] }
     - { role: infrastructure/linux-snap, tags: [linux-snap] }
     - { role: infrastructure/asdf, tags: [asdf] }
@@ -46,6 +49,7 @@
 
     # software
     - { role: software/authy, tags: [authy] }
+    - { role: software/linux-conky-manager, tags: [linux-conky-manager] }
     - { role: software/dropbox, tags: [dropbox] }
     - { role: software/vscode, tags: [vscode] }
     - { role: software/obs-studio, tags: [obs-studio] }
@@ -70,9 +74,6 @@
         tags: [linux],
         when: ansible_os_family == "Debian" or ansible_os_family == "Pop!_OS",
       }
-
-    # linnux
-    - { role: software/conky-manager, tags: [conky-manager] }
 
     # mac os x
     - { role: macos, tags: [macos], when: ansible_os_family == "Darwin" }

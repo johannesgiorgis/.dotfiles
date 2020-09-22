@@ -1,5 +1,11 @@
 ---
-- import_tasks: debian.yml
-  when: ansible_os_family == "Debian" or ansible_os_family == "Pop!_OS"
-# - import_tasks: mac.yml
-#   when: ansible_os_family == "Darwin"
+# main takss for obs-studio
+
+- name: obs-studio is present
+  become: "{{ should_be_root }}"
+
+  block:
+    - import_tasks: debian.yml
+      when: ansible_os_family in ["Debian", "Pop!_OS"]
+    # - import_tasks: mac.yml
+    #   when: ansible_os_family == "Darwin"

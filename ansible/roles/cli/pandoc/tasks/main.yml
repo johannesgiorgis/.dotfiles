@@ -1,8 +1,11 @@
 ---
 # main task for pandoc
 
-- import_tasks: debian.yml
-  when: ansible_os_family in [ "Debian", "Pop!_OS" ]
+- name: pandoc is present
+  become: "{{ should_be_root }}"
 
-- import_tasks: mac.yml
-  when: ansible_os_family == "Darwin"
+  block:
+    - name: pandoc is present
+      package:
+        name: pandoc
+        state: latest

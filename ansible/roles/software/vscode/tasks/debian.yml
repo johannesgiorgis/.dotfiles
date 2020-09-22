@@ -1,28 +1,26 @@
 ---
-- name: install dependencies (apt)
-  become: yes
-  apt:
-    name:
-      - software-properties-common
-      - apt-transport-https
-      - wget
-    state: present
+- name: Install vscode and dependencies for debian system
+  block:
+    - name: install dependencies (apt)
+      apt:
+        name:
+          - software-properties-common
+          - apt-transport-https
+          - wget
+        state: present
 
-- name: install key (apt)
-  become: yes
-  apt_key:
-    url: "{{ visual_studio_code_mirror }}/keys/microsoft.asc"
-    state: present
+    - name: install key (apt)
+      apt_key:
+        url: "{{ visual_studio_code_mirror }}/keys/microsoft.asc"
+        state: present
 
-- name: Install VS Code repo (apt)
-  become: yes
-  apt_repository:
-    repo: "deb [arch=amd64] {{ visual_studio_code_mirror }}/repos/vscode stable main"
-    filename: vscode
-    state: present
+    - name: Install VS Code repo (apt)
+      apt_repository:
+        repo: "deb [arch=amd64] {{ visual_studio_code_mirror }}/repos/vscode stable main"
+        filename: vscode
+        state: present
 
-- name: install VS Code (apt)
-  become: yes
-  apt:
-    name: "{{ visual_studio_code_package }}{{ (visual_studio_code_version | length > 0) | ternary('=' + visual_studio_code_version, '') }}"
-    state: present
+    - name: install VS Code (apt)
+      apt:
+        name: "{{ visual_studio_code_package }}{{ (visual_studio_code_version | length > 0) | ternary('=' + visual_studio_code_version, '') }}"
+        state: present

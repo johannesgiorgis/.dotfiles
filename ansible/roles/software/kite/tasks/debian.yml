@@ -1,7 +1,8 @@
 ---
 # debian task for kite
 
-- block:
+- name: kite is present for debian system
+  block:
     - name: Create temporary download directory
       tempfile:
         state: directory

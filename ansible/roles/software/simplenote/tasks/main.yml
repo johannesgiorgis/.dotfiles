@@ -1,6 +1,12 @@
 ---
-- import_tasks: debian.yml
-  when: ansible_os_family == "Debian" or ansible_os_family == "Pop!_OS"
+# main task for simplenote
 
-- import_tasks: mac.yml
-  when: ansible_os_family == "Darwin"
+- name: simplenote is present
+  become: "{{ should_be_root }}"
+
+  block:
+    - import_tasks: debian.yml
+      when: ansible_os_family in ["Debian", "Pop!_OS"]
+
+    - import_tasks: mac.yml
+      when: ansible_os_family == "Darwin"

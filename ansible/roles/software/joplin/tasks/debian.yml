@@ -1,7 +1,8 @@
 ---
 # debian task for joplin
 
-- block:
+- name: jopiln is present for debian machine
+  block:
     - name: Create temporary download directory
       tempfile:
         state: directory

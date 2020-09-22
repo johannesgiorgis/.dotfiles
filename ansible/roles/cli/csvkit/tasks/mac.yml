@@ -1,7 +1,0 @@
----
-# mac task for csvkit
-
-- name: Install csvkit via homebrew
-  homebrew:
-    name: csvkit
-    state: present

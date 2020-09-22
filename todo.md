@@ -27,12 +27,12 @@
     - [x] vlc
     - [x] neofetch
     - [x] shellcheck
-    - [ ] chrome + extensions?
-    - [ ] cowsay
-    - [ ] fortune
+    - [x] chrome + extensions?
+    - [x] cowsay
+    - [x] fortune
     - [ ] docker
     - [ ] blueman - bluetooth manager
-    - [ ] meld
+    - [x] meld
     - [ ] mlocate
     - [ ] logrotate
     - [ ] openssh (_in progress_)
@@ -40,7 +40,7 @@
     - [ ] sqlitebrowser
     - [ ] postgres
     - [ ] timewarrior/taskwarrior
-    - [ ] teamviewer
+    - [ ] teamviewer (_incomplete - facing issues installing_)
     - [ ] thunderbird
     - [ ] virtualbox
 - Save

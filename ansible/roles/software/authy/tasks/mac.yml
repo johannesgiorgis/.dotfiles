@@ -1,7 +1,0 @@
----
-# mac tasks for authy
-
-- name: Install Authy via homebrew cask
-  homebrew_cask:
-    name: authy
-    state: present

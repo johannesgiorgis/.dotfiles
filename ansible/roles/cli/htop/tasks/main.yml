@@ -1,8 +1,11 @@
 ---
 # main task for htop
 
-- import_tasks: debian.yml
-  when: ansible_os_family in [ "Debian", "Pop!_OS" ]
+- name: htop is present
+  become: "{{ should_be_root }}"
 
-- import_tasks: mac.yml
-  when: ansible_os_family == "Darwin"
+  block:
+    - name: htop is present
+      package:
+        name: htop
+        state: latest

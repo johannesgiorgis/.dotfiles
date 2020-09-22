@@ -1,7 +1,0 @@
----
-# mac task for shellcheck
-
-- name: Install shellcheck & ffmpeg via homebrew
-  homebrew:
-    name: shellcheck
-    state: present

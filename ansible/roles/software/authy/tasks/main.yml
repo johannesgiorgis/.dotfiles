@@ -1,8 +1,18 @@
 ---
 # main task for authy
 
-- import_tasks: debian.yml
-  when: ansible_os_family == "Debian" or ansible_os_family == "Pop!_OS"
+- name: authy is present
+  become: "{{ should_be_root }}"
 
-- import_tasks: mac.yml
-  when: ansible_os_family == "Darwin"
+  block:
+    - name: authy is present via snap with option --channel=beta (linux)
+      when: ansible_os_family in ["Debian", "Pop!_OS"]
+      snap:
+        name: authy
+        channel: beta
+
+    - name: authy is present (brew cask)
+      when: ansible_os_family == "Darwin"
+      homebrew_cask:
+        name: authy
+        state: present

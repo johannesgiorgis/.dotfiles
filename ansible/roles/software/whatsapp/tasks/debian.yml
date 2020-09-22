@@ -1,6 +1,0 @@
----
-# debian task for whatsdesk
-
-- name: Install whatsdesk via snap with option --channel=beta
-  snap:
-    name: whatsdesk

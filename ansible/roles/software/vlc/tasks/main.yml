@@ -1,8 +1,22 @@
 ---
 # main task for vlc
 
-- import_tasks: debian.yml
-  when: ansible_os_family in ["Debian",  "Pop!_OS" ]
+- name: vlc and dependencies are present
+  become: "{{ should_be_root }}"
 
-- import_tasks: mac.yml
-  when: ansible_os_family in ["Darwin"]
+  block:
+    - name: Install vlc via homebrew cask
+      when: ansible_os_family in ["Darwin"]
+      homebrew_cask:
+        name: vlc
+        state: present
+
+    - name: Install vlc via apt (linux)
+      when: ansible_os_family in ["Debian",  "Pop!_OS" ]
+      apt:
+        name: vlc
+
+    - name: Install extra plugins for vlc (linux)
+      when: ansible_os_family in ["Debian",  "Pop!_OS" ]
+      apt:
+        name: ["vlc-plugin-access-extra", "libbluray-bdj", "libdvdcss2"]

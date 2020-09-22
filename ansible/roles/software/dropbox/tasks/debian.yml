@@ -21,7 +21,8 @@
 #   become_user: root
 #   become_method: sudo
 
-- block:
+- name: dropbox is present for debian system
+  block:
     - name: Install Dropbox key
       apt_key:
         keyserver: keyserver.ubuntu.com
@@ -38,7 +39,3 @@
       apt:
         name: dropbox
         state: present
-  become: yes
-  become_user: root
-  become_method: sudo
-  when: ansible_os_family == "Debian" or ansible_os_family == "Pop!_OS"

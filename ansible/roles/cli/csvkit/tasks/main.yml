@@ -1,8 +1,11 @@
 ---
 # main task for csvkit
 
-- import_tasks: debian.yml
-  when: ansible_os_family in [ "Debian", "Pop!_OS" ]
+- name: csvkit is present
+  become: "{{ should_be_root }}"
 
-- import_tasks: mac.yml
-  when: ansible_os_family == "Darwin"
+  block:
+    - name: csvkit is present
+      package:
+        name: csvkit
+        state: latest

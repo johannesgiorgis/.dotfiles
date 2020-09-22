@@ -1,5 +1,9 @@
 ---
 # main task for linux-flameshot
 
-- import_tasks: debian.yml
-  when: ansible_os_family in ["Debian", "Pop!_OS"]
+- name: linux flameshot is present
+  become: "{{ should_be_root }}"
+
+  block:
+    - import_tasks: debian.yml
+      when: ansible_os_family in ["Debian", "Pop!_OS"]

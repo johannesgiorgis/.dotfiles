@@ -1,9 +1,20 @@
 ---
-# Install
-- import_tasks: debian.yml
-  when: ansible_os_family == "Debian" or ansible_os_family == "Pop!_OS"
+# main task for vim
 
-- import_tasks: mac.yml
-  when: ansible_os_family == "Darwin"
+- name: vim is present
+  become: "{{ should_be_root }}"
+
+  block:
+    - name: vim is present (apt)
+      when: ansible_pkg_mgr == 'apt'
+      apt:
+        name: vim-nox
+        state: latest
+
+    - name: vim is present (brew)
+      when: ansible_pkg_mgr == 'brew'
+      homebrew:
+        name: vim
+        state: present
 
 - import_tasks: configure.yml

@@ -1,9 +1,0 @@
----
-# debian task for htop
-
-- name: Install htop
-  apt:
-    name: htop
-  become: yes
-  become_user: root
-  become_method: sudo

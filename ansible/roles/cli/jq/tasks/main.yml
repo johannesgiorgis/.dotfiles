@@ -1,8 +1,11 @@
 ---
 # main task for jq
 
-- import_tasks: debian.yml
-  when: ansible_os_family == "Debian" or ansible_os_family == "Pop!_OS"
+- name: jq is present
+  become: "{{ should_be_root }}"
 
-- import_tasks: mac.yml
-  when: ansible_os_family == "Darwin"
+  block:
+    - name: jq is present
+      package:
+        name: jq
+        state: latest

@@ -1,0 +1,12 @@
+---
+# main tasks for linux-terminator
+
+- name: terminator is present
+  become: "{{ should_be_root }}"
+
+  block:
+    - name: terminator is present (linux)
+      when: ansible_os_family in ["Debian", "Pop!_OS"]
+      package:
+        name: terminator
+        state: present

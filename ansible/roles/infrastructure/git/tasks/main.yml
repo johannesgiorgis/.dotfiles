@@ -1,5 +1,11 @@
-- name: Install git
-  apt: name=git state=present
-  become: yes
-  become_user: root
-  become_method: sudo
+---
+# main tasks for git
+
+- name: git is present
+  become: "{{ should_be_root }}"
+
+  block:
+    - name: git is present
+      package:
+        name: git
+        state: present

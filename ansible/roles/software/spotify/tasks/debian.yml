@@ -1,7 +1,9 @@
 ---
 # debian task for spotify
 
-- block:
+- name: spotify is present for debian system
+
+  block:
     - name: Install Spotify key
       apt_key:
         url: https://download.spotify.com/debian/pubkey.gpg
