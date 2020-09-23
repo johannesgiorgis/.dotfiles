@@ -30,16 +30,17 @@
     - [x] chrome + extensions?
     - [x] cowsay
     - [x] fortune
-    - [ ] docker
-    - [ ] blueman - bluetooth manager
+    - [x] docker
+    - [x] blueman - bluetooth manager
     - [x] meld
     - [ ] mlocate
     - [ ] logrotate
     - [ ] openssh (_in progress_)
-    - [ ] solaar - logitech Unifying Receiver
+    - [x] solaar - logitech Unifying Receiver
     - [ ] sqlitebrowser
     - [ ] postgres
-    - [ ] timewarrior/taskwarrior
+    - [x] timewarrior
+    - [x] taskwarrior
     - [ ] teamviewer (_incomplete - facing issues installing_)
     - [ ] thunderbird
     - [ ] virtualbox

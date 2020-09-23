@@ -4,6 +4,7 @@
     should_be_root: "{{ true if ansible_pkg_mgr != 'brew' else false }}"
   roles:
     # infrastructure
+    - { role: infrastructure/git, tags: [git] }
     - { role: package_manager, tags: [package_manager, bootstrap] }
     - { role: infrastructure/linux-terminator, tags: [linux-terminator] }
     - {
@@ -11,6 +12,7 @@
         tags: [linux-gnome-extensions],
       }
     - { role: infrastructure/zsh, tags: [zsh] }
+    - { role: infrastructure/docker, tags: [docker] }
     - { role: infrastructure/linux-snap, tags: [linux-snap] }
     - { role: infrastructure/asdf, tags: [asdf] }
     # - {
@@ -31,7 +33,6 @@
     - { role: infrastructure/rust, tags: [rust] }
     - { role: infrastructure/gohugo, tags: [gohugo] }
 
-    # - { role: git, tags: [git] }
     # - { role: apt, tags: [apt] }
 
     # cli
@@ -45,11 +46,15 @@
     - { role: cli/youtube-dl, tags: [youtube-dl] }
     - { role: cli/csvkit, tags: [csvkit] }
     - { role: cli/neofetch, tags: [neofetch] }
+    - { role: cli/taskwarrior, tags: [taskwarrior] }
+    - { role: cli/timewarrior, tags: [timewarrior] }
     - { role: cli/shellcheck, tags: [shellcheck] }
 
     # software
     - { role: software/authy, tags: [authy] }
     - { role: software/linux-conky-manager, tags: [linux-conky-manager] }
+    - { role: software/linux-solaar, tags: [linux-solaar] }
+    - { role: software/linux-blueman, tags: [linux-blueman] }
     - { role: software/dropbox, tags: [dropbox] }
     - { role: software/vscode, tags: [vscode] }
     - { role: software/obs-studio, tags: [obs-studio] }

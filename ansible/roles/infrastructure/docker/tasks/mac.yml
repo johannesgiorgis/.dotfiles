@@ -1,0 +1,6 @@
+---
+# mac tasks for docker
+
+- name: How to install Docker on Mac OS X
+  debug:
+    msg: "Follow guide from 'https://docs.docker.com/docker-for-mac/install'"

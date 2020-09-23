@@ -8,7 +8,7 @@ Various settings for the tools I use. My dotfile repository was initially create
 
 To set up a new Debian based Linux system, do the following initial steps upon logging in:
 
-```
+```sh
 # Downloads and install xclip BEFORE running any updates
 $ sudo apt-get install xclip
 
@@ -44,7 +44,7 @@ Doing it this way ensures that you can run your updates while you get set up to 
 
 Run the following:
 
-```bash
+```sh
 # build docker image and run docker container
 $ make docker-all
 
@@ -57,7 +57,7 @@ $ bash scripts/bootstrap.sh | tee log-2020-05-10-bootstrap-v<num>.log 2>&1
 
 ## Installation Order
 
-```bash
+```sh
 scripts/bootstrap.sh -> bin/dot -> install_dotfiles
   - bin/dot -> install OS specific (Mac OS or Linux) -> install_all.sh
   - install_all.sh - sequentially runs all files ending with install.sh
@@ -96,11 +96,15 @@ Folks are using Python, Typescript to write wrapper programs around their .dotfi
 - Dropbox Inspirations:
     - <https://github.com/AlbanAndrieu/ansible-dropbox>
     - <https://github.com/Oefenweb/ansible-dropbox>
+    - <https://github.com/geerlingguy/ansible-role-docker> (Used this one)
 - Slack role Inspiration: <https://github.com/wtanaka/ansible-role-slack>
 - Sublime-text role Inspiration: <https://github.com/chaosmail/ansible-roles-sublime-text>
 - Docker role: <https://github.com/geerlingguy/ansible-role-docker>
 - PyCharm role: <https://github.com/Oefenweb/ansible-pycharm>
 - Handle Apt & Homebrew with Package: <https://stackoverflow.com/questions/63242221/use-ansible-package-module-to-work-with-apt-and-homebrew>
+- OpenSSH
+    - <https://github.com/linuxhq/ansible-role-openssh>
+    - <https://github.com/archf/ansible-openssh-server>
 
 ### Issues
 
