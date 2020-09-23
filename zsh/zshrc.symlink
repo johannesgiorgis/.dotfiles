@@ -309,6 +309,14 @@ function get_params () {
   cat $1 |awk '/--name/{print $7}' | sed -e 's/\${[eE][nN][vV]}/'"${ENV}"'/g' | xargs -n10 aws ssm get-parameters --with-decryption --query "Parameters[*].{Name:Name,Value:Value}" --names
 }
 
+function apts () {
+	apt search "$1" | grep "^$1"
+}
+
+function aptl () {
+	apt list --installed | grep "$1"
+}
+
 # <<< ##################################### FUNCTIONS 
 ###############################################################################################
 
