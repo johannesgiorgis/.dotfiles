@@ -12,6 +12,7 @@
         tags: [linux-gnome-extensions],
       }
     - { role: infrastructure/zsh, tags: [zsh] }
+    - { role: infrastructure/postgresql, tags: [postgresql] }
     - { role: infrastructure/docker, tags: [docker] }
     - { role: infrastructure/linux-snap, tags: [linux-snap] }
     - { role: infrastructure/asdf, tags: [asdf] }
@@ -40,6 +41,7 @@
     - { role: cli/jump, tags: [jump] }
     - { role: cli/htop, tags: [htop] }
     - { role: cli/jq, tags: [jq] }
+    - { role: cli/tldr, tags: [tldr] }
     - { role: cli/cowsay, tags: [cowsay] }
     - { role: cli/rename, tags: [rename] }
     - { role: cli/pandoc, tags: [pandoc] }
@@ -54,6 +56,7 @@
     - { role: software/authy, tags: [authy] }
     - { role: software/linux-conky-manager, tags: [linux-conky-manager] }
     - { role: software/linux-solaar, tags: [linux-solaar] }
+    - { role: software/linux-thunderbird, tags: [linux-thunderbird] }
     - { role: software/linux-blueman, tags: [linux-blueman] }
     - { role: software/dropbox, tags: [dropbox] }
     - { role: software/vscode, tags: [vscode] }
@@ -70,15 +73,12 @@
     - { role: software/kite, tags: [kite] }
     - { role: software/joplin, tags: [joplin] }
     - { role: software/vlc, tags: [vlc] }
+    - { role: software/virtualbox, tags: [virtualbox] }
+    - { role: software/sqlite-browser, tags: [sqlite-browser] }
     - { role: software/meld, tags: [meld] }
     - { role: software/teamviewer, tags: [teamviewer] }
     - { role: software/linux-flameshot, tags: [linux-flameshot] }
     - { role: software/jetbrains-toolbox, tags: [jetbrains-toolbox] }
-    - {
-        role: software/linux-installation,
-        tags: [linux],
-        when: ansible_os_family == "Debian" or ansible_os_family == "Pop!_OS",
-      }
 
     # mac os x
     - { role: macos, tags: [macos], when: ansible_os_family == "Darwin" }

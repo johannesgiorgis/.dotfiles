@@ -1,8 +1,0 @@
----
-# debian task for linux-blueman
-
-- name: Install Blueman
-  apt:
-    name: blueman
-    state: present
-    update_cache: true

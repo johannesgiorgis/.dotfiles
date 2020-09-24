@@ -1,7 +1,0 @@
----
-- name: Install jump Debian package from the internet
-  apt:
-    deb: https://github.com/gsamokovarov/jump/releases/download/v0.30.1/jump_0.30.1_amd64.deb
-  become: yes
-  become_user: root
-  become_method: sudo

@@ -1,0 +1,6 @@
+---
+# mac tasks for postgresql
+
+- name: How to install PostgreSQL on Mac OS X
+  debug:
+    msg: "Follow guide from 'https://docs.postgres.com/postgres-for-mac/install'"

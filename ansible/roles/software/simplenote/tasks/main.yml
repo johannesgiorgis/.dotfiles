@@ -5,8 +5,13 @@
   become: "{{ should_be_root }}"
 
   block:
-    - import_tasks: debian.yml
+    - name: simplenote is present (linux)
       when: ansible_os_family in ["Debian", "Pop!_OS"]
+      apt:
+        deb: https://github.com/Automattic/simplenote-electron/releases/download/v1.21.1/Simplenote-linux-1.21.1-amd64.deb
 
-    - import_tasks: mac.yml
+    - name: simplenote is present (brew cask)
       when: ansible_os_family == "Darwin"
+      homebrew_cask:
+        name: simplenote
+        state: present

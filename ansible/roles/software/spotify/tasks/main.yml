@@ -1,8 +1,30 @@
 ---
 # main task for spotify
 
-- import_tasks: debian.yml
-  when: ansible_os_family in ["Debian", "Pop!_OS"]
+- name: spotify is present
+  become: "{{ should_be_root }}"
 
-- import_tasks: mac.yml
-  when: ansible_os_family == "Darwin"
+  block:
+    - name: Install spotify (homebrew cask)
+      when: ansible_os_family == "Darwin"
+      homebrew_cask:
+        name: spotify
+        state: present
+
+    - name: Install Spotify key (apt)
+      when: ansible_os_family in ["Debian", "Pop!_OS"]
+      apt_key:
+        url: https://download.spotify.com/debian/pubkey.gpg
+        state: present
+
+    - name: Install Spotify repository (apt)
+      when: ansible_os_family in ["Debian", "Pop!_OS"]
+      apt_repository:
+        repo: deb http://repository.spotify.com stable non-free
+        state: present
+
+    - name: Install Spotify (apt)
+      when: ansible_os_family in ["Debian", "Pop!_OS"]
+      apt:
+        name: spotify-client
+        state: present

@@ -37,16 +37,17 @@
     - [ ] logrotate
     - [ ] openssh (_in progress_)
     - [x] solaar - logitech Unifying Receiver
-    - [ ] sqlitebrowser
-    - [ ] postgres
+    - [x] sqlitebrowser
+    - [x] postgres
     - [x] timewarrior
     - [x] taskwarrior
     - [ ] teamviewer (_incomplete - facing issues installing_)
-    - [ ] thunderbird
-    - [ ] virtualbox
+    - [x] thunderbird
+    - [x] virtualbox
 - Save
     - [ ] terminator settings
     - [ ] conky settings
     - [ ] gnome extension settings
     - [ ] combine ~/notes and put in ~/Dropbox/notes -> symlink to ~/
     - [ ] set up Sublime-text packages
+    - [ ] install fonts through seperate role

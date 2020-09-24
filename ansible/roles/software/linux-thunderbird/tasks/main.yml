@@ -1,0 +1,11 @@
+---
+# main task for linux-thunderbird
+
+- name: linux thunderbird is present
+  become: "{{ should_be_root }}"
+
+  block:
+    - name: thunderbird is present
+      package:
+        name: thunderbird
+        state: present

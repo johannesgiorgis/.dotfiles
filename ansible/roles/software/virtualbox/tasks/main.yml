@@ -1,0 +1,18 @@
+---
+# main task for virtualbox
+
+- name: virtualbox is present
+  become: "{{ should_be_root }}"
+
+  block:
+    - name: virtualbox is present (linux)
+      when: ansible_pkg_mgr != 'brew'
+      package:
+        name: virtualbox
+        state: latest
+
+    - name: virtualbox is present (brew cask)
+      when: ansible_pkg_mgr == 'brew'
+      homebrew_cask:
+        name: virtualbox
+        state: present

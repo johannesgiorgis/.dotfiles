@@ -1,6 +1,17 @@
 ---
-- import_tasks: debian.yml
-  when: ansible_os_family == "Debian" or ansible_os_family == "Pop!_OS"
+# main task for jump
 
-- import_tasks: mac.yml
-  when: ansible_os_family == "Darwin"
+- name: jump is present
+  become: "{{ should_be_root }}"
+
+  block:
+    - name: Install jump via homebrew
+      when: ansible_pkg_mgr == 'brew'
+      homebrew:
+        name: jump
+        state: present
+
+    - name: Install jump Debian package from the internet
+      when: ansible_os_family in ["Debian", "Pop!_OS"]
+      apt:
+        deb: https://github.com/gsamokovarov/jump/releases/download/v0.30.1/jump_0.30.1_amd64.deb

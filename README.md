@@ -105,6 +105,7 @@ Folks are using Python, Typescript to write wrapper programs around their .dotfi
 - OpenSSH
     - <https://github.com/linuxhq/ansible-role-openssh>
     - <https://github.com/archf/ansible-openssh-server>
+- PostgreSQL: <https://github.com/geerlingguy/ansible-role-postgresql>
 
 ### Issues
 

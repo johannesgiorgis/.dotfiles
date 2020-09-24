@@ -1,0 +1,11 @@
+---
+# main task for tldr
+
+- name: tldr is present
+  become: "{{ should_be_root }}"
+
+  block:
+    - name: tldr is present
+      package:
+        name: tldr
+        state: latest

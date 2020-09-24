@@ -1,7 +1,0 @@
----
-- name: Install Simplenote Debian package from the internet
-  apt:
-    deb: https://github.com/Automattic/simplenote-electron/releases/download/v1.21.1/Simplenote-linux-1.21.1-amd64.deb
-  become: yes
-  become_user: root
-  become_method: sudo

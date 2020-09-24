@@ -5,5 +5,7 @@
   become: "{{ should_be_root }}"
 
   block:
-    - import_tasks: debian.yml
-      when: ansible_os_family in ["Debian", "Pop!_OS"]
+    - name: flameshot is present
+      package:
+        name: flameshot
+        state: present
