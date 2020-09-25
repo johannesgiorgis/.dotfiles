@@ -1,9 +1,0 @@
----
-# debian task for snap
-
-- name: Install snap
-  apt:
-    name: snapd
-  # become: yes
-  # become_user: root
-  # become_method: sudo

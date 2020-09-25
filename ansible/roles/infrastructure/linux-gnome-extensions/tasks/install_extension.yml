@@ -12,7 +12,8 @@
   changed_when: no
   when: r_gnome_extensions_checking_existing.stat.exists == False
 
-- block:
+- name: install gnome extensions
+  block:
     - name: Download Gnome Shell extension - {{ gnome_extension_info.name }}
       get_url:
         url: https://extensions.gnome.org{{ gnome_extension_info.download_url }}
@@ -21,7 +22,6 @@
 
     - name: Create install directory - {{ gnome_extension_info.name }}
       file:
-        # path: ""
         path: "{{ ansible_user_dir }}/.local/share/gnome-shell/extensions/{{ gnome_extension_info.uuid }}"
         state: directory
         owner: "{{ ansible_user_uid }}"

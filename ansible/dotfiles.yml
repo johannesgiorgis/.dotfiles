@@ -16,14 +16,13 @@
     - { role: infrastructure/docker, tags: [docker] }
     - { role: infrastructure/linux-snap, tags: [linux-snap] }
     - { role: infrastructure/asdf, tags: [asdf] }
-    # - {
-    #     role: linux,
-    #     tags: [linux],
-    #     when: ansible_os_family == "Debian" or ansible_os_family == "Pop!_OS",
-    #   }
     - {
-        role: infrastructure/popos,
-        tags: [popos],
+        role: infrastructure/linux-initial-configuration,
+        tags: [linux-initial-configuration],
+      }
+    - {
+        role: infrastructure/popos-initial-configuration,
+        tags: [popos-initial-configuration],
         when: ansible_os_family == "Pop!_OS",
       }
 

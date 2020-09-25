@@ -1,5 +1,12 @@
 ---
 # main task for snap
 
-- import_tasks: debian.yml
+- name: snapd is present (linux)
+  become: "{{ should_be_root }}"
+
+  block:
+    - name: Install snap
+      package:
+        name: snapd
+        state: present
   when: ansible_os_family in ["Debian", "Pop!_OS"]

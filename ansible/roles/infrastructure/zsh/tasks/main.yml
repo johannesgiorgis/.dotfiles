@@ -1,7 +1,10 @@
 ---
+- name: zsh is present
+  become: "{{ should_be_root }}"
 
-- import_tasks: install-zsh.yml
+  block:
+    - import_tasks: install-zsh.yml
 
-- import_tasks: install-oh-my-zsh.yml
+    - import_tasks: install-oh-my-zsh.yml
 
-- import_tasks: configure.yml
+    - import_tasks: configure.yml

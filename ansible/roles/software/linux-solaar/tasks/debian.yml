@@ -1,8 +1,0 @@
----
-# debian task for linux-solaar
-
-- name: Install Solaar
-  apt:
-    name: solaar
-    state: present
-    update_cache: true
