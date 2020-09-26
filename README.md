@@ -106,6 +106,9 @@ Folks are using Python, Typescript to write wrapper programs around their .dotfi
     - <https://github.com/linuxhq/ansible-role-openssh>
     - <https://github.com/archf/ansible-openssh-server>
 - PostgreSQL: <https://github.com/geerlingguy/ansible-role-postgresql>
+- Custom Login Screen - <https://techhut.tv/lightdm-custom-login-screen-in-linux/>
+- Linux Display Manager: <https://github.com/ypid/ansible-dm>
+- LightDM Webkit Greeter role: <https://github.com/void-ansible-roles/lightdm-webkit-greeter>
 
 ### Issues
 

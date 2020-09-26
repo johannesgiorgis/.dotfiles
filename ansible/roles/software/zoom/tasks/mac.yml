@@ -1,7 +1,0 @@
----
-# mac tasks for zoom
-
-- name: Install zoomus via homebrew cask
-  homebrew_cask:
-    name: zoomus
-    state: present

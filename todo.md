@@ -39,9 +39,10 @@
     - [x] solaar - logitech Unifying Receiver
     - [x] sqlitebrowser
     - [x] postgres
+    - [x] timeshift
     - [x] timewarrior
     - [x] taskwarrior
-    - [ ] teamviewer (_incomplete - facing issues installing_)
+    - [ ] teamviewer (_incomplete - facing issues installing on popos_)
     - [x] thunderbird
     - [x] virtualbox
 - Save
@@ -51,3 +52,4 @@
     - [ ] combine ~/notes and put in ~/Dropbox/notes -> symlink to ~/
     - [ ] set up Sublime-text packages
     - [ ] install fonts through seperate role
+    - [ ] split up lightdm and lightdm-webkit2-greeter into 2 roles

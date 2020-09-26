@@ -1,26 +1,6 @@
 ---
 # debian tasks for dropbox
 
-# - name: Install dependencies for dropbox
-#   become: yes
-#   apt:
-#     name:
-#       - curl
-#       - python3-gpg
-#     state: present
-#     update_cache: true
-
-# - name: Set dropbox_download_url fact
-#   set_fact:
-#     dropbox_download_url: "https://www.dropbox.com/download?dl=packages/ubuntu/dropbox_{{ dropbox_version }}_{{ dropbox_machine_map[ansible_machine] }}.deb"
-
-# - name: Install Dropbox Debian package from the internet
-#   apt:
-#     deb: "{{ dropbox_download_url }}"
-#   become: yes
-#   become_user: root
-#   become_method: sudo
-
 - name: dropbox is present for debian system
   block:
     - name: Install Dropbox key

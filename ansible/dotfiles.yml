@@ -25,6 +25,11 @@
         tags: [popos-initial-configuration],
         when: ansible_os_family == "Pop!_OS",
       }
+    - {
+        role: infrastructure/linux-lightdm,
+        tags: [linux-lightdm],
+        when: ansible_os_family == "Pop!_OS",
+      }
 
     # programming languages
     - { role: infrastructure/golang, tags: [golang] }
@@ -41,6 +46,7 @@
     - { role: cli/htop, tags: [htop] }
     - { role: cli/jq, tags: [jq] }
     - { role: cli/tldr, tags: [tldr] }
+    - { role: cli/mlocate, tags: [mlocate] }
     - { role: cli/cowsay, tags: [cowsay] }
     - { role: cli/rename, tags: [rename] }
     - { role: cli/pandoc, tags: [pandoc] }
@@ -55,6 +61,7 @@
     - { role: software/authy, tags: [authy] }
     - { role: software/linux-conky-manager, tags: [linux-conky-manager] }
     - { role: software/linux-solaar, tags: [linux-solaar] }
+    - { role: software/linux-timeshift, tags: [linux-timeshift] }
     - { role: software/linux-thunderbird, tags: [linux-thunderbird] }
     - { role: software/linux-blueman, tags: [linux-blueman] }
     - { role: software/dropbox, tags: [dropbox] }

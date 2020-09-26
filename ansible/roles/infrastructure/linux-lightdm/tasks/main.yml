@@ -1,0 +1,19 @@
+---
+# Handle adding custom login screen for popos
+
+- name: customize pop!-os
+  become: "{{ should_be_root }}"
+
+  block:
+    - name: lightdm is present (debian)
+      apt:
+        name: lightdm
+        state: present
+        update_cache: true
+
+    - name: install lightdm-webkit2-greeter (bash script)
+      script: ../files/install-lightdm-webkit2-greeter.sh
+
+    # configure lightdm
+    - import_tasks: configure.yml
+  when: ansible_os_family in ['Pop!_OS']

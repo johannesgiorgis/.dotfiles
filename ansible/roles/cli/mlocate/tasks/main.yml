@@ -1,0 +1,11 @@
+---
+# main task for mlocate
+
+- name: mlocate is present
+  become: "{{ should_be_root }}"
+
+  block:
+    - name: mlocate is present
+      package:
+        name: mlocate
+        state: latest

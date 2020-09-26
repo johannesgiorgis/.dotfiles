@@ -12,7 +12,7 @@
         state: present
 
     - name: Install vlc via apt (linux)
-      when: ansible_os_family in ["Debian",  "Pop!_OS" ]
+      when: ansible_os_family in ["Debian",  "Pop!_OS"]
       apt:
         name: vlc
 

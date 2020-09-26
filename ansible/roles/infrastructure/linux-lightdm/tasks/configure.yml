@@ -1,0 +1,64 @@
+---
+# configure tasks for lightdm
+
+## https://wiki.ubuntu.com/LightDM
+## Configuration order:
+## /user/shaer/lightdm/lightdm.conf.d/*.conf
+## /etc/lightdm/lightdm.conf.d/*.conf
+## /etc/lightdm/lightdm.conf
+
+- name: Ensure lightdm.conf.d directory is present
+  file:
+    path: "/etc/lightdm/lightdm.conf.d"
+    state: "directory"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+
+- name: Check lightdm version
+  environment:
+    LC_MESSAGES: "C"
+  shell: dpkg-query -W -f='${Version}\n' '{{ dm__package_map[dm__name] }}' | cut -d- -f1
+  register: dm__register_lightdm_version
+  changed_when: False
+  failed_when: False
+
+- name: Divert LightDM configuration
+  command: dpkg-divert --quiet --local --divert "{{ item }}.dpk-divert" --rename "{{ item }}"
+  args:
+    creates: "{{ item }}.dpkg-divert"
+  when: not (dm__testing_mode|d(False) | bool)
+  with_items:
+    - "/etc/lightdm/lightdm-gtk-greeter.conf"
+    - "/etc/lightdm/lightdm-webkit2-greeter.conf"
+
+- name: Configure lightDM
+  template:
+    src: "etc/lightdm/lightdm.conf.j2"
+    dest: "/etc/lightdm/lightdm.conf"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  notify: ["Restart lightdm"]
+
+- name: Configure LightDM greeter
+  template:
+    src: "etc/lightdm/lightdm-webkit2-greeter.conf.j2"
+    dest: "/etc/lightdm/lightdm-webkit2-greeter.conf"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  notify: ["Restart lightdm"]
+
+- name: Create lightdm-webkit2-theme-glorious directory
+  file:
+    path: /usr/share/lightdm-webkit/themes/glorious
+    state: directory
+    owner: root
+    group: root
+
+- name: Get lightdm-webkit2-theme-glorious release archive
+  unarchive:
+    src: https://github.com/manilarome/lightdm-webkit2-theme-glorious/releases/download/v2.0.5/lightdm-webkit2-theme-glorious-2.0.5.tar.gz
+    dest: /usr/share/lightdm-webkit/themes/glorious
+    remote_src: yes

@@ -1,8 +1,17 @@
 ---
 # main task for zoom
 
-- import_tasks: debian.yml
-  when: ansible_os_family == "Debian" or ansible_os_family == "Pop!_OS"
+- name: zsh is present
+  become: "{{ should_be_root }}"
 
-- import_tasks: mac.yml
-  when: ansible_os_family == "Darwin"
+  block:
+    - name: Install Zoom Debian package from the internet
+      when: ansible_os_family == "Debian" or ansible_os_family == "Pop!_OS"
+      apt:
+        deb: "https://zoom.us/client/latest/zoom_{{ machine_map[ansible_machine] }}.deb"
+
+    - name: Install zoomus via homebrew cask
+      when: ansible_os_family == "Darwin"
+      homebrew_cask:
+        name: zoomus
+        state: present

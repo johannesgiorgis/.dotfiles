@@ -1,16 +1,17 @@
 ---
-- name: Install dependencies for zsh
-  become: yes
-  package:
-    name:
-      - git
-      - curl
-    state: present
+# install task for zsh
 
-- name: Install zsh
-  apt:
-    name: zsh
-    state: present
-  become: yes
-  become_user: root
-  become_method: sudo
+- name: zsh is present (debian)
+  block:
+    - name: Install dependencies for zsh
+      apt:
+        name:
+          - "git"
+          - "curl"
+        state: present
+
+    - name: Install zsh
+      apt:
+        name: zsh
+        state: present
+  when: ansible_os_family in ["Debian",  "Pop!_OS" ]
