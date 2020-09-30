@@ -33,7 +33,8 @@
     - [x] docker
     - [x] blueman - bluetooth manager
     - [x] meld
-    - [ ] mlocate
+    - [x] mlocate
+    - [x] fbreader
     - [ ] logrotate
     - [ ] openssh (_in progress_)
     - [x] solaar - logitech Unifying Receiver

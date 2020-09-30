@@ -84,6 +84,7 @@
     - { role: software/meld, tags: [meld] }
     - { role: software/teamviewer, tags: [teamviewer] }
     - { role: software/linux-flameshot, tags: [linux-flameshot] }
+    - { role: software/linux-fbreader, tags: [linux-fbreader] }
     - { role: software/jetbrains-toolbox, tags: [jetbrains-toolbox] }
 
     # mac os x
