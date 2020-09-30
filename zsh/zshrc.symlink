@@ -263,7 +263,10 @@ fi
 # Mac - aws v1
 if [[ "${kernel_name}" = "Darwin" ]]; then
 
+    # awsv1_dir="/usr/local/opt/awscli@1/"
+    # alias aws="${awsv1_dir}bin/aws"
 	# function awsh() { aws --profile hcareers "$@"; }
+    function awsv() { aws --profile virgil-careers "$@"; }
 
 	if test -f "/usr/local/opt/awscli@1/bin/aws_completer"; then
 		complete -C '/usr/local/opt/awscli@1/bin/aws_completer' aws
@@ -379,6 +382,12 @@ fi
 
 # add poetry
 export PATH="$HOME/.poetry/bin:$PATH"
+
+# awspowertools
+aws_power_tools_dir="$HOME/bin/aws-powertools"
+if test -d "$aws_power_tools_dir"; then
+    export PATH="${aws_power_tools_dir}:$PATH"
+fi
 
 # Disabled shared history across terminal tabs
 unsetopt SHARE_HISTORY
