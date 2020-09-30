@@ -184,6 +184,26 @@ then
     alias charm='/home/johannes/.local/bin/charm . > /dev/null 2>&1 &'
 fi
 
+# source: https://opensource.com/article/19/7/bash-aliases
+# see mounted drives
+if [ "${kernel_name}" = "Linux" ]; then
+	alias mnt="mount | awk -F' ' '{ printf "%s\t%s\n",$1,$3; }' | column -t | egrep ^/dev/ | sort"
+elif [ "${kernel_name}" = "Debian" ]; then
+	alias mnt='mount | grep -E ^/dev | column -t'
+fi
+
+# count files
+alias count='find . -type f | wc -l'
+
+# add a copy progress bar
+alias cpv='rsync -ah --info=progress2'
+
+# protect yourself from file removal accidents
+alias tcn='mv --force -t ~/.local/share/Trash '
+
+# navigate to top leve of a git project
+alias cg='cd `git rev-parse --show-toplevel`'
+
 # <<< ##################################### ALIAS
 ###############################################################################################
 
@@ -310,6 +330,18 @@ function get_params () {
   echo 'using file' $1
   echo "using environtment ${ENV}"
   cat $1 |awk '/--name/{print $7}' | sed -e 's/\${[eE][nN][vV]}/'"${ENV}"'/g' | xargs -n10 aws ssm get-parameters --with-decryption --query "Parameters[*].{Name:Name,Value:Value}" --names
+}
+
+function apts () {
+	apt search "$1" | grep "^$1"
+}
+
+function aptl () {
+	apt list --installed | grep "$1"
+}
+
+function apti () {
+	sudo apt install "$1" -y
 }
 
 # <<< ##################################### FUNCTIONS 

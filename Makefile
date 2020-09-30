@@ -16,3 +16,7 @@ all-dev: build-no-cache run
 
 brew-installs:
 	rg -N  'brew_install|brew_cask_install|brew install|cask install' macos/install-software-via-brew.sh | grep -o 'install .\+' | cut -d' ' -f2- | tr ' ' '\n' | sort -u
+
+check-asdf-updates:
+	bash asdf/check-asdf-installed-for-updates.sh
+
