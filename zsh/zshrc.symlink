@@ -344,6 +344,13 @@ function apti () {
 	sudo apt install "$1" -y
 }
 
+function awsprofiles () {
+	config=$(cat $HOME/.aws/config | grep '\[' | sed 's/\[//; s/\]//')
+	echo 'config:'
+	echo "$config"
+}
+
+
 # <<< ##################################### FUNCTIONS 
 ###############################################################################################
 
