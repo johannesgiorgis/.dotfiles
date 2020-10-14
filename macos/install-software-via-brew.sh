@@ -284,7 +284,16 @@ function install_software_on_work_mac() {
     brew_cask_install basictex
     brew_cask_install wkhtmltopdf
 
+    # sql server
+    install_ms_sql_server
+
     success "› Completed installing Software on Work Mac!"
+}
+
+function install_ms_sql_server() {
+    brew tap microsoft/mssql-release https://github.com/Microsoft/homebrew-mssql-release
+    brew update
+    HOMEBREW_NO_ENV_FILTERING=1 ACCEPT_EULA=Y brew install msodbcsql17 mssql-tools
 }
 
 function is_personal_mac() {
