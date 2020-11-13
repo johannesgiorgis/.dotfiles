@@ -32,11 +32,12 @@ main() {
   ask_become_pass="false"
   tags=""
 
-  options="t:a"
+  options="t:ah"
   while getopts "$options" opt; do
     case $opt in
       a ) ask_become_pass="true" ;;
       t ) tags="$OPTARG" ;;
+      h ) usage; exit 0 ;;
       : ) echo "Option -$OPTARG requires an argument." >&2; usage; exit 1 ;;
       \? ) echo "Invalid option: -$OPTARG" >&2; usage; exit 1 ;;
     esac

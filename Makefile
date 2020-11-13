@@ -16,3 +16,6 @@ all-dev: build-no-cache run
 
 ansible-info:
 	ansible -m setup localhost
+
+code-extensions-info:
+	code --list-extensions

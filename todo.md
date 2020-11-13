@@ -35,6 +35,19 @@
     - [x] meld
     - [x] mlocate
     - [x] fbreader
+    - [ ] broot
+    - [ ] caffeine
+    - [ ] compiz
+    - [ ] diffstat
+    - [ ] fd-find
+    - [ ] gawk
+    - [ ] gdb
+    - [ ] gh (github cli)
+    - [ ] gnumeric
+    - [ ] kazam
+    - [ ] openvpn
+    - [ ] wireshark
+    - [ ] cuda
     - [ ] logrotate
     - [ ] openssh (_in progress_)
     - [x] solaar - logitech Unifying Receiver
