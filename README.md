@@ -85,6 +85,7 @@ Folks are using Python, Typescript to write wrapper programs around their .dotfi
 
 **Current**: Migrating to Ansible
 
+- Pop!_OS Post Install 5 Steps - <https://techhut.tv/5-things-to-do-after-installing-pop-os/>
 - <https://github.com/kespinola/dotfiles>
 - <https://github.com/sloria/dotfiles>
 - VS Code Role Inspiration: <https://github.com/gantsign/ansible-role-visual-studio-code>
@@ -109,6 +110,8 @@ Folks are using Python, Typescript to write wrapper programs around their .dotfi
 - Custom Login Screen - <https://techhut.tv/lightdm-custom-login-screen-in-linux/>
 - Linux Display Manager: <https://github.com/ypid/ansible-dm>
 - LightDM Webkit Greeter role: <https://github.com/void-ansible-roles/lightdm-webkit-greeter>
+- Jetbrains Toolbox role: <https://github.com/jaredhocutt/ansible-jetbrains-toolbox>
+- 
 
 ### Issues
 

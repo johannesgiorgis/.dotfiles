@@ -8,7 +8,7 @@
     - name: Install openssh-server and openssh-client
       package:
         name: "{{ sshd_packages }}"
-        state: lastest
+        state: latest
 
       # example output: OpenSSH_5.3p1, OpenSSL 1.0.1e-fips 11 Feb 2013
     - name: register ssh version
@@ -18,5 +18,15 @@
       changed_when: False
 
     - name: template sshd_config
+      template:
+        src: sshd_config.j2
+        dest: /etc/ssh/sshd_config
+        owner: root
+        group: root
+        mode: 06444
+        backup: yes
+        validate: "/usr/sbin/sshd -t -f %s"
+      notify: restart_sshd
+
     - meta: flush_handlers
   when: ansible_os_family in ["Debian", "Pop!_OS"]

@@ -41,7 +41,9 @@
     - [ ] trello
     - [ ] compiz
     - [x] diffstat
-    - [x] fd-find
+    - [x] [fd-find](https://github.com/sharkdp/fd)
+    - [x] [ripgrep](https://github.com/BurntSushi/ripgrep)
+    - [x] gnome-tweaks
     - [ ] gawk
     - [ ] gdb
     - [ ] gh (github cli)

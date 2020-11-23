@@ -7,6 +7,7 @@
     - { role: infrastructure/git, tags: [git] }
     - { role: package_manager, tags: [package_manager, bootstrap] }
     - { role: infrastructure/linux-terminator, tags: [linux-terminator] }
+    - { role: infrastructure/linux-openssh, tags: [linux-openssh] }
     - {
         role: infrastructure/linux-gnome-extensions,
         tags: [linux-gnome-extensions],
@@ -45,6 +46,7 @@
     - { role: cli/broot, tags: [broot] }
     - { role: cli/diffstat, tags: [diffstat] }
     - { role: cli/fd-find, tags: [fd-find] }
+    - { role: cli/ripgrep, tags: [ripgrep] }
     - { role: cli/jump, tags: [jump] }
     - { role: cli/htop, tags: [htop] }
     - { role: cli/jq, tags: [jq] }

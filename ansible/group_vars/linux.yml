@@ -38,7 +38,6 @@ apt_packages:
   - tldr
   - tmux
   - tree
-  # - vim-nox
   - xclip
   - wget
   - zsh
@@ -46,4 +45,4 @@ apt_packages:
   # - conky-all
   # Fonts
   - fonts-firacode
-  - gnome-tweaks
+  # - gnome-tweaks
