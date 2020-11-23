@@ -1,0 +1,37 @@
+---
+# debian task for lastpass
+
+- name: lastpass is present for debian machine
+  block:
+    - name: Create temporary download directory
+      tempfile:
+        state: directory
+        suffix: ".lastpass_installation_download_dir"
+      register: lastpass_installation_download_dir
+
+    - name: Download lastpass installer to {{ lastpass_installation_download_dir.path }}
+      get_url:
+        url: https://download.cloud.lastpass.com/linux/lplinux.tar.bz2
+        dest: "{{ lastpass_installation_download_dir.path }}/"
+        mode: a+x
+      register: r_lastpass_installer_download
+
+    - debug:
+        msg: "{{ lastpass_installation_download_dir.path }}"
+
+    - debug:
+        msg: "{{ r_lastpass_installer_download }}"
+
+    - name: Unarchive lastpass installation file {{ r_lastpass_installer_download.dest }}
+      unarchive:
+        src: "{{ r_lastpass_installer_download.dest }}"
+        dest: "{{ lastpass_installation_download_dir.path }}"
+
+    - debug:
+        msg: "Run command: bash {{ lastpass_installation_download_dir.path }}/install_lastpass.sh"
+  # always:
+  #   - name: Delete installation download directory - {{ lastpass_installation_download_dir.path }}
+  #     file:
+  #       path: "{{ lastpass_installation_download_dir.path }}"
+  #       state: absent
+  #     changed_when: no

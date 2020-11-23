@@ -1,0 +1,7 @@
+---
+# mac tasks for lastpass
+
+- name: Install lastpass via homebrew cask
+  homebrew_cask:
+    name: lastpass
+    state: present

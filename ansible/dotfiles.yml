@@ -79,6 +79,7 @@
     - { role: software/kite, tags: [kite] }
     - { role: software/joplin, tags: [joplin] }
     - { role: software/vlc, tags: [vlc] }
+    - { role: software/lastpass, tags: [lastpass] }
     - { role: software/virtualbox, tags: [virtualbox] }
     - { role: software/sqlite-browser, tags: [sqlite-browser] }
     - { role: software/meld, tags: [meld] }
