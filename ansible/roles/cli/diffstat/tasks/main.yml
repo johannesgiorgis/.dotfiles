@@ -1,0 +1,11 @@
+---
+# main task for diffstat
+
+- name: diffstat is present
+  become: "{{ should_be_root }}"
+
+  block:
+    - name: diffstat is present
+      package:
+        name: diffstat
+        state: latest

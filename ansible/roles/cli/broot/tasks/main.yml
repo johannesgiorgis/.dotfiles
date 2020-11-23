@@ -1,0 +1,12 @@
+---
+# main task for broot
+
+- name: broot is present
+  become: "{{ should_be_root }}"
+
+  block:
+    - import_tasks: debian.yml
+      when: ansible_os_family in ["Debian",  "Pop!_OS" ]
+
+    - import_tasks: mac.yml
+      when: ansible_os_family in ["Darwin"]

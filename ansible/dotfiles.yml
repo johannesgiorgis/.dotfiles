@@ -42,6 +42,9 @@
 
     # cli
     - { role: cli/vim, tags: [vim] }
+    - { role: cli/broot, tags: [broot] }
+    - { role: cli/diffstat, tags: [diffstat] }
+    - { role: cli/fd-find, tags: [fd-find] }
     - { role: cli/jump, tags: [jump] }
     - { role: cli/htop, tags: [htop] }
     - { role: cli/jq, tags: [jq] }

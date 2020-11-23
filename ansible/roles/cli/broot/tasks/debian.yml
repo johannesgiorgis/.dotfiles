@@ -1,0 +1,41 @@
+---
+# debian task for broot
+
+- name: broot is present for debian machine
+  block:
+    - name: Create temporary download directory
+      tempfile:
+        state: directory
+        suffix: ".broot_binary_download_dir"
+      register: broot_binary_download_dir
+
+    - name: Download broot binary to {{ broot_binary_download_dir.path }}
+      get_url:
+        url: https://dystroy.org/broot/download/x86_64-linux/broot
+        dest: "{{ broot_binary_download_dir.path }}/"
+        mode: a+x
+      register: r_broot_binary_download
+
+    - debug:
+        msg: "{{ broot_binary_download_dir.path }}"
+
+    - debug:
+        msg: "{{ r_broot_binary_download }}"
+
+    - debug:
+        msg: "Run command: bash {{ broot_binary_download_dir.path }}/install_broot.sh"
+
+    - name: add broot to /usr/local/bin
+      command: sudo install broot /usr/local/bin
+      args:
+        chdir: "{{ broot_binary_download_dir.path }}"
+
+    - name: install br shell function
+      command: /usr/local/bin/broot --install
+
+  always:
+    - name: Delete binary download directory - {{ broot_binary_download_dir.path }}
+      file:
+        path: "{{ broot_binary_download_dir.path }}"
+        state: absent
+      changed_when: no

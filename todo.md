@@ -35,11 +35,13 @@
     - [x] meld
     - [x] mlocate
     - [x] fbreader
-    - [ ] broot
+    - [x] lastpass
+    - [x] broot
     - [ ] caffeine
+    - [ ] trello
     - [ ] compiz
-    - [ ] diffstat
-    - [ ] fd-find
+    - [x] diffstat
+    - [x] fd-find
     - [ ] gawk
     - [ ] gdb
     - [ ] gh (github cli)

@@ -1,0 +1,18 @@
+---
+# main task for fd-find
+
+- name: fd-find is present
+  become: "{{ should_be_root }}"
+
+  block:
+    - name: fd-find is present in debian/pop-os
+      package:
+        name: fd-find
+        state: latest
+      when: ansible_os_family in ["Debian",  "Pop!_OS" ]
+
+    - name: fd is present in homebrew
+      homebrew:
+        name: fd
+        state: latest
+      when: ansible_os_family in ["Darwin"]
