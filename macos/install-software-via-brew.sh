@@ -283,9 +283,13 @@ function install_software_on_work_mac() {
     brew_cask_install karabiner-elements
     brew_cask_install basictex
     brew_cask_install wkhtmltopdf
+    brew_cask_install dash
 
     # sql server
     install_ms_sql_server
+
+    # leiningen - clojure projects
+    brew_install leiningen
 
     success "› Completed installing Software on Work Mac!"
 }
