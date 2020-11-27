@@ -2,3 +2,6 @@
 
 # ignore any log files
 *log
+
+# work zsh stuff
+zsh_work.symlink

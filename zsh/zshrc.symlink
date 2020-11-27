@@ -281,17 +281,15 @@ fi
 # >>> AWS COMPLETION - https://github.com/aws/aws-cli/issues/4656
 
 # Mac - aws v1
-if [[ "${kernel_name}" = "Darwin" ]]; then
+#if [[ "${kernel_name}" = "Darwin" ]]; then
 
     # awsv1_dir="/usr/local/opt/awscli@1/"
     # alias aws="${awsv1_dir}bin/aws"
-	# function awsh() { aws --profile hcareers "$@"; }
-    function awsv() { aws --profile virgil-careers "$@"; }
 
-	if test -f "/usr/local/opt/awscli@1/bin/aws_completer"; then
-		complete -C '/usr/local/opt/awscli@1/bin/aws_completer' aws
-	fi
-fi
+# 	if test -f "/usr/local/opt/awscli@1/bin/aws_completer"; then
+# 		complete -C '/usr/local/opt/awscli@1/bin/aws_completer' aws
+# 	fi
+# fi
 
 # if command -v aws 1>/dev/null 2>&1; then
 
@@ -352,27 +350,30 @@ function awsprofiles () {
 
 
 # <<< ##################################### FUNCTIONS 
-###############################################################################################
+
+
+# >>> ##################################### WORK STUFF
 
 DEFAULT_USER=$(whoami)
 
+# Load work related stuff
+# link: ln -s ~/.dotfiles/zsh/zsh_work.symlink ~/.zsh_work
+if [[ "$kernel_name" == 'Darwin' ]] && \
+    [[ "$DEFAULT_USER" == 'jgiorgis' ]]
+then
+    [[ ! -f ~/.zsh_work ]] || source ~/.zsh_work
+fi
 
-###############################################################################################
+# <<< ##################################### WORK STUFF
+
+
 # >>> ##################################### PATH MODIFICATIONS
 
-
-# allow for aws v1 - /usr/local/opt/awscli@1/bin/
-export PATH=/usr/local/opt/awscli@1/bin:$PATH
 export PATH=~/bin:$PATH
 export PATH=~/.bin:$PATH
 export PATH=~/.local/bin:$PATH
 
 # >>> CDPATH - https://jcode.me/cdpath-with-zsh/
-
-typeset -U path cdpath fpath
-
-setopt auto_cd
-cdpath=($HOME/work $HOME/work/github)
 
 zstyle ':completion:*' group-name ''
 zstyle ':completion:*:descriptions' format %d
@@ -423,10 +424,10 @@ fi
 export PATH="$HOME/.poetry/bin:$PATH"
 
 # awspowertools
-aws_power_tools_dir="$HOME/bin/aws-powertools"
-if test -d "$aws_power_tools_dir"; then
-    export PATH="${aws_power_tools_dir}:$PATH"
-fi
+#aws_power_tools_dir="$HOME/bin/aws-powertools"
+#if test -d "$aws_power_tools_dir"; then
+#    export PATH="${aws_power_tools_dir}:$PATH"
+#fi
 
 # Disabled shared history across terminal tabs
 unsetopt SHARE_HISTORY
