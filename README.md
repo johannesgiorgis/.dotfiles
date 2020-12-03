@@ -111,7 +111,8 @@ Folks are using Python, Typescript to write wrapper programs around their .dotfi
 - Linux Display Manager: <https://github.com/ypid/ansible-dm>
 - LightDM Webkit Greeter role: <https://github.com/void-ansible-roles/lightdm-webkit-greeter>
 - Jetbrains Toolbox role: <https://github.com/jaredhocutt/ansible-jetbrains-toolbox>
-- 
+- Firefox: <https://github.com/alzadude/ansible-firefox>
+- Chusiang Ubuntu Ansible Setup: <https://github.com/chusiang/hacking-ubuntu.ansible>
 
 ### Issues
 

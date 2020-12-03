@@ -37,22 +37,14 @@
     - [x] fbreader
     - [x] lastpass
     - [x] broot
-    - [ ] caffeine
-    - [ ] trello
-    - [ ] compiz
     - [x] diffstat
     - [x] [fd-find](https://github.com/sharkdp/fd)
     - [x] [ripgrep](https://github.com/BurntSushi/ripgrep)
     - [x] gnome-tweaks
-    - [ ] gawk
-    - [ ] gdb
-    - [ ] gh (github cli)
-    - [ ] gnumeric
-    - [ ] kazam
-    - [ ] openvpn
-    - [ ] wireshark
+    - [ ] firefox **in progress**
+    - [x] gawk
+    - [x] kazam
     - [ ] cuda
-    - [ ] logrotate
     - [ ] openssh (_in progress_)
     - [x] solaar - logitech Unifying Receiver
     - [x] sqlitebrowser
@@ -60,7 +52,6 @@
     - [x] timeshift
     - [x] timewarrior
     - [x] taskwarrior
-    - [ ] teamviewer (_incomplete - facing issues installing on popos_)
     - [x] thunderbird
     - [x] virtualbox
 - Save
@@ -71,3 +62,15 @@
     - [ ] set up Sublime-text packages
     - [ ] install fonts through seperate role
     - [ ] split up lightdm and lightdm-webkit2-greeter into 2 roles
+- Manual installation?
+    - [ ] teamviewer (_incomplete - facing issues installing on popos_)
+- Look for (may need manual install/may not be needed anymore)
+    - [ ] openvpn
+    - [ ] caffeine
+    - [ ] trello
+    - [ ] compiz
+    - [ ] gdb
+    - [ ] gh (github cli)
+    - [ ] gnumeric
+    - [ ] logrotate
+    - [ ] wireshark <https://github.com/ymajik/ansible-role-wireshark>
