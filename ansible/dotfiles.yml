@@ -47,6 +47,7 @@
     - { role: cli/diffstat, tags: [diffstat] }
     - { role: cli/fd-find, tags: [fd-find] }
     - { role: cli/ripgrep, tags: [ripgrep] }
+    - { role: cli/gawk, tags: [gawk] }
     - { role: cli/jump, tags: [jump] }
     - { role: cli/htop, tags: [htop] }
     - { role: cli/jq, tags: [jq] }
@@ -91,6 +92,7 @@
     - { role: software/teamviewer, tags: [teamviewer] }
     - { role: software/linux-flameshot, tags: [linux-flameshot] }
     - { role: software/linux-fbreader, tags: [linux-fbreader] }
+    - { role: software/linux-kazam, tags: [linux-kazam] }
     - { role: software/jetbrains-toolbox, tags: [jetbrains-toolbox] }
 
     # mac os x

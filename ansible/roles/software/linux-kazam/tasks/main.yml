@@ -1,0 +1,19 @@
+---
+# main task for linux-kazam
+
+- name: linux kazam is present
+  become: "{{ should_be_root }}"
+
+  block:
+    - name: install kazam repository
+      apt_repository:
+        repo: ppa:sylvain-pineau/kazam
+        state: present
+
+    - name: kazam is present
+      package:
+        name: kazam
+        state: present
+        update_cache: true
+
+  when: ansible_os_family in ["Debian", "Pop!_OS"]

@@ -1,0 +1,17 @@
+---
+# main task for gawk
+
+- name: gawk is present
+  become: "{{ should_be_root }}"
+
+  block:
+    - name: gawk is present
+      package:
+        name: gawk
+        state: latest
+
+    - name: gawk is present in homebrew
+      homebrew:
+        name: gawk
+        state: latest
+      when: ansible_os_family in ["Darwin"]
