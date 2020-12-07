@@ -88,11 +88,11 @@ plugins=(
     asdf
     taskwarrior
     timewarrior
-    pipenv
     ansible
     command-not-found
     brew
     history
+    poetry
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -117,6 +117,9 @@ export VISUAL=/usr/bin/vim
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
 
+
+# kernel name
+kernel_name="$(uname -s)"
 
 ###############################################################################################
 # >>> ##################################### ALIAS
@@ -146,7 +149,8 @@ fi
 # Brew
 
 if command -v brew 1>/dev/null 2>&1; then
-	alias brewup='brew update; brew upgrade; brew cleanup; brew doctor'
+	alias brewup='brew update && brew outdated && brew upgrade && brew cleanup && brew doctor'
+    alias brewupcask='brew update && brew cask outdated && brew cask upgrade && brew cleanup && brew cask doctor'
 fi
 
 if command -v apt 1>/dev/null 2>&1; then
@@ -157,6 +161,14 @@ if command -v bat 1>/dev/null 2>&1; then
     alias cat='bat'
 fi
 
+if command -v batcat 1>/dev/null 2>&1; then
+    alias cat='batcat'
+fi
+
+if command -v nvim 1>/dev/null 2>&1; then
+    alias v='nvim'
+fi
+
 # ls
 alias lt='ls -lahtFr'
 #alias ltr=' -r'
@@ -164,13 +176,38 @@ alias lt='ls -lahtFr'
 # docker
 alias dka='docker ps -aq | xargs -I{} docker kill {}'		# kill all running docker containers
 alias dra='docker ps -aq | xargs -I{} docker rm {}'			# remove all docker containers
-alias dsp='docker system prune'
+alias dpa="echo 'pruning system...' && docker system prune -f && echo 'pruning volumes...' && docker volume prune -f"
 
 alias tailf='tail -f'
 alias tt='timetrap'
 alias c='code'
 alias ag='alias | grep'
 alias wh='which'
+
+if [ "${kernel_name}" = "Linux" ]
+then
+    alias charm='/home/johannes/.local/bin/charm . > /dev/null 2>&1 &'
+fi
+
+# source: https://opensource.com/article/19/7/bash-aliases
+# see mounted drives
+if [ "${kernel_name}" = "Linux" ]; then
+	alias mnt="mount | awk -F' ' '{ printf "%s\t%s\n",$1,$3; }' | column -t | egrep ^/dev/ | sort"
+elif [ "${kernel_name}" = "Debian" ]; then
+	alias mnt='mount | grep -E ^/dev | column -t'
+fi
+
+# count files
+alias count='find . -type f | wc -l'
+
+# add a copy progress bar
+alias cpv='rsync -ah --info=progress2'
+
+# protect yourself from file removal accidents
+alias tcn='mv --force -t ~/.local/share/Trash '
+
+# navigate to top leve of a git project
+alias cg='cd `git rev-parse --show-toplevel`'
 
 # <<< ##################################### ALIAS
 ###############################################################################################
@@ -203,6 +240,7 @@ function cproj() {
 	new_project_dir="$(date +%F)-${project_name}"
 	mkdir -v "$new_project_dir"
 
+	read_me_file=$(echo "$project_name" | grep -o '^.\+\d')
 	readme_file="${new_project_dir}/${new_project_dir}-readme.md"
 	touch "$readme_file"
 	ls -d ${new_project_dir}/*
@@ -238,8 +276,6 @@ function cdot() {
 }
 
 # copy to clipboard on linux
-kernel_name="$(uname -s)"
-
 if [ "${kernel_name}" = "Linux" ]
 then
 	function copy() {
@@ -249,14 +285,37 @@ fi
 
 # >>> AWS COMPLETION - https://github.com/aws/aws-cli/issues/4656
 
-if command -v aws 1>/dev/null 2>&1; then
+# Mac - aws v1
+#if [[ "${kernel_name}" = "Darwin" ]]; then
 
-    function awsm() { aws --profile main "$@"; }
+    # awsv1_dir="/usr/local/opt/awscli@1/"
+    # alias aws="${awsv1_dir}bin/aws"
 
-	if test -f "/usr/local/bin/aws_completer"; then
-		complete -C '/usr/local/bin/aws_completer' aws awsm
-	fi
-fi
+# 	if test -f "/usr/local/opt/awscli@1/bin/aws_completer"; then
+# 		complete -C '/usr/local/opt/awscli@1/bin/aws_completer' aws
+# 	fi
+# fi
+
+# if command -v aws 1>/dev/null 2>&1; then
+
+#     function awsm() { aws --profile main "$@"; }
+
+# 	if test -f "/usr/local/bin/aws_completer"; then
+# 		complete -C '/usr/local/bin/aws_completer' aws awsm
+# 	fi
+# fi
+
+# aws v1
+#awsv1_dir="/usr/local/opt/awscli@1/"
+
+#if [[ -d "${awsv1_dir}" ]]; then
+#	alias aws="${awsv1_dir}bin/aws"
+#
+#	if test "${aws_dir}bin/aws_completer"; then
+#		complete -C '/usr/local/bin/aws_completer' aws
+#	fi
+#fi
+
 # <<< AWS COMPLETION
 
 function update_p10k() {
@@ -284,15 +343,36 @@ function aptl () {
 	apt list --installed | grep "$1"
 }
 
+function apti () {
+	sudo apt install "$1" -y
+}
+
+function awsprofiles () {
+	config=$(cat $HOME/.aws/config | grep '\[' | sed 's/\[//; s/\]//')
+	echo 'config:'
+	echo "$config"
+}
+
+
 # <<< ##################################### FUNCTIONS 
-###############################################################################################
+
+
+# >>> ##################################### WORK STUFF
 
 DEFAULT_USER=$(whoami)
 
+# Load work related stuff
+# link: ln -s ~/.dotfiles/zsh/zsh_work.symlink ~/.zsh_work
+if [[ "$kernel_name" == 'Darwin' ]] && \
+    [[ "$DEFAULT_USER" == 'jgiorgis' ]]
+then
+    [[ ! -f ~/.zsh_work ]] || source ~/.zsh_work
+fi
 
-###############################################################################################
+# <<< ##################################### WORK STUFF
+
+
 # >>> ##################################### PATH MODIFICATIONS
-
 
 export PATH=~/bin:$PATH
 export PATH=~/.bin:$PATH
@@ -300,10 +380,10 @@ export PATH=~/.local/bin:$PATH
 
 # >>> CDPATH - https://jcode.me/cdpath-with-zsh/
 
-typeset -U path cdpath fpath
+#typeset -U path cdpath fpath
 
-setopt auto_cd
-cdpath=($HOME/work $HOME/work/github)
+#setopt auto_cd
+#cdpath=($HOME/work $HOME/work/github)
 
 zstyle ':completion:*' group-name ''
 zstyle ':completion:*:descriptions' format %d
@@ -341,7 +421,31 @@ else
 fi
 # <<< conda initialize <<<
 
+# rust binaries
+
+# /home/johannes/.asdf/installs/rust/stable/bin/rg
+# export PATH="$HOME/.asdf/installs/rust/stable/bin:$PATH"
+rust_install_dir="$HOME/.asdf/installs/rust/stable"
+if test -d "$rust_install_dir"; then
+    export PATH="${rust_install_dir}/bin:$PATH"
+fi
+
+# add poetry
+export PATH="$HOME/.poetry/bin:$PATH"
+
+# awspowertools
+#aws_power_tools_dir="$HOME/bin/aws-powertools"
+#if test -d "$aws_power_tools_dir"; then
+#    export PATH="${aws_power_tools_dir}:$PATH"
+#fi
+
+# add tyk
+tyk_dir="/opt/tyk-gateway"
+if test -d "$tyk_dir"; then
+    export PATH="${tyk_dir}:$PATH"
+fi
+
 # Disabled shared history across terminal tabs
 unsetopt SHARE_HISTORY
 
-source /home/johannes/.config/broot/launcher/bash/br
+source ${HOME}/.config/broot/launcher/bash/br

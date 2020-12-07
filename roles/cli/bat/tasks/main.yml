@@ -1,0 +1,11 @@
+---
+# main task for bat
+
+- name: bat is present
+  become: "{{ should_be_root }}"
+
+  block:
+    - name: bat is present
+      package:
+        name: bat
+        state: present

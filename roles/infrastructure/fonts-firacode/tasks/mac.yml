@@ -1,0 +1,19 @@
+---
+# mac tasks for fonts-firacode
+
+- name: fonts-firacode is present on mac os x
+
+  block:
+    - name: access caskroom/fonts via brew tap
+      homebrew_tap:
+        name: caskroom/fonts
+        state: present
+
+    - name: font-fira-* are present via brew cask
+      homebrew_cask:
+        name:
+          - font-fira-coda
+          - font-fira-mono
+          - font-fira-mono-for-powerline
+          - font-fira-sans
+        state: present

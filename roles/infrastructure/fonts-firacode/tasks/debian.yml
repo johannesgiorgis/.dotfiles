@@ -1,0 +1,9 @@
+---
+# debian task for fonts-firacode
+
+- name: fonts-firacode is present for debian system
+  block:
+    - name: Ensure dependencies are installed
+      apt:
+        name: fonts-firacode
+        state: present
