@@ -13,7 +13,7 @@ set -e
 export SUPPORT_DIR="${HOME}/.dotfiles/support"
 source "${SUPPORT_DIR}/common-utilities.sh"
 
-ANSIBLE_DIR="${HOME}/.dotfiles/"
+ANSIBLE_DIR="${HOME}/.dotfiles"
 PLAYBOOK_FILE="${ANSIBLE_DIR}/dotfiles.yml"
 HOSTS_FILE="${ANSIBLE_DIR}/hosts"
 
@@ -69,6 +69,7 @@ main() {
   
   else
     ansible-playbook -i "${HOSTS_FILE}" "${PLAYBOOK_FILE}" --tags "$tags"
+#    echo "ansible-playbook -i '${HOSTS_FILE}' '${PLAYBOOK_FILE}' --tags '$tags'"
   fi
   
   end=$(date +%s)
