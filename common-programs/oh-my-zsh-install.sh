@@ -112,6 +112,13 @@ function install_plugins() {
     print_info "› Getting 'timewarrior' plugin..."
     git clone https://github.com/svenXY/timewarrior ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/timewarrior
 
+    if command -v poetry 1>/dev/null 2>&1; then
+        print_info "› Getting 'poetry' plugin..."
+        mkdir $ZSH/plugins/poetry
+        poetry completions zsh > $ZSH/plugins/poetry/_poetry
+    fi
+
+
     success "› Completed installing plugins"
 }
 

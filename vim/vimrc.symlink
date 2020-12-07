@@ -1,13 +1,12 @@
 filetype plugin indent on
-" when indenting with '>', use 2 spaces width
 
-" set shiftwidth=4
-set shiftwidth=2
+set shiftwidth=2 " when indenting with '>', use 2 spaces width
 
-" set tabstop=4
-set tabstop=2
+set tabstop=2	" set tab spaces
 
 set autoindent
 set number
 
 " syntax off
+"
+set mouse=a		" Enable mouse usage (all modes)

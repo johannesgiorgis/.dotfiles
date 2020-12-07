@@ -19,6 +19,7 @@ main() {
     # brew install
     install_general_tools
     install_programming_languages
+    install_development_tools
     install_databases
 
     # brew cask install
@@ -26,10 +27,17 @@ main() {
     cask_install_note_taking
     cask_install_development_tools
     cask_install_logitech
+    cask_install_media
 
     # brew custom tap
     brew_custom_install_displacer
     brew_custom_install_font_fira_code
+
+    # install software on work mac
+    is_work_mac
+
+    # install software on personal mac
+    is_personal_mac
 
     brew_upgrade_cleanup
     
@@ -80,14 +88,13 @@ function install_general_tools() {
     brew_install coreutils
     brew_install gpg
     brew_install htop
-    # brew_install jq
+    brew_install jq
     brew_install speedtest-cli
     brew_install tldr
     brew_install tree
     brew_install watch
     brew_install wget
     brew_install wifi-password
-    brew_install putty
     brew_install csvkit
     brew_install ack
     brew_install jump
@@ -102,26 +109,68 @@ function install_general_tools() {
 
     # ls alternative
     brew_install exa
+    brew_install broot
     brew_install fzf
 
     # diff alternative
     brew_install diff-so-fancy
+
+    # find alternative
+    brew_install fd
+
+    # mac app store command line tool
+    brew_install mas
+
+    # rename
+    brew_install rename
+
+    # grep/ack alternative
+    brew_install ripgrep
+
+    # cli messages
+    brew_install fortune
+
+    # cli markdown presentation tool
+    brew_install mdp
+
+    # trigger notifications in cli
+    brew_install noti
+
+    # task/time warrior
+    brew_install tasksh
+    brew_install timewarrior
+    brew_install ansible
+    brew_install curl
 }
 
+function install_development_tools() {
+    # v2.0
+    brew_install aws
+    brew_install neovim
+    brew_install httpie
+    brew_install git
+    brew_install gnupg
+    brew_install pipx
+}
 
 function install_programming_languages() {
     # python
-    brew_install black flake8 pipenv
+    brew_install black
+    brew_install flake8
+    brew_install pipenv
+    brew_install poetry
 
     # Additional system dependencies needed for Python compilation by pyenv (optional, but recommended)
     # https://github.com/pyenv/pyenv/wiki
     brew_install openssl readline sqlite3 xz zlib
+
+    # brew_install rbenv
 }
 
 
 function install_databases() {
-    # brew_install postgresql
-    # brew_install mysql
+    brew_install postgresql
+    brew_install mysql
 }
 
 
@@ -129,12 +178,12 @@ function install_databases() {
 
 function cask_install_general_tools() {
     brew_cask_install dropbox
+
+    # browsers
     brew_cask_install firefox
     brew_cask_install google-chrome
-    brew_cask_install vlc
+    brew_cask_install brave-browser
     brew_cask_install zoomus
-    # vpn
-    brew_cask_install tunnelblick
     # disk utility
     brew_cask_install omnidisksweeper
     # mac window management
@@ -142,6 +191,9 @@ function cask_install_general_tools() {
     # aerial screen saver
     brew_cask_install aerial
     brew_cask_install lg-onscreen-control   
+    # dock manager
+    # brew_cask_install vanilla
+    brew_cask_install authy
 }
 
 
@@ -149,6 +201,7 @@ function cask_install_note_taking() {
     brew_cask_install simplenote
     brew_cask_install sublime-text
     brew_cask_install joplin 
+    brew_cask_install macvim
 }
 
 
@@ -162,6 +215,7 @@ function cask_install_development_tools() {
     brew_cask_install sourcetree
     brew_cask_install sublime-merge
     brew_cask_install beekeeper-studio
+    brew_cask_install kite
 }
 
 
@@ -169,6 +223,11 @@ function cask_install_logitech() {
     brew_cask_install logitech-options
     brew_cask_install logitech-unifying
     brew_cask_install logitech-control-center
+}
+
+function cask_install_media() {
+    brew_cask_install vlc
+    brew_cask_install plex
 }
 
 
@@ -188,4 +247,81 @@ function brew_custom_install_font_fira_code() {
     success "› Completed installing Font Fira Code!"
 }
 
+# ################### BREW CUSTOM #################################
+
+function is_work_mac() {
+    print_info "› Checking if device is Work Mac..."
+
+    user=$(whoami)
+    kernel_name=$(uname -s)
+    
+    if [[ "${kernel_name}" == "Darwin" ]] && [[ "${user}" == "jgiorgis" ]]; then
+        warn "This is a work laptop :)"
+        install_software_on_work_mac
+    else
+        warn "This is not a work laptop"
+    fi
+}
+
+function install_software_on_work_mac() {
+    print_info "› Installing Software on Work Mac..."
+
+    # v1.0
+    brew_install awscli@1
+    brew_install putty
+    brew_install telnet
+    brew_install pandoc
+    brew_install parquet-tools
+
+    # cask
+    brew_cask_install alfred
+    brew_cask_install jetbrains-toolbox
+    # vpn
+    brew_cask_install openvpn-connect
+    brew_cask_install pycharm
+    brew_cask_install tunnelblick
+    brew_cask_install karabiner-elements
+    brew_cask_install basictex
+    brew_cask_install wkhtmltopdf
+    brew_cask_install dash
+
+    # sql server
+    install_ms_sql_server
+
+    # leiningen - clojure projects
+    brew_install leiningen
+
+    success "› Completed installing Software on Work Mac!"
+}
+
+function install_ms_sql_server() {
+    brew tap microsoft/mssql-release https://github.com/Microsoft/homebrew-mssql-release
+    brew update
+    HOMEBREW_NO_ENV_FILTERING=1 ACCEPT_EULA=Y brew install msodbcsql17 mssql-tools
+}
+
+function is_personal_mac() {
+    print_info "› Checking if device is Personal Mac..."
+
+    user=$(whoami)
+    kernel_name=$(uname -s)
+    
+    if [[ "${kernel_name}" == "Darwin" ]] && [[ "${user}" == "johannes" ]]; then
+        warn "This is a personal laptop :)"
+        install_software_on_personal_mac
+    else
+        warn "This is not a personal laptop"
+    fi
+}
+
+function install_software_on_personal_mac() {
+    print_info "› Installing Sofware on Personal Mac..."
+
+    # cask
+    brew_cask_install pycharm-ce
+
+    success "› Completed installing on Personal Mac!"
+}
+
 main
+
