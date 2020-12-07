@@ -429,6 +429,12 @@ export PATH="$HOME/.poetry/bin:$PATH"
 #    export PATH="${aws_power_tools_dir}:$PATH"
 #fi
 
+# add tyk
+tyk_dir="/opt/tyk-gateway"
+if test -d "$tyk_dir"; then
+    export PATH="${tyk_dir}:$PATH"
+fi
+
 # Disabled shared history across terminal tabs
 unsetopt SHARE_HISTORY
 
