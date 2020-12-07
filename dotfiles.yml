@@ -7,6 +7,7 @@
     - { role: infrastructure/docker, tags: [docker] }
     - { role: infrastructure/fonts-firacode, tags: [fonts-firacode] }
     - { role: infrastructure/git, tags: [git] }
+    - { role: infrastructure/gparted, tags: [gparted] }
     - { role: infrastructure/linux-snap, tags: [linux-snap] }
     - { role: infrastructure/linux-terminator, tags: [linux-terminator] }
     - { role: infrastructure/linux-openssh, tags: [linux-openssh] }
