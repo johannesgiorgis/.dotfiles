@@ -1,0 +1,44 @@
+---
+# main task for python
+
+- name: python, python packages, pipx, pipx packages are present
+  become: "{{ should_be_root }}"
+
+  block:
+    - name: Add python plugin for asdf
+      command: "asdf plugin-add python {{ python_plugin_url }}"
+      register: python_add
+      failed_when: python_add == 1
+
+    - name: Symlink .default-python-packages
+      file:
+        src: "{{ dotfiles_home }}/roles/infrastructure/python/files/default-python-packages"
+        dest: "{{ dotfiles_user_home }}/.default-python-packages"
+        state: link
+
+    - name: Install python versions
+      command: asdf install python {{ item }}
+      loop: "{{ python_versions }}"
+      loop_control:
+        label: "{{ item }}"
+
+    - name: Set global version for python to {{ python_versions[0] }}
+      command: asdf global python {{ python_versions[0] }}
+
+    - name: Install python3-pip and python3-venv for system python3
+      apt:
+        name: python3-pip, python3-venv
+      tags: pipx
+
+    - name: Install pipx
+      shell: "PYENV_VERSION=system python3 -m pip install --user pipx && PYENV_VERSION=system python3 -m pipx install pipx"
+      args:
+        creates: "{{ dotfiles_user_home }}/.local/bin/pipx"
+      tags: pipx
+
+    - name: Install packages via pipx
+      command: "pipx install {{ item }}"
+      loop: "{{ pipx_packages }}"
+      loop_control:
+        label: "{{ item }}"
+      tags: pipx

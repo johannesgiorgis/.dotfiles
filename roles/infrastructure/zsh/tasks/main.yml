@@ -1,0 +1,9 @@
+---
+- name: zsh is present
+
+  block:
+    - import_tasks: install-zsh.yml
+
+    - import_tasks: install-oh-my-zsh.yml
+
+    - import_tasks: configure.yml
