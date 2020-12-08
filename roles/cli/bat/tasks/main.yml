@@ -5,7 +5,15 @@
   become: "{{ should_be_root }}"
 
   block:
-    - name: bat is present
-      package:
-        name: bat
+    - name: bat is present in debian
+      apt:
+        name: ripgrep
         state: present
+        update_cache: yes
+        dpkg_options: 'force-overwrite'
+      when: ansible_os_family in ['Debian', 'Pop!_OS']
+
+    # - name: bat is present
+    #   package:
+    #     name: bat
+    #     state: present

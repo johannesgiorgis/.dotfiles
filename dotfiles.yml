@@ -58,7 +58,9 @@
     - { role: cli/htop, tags: [htop] }
     - { role: cli/jq, tags: [jq] }
     - { role: cli/jump, tags: [jump] }
+    - { role: cli/linux-xclip, tags: [linux-xclip] }
     - { role: cli/mlocate, tags: [mlocate] }
+    - { role: cli/ncdu, tags: [ncdu] }
     - { role: cli/neofetch, tags: [neofetch] }
     - { role: cli/pandoc, tags: [pandoc] }
     - { role: cli/rename, tags: [rename] }

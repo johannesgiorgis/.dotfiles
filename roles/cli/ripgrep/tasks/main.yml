@@ -5,11 +5,13 @@
   become: "{{ should_be_root }}"
 
   block:
-    - name: ripgrep is present
-      package:
+    - name: ripgrep is present in debian
+      apt:
         name: ripgrep
-        state: latest
-      when: ansible_distribution_version > 18.10
+        state: present
+        update_cache: yes
+        dpkg_options: 'force-overwrite'
+      when: ansible_distribution_version is version('18.10', '>') #> 18.10
 
     - name: ripgrep is present in homebrew
       homebrew:
