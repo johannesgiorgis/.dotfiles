@@ -64,4 +64,11 @@ bash bin/dot-bootstrap -t xclip
 xclip -selection clipboard < ~/.ssh/id_ed25519.pub # add to Github
 
 bash bin/dot-bootstrap -t broot
+
+# add to broot role
+broot --install
+
+bash bin/dot-bootstrap -t linux-terminator
+
+bash bin/dot-bootstrap -t linux-gnome-extensions
 ```

@@ -448,4 +448,8 @@ fi
 # Disabled shared history across terminal tabs
 unsetopt SHARE_HISTORY
 
-source ${HOME}/.config/broot/launcher/bash/br
+
+if command -v br 1>/dev/null 2>&1; then
+	source ${HOME}/.config/broot/launcher/bash/br
+fi
+source /home/johannes/.config/broot/launcher/bash/br
