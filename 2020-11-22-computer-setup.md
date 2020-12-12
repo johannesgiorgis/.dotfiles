@@ -35,6 +35,7 @@ johannes@deepblue:~$
 1. Install FireFox (comes pre-installed on Pop OS) Add Ons:
    1. LastPass: <https://addons.mozilla.org/en-CA/firefox/addon/lastpass-password-manager/>
    2. Adblock Plus: <https://addons.mozilla.org/en-CA/firefox/addon/adblock-plus/>
+   3. Octotree: <https://addons.mozilla.org/en-CA/firefox/addon/octotree/>
 2. Clone github repo: `git clone git@github.com:johannesgiorgis/dotfiles.git ~/.dotfiles`
 
 ## Install Software

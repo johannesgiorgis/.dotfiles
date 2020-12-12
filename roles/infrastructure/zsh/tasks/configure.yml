@@ -70,7 +70,9 @@
   when: ansible_os_family == "Debian" or ansible_os_family == "Pop!_OS"
 
 - name: Install Meslo Nerd Font for Linux
-  command: 'wget -nv -P "~/.fonts/" "https://github.com/romkatv/powerlevel10k-media/raw/master/{{ item }}"'
+  get_url:
+    url: 'https://github.com/romkatv/powerlevel10k-media/raw/master/{{ item }}'
+    dest: '~/.fonts/{{ item }}'
   with_items:
     # regular
     - "MesloLGS%20NF%20Regular.ttf"
@@ -79,22 +81,5 @@
     # italic
     - "MesloLGS%20NF%20Italic.ttf"
     # italic_bold
-    - "MesloLGS%20NF%20Bold%20Italic.ttf"
-  args:
-    warn: false
-  when: ansible_os_family == "Debian" or ansible_os_family == "Pop!_OS"
-
-# - name: Install Meslo Nerd Font for Linux
-#   get_url:
-#     url: 'https://github.com/romkatv/powerlevel10k-media/raw/master/{{ item }}'
-#     dest: '~/.fonts/'
-#   with_items:
-#     # regular
-#     - "MesloLGS%20NF%20Regular.ttf"
-#     # bold
-#     - "MesloLGS%20NF%20Bold.ttf"
-#     # italic
-#     - "MesloLGS%20NF%20Italic.ttf"
-#     # italic_bold
-#     - 'MesloLGS%20NF%20Bold%20Italic.ttf'
-#   when: ansible_os_family == "Debian" or ansible_os_family == "Pop!_OS"
+    - 'MesloLGS%20NF%20Bold%20Italic.ttf'
+  when: ansible_os_family in ["Debian", "Pop!_OS"]

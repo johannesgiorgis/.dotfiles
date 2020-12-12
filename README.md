@@ -113,6 +113,7 @@ Folks are using Python, Typescript to write wrapper programs around their .dotfi
 - Jetbrains Toolbox role: <https://github.com/jaredhocutt/ansible-jetbrains-toolbox>
 - Firefox: <https://github.com/alzadude/ansible-firefox>
 - Chusiang Ubuntu Ansible Setup: <https://github.com/chusiang/hacking-ubuntu.ansible>
+- Nerd-fonts: <https://github.com/drew-kun/ansible-nerdfonts>
 
 ### Issues
 

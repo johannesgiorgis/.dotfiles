@@ -2,7 +2,6 @@
 # main task for linux-initial-configure
 
 - name: initial configuration for linux
-  become: "{{ should_be_root }}"
 
   block:
     # > ensure vim is default editor
@@ -26,7 +25,8 @@
       lineinfile:
         path: "/etc/sudoers"
         line: "{{ ansible_user_id }} ALL=(ALL) NOPASSWD: ALL"
+      become: "{{ should_be_root }}"
 
     - name: Modifying capslock behavior to match escape key
-      command: 'gsettings set org.gnome.desktop.input-sources xkb-options "[''caps:escape'']"'
+      shell: gsettings set org.gnome.desktop.input-sources xkb-options "['caps:escape']"
   when: ansible_os_family in ["Debian", "Pop!_OS"]
