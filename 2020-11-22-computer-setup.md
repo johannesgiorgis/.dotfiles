@@ -71,4 +71,8 @@ broot --install
 bash bin/dot-bootstrap -t linux-terminator
 
 bash bin/dot-bootstrap -t linux-gnome-extensions
+
+bash bin/dot-bootstrap -t python
+
+bash bin/dot-bootstrap -t python-poetry
 ```

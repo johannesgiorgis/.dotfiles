@@ -1,0 +1,26 @@
+---
+# dependencies for python
+
+- name: Ensure dependencies for python are present
+  block:
+    - name: Ensure python system dependencies are present (debian)
+      apt:
+        name:
+          - make
+          - build-essential
+          - libssl-dev
+          - zlib1g-dev
+        state: present
+      when: ansible_os_family in ["Debian",  "Pop!_OS" ]
+      become: "{{ should_be_root }}"
+    
+    - name: Ensure python system dependencies are present (homebrew)
+      homebrew:
+        name:
+          - openssl
+          - readline
+          - sqlite3
+          - xz
+          - xlib
+        state: present
+      when: ansible_os_family in ["Darwin"]

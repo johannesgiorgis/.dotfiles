@@ -1,0 +1,11 @@
+---
+# main task for python-poetry
+
+- name: poetry for python is present
+
+  block:
+    - name: install poetry
+      shell: |
+        curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python - 
+      args:
+        warn: false

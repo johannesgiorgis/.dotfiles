@@ -54,6 +54,15 @@
   args:
     creates: "{{ dotfiles_user_home }}/.oh-my-zsh/custom/plugins/timewarrior"
 
+- name: Create directory for plugin poetry
+  command: "mkdir ~/.oh-my-zsh/custom/plugins/poetry"
+  args:
+    creates: "{{ dotfiles_user_home}}/.oh-my-zsh/custom/plugins/poetry"
+    warn: false
+
+- name: Enable poetry completions for zsh
+  shell: "poetry completions zsh > ~/.oh-my-zsh/custom/plugins/poetry/_poetry"
+
 - name: Create ~/.fonts directory for Linux
   file:
     path: ~/.fonts
@@ -74,6 +83,7 @@
   args:
     warn: false
   when: ansible_os_family == "Debian" or ansible_os_family == "Pop!_OS"
+
 # - name: Install Meslo Nerd Font for Linux
 #   get_url:
 #     url: 'https://github.com/romkatv/powerlevel10k-media/raw/master/{{ item }}'
