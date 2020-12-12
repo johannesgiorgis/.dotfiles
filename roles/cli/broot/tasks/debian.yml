@@ -26,7 +26,7 @@
         msg: "Run command: bash {{ broot_binary_download_dir.path }}/install_broot.sh"
 
     - name: add broot to /usr/local/bin
-      command: sudo install broot /usr/local/bin
+      command: install broot /usr/local/bin
       args:
         chdir: "{{ broot_binary_download_dir.path }}"
 

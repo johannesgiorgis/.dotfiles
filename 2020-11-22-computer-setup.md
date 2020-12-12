@@ -32,8 +32,10 @@ johannes@deepblue:~$
 
 ### Option 2
 
-1. Install LastPass on Firefox (comes pre-installed on Pop OS) - <https://addons.mozilla.org/en-CA/firefox/addon/lastpass-password-manager/>
-1. Clone github repo: `git clone git@github.com:johannesgiorgis/dotfiles.git ~/.dotfiles`
+1. Install FireFox (comes pre-installed on Pop OS) Add Ons:
+   1. LastPass: <https://addons.mozilla.org/en-CA/firefox/addon/lastpass-password-manager/>
+   2. Adblock Plus: <https://addons.mozilla.org/en-CA/firefox/addon/adblock-plus/>
+2. Clone github repo: `git clone git@github.com:johannesgiorgis/dotfiles.git ~/.dotfiles`
 
 ## Install Software
 
@@ -75,4 +77,16 @@ bash bin/dot-bootstrap -t linux-gnome-extensions
 bash bin/dot-bootstrap -t python
 
 bash bin/dot-bootstrap -t python-poetry
+
+bash bin/dot-bootstrap -t ncdu
+
+bash bin/dot-bootstrap -t 'nodejs rust golang gohugo'
+
+bash bin/dot-bootstrap -t docker
+
+bash bin/dot-bootstrap -t bat,broot,cowsay,csvkit,diffstat,fd-find,fortune,gawk,htop,jq,jump,linux-xclip,mlocate,ncdu,neofetch,pandoc,rename,ripgrep,shellcheck,taskwarrior,timewarrior,tldr,vim,youtube-dl
+
+bash bin/dot-bootstrap -t fonts-firacode
+
+bash bin/dot-bootstrap -t asdf,docker,fonts-firacode,git,gohugo,golang,gparted,linux-gnome-extensions,linux-initial-configuration,linux-snap,linux-terminator,nodejs,popos-initial-configuration,python,python-poetry,rust,zsh
 ```

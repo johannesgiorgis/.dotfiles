@@ -2,7 +2,6 @@
 # main task for golang
 
 - name: golang & golang packages are present
-  become: "{{ should_be_root }}"
 
   block:
     - name: Install dep apt package

@@ -1,19 +1,24 @@
-- name: Add rust plugin for asdf
-  command: "asdf plugin-add rust {{ rust_plugin_url }}"
-  register: rust_add
-  failed_when: rust_add == 2
+# main task for rust
 
-- name: Symlink .default-cargo-crates
-  file:
-    src: "{{ dotfiles_home }}/roles/infrastructure/rust/files/default-cargo-crates"
-    dest: "{{ dotfiles_user_home }}/.default-cargo-crates"
-    state: link
+- name: rust & rust packages are present
 
-- name: Install rust versions
-  command: asdf install rust {{ item }}
-  loop: "{{ rust_versions }}"
-  loop_control:
-    label: "{{ item }}"
+  block:
+    - name: Add rust plugin for asdf
+      command: "asdf plugin-add rust {{ rust_plugin_url }}"
+      register: rust_add
+      failed_when: rust_add == 2
 
-- name: Set global version for rust to {{ rust_versions[0] }}
-  command: asdf global rust {{ rust_versions[0] }}
+    - name: Symlink .default-cargo-crates
+      file:
+        src: "{{ dotfiles_home }}/roles/infrastructure/rust/files/default-cargo-crates"
+        dest: "{{ dotfiles_user_home }}/.default-cargo-crates"
+        state: link
+
+    - name: Install rust versions
+      command: asdf install rust {{ item }}
+      loop: "{{ rust_versions }}"
+      loop_control:
+        label: "{{ item }}"
+
+    - name: Set global version for rust to {{ rust_versions[0] }}
+      command: asdf global rust {{ rust_versions[0] }}

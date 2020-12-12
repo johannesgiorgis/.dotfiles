@@ -30,13 +30,12 @@ function usage() {
 main() {
 
   ask_become_pass="false"
-  tags=""
 
   options="t:ah"
   while getopts "$options" opt; do
     case $opt in
       a ) ask_become_pass="true" ;;
-      t ) tags="$OPTARG" ;;
+      t ) tags+=("$OPTARG") ;;
       h ) usage; exit 0 ;;
       : ) echo "Option -$OPTARG requires an argument." >&2; usage; exit 1 ;;
       \? ) echo "Invalid option: -$OPTARG" >&2; usage; exit 1 ;;
@@ -49,9 +48,11 @@ main() {
   print_info "$0 Started"
   
   print_info "playbook_file:${PLAYBOOK_FILE}"
-  print_info "tags:'${tags}'"
+  print_info "tags before:'${tags[*]}'"
+  tags=$(echo "$tags" | sed 's/ /,/g')
+  print_info "tags after:'${tags}'"
   print_info "ask_become_pass?${ask_become_pass}"
-
+  
   ensure_ansible_is_present
 
   # list available tags
@@ -63,13 +64,12 @@ main() {
     exit 0
   fi
 
-
   if [[ "$ask_become_pass" == "true" ]]; then
-    ansible-playbook -i "${HOSTS_FILE}" "${PLAYBOOK_FILE}" --tags "$tags" --ask-become-pass
+    ansible-playbook -i "${HOSTS_FILE}" "${PLAYBOOK_FILE}" --tags "${tags[*]}" --ask-become-pass
   
   else
-    ansible-playbook -i "${HOSTS_FILE}" "${PLAYBOOK_FILE}" --tags "$tags"
-#    echo "ansible-playbook -i '${HOSTS_FILE}' '${PLAYBOOK_FILE}' --tags '$tags'"
+    ansible-playbook -i "${HOSTS_FILE}" "${PLAYBOOK_FILE}" --tags "${tags[*]}"
+    # echo "ansible-playbook -i '${HOSTS_FILE}' '${PLAYBOOK_FILE}' --tags '${tags[*]}'"
   fi
   
   end=$(date +%s)

@@ -63,6 +63,7 @@
     - { role: cli/mlocate, tags: [mlocate] }
     - { role: cli/ncdu, tags: [ncdu] }
     - { role: cli/neofetch, tags: [neofetch] }
+    - { role: cli/neofetch, tags: [neofetch] }
     - { role: cli/pandoc, tags: [pandoc] }
     - { role: cli/rename, tags: [rename] }
     - { role: cli/ripgrep, tags: [ripgrep] }

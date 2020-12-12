@@ -24,4 +24,4 @@ docker_apt_ignore_key_error: true
 docker_apt_gpg_key: "https://download.docker.com/linux/ubuntu/gpg"
 
 # A list of users who will be added to the docker group
-docker_users: []
+docker_users: ['johannes']

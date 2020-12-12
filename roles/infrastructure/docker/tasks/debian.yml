@@ -55,3 +55,8 @@
 
     - include_tasks: docker-users.yml
       when: docker_users | length > 0
+    
+    - name: Ensure /var/run/docker.sock has correct permissions
+      file:
+        path: /var/run/docker.sock
+        mode: '666'

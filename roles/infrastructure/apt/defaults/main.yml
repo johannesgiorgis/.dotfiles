@@ -1,14 +1,14 @@
 package_upgrade: yes
 packages:
   - ack
-  - ansible
+  # - ansible
   - bison
   - build-essential
-  - curl
-  - entr
-  - gpg
-  - htop
-  - jq
+  # - curl
+  # - entr
+  # - gpg
+  # - htop
+  # - jq
   - less
   - libbz2-dev
   - libffi-dev
