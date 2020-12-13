@@ -1,0 +1,24 @@
+---
+# configuration tasks for linux-terminator
+
+- name: Create terminator plugin directory
+  # command: "mkdir ~/.config/terminator/plugins"
+  # args:
+  #   creates: "{{ dotfiles_user_home}}/.config/terminator/plugins"
+  # warn: false
+  file:
+    path: ~/.config/terminator/plugins
+    state: directory
+    mode: "775"
+
+- name: Get terminator-themes plugin
+  get_url:
+    url: "https://git.io/v5Zww"
+    dest: "~/.config/terminator/plugins/terminator-themes.py"
+
+- name: Symlink terminator config file
+  file:
+    src: "{{ dotfiles_home }}/roles/infrastructure/linux-terminator/files/config"
+    dest: "{{ dotfiles_user_home }}/.config/terminator/config"
+    state: link
+    force: yes

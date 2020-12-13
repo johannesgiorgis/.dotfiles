@@ -34,9 +34,9 @@ johannes@deepblue:~$
 
 1. Install FireFox (comes pre-installed on Pop OS) Add Ons:
    1. LastPass: <https://addons.mozilla.org/en-CA/firefox/addon/lastpass-password-manager/>
-   2. Adblock Plus: <https://addons.mozilla.org/en-CA/firefox/addon/adblock-plus/>
-   3. Octotree: <https://addons.mozilla.org/en-CA/firefox/addon/octotree/>
-2. Clone github repo: `git clone git@github.com:johannesgiorgis/dotfiles.git ~/.dotfiles`
+   1. Adblock Plus: <https://addons.mozilla.org/en-CA/firefox/addon/adblock-plus/>
+   1. Octotree: <https://addons.mozilla.org/en-CA/firefox/addon/octotree/>
+1. Clone github repo: `git clone git@github.com:johannesgiorgis/dotfiles.git ~/.dotfiles`
 
 ## Install Software
 
@@ -50,7 +50,11 @@ bash bin/dot-bootstrap
 
 bash bin/dot-bootstrap -t popos-initial-configuration
 
+# install vscode + settings sync
 bash bin/dot-bootstrap -t vscode
+# set up settings sync
+# - log in to github
+# - select the right gist
 
 bash bin/dot-bootstrap -t zsh
 
@@ -90,4 +94,6 @@ bash bin/dot-bootstrap -t bat,broot,cowsay,csvkit,diffstat,fd-find,fortune,gawk,
 bash bin/dot-bootstrap -t fonts-firacode
 
 bash bin/dot-bootstrap -t asdf,docker,fonts-firacode,git,gohugo,golang,gparted,linux-gnome-extensions,linux-initial-configuration,linux-snap,linux-terminator,nodejs,popos-initial-configuration,python,python-poetry,rust,zsh
+
+bash bin/dot-bootstrap -t spotify,simplenote,meld
 ```

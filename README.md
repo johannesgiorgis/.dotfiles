@@ -114,6 +114,11 @@ Folks are using Python, Typescript to write wrapper programs around their .dotfi
 - Firefox: <https://github.com/alzadude/ansible-firefox>
 - Chusiang Ubuntu Ansible Setup: <https://github.com/chusiang/hacking-ubuntu.ansible>
 - Nerd-fonts: <https://github.com/drew-kun/ansible-nerdfonts>
+- Workstation: <https://github.com/leberrem/workstation>
+- Mac Specific Dotfiles: <https://gitlab.dwbn.org/TobiasSteinhoff/dotfiles-ansible/-/tree/8f251067b69b118b28510551ffcea423ef032044/>
+- Automating My Dev Setup
+    - <https://pbassiner.github.io/blog/automating_my_dev_setup.html>
+    - <https://github.com/pbassiner/dev-env>
 
 ### Issues
 

@@ -2,11 +2,14 @@
 # main tasks for linux-terminator
 
 - name: terminator is present
-  become: "{{ should_be_root }}"
+  # become: "{{ should_be_root }}"
 
   block:
     - name: terminator is present (linux)
       package:
         name: terminator
         state: present
+
+    - name: configure terminator
+      import_tasks: configure.yml
   when: ansible_os_family in ["Debian", "Pop!_OS"]
