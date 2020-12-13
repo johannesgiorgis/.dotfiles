@@ -2,7 +2,6 @@
 # tasks for linux-gnome-extensions
 
 - name: installing gnome extensions
-  become: "{{ should_be_root }}"
 
   block:
     - name: Parse Gnome Shell version

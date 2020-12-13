@@ -14,4 +14,4 @@
       when: ansible_os_family == "Darwin"
       homebrew_cask:
         name: whatsapp
-        state: presen
+        state: present

@@ -1,0 +1,5 @@
+---
+# meta for linux-gnome-extensions
+
+dependencies:
+  - role: linux-gnome-tweaks

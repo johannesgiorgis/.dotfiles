@@ -15,6 +15,7 @@
         role: infrastructure/linux-gnome-extensions,
         tags: [linux-gnome-extensions],
       }
+    - { role: infrastructure/linux-gnome-tweaks, tags: [linux-gnome-tweaks] }
     - {
         role: infrastructure/linux-initial-configuration,
         tags: [linux-initial-configuration],
@@ -33,6 +34,7 @@
         tags: [linux-lightdm],
         when: ansible_os_family == "Pop!_OS",
       }
+    - { role: infrastructure/wallpaper, tags: [wallpaper] }
 
     # package manager -> slowly decomposing into separate roles
     - { role: package_manager, tags: [package_manager, bootstrap] }

@@ -77,7 +77,13 @@ broot --install
 
 bash bin/dot-bootstrap -t linux-terminator
 
-bash bin/dot-bootstrap -t linux-gnome-extensions
+bash bin/dot-bootstrap -t linux-gnome-extensions # include linux-gnome-tweaks
+# restart gnome -shell via Alt + F2 -> enter `r`
+# extensions now listed under gnome-tweaks extensions page
+# Gnome-Tweaks -> Extensions -> Dash to Panel Settings -> About -> Export and import settings
+# Copy content from files/dash-to-panel-settings.txt
+
+bash bin/dot-bootstrap -t wallpaper
 
 bash bin/dot-bootstrap -t python
 
@@ -95,5 +101,7 @@ bash bin/dot-bootstrap -t fonts-firacode
 
 bash bin/dot-bootstrap -t asdf,docker,fonts-firacode,git,gohugo,golang,gparted,linux-gnome-extensions,linux-initial-configuration,linux-snap,linux-terminator,nodejs,popos-initial-configuration,python,python-poetry,rust,zsh
 
-bash bin/dot-bootstrap -t spotify,simplenote,meld
+bash bin/dot-bootstrap -t spotify,simplenote,meld,zoom
+
+bash bin/dot-boostrap -t whatsapp
 ```

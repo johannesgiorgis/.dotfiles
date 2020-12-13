@@ -26,3 +26,5 @@ brew-installs:
 check-asdf-updates:
 	bash asdf/check-asdf-installed-for-updates.sh
 
+list-ansible-tags:
+	bash bin/dot-bootstrap
