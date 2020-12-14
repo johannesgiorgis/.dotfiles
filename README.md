@@ -119,6 +119,7 @@ Folks are using Python, Typescript to write wrapper programs around their .dotfi
 - Automating My Dev Setup
     - <https://pbassiner.github.io/blog/automating_my_dev_setup.html>
     - <https://github.com/pbassiner/dev-env>
+- dconf-settings: <https://github.com/jaredhocutt/ansible-dconf-settings>
 
 ### Issues
 

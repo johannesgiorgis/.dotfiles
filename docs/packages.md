@@ -6,35 +6,66 @@ This tracks all my common packages.
 
 - ack
 - ansible
+- authy
+- awscli
+- bat
+- brave-browser
+- broot
 - csvkit
 - curl
+- diff-so-fancy
+- dropbox
 - entr
+- exa
+- fd (fdfind for linux)
+- firefox (comes preinstalled on ubuntu/popos)
+- fonts-firacode
+- fortune
+- fzf
+- git
+- gpg (gnupg for darwin)
+- google-chrome
 - htop
+- httpie
+- jetbrains-toolbox
+- joplin
+- jq
 - jump (uses wget for linux)
+- kite
+- man
+- meld
+- mysql
+- neovim (needed for vs code)
+- ncdu
+- neofetch
+- noti
+- pipenv
+- pipx
+- plex
+- poetry
+- postgresql
+- postman
+- pycharm
+- rename
+- ripgrep
 - shellcheck
+- simplenote
+- sqlite
+- sublime-merge
+- sublime-text
+- taskwarrior
 - timewarrior
 - tldr
 - tmux
 - tree
-- wget
-- git
-- ripgrep
-- bat
-- figlet
-- fonts-firacode
-- zsh
 - vim-nox
-- gpg
-- jq
-- less
-- man
-- meld
-- neovim
-- rename
-- taskwarrior
-- fzf
-- youtube-dl
+- visual-studio-code
+- vlc
 - watch
+- wget
+- youtube-dl
+- zoom
+- zsh
 
 ## Linux Specific
 
@@ -66,6 +97,9 @@ This tracks all my common packages.
 - coreutils
 - displayplacer
 - gpupg
+- putty
+- speedtest-cli
+- wifi-password
 
 ## Installed via pipx (python)
 
@@ -93,27 +127,9 @@ This tracks all my common packages.
 
 ## Others
 
-- ffmpeg
-- fzf
-- gnupg
-- htop
-- jump
-- noti
+- figlet
 - openssl
-- pipenv
-- putty
-- readline
-- ripgrep
-- shellcheck
-- speedtest-cli
 - sqlite3
 - tasksh
-- timewarrior
-- tldr
-- tree
-- watch
-- wget
-- wifi-password
 - xz
-- youtube-dl
 - zlib

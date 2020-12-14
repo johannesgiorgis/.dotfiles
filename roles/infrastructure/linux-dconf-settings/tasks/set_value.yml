@@ -1,0 +1,15 @@
+---
+# set dconf settings values
+
+- name: Read {{ item.key }}
+  command: dconf read {{ item.key }}
+  register: r_dconf_current_value
+  changed_when: no
+
+- name: debug message
+  debug:
+    msg: "Current Value for {{ item.key }}: {{ r_dconf_current_value.stdout }} vs. {{ item.value }}"
+
+- name: Set {{ item.key }}
+  command: dconf write {{ item.key }} "{{ item.value }}"
+  when: r_dconf_current_value.stdout != item.value

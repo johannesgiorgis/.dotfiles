@@ -1,0 +1,18 @@
+---
+# tasks for linux-dconf-settings
+
+- name: installing dconf-editor + set desired settings
+
+  block:
+    - name: Install required packages
+      apt:
+        name: dconf-editor
+        state: present
+      become: "{{ should_be_root }}"
+
+    - include_tasks: set_value.yml
+      vars:
+        dconf_key: "{{ item.key }}"
+        dconf_value: "{{ item.value }}"
+      with_items: "{{ dconf_settings }}"
+  when: ansible_os_family in ["Debian", "Pop!_OS"]

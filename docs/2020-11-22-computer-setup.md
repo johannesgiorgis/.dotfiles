@@ -104,4 +104,10 @@ bash bin/dot-bootstrap -t asdf,docker,fonts-firacode,git,gohugo,golang,gparted,l
 bash bin/dot-bootstrap -t spotify,simplenote,meld,zoom
 
 bash bin/dot-boostrap -t whatsapp
+
+bash bin/dot-bootstrap -t linux-dconf-settings
+
+bash bin/dot-bootstrap -t dropbox
+# open dropbox app, follow on screen window to complete installation
+# login to sync computer
 ```

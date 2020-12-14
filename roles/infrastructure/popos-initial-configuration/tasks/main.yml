@@ -11,4 +11,5 @@
     - name: Install RestrictedFormats
       apt:
         name: ubuntu-restricted-extras
-  when: ansible_os_family in ['Pop!_OS']
+  # ansible 2.10.3 displays Debian for ansible_os_family within Pop!_OS
+  when: ansible_os_family in ['Pop!_OS', 'Debian']
