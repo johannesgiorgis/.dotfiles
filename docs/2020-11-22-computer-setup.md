@@ -110,4 +110,10 @@ bash bin/dot-bootstrap -t linux-dconf-settings
 bash bin/dot-bootstrap -t dropbox
 # open dropbox app, follow on screen window to complete installation
 # login to sync computer
+
+bash bin/dot-bootstrap -t linux-redshift
+# play with roles/infrastructure/linux-redshift/files/redshift.conf settings
+
+# install software
+bash bin/dot-bootstrap -t authy,jetbrains-toolbox,joplin,kite,lastpass,linux-blueman,linux-fbreader,linux-flameshot,obs-studio,slack,sqlite-browser,vlc
 ```

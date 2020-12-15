@@ -7,3 +7,6 @@ dconf_settings:
     value: "'24h'"
   - key: /org/gnome/desktop/interface/clock-show-weekday
     value: "true"
+  # Night light
+  - key: /org/gnome/settings-daemon/plugins/color/night-light-enabled
+    value: "true"

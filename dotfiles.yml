@@ -8,9 +8,6 @@
     - { role: infrastructure/fonts-firacode, tags: [fonts-firacode] }
     - { role: infrastructure/git, tags: [git] }
     - { role: infrastructure/gparted, tags: [gparted] }
-    - { role: infrastructure/linux-snap, tags: [linux-snap] }
-    - { role: infrastructure/linux-terminator, tags: [linux-terminator] }
-    - { role: infrastructure/linux-openssh, tags: [linux-openssh] }
     - {
         role: infrastructure/linux-dconf-settings,
         tags: [linux-dconf-settings],
@@ -24,7 +21,12 @@
         role: infrastructure/linux-initial-configuration,
         tags: [linux-initial-configuration],
       }
+    - { role: infrastructure/linux-openssh, tags: [linux-openssh] }
+    - { role: infrastructure/linux-redshift, tags: [linux-redshift] }
+    - { role: infrastructure/linux-snap, tags: [linux-snap] }
+    - { role: infrastructure/linux-terminator, tags: [linux-terminator] }
     - { role: infrastructure/postgresql, tags: [postgresql] }
+    - { role: infrastructure/wallpaper, tags: [wallpaper] }
     - { role: infrastructure/zsh, tags: [zsh] }
 
     # pop-os specific
@@ -38,7 +40,6 @@
         tags: [linux-lightdm],
         when: ansible_os_family == "Pop!_OS",
       }
-    - { role: infrastructure/wallpaper, tags: [wallpaper] }
 
     # package manager -> slowly decomposing into separate roles
     - { role: package_manager, tags: [package_manager, bootstrap] }
