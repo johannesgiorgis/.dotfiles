@@ -3,8 +3,8 @@
 
   block:
     - import_tasks: install-zsh.yml
-      become: "{{ should_be_root }}"
 
+      # become: "{{ should_be_root }}"
     - import_tasks: install-oh-my-zsh.yml
 
     - import_tasks: configure.yml

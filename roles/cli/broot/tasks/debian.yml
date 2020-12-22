@@ -1,7 +1,8 @@
 ---
 # debian task for broot
 
-- name: broot is present for debian machine
+- name: BROOT - install for debian machine
+  become: "{{ should_be_root }}"
   block:
     - name: Create temporary download directory
       tempfile:

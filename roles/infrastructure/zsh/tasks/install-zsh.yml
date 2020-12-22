@@ -4,14 +4,14 @@
 - name: zsh is present (debian)
   block:
     - name: Install dependencies for zsh
-      apt:
+      package:
         name:
           - "git"
           - "curl"
         state: present
 
     - name: Install zsh
-      apt:
+      package:
         name: zsh
         state: present
-  when: ansible_os_family in ["Debian",  "Pop!_OS" ]
+  # when: ansible_os_family in ["Debian",  "Pop!_OS" ]

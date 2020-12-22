@@ -3,8 +3,8 @@
   user:
     name: "{{ ansible_user_id }}"
     shell: /bin/zsh
-  become: true
 
+  # become: true
 - name: Check for .zshrc
   stat:
     path: "{{ dotfiles_user_home }}/.zshrc"
@@ -71,8 +71,8 @@
 
 - name: Install Meslo Nerd Font for Linux
   get_url:
-    url: 'https://github.com/romkatv/powerlevel10k-media/raw/master/{{ item }}'
-    dest: '~/.fonts/{{ item }}'
+    url: "https://github.com/romkatv/powerlevel10k-media/raw/master/{{ item }}"
+    dest: "~/.fonts/{{ item }}"
   with_items:
     # regular
     - "MesloLGS%20NF%20Regular.ttf"
@@ -81,5 +81,5 @@
     # italic
     - "MesloLGS%20NF%20Italic.ttf"
     # italic_bold
-    - 'MesloLGS%20NF%20Bold%20Italic.ttf'
+    - "MesloLGS%20NF%20Bold%20Italic.ttf"
   when: ansible_os_family in ["Debian", "Pop!_OS"]

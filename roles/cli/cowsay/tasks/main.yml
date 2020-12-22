@@ -1,8 +1,7 @@
 ---
 # main task for cowsay
 
-- name: cowsay is present
-  become: "{{ should_be_root }}"
+- name: COWSAY is present
 
   block:
     - name: cowsay is present
