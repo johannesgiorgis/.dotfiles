@@ -28,3 +28,6 @@ check-asdf-updates:
 
 list-ansible-tags:
 	bash bin/dot-bootstrap
+
+zsh-sections:
+	rg '<<<|>>>' ~/.zshrc

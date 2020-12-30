@@ -132,46 +132,9 @@ kernel_name="$(uname -s)"
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-alias venv='python3 -m venv ./venv && source ./venv/bin/activate && pip install --upgrade pip setuptools > /dev/null'
-alias va='source ./venv/bin/activate'
-
-# >>> Common Python Virtual Environment
-
-if [[ -d "/usr/local/venv/" ]]
-then
-    alias awslocal=/usr/local/venv/bin/awslocal
-    alias yq=/usr/local/venv/bin/yq
-    alias xq=/usr/local/venv/bin/xq
-fi
-
-# <<< Common Python Virtual Environment
-
-# Brew
-
-if command -v brew 1>/dev/null 2>&1; then
-	alias brewup='brew update && brew outdated && brew upgrade && brew cleanup && brew doctor'
-    alias brewupcask='brew update && brew cask outdated && brew cask upgrade && brew cleanup && brew cask doctor'
-fi
-
-if command -v apt 1>/dev/null 2>&1; then
-	alias aptup='sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y'
-fi
-
-if command -v bat 1>/dev/null 2>&1; then
-    alias cat='bat'
-fi
-
-if command -v batcat 1>/dev/null 2>&1; then
-    alias cat='batcat'
-fi
-
-if command -v nvim 1>/dev/null 2>&1; then
-    alias v='nvim'
-fi
 
 # ls
 alias lt='ls -lahtFr'
-#alias ltr=' -r'
 
 # docker
 alias dka='docker ps -aq | xargs -I{} docker kill {}'		# kill all running docker containers
@@ -183,19 +146,6 @@ alias tt='timetrap'
 alias c='code'
 alias ag='alias | grep'
 alias wh='which'
-
-if [ "${kernel_name}" = "Linux" ]
-then
-    alias charm='/home/johannes/.local/bin/charm . > /dev/null 2>&1 &'
-fi
-
-# source: https://opensource.com/article/19/7/bash-aliases
-# see mounted drives
-if [ "${kernel_name}" = "Linux" ]; then
-	alias mnt="mount | awk -F' ' '{ printf "%s\t%s\n",$1,$3; }' | column -t | egrep ^/dev/ | sort"
-elif [ "${kernel_name}" = "Debian" ]; then
-	alias mnt='mount | grep -E ^/dev | column -t'
-fi
 
 # count files
 alias count='find . -type f | wc -l'
@@ -209,12 +159,92 @@ alias tcn='mv --force -t ~/.local/share/Trash '
 # navigate to top leve of a git project
 alias cg='cd `git rev-parse --show-toplevel`'
 
+# python virtual environment management
+alias venv='python3 -m venv ./venv && source ./venv/bin/activate && pip install --upgrade pip setuptools > /dev/null'
+alias va='source ./venv/bin/activate'
+
+# Control output of less
+if command -v less 1>/dev/null 2>&1; then
+	alias mroe=less more=less
+	export PAGER=less
+	export LESS=FRdiX
+	export LESSCHARSET=utf-8
+fi
+
+if command -v nvim 1>/dev/null 2>&1; then
+    alias v='nvim'
+fi
+
+# Common Python Virtual Environment
+if [[ -d "/usr/local/venv/" ]]
+then
+    alias awslocal=/usr/local/venv/bin/awslocal
+    alias yq=/usr/local/venv/bin/yq
+    alias xq=/usr/local/venv/bin/xq
+fi
+
+# >>> Darwin/Mac OS
+
+if [[ "${kernel_name}" = "Darwin" ]]; then
+
+    # Brew
+
+    if command -v brew 1>/dev/null 2>&1; then
+        alias brewup='brew update && brew outdated && brew upgrade && brew cleanup && brew doctor'
+        alias brewupcask='brew update && brew cask outdated && brew cask upgrade && brew cleanup && brew cask doctor'
+    fi
+
+    if command -v bat 1>/dev/null 2>&1; then
+        alias cat='bat'
+    fi
+
+fi
+
+# <<< Darwin/Mac OS
+
+# >>> Debian
+
+if [ "${kernel_name}" = "Debian" ]; then
+
+    if command -v apt 1>/dev/null 2>&1; then
+        alias aptup='sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y'
+    fi
+
+    if command -v batcat 1>/dev/null 2>&1; then
+        alias cat='batcat'
+    fi
+
+    # source: https://opensource.com/article/19/7/bash-aliases
+    # see mounted drives
+    if [ "${kernel_name}" = "Linux" ]; then
+        alias mnt="mount | awk -F' ' '{ printf "%s\t%s\n",$1,$3; }' | column -t | egrep ^/dev/ | sort"
+    elif [ "${kernel_name}" = "Debian" ]; then
+        alias mnt='mount | grep -E ^/dev | column -t'
+    fi
+
+    if [ "${kernel_name}" = "Linux" ]
+    then
+        alias charm='/home/johannes/.local/bin/charm . > /dev/null 2>&1 &'
+    fi
+
+fi
+
+# <<< Debian
+
 # <<< ##################################### ALIAS
 ###############################################################################################
 
 
 ###############################################################################################
 # >>> ##################################### FUNCTIONS 
+
+function mydate() { date +"%Y-%m-%d %H:%M:%S %Z"; } # Date in my format
+function today() { date +"%A, %B %d, %Y"; } # Date in secondary format
+function note() { echo `date +"%Y-%m-%d %H:%M:%S  "`"$*" >> ~/notes; } # Add a note to my file
+function notes() { vim + ~/notes; } # View/edit notes
+
+# add - to 2 and changed head to tail to make it zsh compatible
+function gotit() { history -2 | tail -n 1 | cut -c 8- >> ~/notes; }
 
 # Youtube Download to MP3 :)
 if command -v youtube-dl 1>/dev/null 2>&1; then
@@ -233,8 +263,7 @@ function ushell() { # update shell
 	source ~/.zshrc
 }
 
-function cproj() {
-	# create dated project directory
+function cproj() { # create dated project directory
 	project_name="$@"
 	# echo "Project:$project_name"
 	new_project_dir="$(date +%F)-${project_name}"
@@ -248,14 +277,6 @@ function cproj() {
 	# capitalize each word + replace all '-' with ' ' in $project_name
 	echo -e "# $(date +%F): ${(C)project_name//-/ } Project Overview" > "${readme_file}"
 }
-
-function mydate() { date +"%Y-%m-%d %H:%M:%S %Z"; } # Date in my format
-function today() { date +"%A, %B %d, %Y"; } # Date in secondary format
-function note() { echo `date +"%Y-%m-%d %H:%M:%S  "`"$*" >> ~/notes; } # Add a note to my file
-function notes() { vim + ~/notes; } # View/edit notes
-
-# add - to 2 and changed head to tail to make it zsh compatible
-function gotit() { history -2 | tail -n 1 | cut -c 8- >> ~/notes; }
 
 function colors() {
 	for i in {0..255}
@@ -275,48 +296,34 @@ function cdot() {
 	fi
 }
 
-# copy to clipboard on linux
-if [ "${kernel_name}" = "Linux" ]
-then
-	function copy() {
-		cat "$@" | xclip -i -selection clipboard
-	}
+# >>> Debian
+
+if [ "${kernel_name}" = "Debian" ]; then
+
+    # copy to clipboard on linux
+    if [ "${kernel_name}" = "Linux" ]
+    then
+        function copy() {
+            cat "$@" | xclip -i -selection clipboard
+        }
+    fi
+
+    function apts () {
+        apt search "$1" | grep "^$1"
+    }
+    
+    function aptl () {
+        apt list --installed | grep "$1"
+    }
+    
+    function apti () {
+        sudo apt install "$1" -y
+    }
+    
 fi
 
-# >>> AWS COMPLETION - https://github.com/aws/aws-cli/issues/4656
+# <<< Debian
 
-# Mac - aws v1
-#if [[ "${kernel_name}" = "Darwin" ]]; then
-
-    # awsv1_dir="/usr/local/opt/awscli@1/"
-    # alias aws="${awsv1_dir}bin/aws"
-
-# 	if test -f "/usr/local/opt/awscli@1/bin/aws_completer"; then
-# 		complete -C '/usr/local/opt/awscli@1/bin/aws_completer' aws
-# 	fi
-# fi
-
-# if command -v aws 1>/dev/null 2>&1; then
-
-#     function awsm() { aws --profile main "$@"; }
-
-# 	if test -f "/usr/local/bin/aws_completer"; then
-# 		complete -C '/usr/local/bin/aws_completer' aws awsm
-# 	fi
-# fi
-
-# aws v1
-#awsv1_dir="/usr/local/opt/awscli@1/"
-
-#if [[ -d "${awsv1_dir}" ]]; then
-#	alias aws="${awsv1_dir}bin/aws"
-#
-#	if test "${aws_dir}bin/aws_completer"; then
-#		complete -C '/usr/local/bin/aws_completer' aws
-#	fi
-#fi
-
-# <<< AWS COMPLETION
 
 function update_p10k() {
 	git -C $ZSH_CUSTOM/themes/powerlevel10k pull
@@ -335,18 +342,6 @@ function get_params () {
   cat $1 |awk '/--name/{print $7}' | sed -e 's/\${[eE][nN][vV]}/'"${ENV}"'/g' | xargs -n10 aws ssm get-parameters --with-decryption --query "Parameters[*].{Name:Name,Value:Value}" --names
 }
 
-function apts () {
-	apt search "$1" | grep "^$1"
-}
-
-function aptl () {
-	apt list --installed | grep "$1"
-}
-
-function apti () {
-	sudo apt install "$1" -y
-}
-
 function awsprofiles () {
 	config=$(cat $HOME/.aws/config | grep '\[' | sed 's/\[//; s/\]//')
 	echo 'config:'
@@ -355,14 +350,16 @@ function awsprofiles () {
 
 
 # <<< ##################################### FUNCTIONS 
+###############################################################################################
 
 
+###############################################################################################
 # >>> ##################################### WORK STUFF
 
 DEFAULT_USER=$(whoami)
 
 # Load work related stuff
-# link: ln -s ~/.dotfiles/zsh/zsh_work.symlink ~/.zsh_work
+# link: ln -s ~/.dotfiles/roles/infrastructure/zsh/files/zsh_work ~/.zsh_work
 if [[ "$kernel_name" == 'Darwin' ]] && \
     [[ "$DEFAULT_USER" == 'jgiorgis' ]]
 then
@@ -370,8 +367,45 @@ then
 fi
 
 # <<< ##################################### WORK STUFF
+###############################################################################################
 
 
+###############################################################################################
+# >>> ##################################### COMPLETIONS
+
+# >>> Darwin/Mac OS
+
+if [[ "${kernel_name}" = "Darwin" ]]; then
+
+    # AWS COMPLETION - https://github.com/aws/aws-cli/issues/4656
+    # Mac - aws v1
+    awsv1_dir="/usr/local/opt/awscli@1/"
+    if test -d "$awsv1_dir"; then
+        alias aws="${awsv1_dir}bin/aws"
+
+        if test -f "/usr/local/opt/awscli@1/bin/aws_completer"; then
+            complete -C '/usr/local/opt/awscli@1/bin/aws_completer' aws
+        fi
+    fi
+fi
+
+# <<< Darwin/Mac OS
+
+# AWS Completion
+if command -v aws 1>/dev/null 2>&1; then
+
+    function awsm() { aws --profile main "$@"; }
+
+	if test -f "/usr/local/bin/aws_completer"; then
+		complete -C '/usr/local/bin/aws_completer' aws awsm
+	fi
+fi
+
+# <<< ##################################### COMPLETIONS
+###############################################################################################
+
+
+###############################################################################################
 # >>> ##################################### PATH MODIFICATIONS
 
 export PATH=~/bin:$PATH
@@ -397,29 +431,9 @@ zstyle ':completion:*:complete:(cd|pushd):*' tag-order \
 
 # <<< CDPATH
 
-# Control output of less
-if command -v less 1>/dev/null 2>&1; then
-	alias mroe=less more=less
-	export PAGER=less
-	export LESS=FRdiX
-	export LESSCHARSET=utf-8
-fi
-
 if command -v jump 1>/dev/null 2>&1; then
     eval "$(jump shell)"
 fi
-
-
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
-# >>> conda initialize >>>
-if [ -f "$HOME/.asdf/installs/python/miniconda3-4.7.12/etc/profile.d/conda.sh" ]; then
-	. "$HOME/.asdf/installs/python/miniconda3-4.7.12/etc/profile.d/conda.sh"
-else
-	export PATH="$HOME/.asdf/installs/python/miniconda3-4.7.12/bin:$PATH"
-fi
-# <<< conda initialize <<<
 
 # rust binaries
 
@@ -445,11 +459,22 @@ if test -d "$tyk_dir"; then
     export PATH="${tyk_dir}:$PATH"
 fi
 
-# Disabled shared history across terminal tabs
-unsetopt SHARE_HISTORY
+# <<< ##################################### PATH MODIFICATIONS
+###############################################################################################
 
+
+###############################################################################################
+# >>> ##################################### MISC
 
 if command -v br 1>/dev/null 2>&1; then
 	source ${HOME}/.config/broot/launcher/bash/br
 fi
-source /home/johannes/.config/broot/launcher/bash/br
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# Disabled shared history across terminal tabs
+unsetopt SHARE_HISTORY
+
+# <<< ##################################### MISC
+###############################################################################################
