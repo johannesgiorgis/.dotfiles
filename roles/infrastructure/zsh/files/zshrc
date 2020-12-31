@@ -238,6 +238,18 @@ fi
 ###############################################################################################
 # >>> ##################################### FUNCTIONS 
 
+# rg 'function' ~/.zshrc | grep '#.\+' | sed 's/^[ \t]*//g;s/^function //' | rg -v '^#| rg ' | awk 'BEGIN {FS = " {.*?# "}; {printf "\033[36m%-20s\033[0m %s\n", $1, $2}'
+function af() { # list all functions
+    # inspiration: https://www.freecodecamp.org/news/self-documenting-makefile/
+    rg 'function.*?#' ~/.zshrc | \
+    # remove space in the front
+    sed 's/^[ \t]*//g;s/^function //' | \
+    # get rid of undesired lines
+    rg -v '^#|rg ' | \
+    # nice format of functions
+    awk 'BEGIN {FS = " {.*?# "}; {printf "\033[36m%-20s\033[0m %s\n", $1, $2}'
+}
+
 function mydate() { date +"%Y-%m-%d %H:%M:%S %Z"; } # Date in my format
 function today() { date +"%A, %B %d, %Y"; } # Date in secondary format
 function note() { echo `date +"%Y-%m-%d %H:%M:%S  "`"$*" >> ~/notes; } # Add a note to my file
@@ -248,7 +260,7 @@ function gotit() { history -2 | tail -n 1 | cut -c 8- >> ~/notes; }
 
 # Youtube Download to MP3 :)
 if command -v youtube-dl 1>/dev/null 2>&1; then
-	function yda() {
+    function yda() { # download youtube videos into mp3 format + delete video format
 		youtube-dl -cix --audio-format mp3 "$@"
 	}
 fi
@@ -278,14 +290,14 @@ function cproj() { # create dated project directory
 	echo -e "# $(date +%F): ${(C)project_name//-/ } Project Overview" > "${readme_file}"
 }
 
-function colors() {
+function colors() { # see range of colors
 	for i in {0..255}
 	do
 		print -Pn "%K{$i} %k%F{$i}${(l:3::0:)i}%f " ${${(M)$((i%8)):#7}:+$'\n'}
 	done
 }
 
-function cdot() {
+function cdot() { # go to dotfiles directory
 	dir="${HOME}/.dotfiles"
 	if [[ -d "${dir}" ]]
 	then
@@ -303,20 +315,20 @@ if [ "${kernel_name}" = "Debian" ]; then
     # copy to clipboard on linux
     if [ "${kernel_name}" = "Linux" ]
     then
-        function copy() {
+        function copy() { # copy file content into clipboard (linux)
             cat "$@" | xclip -i -selection clipboard
         }
     fi
 
-    function apts () {
+    function apts() { # apt search for specific package (linux)
         apt search "$1" | grep "^$1"
     }
     
-    function aptl () {
+    function aptl() { # apt list installed for specific package (linux)
         apt list --installed | grep "$1"
     }
     
-    function apti () {
+    function apti() { # apt install for specific package (linux)
         sudo apt install "$1" -y
     }
     
@@ -325,11 +337,11 @@ fi
 # <<< Debian
 
 
-function update_p10k() {
+function update_p10k() { # update powerlevel10k
 	git -C $ZSH_CUSTOM/themes/powerlevel10k pull
 }
 
-function get_params () {
+function get_params() { # get aws ssm parameters
   DEFAULT_ENV=dev
   ENV=${2-$DEFAULT_ENV}
   if [ -z "$1" ]
@@ -342,7 +354,7 @@ function get_params () {
   cat $1 |awk '/--name/{print $7}' | sed -e 's/\${[eE][nN][vV]}/'"${ENV}"'/g' | xargs -n10 aws ssm get-parameters --with-decryption --query "Parameters[*].{Name:Name,Value:Value}" --names
 }
 
-function awsprofiles () {
+function awsprofiles() { # list aws profiles from config file
 	config=$(cat $HOME/.aws/config | grep '\[' | sed 's/\[//; s/\]//')
 	echo 'config:'
 	echo "$config"
