@@ -185,7 +185,7 @@ fi
 
 # >>> Darwin/Mac OS
 
-if [[ "${kernel_name}" = "Darwin" ]]; then
+if [[ "${kernel_name}" == "Darwin" ]]; then
 
     # Brew
 
@@ -202,9 +202,9 @@ fi
 
 # <<< Darwin/Mac OS
 
-# >>> Debian
+# >>> Debian/Linux
 
-if [ "${kernel_name}" = "Debian" ]; then
+if [ "${kernel_name}" = "Debian" -o "${kernel_name}" = "Linux" ]; then
 
     if command -v apt 1>/dev/null 2>&1; then
         alias aptup='sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y'
@@ -229,7 +229,7 @@ if [ "${kernel_name}" = "Debian" ]; then
 
 fi
 
-# <<< Debian
+# <<< Debian/Linux
 
 # <<< ##################################### ALIAS
 ###############################################################################################
@@ -308,17 +308,14 @@ function cdot() { # go to dotfiles directory
 	fi
 }
 
-# >>> Debian
+# >>> Debian/Linux
 
-if [ "${kernel_name}" = "Debian" ]; then
+if [ "${kernel_name}" = "Debian" -o "${kernel_name}" = "Linux" ]; then
 
     # copy to clipboard on linux
-    if [ "${kernel_name}" = "Linux" ]
-    then
-        function copy() { # copy file content into clipboard (linux)
-            cat "$@" | xclip -i -selection clipboard
-        }
-    fi
+    function copy() { # copy file content into clipboard (linux)
+        cat "$@" | xclip -i -selection clipboard
+    }
 
     function apts() { # apt search for specific package (linux)
         apt search "$1" | grep "^$1"
@@ -334,7 +331,7 @@ if [ "${kernel_name}" = "Debian" ]; then
     
 fi
 
-# <<< Debian
+# <<< Debian/Linux
 
 
 function update_p10k() { # update powerlevel10k
@@ -372,8 +369,8 @@ DEFAULT_USER=$(whoami)
 
 # Load work related stuff
 # link: ln -s ~/.dotfiles/roles/infrastructure/zsh/files/zsh_work ~/.zsh_work
-if [[ "$kernel_name" == 'Darwin' ]] && \
-    [[ "$DEFAULT_USER" == 'jgiorgis' ]]
+if [[ "$kernel_name" = 'Darwin' ]] && \
+    [[ "$DEFAULT_USER" = 'jgiorgis' ]]
 then
     [[ ! -f ~/.zsh_work ]] || source ~/.zsh_work
 fi
