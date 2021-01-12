@@ -290,6 +290,20 @@ function cproj() { # create dated project directory
 	echo -e "# $(date +%F): ${(C)project_name//-/ } Project Overview" > "${readme_file}"
 }
 
+function cmd() { # create dated markdown file
+	project_name="$@"
+	# echo "Project:$project_name"
+	new_project_dir="$(date +%F)-${project_name}"
+
+    # get jira ticket number
+	jira_ticket_number=$(echo "$project_name" | grep -o '^.\+\d')
+	readme_file="$(date +%F)-${jira_ticket_number}-readme.md"
+	touch "$readme_file"
+
+	# capitalize each word + replace all '-' with ' ' in $project_name
+	echo -e "# $(date +%F): ${(C)project_name//-/ } Project Overview" > "${readme_file}"
+}
+
 function colors() { # see range of colors
 	for i in {0..255}
 	do
