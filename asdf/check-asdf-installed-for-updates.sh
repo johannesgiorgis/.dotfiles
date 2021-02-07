@@ -48,9 +48,10 @@ main() {
             # Check against latest sub-version
             compare_subversions "$installed_version" "$latest_subversion_root"
 
-            # Check against latest version - ignore dev, rc
+            # Check against latest version - ignore dev, rc, beta
             if [[ "$latest_version_root" == *"dev"* ]] \
-                || [[ "$latest_version_root" == *"rc"* ]]
+                || [[ "$latest_version_root" == *"rc"* ]] \
+                    || [[ "$latest_version_root" == *"beta"* ]]
             then
                 success "› no need to update due to rc/dev version - $plugin $latest_version_root"
                 STATUS="${STATUS}|version:new rc/dev version\n"
