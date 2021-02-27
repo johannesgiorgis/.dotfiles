@@ -1,0 +1,13 @@
+---
+# main task for aws cli v2
+
+- name: AWSCLIV2 - aws is present
+
+  block:
+    - name: AWSCLIV2 - install for debian
+      include_tasks: debian.yml
+      when: ansible_os_family in ["Debian",  "Pop!_OS" ]
+    # TODO: Add for Mac :)
+    # - name: AWSCLIV2 - install for darwin
+    #   include_tasks: mac.yml
+    #   when: ansible_os_family in ["Darwin"]

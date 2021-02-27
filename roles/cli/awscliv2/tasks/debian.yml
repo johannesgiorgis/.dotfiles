@@ -1,0 +1,31 @@
+---
+# debian task for aws cli v2
+
+- name: AWSCLIV2 - install for debian machine
+  become: "{{ should_be_root }}"
+  block:
+    - name: AWSCLIV2 - Create temporary download directory
+      tempfile:
+        state: directory
+        suffix: ".aws_download_dir"
+      register: aws_download_dir
+
+    - debug:
+        msg: "{{ aws_download_dir.path }}"
+
+    - name: AWSCLIV2 - Unzip aws cli/awscliv2
+      ansible.builtin.unarchive:
+        src: https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip
+        dest: "{{ aws_download_dir.path }}"
+        remote_src: yes
+      register: r_awscli_unarchive
+
+    - name: AWSCLIV2 - Install/Update aws cli v2
+      command: "{{ aws_download_dir.path }}/aws/install --update"
+
+  always:
+    - name: AWSCLIV2 - Delete binary download directory - {{ aws_download_dir.path }}
+      file:
+        path: "{{ aws_download_dir.path }}"
+        state: absent
+      changed_when: no
