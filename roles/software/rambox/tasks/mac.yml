@@ -1,0 +1,7 @@
+---
+# mac tasks for rambox
+
+- name: Install rambox via homebrew cask
+  homebrew_cask:
+    name: rambox
+    state: present

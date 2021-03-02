@@ -1,0 +1,13 @@
+---
+# main task for Rambox
+# https://rambox.app/
+
+- name: RAMBOX - rambox is present
+  become: "{{ should_be_root }}"
+
+  block:
+    - import_tasks: debian.yml
+      when: ansible_os_family in ["Debian",  "Pop!_OS" ]
+
+    - import_tasks: mac.yml
+      when: ansible_os_family in ["Darwin"]
