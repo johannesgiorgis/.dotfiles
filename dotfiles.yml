@@ -56,6 +56,7 @@
     # - { role: apt, tags: [apt] }
 
     # cli
+    - { role: cli/awscliv2, tags: [awscliv2] }
     - { role: cli/bat, tags: [bat] }
     - { role: cli/broot, tags: [broot] }
     - { role: cli/cowsay, tags: [cowsay] }
@@ -70,7 +71,7 @@
     - { role: cli/mlocate, tags: [mlocate] }
     - { role: cli/ncdu, tags: [ncdu] }
     - { role: cli/neofetch, tags: [neofetch] }
-    - { role: cli/neofetch, tags: [neofetch] }
+    - { role: cli/neovim, tags: [neovim] }
     - { role: cli/pandoc, tags: [pandoc] }
     - { role: cli/rename, tags: [rename] }
     - { role: cli/ripgrep, tags: [ripgrep] }
@@ -100,6 +101,8 @@
     - { role: software/linux-thunderbird, tags: [linux-thunderbird] }
     - { role: software/meld, tags: [meld] }
     - { role: software/obs-studio, tags: [obs-studio] }
+    - { role: software/plex, tags: [plex] }
+    - { role: software/rambox, tags: [rambox] }
     - { role: software/simplenote, tags: [simplenote] }
     - { role: software/slack, tags: [slack] }
     - { role: software/spotify, tags: [spotify] }
