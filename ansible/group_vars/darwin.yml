@@ -1,0 +1,97 @@
+# Darwin/Mac OS X
+
+mac_homebrew_taps:
+  - homebrew/cask-fonts # fira code font
+  - homebrew/cask-drivers
+  - jakehilborn/jakehilborn # displayplacer
+
+# Utilities that don't get installed by a role
+mac_homebrew_packages:
+  # CLI Alternatives
+  - bat
+  - diff-so-fancy
+  - exa
+  - ripgrep
+  # Custom Taps
+  - displayplacer
+  # Development Tools
+  - openssl
+  - readline
+  - sqlite3
+  - xz
+  - zlib
+  # Python Utilities
+  # - black
+  # - flake8
+  # - pipenv
+  # Task Management
+  - tasksh
+  - timewarrior
+  # Utilities
+  - ack
+  # - ansible
+  - cask
+  - coreutils
+  # - csvkit
+  - curl
+  - entr
+  - fzf
+  - gnupg # gpg
+  # - htop
+  # - jump
+  # For displaying a notification when a command finishes
+  - noti
+  - putty
+  # - shellcheck
+  - speedtest-cli
+  - tldr
+  - tree
+  - watch
+  - wget
+  - wifi-password # what's the wifi password?
+  # Youtube download
+  # - ffmpeg
+  # - youtube-dl
+
+# Mac Apps to be installed with homebrew-cask
+mac_cask_packages:
+  # Backup
+  # - dropbox
+  # Browsers
+  - firefox
+  - google-chrome
+  # Custom Taps
+  - font-fira-code
+  # Development Tools
+  - beekeeper-studio
+  - iterm2
+  # - jetbrains-toolbox
+  - lepton
+  - meld
+  - omnidb
+  - openvpn-connect
+  - pgadmin4
+  - postman
+  # - pycharm
+  - sourcetree
+  # - sublime-merge
+  # - visual-studio-code
+  # Logitech
+  - logitech-control-center
+  - logitech-options
+  - logitech-unifying
+  # Media
+  # - vlc
+  # Note taking
+  # - joplin
+  # - simplenote
+  # - sublime-text
+  # Window Management
+  - lg-onscreen-control
+  - rectangle
+  # Utilities
+  - aerial
+  - omnidisksweeper
+  - tunnelblick
+  # Video conferencing
+  # - zoomus

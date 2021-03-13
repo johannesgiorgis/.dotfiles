@@ -13,7 +13,7 @@ set -e
 export SUPPORT_DIR="${HOME}/.dotfiles/support"
 source "${SUPPORT_DIR}/common-utilities.sh"
 
-ANSIBLE_DIR="${HOME}/.dotfiles"
+ANSIBLE_DIR="${HOME}/.dotfiles/ansible"
 PLAYBOOK_FILE="${ANSIBLE_DIR}/dotfiles.yml"
 HOSTS_FILE="${ANSIBLE_DIR}/hosts"
 
