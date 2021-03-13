@@ -117,3 +117,24 @@ bash bin/dot-bootstrap -t linux-redshift
 # install software
 bash bin/dot-bootstrap -t authy,jetbrains-toolbox,joplin,kite,lastpass,linux-blueman,linux-fbreader,linux-flameshot,obs-studio,slack,sqlite-browser,vlc
 ```
+
+Getting Streaming/Recording Tech to Work:
+
+```sh
+# https://askubuntu.com/questions/1207422/importerror-cannot-import-name-gudev-introspection-typelib-not-found
+sudo apt-add-repository ppa:sylvain-pineau/kazam
+sudo apt-get update
+sudo apt-get install kazam 
+
+To fix it - uninstall kazam, ppa-reposotiroy, and install kazam from the standard Ubuntu repo:
+
+sudo apt-get purge --auto-remove kazam
+sudo apt-get install ppa-purge
+sudo ppa-purge ppa:sylvain-pineau/kazam
+sudo apt-get install kazam
+
+#####
+
+
+
+```

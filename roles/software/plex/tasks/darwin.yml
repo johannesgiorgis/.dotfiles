@@ -1,0 +1,9 @@
+---
+# darwin tasks for simplenote
+
+- name: simplenote is present in darwin
+  block:
+    - name: simplenote is present (brew cask)
+      homebrew_cask:
+        name: simplenote
+        state: present

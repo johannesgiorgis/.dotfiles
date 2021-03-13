@@ -1,0 +1,6 @@
+---
+# handlers file for plex
+- name: restart plex
+  service:
+    name: plexmediaserver
+    state: restarted
