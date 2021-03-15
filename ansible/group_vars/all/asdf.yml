@@ -3,16 +3,19 @@
 
 golang_plugin_url: https://github.com/kennyp/asdf-golang.git
 golang_versions:
-  - 1.14.7
+  # - 1.14.7
+  - 1.14.15
 
 nodejs_plugin_url: https://github.com/asdf-vm/asdf-nodejs.git
 nodejs_versions:
-  - 12.18.3
+  # - 12.18.3
+  - 12.21.0
 
 python_plugin_url: https://github.com/danhper/asdf-python.git
 python_versions:
-  - 3.8.4
-  - miniconda3-4.7.12
+  # - 3.8.4
+  - 3.8.8
+  # - miniconda3-4.7.12
 pipx_packages:
   - black
   - flake8
@@ -26,4 +29,5 @@ rust_versions:
 gohugo_plugin_url: https://bitbucket.org/mgladdish/asdf-gohugo.git
 
 gohugo_versions:
-  - extended_0.75.0
+  # - extended_0.75.0
+  - extended_0.81.0

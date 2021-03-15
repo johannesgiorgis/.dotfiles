@@ -31,10 +31,11 @@ main() {
 
   ask_become_pass="false"
 
-  options="t:ah"
+  options="t:f:ah"
   while getopts "$options" opt; do
     case $opt in
       a ) ask_become_pass="true" ;;
+      f ) to_find="$OPTARG" ;;
       t ) tags+=("$OPTARG") ;;
       h ) usage; exit 0 ;;
       : ) echo "Option -$OPTARG requires an argument." >&2; usage; exit 1 ;;
@@ -48,12 +49,21 @@ main() {
   print_info "$0 Started"
   
   print_info "playbook_file:${PLAYBOOK_FILE}"
-  print_info "tags before:'${tags[*]}'"
+#   print_info "tags before:'${tags[*]}'"
   tags=$(echo "$tags" | sed 's/ /,/g')
-  print_info "tags after:'${tags}'"
-  print_info "ask_become_pass?${ask_become_pass}"
+#   print_info "tags after:'${tags}'"
+  print_info "tags:'${tags}'"
+  print_info "ask_becomen_pass?${ask_become_pass}"
   
   ensure_ansible_is_present
+
+  # search for tag
+  if [[ "$to_find" != "" ]]; then
+    echo "Searching for '$to_find'..."
+    found_tag=$(cat "${PLAYBOOK_FILE}" | grep -o '\[\([^]]\+\)\]' | sed 's/\[//; s/\]//' | grep "$to_find")
+    echo -e "\nFound Tag(s):\n'$found_tag'"
+    exit 0
+  fi
 
   # list available tags
   if [[ "$tags" == "" ]]; then

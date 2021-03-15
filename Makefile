@@ -17,6 +17,9 @@ all-dev: build-no-cache run
 ansible-info:
 	ansible -m setup localhost
 
+ansible-inventory:
+	ansible-inventory -i ansible/hosts --host local
+
 code-extensions-info:
 	code --list-extensions
 
