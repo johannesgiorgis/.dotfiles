@@ -1,0 +1,11 @@
+---
+# main tasks for macos-rectangle
+
+- name: RECTANGLE - rectangle is present (macos)
+  block:
+    - name: rectangle is present via brew cask
+      homebrew_cask:
+        name: rectangle
+        state: present
+
+  when: ansible_os_family in ["Darwin"]

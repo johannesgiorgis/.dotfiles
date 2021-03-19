@@ -5,7 +5,7 @@
   become: "{{ should_be_root }}"
 
   block:
-    - name: ncdu is present
+    - name: NCDU - present via package
       package:
         name: ncdu
         state: latest

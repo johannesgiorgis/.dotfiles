@@ -5,7 +5,7 @@
   become: "{{ should_be_root }}"
 
   block:
-    - name: diffstat is present
+    - name: DIFFSTAT - install via package
       package:
         name: diffstat
         state: latest

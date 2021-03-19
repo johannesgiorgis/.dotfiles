@@ -5,7 +5,7 @@
   become: "{{ should_be_root }}"
 
   block:
-    - name: jq is present
+    - name: JQ - install via package
       package:
         name: jq
         state: latest

@@ -10,5 +10,11 @@
         name: neovim
         state: present
         update_cache: yes
-        dpkg_options: 'force-overwrite'
+        dpkg_options: "force-overwrite"
       when: ansible_os_family in ['Debian', 'Pop!_OS']
+
+    - name: NEOVIM - install via homebrew
+      homebrew:
+        name: neovim
+        state: present
+      when: ansible_os_family in ['Darwin']

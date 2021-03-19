@@ -5,10 +5,16 @@
   become: "{{ should_be_root }}"
 
   block:
-    - name: bat is present in debian
+    - name: BAT - present in debian
       apt:
         name: bat
         state: present
         update_cache: yes
-        dpkg_options: 'force-overwrite'
+        dpkg_options: "force-overwrite"
       when: ansible_os_family in ['Debian', 'Pop!_OS']
+
+    - name: BAT - present (homebrew)
+      homebrew:
+        name: bat
+        state: latest
+      when: ansible_os_family in ["Darwin"]

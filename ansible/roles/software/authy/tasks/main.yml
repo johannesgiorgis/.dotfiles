@@ -2,7 +2,6 @@
 # main task for authy
 
 - name: authy is present
-  become: "{{ should_be_root }}"
 
   block:
     - name: authy is present via snap with option --channel=beta (linux)

@@ -1,0 +1,16 @@
+---
+# main tasks for macos-logitech-options
+
+- name: LOGITECH - logitech options is present (macos)
+  block:
+    - name: access homebrew/cask-drivers via brew tap
+      homebrew_tap:
+        name: homebrew/cask-drivers
+        state: present
+
+    - name: logitech-options is present via brew cask
+      homebrew_cask:
+        name: logitech-options
+        state: present
+
+  when: ansible_os_family in ["Darwin"]

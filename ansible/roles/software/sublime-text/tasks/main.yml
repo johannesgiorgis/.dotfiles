@@ -2,7 +2,7 @@
 # main task for sublime-text
 
 - name: sublime-text is present
-  become: "{{ should_be_root }}"
+  # become: "{{ should_be_root }}"
 
   block:
     - name: import os specific vars

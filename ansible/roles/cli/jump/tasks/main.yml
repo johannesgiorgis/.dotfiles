@@ -6,7 +6,7 @@
 
   block:
     - name: Install jump via homebrew
-      when: ansible_pkg_mgr == 'brew'
+      when: ansible_pkg_mgr == 'homebrew'
       homebrew:
         name: jump
         state: present

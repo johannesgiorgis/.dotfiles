@@ -545,7 +545,7 @@ fi
 ###############################################################################################
 # >>> ##################################### MISC
 
-if command -v br 1>/dev/null 2>&1; then
+if command -v broot 1>/dev/null 2>&1; then
 	source ${HOME}/.config/broot/launcher/bash/br
 fi
 
@@ -564,3 +564,4 @@ export PATH="$HOME/.serverless/bin:$PATH"
 # tabtab source for packages
 # uninstall by removing these lines
 [[ -f ~/.config/tabtab/__tabtab.zsh ]] && . ~/.config/tabtab/__tabtab.zsh || true
+

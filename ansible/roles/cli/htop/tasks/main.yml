@@ -5,7 +5,7 @@
   become: "{{ should_be_root }}"
 
   block:
-    - name: htop is present
+    - name: HTOP - install via package
       package:
         name: htop
         state: latest
