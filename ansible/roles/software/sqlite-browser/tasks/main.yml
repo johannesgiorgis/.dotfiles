@@ -6,13 +6,13 @@
 
   block:
     - name: sqlite-browser is present (linux)
-      when: ansible_pkg_mgr != 'brew'
+      when: ansible_pkg_mgr != 'homebrew'
       package:
         name: sqlitebrowser
         state: latest
 
-    - name: sqlite-browser is present (brew cask)
-      when: ansible_pkg_mgr == 'brew'
+    - name: sqlite-browser is present (homebrew cask)
+      when: ansible_pkg_mgr == 'homebrew'
       homebrew_cask:
-        name: db-browser=for-sqlite
+        name: db-browser-for-sqlite
         state: present

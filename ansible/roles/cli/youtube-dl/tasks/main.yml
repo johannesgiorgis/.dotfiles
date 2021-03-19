@@ -6,13 +6,13 @@
 
   block:
     - name: ffmpeg is present
-      when: ansible_pkg_mgr != 'brew'
+      when: ansible_pkg_mgr != 'homebrew'
       package:
         name: ffmpeg
         state: latest
 
-    - name: ffmpeg is present (brew)
-      when: ansible_pkg_mgr == 'brew'
+    - name: ffmpeg is present (homebrew)
+      when: ansible_pkg_mgr == 'homebrew'
       homebrew:
         name: ffmpeg
         state: head

@@ -6,19 +6,13 @@
 
   block:
     - name: meld is present (linux)
-      when: ansible_pkg_mgr != 'brew'
+      when: ansible_pkg_mgr != 'homebrew'
       package:
         name: meld
         state: latest
 
-    - name: access meld via brew tap
-      when: ansible_pkg_mgr == 'brew'
-      homebrew_tap:
-        name: homebrew/cask
-        state: present
-
-    - name: meld is present (brew cask)
-      when: ansible_pkg_mgr == 'brew'
+    - name: meld is present (homebrew cask)
+      when: ansible_pkg_mgr == 'homebrew'
       homebrew_cask:
         name: meld
         state: present

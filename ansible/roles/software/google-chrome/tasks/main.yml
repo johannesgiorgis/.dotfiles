@@ -6,13 +6,13 @@
 
   block:
     - name: google-chrome-stable is present (linux)
-      when: ansible_pkg_mgr != 'brew'
+      when: ansible_pkg_mgr != 'homebrew'
       package:
         name: google-chrome-stable
         state: latest
 
-    - name: google-chrome is present (brew)
-      when: ansible_pkg_mgr == 'brew'
+    - name: google-chrome is present (homebrew)
+      when: ansible_pkg_mgr == 'homebrew'
       homebrew_cask:
         name: google-chrome
         state: present

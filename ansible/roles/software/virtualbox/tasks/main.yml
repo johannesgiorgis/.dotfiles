@@ -6,13 +6,13 @@
 
   block:
     - name: virtualbox is present (linux)
-      when: ansible_pkg_mgr != 'brew'
+      when: ansible_pkg_mgr != 'homebrew'
       package:
         name: virtualbox
         state: latest
 
-    - name: virtualbox is present (brew cask)
-      when: ansible_pkg_mgr == 'brew'
+    - name: virtualbox is present (homebrew cask)
+      when: ansible_pkg_mgr == 'homebrew'
       homebrew_cask:
         name: virtualbox
         state: present
