@@ -33,6 +33,7 @@
       }
     - { role: infrastructure/macos-rectangle, tags: [macos-rectangle] }
     - { role: infrastructure/postgresql, tags: [postgresql] }
+    - { role: infrastructure/ssh-key, tags: [ssh-key] }
     - { role: infrastructure/wallpaper, tags: [wallpaper] }
     - { role: infrastructure/zsh, tags: [zsh] }
 

@@ -24,19 +24,24 @@ function usage() {
     "
   echo "Options:
     -t: tag for ansible (default: all)
+    -e: extra variables (equivalent to --extra-vars)
     -a: enable ask_become_pass"
 }
 
 main() {
 
   ask_become_pass="false"
+  extra_vars=""
+  debug="false"
 
-  options="t:f:ah"
+  options="t:f:e:adh"
   while getopts "$options" opt; do
     case $opt in
       a ) ask_become_pass="true" ;;
       f ) to_find="$OPTARG" ;;
       t ) tags+=("$OPTARG") ;;
+      e ) extra_vars="$OPTARG" ;;
+      d ) debug="true" ;;
       h ) usage; exit 0 ;;
       : ) echo "Option -$OPTARG requires an argument." >&2; usage; exit 1 ;;
       \? ) echo "Invalid option: -$OPTARG" >&2; usage; exit 1 ;;
@@ -73,7 +78,7 @@ main() {
     echo -e "$available_tags"
     exit 0
   fi
-
+ 
   if [[ "$ask_become_pass" == "true" ]]; then
     ansible-playbook -i "${HOSTS_FILE}" "${PLAYBOOK_FILE}" --tags "${tags[*]}" --ask-become-pass
   
@@ -81,6 +86,48 @@ main() {
     ansible-playbook -i "${HOSTS_FILE}" "${PLAYBOOK_FILE}" --tags "${tags[*]}"
     # echo "ansible-playbook -i '${HOSTS_FILE}' '${PLAYBOOK_FILE}' --tags '${tags[*]}'"
   fi
+ 
+#   if [[ "$ask_become_pass" == "true" ]]; then
+#     hi="hi"
+    # ansible-playbook -i "${HOSTS_FILE}" "${PLAYBOOK_FILE}" --tags "${tags[*]}" --ask-become-pass
+  
+#   else
+    # ansible-playbook -i "${HOSTS_FILE}" "${PLAYBOOK_FILE}" --tags "${tags[*]}"
+    # command_options="-i \"${HOSTS_FILE}\" \"${PLAYBOOK_FILE}\" --tags \"${tags[*]}\""
+    # echo "ansible-playbook $command_options"
+    # ansible-playbook $command_options
+    # echo -e "\n\n\n==================="
+    # echo "ansible-playbook -i ${HOSTS_FILE} ${PLAYBOOK_FILE} --tags \"${tags[*]}\""
+    # command_options="-i ${HOSTS_FILE} ${PLAYBOOK_FILE} --tags \"${tags[*]}\""
+    # command_options="--tags \"${tags[*]}\""
+    # echo -e "ansible-playbook -i ${HOSTS_FILE} ${PLAYBOOK_FILE} $command_options"
+    # ansible-playbook -i ${HOSTS_FILE} ${PLAYBOOK_FILE} --tags "${tags[*]}"
+    # ansible-playbook $command_options
+    # ansible-playbook -i $HOSTS_FILE $PLAYBOOK_FILE $command_options
+    # echo -e "\n\n\n==================="
+    # echo "ansible-playbook -i \"${HOSTS_FILE}\" \"${PLAYBOOK_FILE}\" --tags \"${tags[*]}\""
+    # ansible-playbook -i "${HOSTS_FILE}" "${PLAYBOOK_FILE}" --tags "${tags[*]}"
+    # echo "ansible-playbook -i '${HOSTS_FILE}' '${PLAYBOOK_FILE}' --tags '${tags[*]}'"
+#   fi
+
+#   exit 1
+
+#   command_options="-i ${HOSTS_FILE} ${PLAYBOOK_FILE} --tags \"${tags[*]}\""
+#   if [[ "$ask_become_pass" == "true" ]]; then
+#     command_options="${command_options} --ask-become-pass"
+#   fi
+
+#   if [[ "$extra_vars" != "" ]]; then
+#     command_options="${command_options} --extra-vars \"${extra_vars}\""
+#   fi
+
+#   if [[ "$debug" == "true" ]]; then
+#     echo "DEBUG MODE: Will print command to run and exit with no action!"
+#     echo "ansible-playbook ${command_options}"
+#   else
+#     echo "ansible-playbook $command_options"
+#     ansible-playbook $command_options
+#   fi
   
   end=$(date +%s)
   runtime=$((end-start))
