@@ -2,4 +2,4 @@
 # meta for asdf-gohugo
 
 dependencies:
-  - role: asdf
+  - role: infrastructure/asdf

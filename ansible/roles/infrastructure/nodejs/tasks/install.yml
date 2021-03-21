@@ -1,15 +1,9 @@
 ---
-# main task for nodejs
+# install task for nodejs
 
 - name: nodejs & nodejs packages are present
 
   block:
-    - name: Ensure dependencies are present for nodejs
-      import_tasks: dependencies.yml
-
-    - name: Install nodejs & nodejs packages
-      import_tasks: install.yml
-
     - name: Add nodejs plugin for asdf
       command: "asdf plugin-add nodejs {{ nodejs_plugin_url }}"
       register: nodejs_add

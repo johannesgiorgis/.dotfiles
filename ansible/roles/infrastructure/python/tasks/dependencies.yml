@@ -13,7 +13,7 @@
         state: present
       when: ansible_os_family in ["Debian",  "Pop!_OS" ]
       become: "{{ should_be_root }}"
-    
+
     - name: Ensure python system dependencies are present (homebrew)
       homebrew:
         name:
@@ -21,6 +21,6 @@
           - readline
           - sqlite3
           - xz
-          - xlib
+          - zlib
         state: present
       when: ansible_os_family in ["Darwin"]

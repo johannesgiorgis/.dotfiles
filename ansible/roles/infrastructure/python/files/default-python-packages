@@ -1,5 +1,5 @@
-ansible
-black
-flake8
-bpython
-pipenv
+#ansible
+#black
+#flake8
+#bpython
+#pipenv

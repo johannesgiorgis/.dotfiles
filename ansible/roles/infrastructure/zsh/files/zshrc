@@ -510,10 +510,6 @@ zstyle ':completion:*:complete:(cd|pushd):*' tag-order \
 
 # <<< CDPATH
 
-if command -v jump 1>/dev/null 2>&1; then
-    eval "$(jump shell)"
-fi
-
 # rust binaries
 
 # /home/johannes/.asdf/installs/rust/stable/bin/rg
@@ -541,6 +537,20 @@ fi
 # <<< ##################################### PATH MODIFICATIONS
 ###############################################################################################
 
+if command -v jump 1>/dev/null 2>&1; then
+    eval "$(jump shell)"
+fi
+
+if command -v pipx 1>/dev/null 2>&1; then
+    eval "$(register-python-argcomplete pipx)"
+fi
+
+
+###############################################################################################
+# >>> ##################################### SHELL COMPLETIONS
+
+# <<< ##################################### SHELL COMPLETIONS
+###############################################################################################
 
 ###############################################################################################
 # >>> ##################################### MISC

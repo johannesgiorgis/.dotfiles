@@ -2,10 +2,8 @@
 # install task for python
 
 - name: python, python packages, pipx, pipx packages are present
-  block:
-    - name: Ensure dependencies are present for python
-      import_tasks: dependencies.yml
 
+  block:
     - name: Add python plugin for asdf ({{ python_plugin_url }})
       command: "asdf plugin-add python {{ python_plugin_url }}"
       register: python_add
@@ -26,10 +24,11 @@
     - name: Set global version for python to {{ python_versions[0] }}
       command: asdf global python {{ python_versions[0] }}
 
-    - name: Install python3-pip and python3-venv for system python3
+    - name: Install python3-pip and python3-venv for system python3 (debian)
       apt:
         name: python3-pip, python3-venv
       tags: pipx
+      when: ansible_os_family in ["Debian",  "Pop!_OS" ]
       become: "{{ should_be_root }}"
 
     - name: Install pipx (debian)

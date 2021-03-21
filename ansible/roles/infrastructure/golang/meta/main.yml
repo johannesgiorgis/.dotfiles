@@ -1,2 +1,2 @@
 dependencies:
-  - role: asdf
+  - role: infrastructure/asdf

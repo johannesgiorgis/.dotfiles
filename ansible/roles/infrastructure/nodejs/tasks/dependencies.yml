@@ -1,0 +1,24 @@
+---
+# dependencies for nodejs
+
+- name: Ensure dependencies for nodejs are present
+
+  block:
+    - name: Ensure nodejs system dependencies are present (debian)
+      apt:
+        name:
+          - dirmngr
+          - gpg
+          - curl
+          - gawk
+        state: present
+      when: ansible_os_family in ["Debian",  "Pop!_OS" ]
+      become: "{{ should_be_root }}"
+
+    - name: Ensure nodejs system dependencies are present (darwin)
+      homebrew:
+        name:
+          - gpg
+          - gawk
+        state: present
+      when: ansible_os_family in ["Darwin"]
