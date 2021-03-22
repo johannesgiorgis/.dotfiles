@@ -194,6 +194,7 @@ function cask_install_general_tools() {
     # dock manager
     # brew_cask_install vanilla
     brew_cask_install authy
+    brew_cask_install flux
 }
 
 
@@ -266,8 +267,10 @@ function is_work_mac() {
 function install_software_on_work_mac() {
     print_info "› Installing Software on Work Mac..."
 
-    # v1.0
-    brew_install awscli@1
+    # v1.x
+    # brew_install awscli@1
+    # v2.x
+    brew_install awscli
     brew_install putty
     brew_install telnet
     brew_install pandoc
@@ -284,6 +287,7 @@ function install_software_on_work_mac() {
     brew_cask_install basictex
     brew_cask_install wkhtmltopdf
     brew_cask_install dash
+    brew_cask_install docker
 
     # sql server
     install_ms_sql_server
