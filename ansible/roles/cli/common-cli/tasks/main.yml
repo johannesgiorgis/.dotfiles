@@ -1,29 +1,31 @@
 ---
 # main task for common-cli
 
-- name: common-cli and dependencies are present
+- name: common-cli are present
   become: "{{ should_be_root }}"
 
   block:
-    - name: ffmpeg is present
-      when: ansible_pkg_mgr != 'homebrew'
+    - name: common-cli packages are present
       package:
-        name: ffmpeg
+        name: "{{ item[ansible_pkg_mgr] | default(item['default']) }}"
         state: latest
-
-    - name: ffmpeg is present (homebrew)
-      when: ansible_pkg_mgr == 'homebrew'
-      homebrew:
-        name: ffmpeg
-        state: head
-        install_options: with-chromaprint, with-fdk-aac, with-etc-etc
-
-    - name: atomicparsley is present
-      package:
-        name: atomicparsley
-        state: latest
-
-    - name: common-cli is present
-      package:
-        name: common-cli
-        state: latest
+      loop: "{{ common_packages }}"
+    # - name: ffmpeg is present
+    #   when: ansible_pkg_mgr != 'homebrew'
+    #   package:
+    #     name: ffmpeg
+    #     state: latest
+    # - name: ffmpeg is present (homebrew)
+    #   when: ansible_pkg_mgr == 'homebrew'
+    #   homebrew:
+    #     name: ffmpeg
+    #     state: head
+    #     install_options: with-chromaprint, with-fdk-aac, with-etc-etc
+    # - name: atomicparsley is present
+    #   package:
+    #     name: atomicparsley
+    #     state: latest
+    # - name: common-cli is present
+    #   package:
+    #     name: common-cli
+    #     state: latest

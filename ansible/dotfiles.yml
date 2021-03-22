@@ -67,6 +67,7 @@
     - { role: cli/awscliv2, tags: [awscliv2] }
     - { role: cli/bat, tags: [bat] }
     - { role: cli/broot, tags: [broot] }
+    - { role: cli/common-cli, tags: [common-cli] }
     - { role: cli/cowsay, tags: [cowsay] }
     - { role: cli/csvkit, tags: [csvkit] }
     - { role: cli/diffstat, tags: [diffstat] }

@@ -8,10 +8,10 @@ mac_homebrew_taps:
 # Utilities that don't get installed by a role
 mac_homebrew_packages:
   # CLI Alternatives
-  - bat
+  # - bat
   - diff-so-fancy
   - exa
-  - ripgrep
+  # - ripgrep
   # Custom Taps
   - displayplacer
   # Development Tools
@@ -43,11 +43,11 @@ mac_homebrew_packages:
   - noti
   - putty
   # - shellcheck
-  - speedtest-cli
-  - tldr
-  - tree
-  - watch
-  - wget
+  # - speedtest-cli
+  # - tldr
+  # - tree
+  # - watch
+  # - wget
   - wifi-password # what's the wifi password?
   # Youtube download
   # - ffmpeg
