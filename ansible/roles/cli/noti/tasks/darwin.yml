@@ -1,0 +1,7 @@
+---
+# darwin tasks for noti
+
+- name: NOTI - Install via homebrew
+  homebrew:
+    name: noti
+    state: present

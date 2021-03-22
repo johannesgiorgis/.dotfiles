@@ -1,0 +1,13 @@
+---
+# main task for delta
+
+- name: DELTA - delta is present
+
+  block:
+    - name: DELTA - install for debian
+      include_tasks: debian.yml
+      when: ansible_os_family in ["Debian",  "Pop!_OS" ]
+
+    - name: DELTA - install for darwin
+      include_tasks: darwin.yml
+      when: ansible_os_family in ["Darwin"]

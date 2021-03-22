@@ -1,0 +1,13 @@
+---
+# main task for exa
+
+- name: EXA - exa is present
+
+  block:
+    - name: EXA - install for debian
+      include_tasks: debian.yml
+      when: ansible_os_family in ["Debian",  "Pop!_OS" ]
+
+    - name: EXA - install for darwin
+      include_tasks: darwin.yml
+      when: ansible_os_family in ["Darwin"]

@@ -1,0 +1,7 @@
+---
+# darwin tasks for exa
+
+- name: EXA - Install via homebrew
+  homebrew:
+    name: exa
+    state: present

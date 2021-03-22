@@ -1,0 +1,40 @@
+---
+# debian task for delta
+
+- name: DELTA - install for debian machine
+  block:
+    - name: DELTA - Create temporary download directory
+      tempfile:
+        state: directory
+        suffix: ".delta_binary_download_dir"
+      register: delta_binary_download_dir
+
+    - name: DELTA - Register folder name
+      set_fact:
+        delta_folder_name: "delta-{{ delta_version }}-x86_64-unknown-linux-gnu"
+
+    - name: Download delta binary to {{ delta_binary_download_dir.path }}
+      ansible.builtin.unarchive:
+        src: "https://github.com/dandavison/delta/releases/download/{{ delta_version }}/{{ delta_folder_name }}.tar.gz"
+        dest: "{{ delta_binary_download_dir.path }}/"
+        remote_src: yes
+      register: r_delta_unarchive
+
+    - debug:
+        msg: "{{ delta_binary_download_dir.path }}"
+
+    - debug:
+        msg: "Run command: cd {{ delta_binary_download_dir.path }}/install_delta.sh && sudo install delta /usr/local/bin"
+
+    - name: add delta to /usr/local/bin
+      command: install delta /usr/local/bin
+      args:
+        chdir: "{{ delta_binary_download_dir.path }}/{{ delta_folder_name }}"
+      become: "{{ should_be_root }}"
+
+  always:
+    - name: Delete binary download directory - {{ delta_binary_download_dir.path }}
+      file:
+        path: "{{ delta_binary_download_dir.path }}"
+        state: absent
+      changed_when: no

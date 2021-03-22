@@ -1,0 +1,13 @@
+---
+# main task for noti
+
+- name: NOTI - noti is present
+
+  block:
+    - name: NOTI - install for debian
+      include_tasks: debian.yml
+      when: ansible_os_family in ["Debian",  "Pop!_OS" ]
+
+    - name: NOTI - install for darwin
+      include_tasks: darwin.yml
+      when: ansible_os_family in ["Darwin"]

@@ -1,0 +1,40 @@
+---
+# debian task for noti
+
+- name: NOTI - install for debian machine
+  block:
+    - name: NOTI - Create temporary download directory
+      tempfile:
+        state: directory
+        suffix: ".noti_binary_download_dir"
+      register: noti_binary_download_dir
+
+    - name: NOTI - Register folder name
+      set_fact:
+        noti_folder_name: "noti{{ noti_version }}.{{ noti_system_map[ansible_system] }}-{{ machine_map[ansible_machine] }}"
+
+    - name: Download noti binary to {{ noti_binary_download_dir.path }}
+      ansible.builtin.unarchive:
+        src: "https://github.com/variadico/noti/releases/download/{{ noti_version }}/{{ noti_folder_name }}.tar.gz"
+        dest: "{{ noti_binary_download_dir.path }}/"
+        remote_src: yes
+      register: r_noti_unarchive
+
+    - debug:
+        msg: "{{ noti_binary_download_dir.path }}"
+
+    - debug:
+        msg: "Run command: sudo install {{ noti_binary_download_dir.path }}/noti /usr/local/bin"
+
+    - name: add noti to /usr/local/bin
+      command: install noti /usr/local/bin
+      args:
+        chdir: "{{ noti_binary_download_dir.path }}"
+      become: "{{ should_be_root }}"
+
+  always:
+    - name: Delete binary download directory - {{ noti_binary_download_dir.path }}
+      file:
+        path: "{{ noti_binary_download_dir.path }}"
+        state: absent
+      changed_when: no

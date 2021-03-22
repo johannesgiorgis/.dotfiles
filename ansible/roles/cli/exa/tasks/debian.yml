@@ -1,0 +1,40 @@
+---
+# debian task for exa
+
+- name: EXA - install for debian machine
+  block:
+    - name: EXA - Create temporary download directory
+      tempfile:
+        state: directory
+        suffix: ".exa_binary_download_dir"
+      register: exa_binary_download_dir
+
+    - name: EXA - Register folder name
+      set_fact:
+        exa_folder_name: "exa-{{ exa_machine_map[ansible_system] }}-x86_64-{{ exa_version }}"
+
+    - name: Download exa binary to {{ exa_binary_download_dir.path }}
+      ansible.builtin.unarchive:
+        src: "https://github.com/ogham/exa/releases/download/v{{ exa_version }}/{{ exa_folder_name }}.zip"
+        dest: "{{ exa_binary_download_dir.path }}/"
+        remote_src: yes
+      register: r_exa_unarchive
+
+    - debug:
+        msg: "{{ exa_binary_download_dir.path }}"
+
+    - debug:
+        msg: "Run command: sudo mv {{ exa_binary_download_dir.path }}/exa-{{ exa_machine_map[ansible_system] }}-x86_64 /usr/local/bin/exa"
+
+    - name: add exa to /usr/local/bin
+      command: mv "exa-{{ exa_machine_map[ansible_system] }}-x86_64" /usr/local/bin/exa
+      args:
+        chdir: "{{ exa_binary_download_dir.path }}"
+      become: "{{ should_be_root }}"
+
+  always:
+    - name: Delete binary download directory - {{ exa_binary_download_dir.path }}
+      file:
+        path: "{{ exa_binary_download_dir.path }}"
+        state: absent
+      changed_when: no
