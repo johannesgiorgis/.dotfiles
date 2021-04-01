@@ -1,0 +1,7 @@
+---
+# mac tasks for flux
+
+- name: Install flux via homebrew cask
+  homebrew_cask:
+    name: flux
+    state: present

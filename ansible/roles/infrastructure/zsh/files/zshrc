@@ -190,6 +190,8 @@ if [[ "${kernel_name}" == "Darwin" ]]; then
     # Brew
 
     if command -v brew 1>/dev/null 2>&1; then
+        alias b='brew'
+        alias bo='brew outdated --greedy'
         alias brewup='brew update && brew outdated && brew upgrade && brew cleanup && brew doctor'
         alias brewupcask='brew update && brew cask outdated && brew cask upgrade && brew cleanup && brew cask doctor'
     fi
