@@ -1,0 +1,10 @@
+---
+# main task for aviatrix-vpn-client
+
+- name: AVIATRIX-VPN-CLIENT is present
+  block:
+    - name: AVIATRIX-VPN-CLIENT - install for darwin
+      when: ansible_os_family == 'Darwin'
+      homebrew_cask:
+        name: aviatrix-vpn-client
+        state: present

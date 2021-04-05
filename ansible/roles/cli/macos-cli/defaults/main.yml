@@ -1,0 +1,9 @@
+# defaults task for macos-cli
+---
+macos_homebrew_taps:
+  - jakehilborn/jakehilborn # displayplacer
+
+macos_cli_packages:
+  - coreutils
+  - jakehilborn/jakehilborn/displayplacer
+  - wifi-password

@@ -10,22 +10,3 @@
         name: "{{ item[ansible_pkg_mgr] | default(item['default']) }}"
         state: latest
       loop: "{{ common_packages }}"
-    # - name: ffmpeg is present
-    #   when: ansible_pkg_mgr != 'homebrew'
-    #   package:
-    #     name: ffmpeg
-    #     state: latest
-    # - name: ffmpeg is present (homebrew)
-    #   when: ansible_pkg_mgr == 'homebrew'
-    #   homebrew:
-    #     name: ffmpeg
-    #     state: head
-    #     install_options: with-chromaprint, with-fdk-aac, with-etc-etc
-    # - name: atomicparsley is present
-    #   package:
-    #     name: atomicparsley
-    #     state: latest
-    # - name: common-cli is present
-    #   package:
-    #     name: common-cli
-    #     state: latest

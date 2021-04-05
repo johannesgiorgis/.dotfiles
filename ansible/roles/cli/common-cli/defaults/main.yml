@@ -7,12 +7,12 @@ common_packages:
   - bat:
     default:
       - bat
-  - csvkit:
-    default:
-      - csvkit
   - cowsay:
     default:
       - cowsay
+  - csvkit:
+    default:
+      - csvkit
   - curl:
     default:
       - curl
@@ -47,6 +47,9 @@ common_packages:
   - httpie:
     default:
       - httpie
+  - jq:
+    default:
+      - jq
   - mdp:
     default:
       - mdp

@@ -1,54 +1,53 @@
 # Darwin/Mac OS X
 
-mac_homebrew_taps:
-  - homebrew/cask-fonts # fira code font
-  - homebrew/cask-drivers
-  - jakehilborn/jakehilborn # displayplacer
+# mac_homebrew_taps:
+#   # - homebrew/cask-fonts # fira code font
+# - homebrew/cask-drivers
+# - jakehilborn/jakehilborn # displayplacer
 
 # Utilities that don't get installed by a role
 mac_homebrew_packages:
   # CLI Alternatives
   # - bat
-  - diff-so-fancy
-  - exa
+  # - diff-so-fancy # replaced by delta
+  # - exa
   # - ripgrep
   # Custom Taps
-  - displayplacer
+  # - displayplacer
   # Development Tools
-  - openssl
-  - readline
-  - sqlite3
-  - xz
-  - zlib
+  # - openssl
+  # - readline
+  # - sqlite3
+  # - xz
+  # - zlib
   # Python Utilities
   # - black
   # - flake8
   # - pipenv
   # Task Management
-  - tasksh
-  - timewarrior
+  # - tasksh
+  # - timewarrior
   # Utilities
-  - ack
+  # - ack
   # - ansible
-  - cask
-  - coreutils
+  # - coreutils
   # - csvkit
-  - curl
-  - entr
-  - fzf
-  - gnupg # gpg
+  # - curl
+  # - entr
+  # - fzf
+  # - gnupg # gpg
   # - htop
   # - jump
   # For displaying a notification when a command finishes
-  - noti
-  - putty
+  # - noti
+  # - putty # no longer needed - was for work in 2020
   # - shellcheck
   # - speedtest-cli
   # - tldr
   # - tree
   # - watch
   # - wget
-  - wifi-password # what's the wifi password?
+  # - wifi-password # what's the wifi password?
   # Youtube download
   # - ffmpeg
   # - youtube-dl
@@ -58,16 +57,16 @@ mac_cask_packages:
   # Backup
   # - dropbox
   # Browsers
-  - firefox
-  - google-chrome
+  # - firefox
+  # - google-chrome
   # Custom Taps
-  - font-fira-code
+  # - font-fira-code
   # Development Tools
   - beekeeper-studio
-  - iterm2
+  # - iterm2
   # - jetbrains-toolbox
   - lepton
-  - meld
+  # - meld
   - omnidb
   - openvpn-connect
   - pgadmin4
@@ -78,7 +77,7 @@ mac_cask_packages:
   # - visual-studio-code
   # Logitech
   - logitech-control-center
-  - logitech-options
+  # - logitech-options
   - logitech-unifying
   # Media
   # - vlc
@@ -88,9 +87,9 @@ mac_cask_packages:
   # - sublime-text
   # Window Management
   - lg-onscreen-control
-  - rectangle
+  # - rectangle
   # Utilities
-  - aerial
+  # - aerial
   - omnidisksweeper
   - tunnelblick
   # Video conferencing

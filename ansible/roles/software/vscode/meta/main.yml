@@ -1,2 +1,4 @@
 dependencies:
   - role: cli/neovim
+  - role: software/kite
+  - role: infrastructure/fonts-firacode

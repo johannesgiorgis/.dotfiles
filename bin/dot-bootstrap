@@ -21,9 +21,12 @@ function usage() {
   echo "ERROR: Script requires the following inputs:"
   echo "Usage:
     ${0##*/} -t zsh -a
+    ${0##*/} -f macos
     "
   echo "Options:
+    -f: find tag
     -t: tag for ansible (default: all)
+    -i: get info for an aggregate tag (tags with multiple packages. e.g. macos-cli, macos-infra)
     -e: extra variables (equivalent to --extra-vars)
     -a: enable ask_become_pass"
 }
@@ -34,12 +37,13 @@ main() {
   extra_vars=""
   debug="false"
 
-  options="t:f:e:adh"
+  options="t:f:e:i:adh"
   while getopts "$options" opt; do
     case $opt in
       a ) ask_become_pass="true" ;;
       f ) to_find="$OPTARG" ;;
       t ) tags+=("$OPTARG") ;;
+      i ) to_info="$OPTARG" ;;
       e ) extra_vars="$OPTARG" ;;
       d ) debug="true" ;;
       h ) usage; exit 0 ;;
@@ -65,14 +69,51 @@ main() {
   # search for tag
   if [[ "$to_find" != "" ]]; then
     echo "Searching for '$to_find'..."
-    found_tag=$(cat "${PLAYBOOK_FILE}" | grep -o '\[\([^]]\+\)\]' | sed 's/\[//; s/\]//' | grep "$to_find")
+    found_tag=$(cat "${PLAYBOOK_FILE}" | grep -v '#' | grep -o '\[\([^]]\+\)\]' | sed 's/\[//; s/\]//' | grep "$to_find")
     echo -e "\nFound Tag(s):\n'$found_tag'"
+    exit 0
+  fi
+
+  # get info for specified tag
+  if [[ "$to_info" != "" ]]; then
+    echo "Searching for '$to_info'..."
+    found_info_tag=$(cat "${PLAYBOOK_FILE}" | grep -v '#' | grep -o '\[\([^]]\+\)\]' | sed 's/\[//; s/\]//' | grep "$to_info")
+    num_found_tags=$(echo "$found_info_tag" | wc -l | sed 's/ //g')
+    echo -e "\n$num_found_tags Found Info Tag(s):\n'$found_info_tag'"
+    
+    if [[ "$found_info_tag" == "" ]]; then
+        echo "ERROR: tag doesn't exist. Exiting with error"
+        exit 1
+    fi
+
+    if [[ "$num_found_tags" != 1 ]]; then
+        echo "ERROR: More than 1 tags found. Exiting with error"
+        exit 1
+    fi
+
+    # ensure fdfind is installed!
+    directory=$(fd "$to_info" $ANSIBLE_DIR)
+    echo "Directory:$directory"
+
+    echo -e "\nPackages for '$to_info' tag:"
+    cat "$directory/README.md" |\
+        # grab lines with either '- ack' or '- [coreutils]'
+        grep -E '(^\- \[\([^]]\+\)\]|^- )' |\
+        # remove '[' and ']' + everything afterwards
+        sed 's/\[//g; s/\].*//g' |\
+        sort
     exit 0
   fi
 
   # list available tags
   if [[ "$tags" == "" ]]; then
-    available_tags=$(cat "${PLAYBOOK_FILE}" | grep -o '\[\([^]]\+\)\]' | sed 's/\[//; s/\]//' | sort)
+    available_tags=$(cat "${PLAYBOOK_FILE}" |\
+        # ignore commented out lines
+        grep -v '#' |\
+        # grab tags - [*]
+        grep -o '\[\([^]]\+\)\]' |\
+        # remove brackets - [,]
+        sed 's/\[//; s/\]//' | sort)
     available_tags="all\n$available_tags"
     echo -e "\nAvailable Tags:"
     echo -e "$available_tags"
@@ -152,7 +193,7 @@ function ensure_ansible_is_present() {
   then
       print_info "› On Mac..."
       brew install ansible #@2.9.6
-      brew pin ansible
+      #brew pin ansible
   else
       release_code=$(lsb_release -c -s)
       print_info "› On Linux '$release_code'..."

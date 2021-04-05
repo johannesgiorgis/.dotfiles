@@ -26,12 +26,7 @@
     - { role: infrastructure/linux-redshift, tags: [linux-redshift] }
     - { role: infrastructure/linux-snap, tags: [linux-snap] }
     - { role: infrastructure/linux-terminator, tags: [linux-terminator] }
-    - { role: infrastructure/macos-iterm2, tags: [macos-iterm2] }
-    - {
-        role: infrastructure/macos-logitech-options,
-        tags: [macos-logitech-options],
-      }
-    - { role: infrastructure/macos-rectangle, tags: [macos-rectangle] }
+    - { role: infrastructure/macos-infra, tags: [macos-infra] }
     - { role: infrastructure/postgresql, tags: [postgresql] }
     - { role: infrastructure/ssh-key, tags: [ssh-key] }
     - { role: infrastructure/wallpaper, tags: [wallpaper] }
@@ -65,37 +60,26 @@
 
     # cli
     - { role: cli/awscliv2, tags: [awscliv2] }
-    - { role: cli/bat, tags: [bat] }
     - { role: cli/broot, tags: [broot] }
     - { role: cli/common-cli, tags: [common-cli] }
-    - { role: cli/cowsay, tags: [cowsay] }
-    - { role: cli/csvkit, tags: [csvkit] }
     - { role: cli/delta, tags: [delta] }
-    - { role: cli/diffstat, tags: [diffstat] }
     - { role: cli/exa, tags: [exa] }
-    - { role: cli/fd-find, tags: [fd-find] }
-    - { role: cli/gawk, tags: [gawk] }
-    - { role: cli/htop, tags: [htop] }
     - { role: cli/jq, tags: [jq] }
     - { role: cli/jump, tags: [jump] }
     - { role: cli/linux-xclip, tags: [linux-xclip] }
+    - { role: cli/macos-cli, tags: [macos-cli] }
+    - { role: cli/delta, tags: [delta] }
     - { role: cli/mlocate, tags: [mlocate] }
-    - { role: cli/ncdu, tags: [ncdu] }
-    - { role: cli/neofetch, tags: [neofetch] }
     - { role: cli/neovim, tags: [neovim] }
     - { role: cli/noti, tags: [noti] }
-    - { role: cli/pandoc, tags: [pandoc] }
-    - { role: cli/rename, tags: [rename] }
-    - { role: cli/ripgrep, tags: [ripgrep] }
-    - { role: cli/shellcheck, tags: [shellcheck] }
     - { role: cli/taskwarrior, tags: [taskwarrior] }
     - { role: cli/timewarrior, tags: [timewarrior] }
-    - { role: cli/tldr, tags: [tldr] }
     - { role: cli/vim, tags: [vim] }
     - { role: cli/youtube-dl, tags: [youtube-dl] }
 
     # software
     - { role: software/authy, tags: [authy] }
+    - { role: software/bitwarden, tags: [bitwarden] }
     - { role: software/brave-browser, tags: [brave-browser] }
     - { role: software/box-drive, tags: [box-drive] }
     - { role: software/dropbox, tags: [dropbox] }
@@ -131,4 +115,11 @@
     - { role: software/zoom, tags: [zoom] }
 
     # mac os x
-    - { role: macos, tags: [macos], when: ansible_os_family == "Darwin" }
+    # - { role: macos, tags: [macos], when: ansible_os_family == "Darwin" }
+
+    # work
+    - {
+        role: work/aviatrix-vpn-client,
+        tags: [aviatrix-vpn-client],
+        when: ansible_os_family == "Darwin",
+      }

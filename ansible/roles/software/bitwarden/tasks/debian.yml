@@ -1,0 +1,37 @@
+---
+# debian task for bitwarden
+
+# - name: bitwarden is present for debian machine
+# block:
+#   - name: Create temporary download directory
+#     tempfile:
+#       state: directory
+#       suffix: ".bitwarden_installation_download_dir"
+#     register: bitwarden_installation_download_dir
+
+#   - name: Download bitwarden installer to {{ bitwarden_installation_download_dir.path }}
+#     get_url:
+#       url: https://download.cloud.bitwarden.com/linux/lplinux.tar.bz2
+#       dest: "{{ bitwarden_installation_download_dir.path }}/"
+#       mode: a+x
+#     register: r_bitwarden_installer_download
+
+#   - debug:
+#       msg: "{{ bitwarden_installation_download_dir.path }}"
+
+#   - debug:
+#       msg: "{{ r_bitwarden_installer_download }}"
+
+#   - name: Unarchive bitwarden installation file {{ r_bitwarden_installer_download.dest }}
+#     unarchive:
+#       src: "{{ r_bitwarden_installer_download.dest }}"
+#       dest: "{{ bitwarden_installation_download_dir.path }}"
+
+#   - debug:
+#       msg: "Run command: bash {{ bitwarden_installation_download_dir.path }}/install_bitwarden.sh"
+# always:
+#   - name: Delete installation download directory - {{ bitwarden_installation_download_dir.path }}
+#     file:
+#       path: "{{ bitwarden_installation_download_dir.path }}"
+#       state: absent
+#     changed_when: no

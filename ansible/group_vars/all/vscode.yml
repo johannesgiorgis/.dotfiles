@@ -1,8 +1,6 @@
 # vs code extensions
 
 visual_studio_code_extensions:
-  - CoenraadS.bracket-pair-colorizer-2
-  - DavidAnson.vscode-markdownlint
   - alexcvzz.vscode-sqlite
   - ban.spellright
   - CoenraadS.bracket-pair-colorizer-2
