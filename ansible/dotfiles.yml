@@ -55,6 +55,7 @@
     - { role: infrastructure/python, tags: [python] }
     - { role: infrastructure/python-poetry, tags: [python-poetry] }
     - { role: infrastructure/rust, tags: [rust] }
+    - { role: infrastructure/terraform, tags: [terraform] }
 
     # - { role: apt, tags: [apt] }
 

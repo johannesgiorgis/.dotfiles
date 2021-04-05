@@ -1,4 +1,4 @@
-#!/user/bin/ env python
+#!/usr/bin/env python3
 
 import argparse
 import datetime
@@ -99,8 +99,8 @@ def get_template(week: int, dates: List[datetime.datetime]) -> str:
     jira_section = "## Jira Tickets"
     template_sections.append(jira_section)
     # TODO
-    todo_section = "## TODO"
-    template_sections.append(todo_section)
+    week_todo_section = "## Week TODO"
+    template_sections.append(week_todo_section)
     # MONDAY - FRIDAY
     work_week_section = get_work_week_section(dates)
     template_sections.append(work_week_section)
@@ -135,7 +135,7 @@ def get_work_week_section(dates: List[datetime.date]) -> str:
         section_header = f"## {date.strftime('%A, %B %d, %Y')}"
         day_section.append(section_header)
 
-        day_section_areas = ["Agenda", "Accomplished", "Escalations", "Meetings"]
+        day_section_areas = ["Agenda", 'To Do', "Accomplished", "Escalations", "Meetings"]
 
         for section_area in day_section_areas:
             day_section.append(f"***{section_area}***")

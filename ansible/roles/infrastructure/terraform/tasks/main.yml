@@ -1,0 +1,8 @@
+---
+# main task for terraform
+
+- name: TERRAFORM - terraform is present
+
+  block:
+    - name: TERRAFORM - install terraform, terraform packages, pipx, pipx packages
+      import_tasks: install.yml

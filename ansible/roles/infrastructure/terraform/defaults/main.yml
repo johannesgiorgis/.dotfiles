@@ -1,0 +1,4 @@
+terraform_plugin_url: https://github.com/Banno/asdf-hashicorp.git
+
+terraform_versions:
+  - 0.13.5

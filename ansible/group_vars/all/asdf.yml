@@ -29,3 +29,8 @@ rust_versions:
 gohugo_plugin_url: https://bitbucket.org/mgladdish/asdf-gohugo.git
 gohugo_versions:
   - extended_0.81.0
+
+terraform_plugin_url: https://github.com/Banno/asdf-hashicorp.git
+
+terraform_versions:
+  - 0.13.5
