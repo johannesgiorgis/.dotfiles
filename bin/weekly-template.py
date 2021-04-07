@@ -16,11 +16,9 @@ def main():
         # print("NO week number provided")
         week_number = get_current_week_number()
 
+    print(f"week_number:{week_number}")
     dates = get_date_range_from_week(current_year, week_number)
-
-    # set week number to correct one
-    # week is appended
-    week_number -= 1
+    print(f"dates:{dates}")
 
     # display_dates(dates, prefix="## ")
     weekly_template = get_template(week_number, dates)
@@ -37,8 +35,9 @@ def get_current_week_number() -> int:
     """
     # https://www.kite.com/python/answers/how-to-get-the-week-number-from-a-date-in-python
     # http://week-number.net/programming/week-number-in-python.html
-    # it's off by 1
-    return datetime.date.today().isocalendar()[1] + 1
+    today = datetime.date.today()
+    print(f"today:{today}")
+    return today.isocalendar()[1]
 
 
 def get_current_year() -> int:
@@ -49,8 +48,13 @@ def get_current_year() -> int:
 def get_date_range_from_week(year: int, week_number: int) -> List[datetime.datetime]:
     # http://mvsourcecode.com/python-how-to-get-date-range-from-week-number-mvsourcecode/
 
+    print(f"{year=}|{week_number=}")
+
     dates = []
-    first_day_of_week = datetime.datetime.strptime(f"{year}-W{week_number-1}-1", "%Y-W%W-%w").date()
+    first_day_of_week = datetime.datetime.strptime(
+        f"{year}-W{week_number}-1", "%Y-W%W-%w"
+    ).date()
+    print(f"{first_day_of_week=}")
 
     # SET TO 5 to get ONLY work week
     for i in range(5):
@@ -135,7 +139,13 @@ def get_work_week_section(dates: List[datetime.date]) -> str:
         section_header = f"## {date.strftime('%A, %B %d, %Y')}"
         day_section.append(section_header)
 
-        day_section_areas = ["Agenda", 'To Do', "Accomplished", "Escalations", "Meetings"]
+        day_section_areas = [
+            "Agenda",
+            "To Do",
+            "Accomplished",
+            "Escalations",
+            "Meetings",
+        ]
 
         for section_area in day_section_areas:
             day_section.append(f"***{section_area}***")
