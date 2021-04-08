@@ -50,13 +50,13 @@
     - name: Ensure handlers are notified now to avoid firewall conflicts
       meta: flush_handlers
 
-    - include_tasks: docker-compose.yml
+    - include_tasks: debian-docker-compose.yml
       when: docker_install_compose | bool
 
-    - include_tasks: docker-users.yml
+    - include_tasks: debian-docker-users.yml
       when: docker_users | length > 0
-    
+
     - name: Ensure /var/run/docker.sock has correct permissions
       file:
         path: /var/run/docker.sock
-        mode: '666'
+        mode: "666"

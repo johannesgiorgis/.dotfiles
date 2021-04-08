@@ -1,0 +1,12 @@
+---
+# mac tasks for docker
+
+- name: DOCKER - docker present on Mac OS X via homebrew cask
+  homebrew_cask:
+    name: docker
+    state: present
+
+- name: DOCKER - docker-compose present on Mac OS X via homebrew
+  homebrew:
+    name: docker-compose
+    state: present
