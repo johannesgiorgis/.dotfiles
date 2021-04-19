@@ -8,5 +8,5 @@
     - import_tasks: debian.yml
       when: ansible_os_family in ["Debian",  "Pop!_OS" ]
 
-    - import_tasks: mac.yml
+    - import_tasks: darwin.yml
       when: ansible_os_family in ["Darwin"]

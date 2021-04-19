@@ -93,6 +93,21 @@ plugins=(
     brew
     history
     poetry
+    cargo
+    fd
+    fzf
+    npm
+    node
+    pip
+    pipenv
+    python
+    ripgrep
+    rsync
+    rust
+    rustup
+    terraform
+    web-search
+    zsh-interactive-cd
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -516,10 +531,10 @@ zstyle ':completion:*:complete:(cd|pushd):*' tag-order \
 
 # /home/johannes/.asdf/installs/rust/stable/bin/rg
 # export PATH="$HOME/.asdf/installs/rust/stable/bin:$PATH"
-rust_install_dir="$HOME/.asdf/installs/rust/stable"
-if test -d "$rust_install_dir"; then
-    export PATH="${rust_install_dir}/bin:$PATH"
-fi
+#rust_install_dir="$HOME/.asdf/installs/rust/stable"
+#if test -d "$rust_install_dir"; then
+#    export PATH="${rust_install_dir}/bin:$PATH"
+#fi
 
 # add poetry
 export PATH="$HOME/.poetry/bin:$PATH"

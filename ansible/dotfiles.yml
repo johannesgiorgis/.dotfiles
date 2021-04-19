@@ -84,6 +84,7 @@
     - { role: software/brave-browser, tags: [brave-browser] }
     - { role: software/box-drive, tags: [box-drive] }
     - { role: software/dropbox, tags: [dropbox] }
+    - { role: software/firefox, tags: [firefox] }
     - { role: software/flux, tags: [flux] }
     - { role: software/google-chrome, tags: [google-chrome] }
     - { role: software/jetbrains-toolbox, tags: [jetbrains-toolbox] }

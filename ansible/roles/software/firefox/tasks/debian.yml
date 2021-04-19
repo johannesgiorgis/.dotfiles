@@ -3,7 +3,7 @@
 
 - name: firefox is present for debian system
   block:
-    - name: Install dependencies
+    # - name: Install dependencies
     - name: Install firefox key
       apt_key:
         url: https://firefox-apt-release.s3.brave.com/brave-core.asc

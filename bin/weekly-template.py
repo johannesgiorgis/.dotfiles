@@ -22,6 +22,7 @@ def main():
 
     # display_dates(dates, prefix="## ")
     weekly_template = get_template(week_number, dates)
+    weekly_template += "\n"
     file_name = get_file_name(week_number, dates)
     print(weekly_template)
     print(f"File_name:{file_name}")

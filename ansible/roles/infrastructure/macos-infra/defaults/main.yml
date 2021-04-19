@@ -1,10 +1,11 @@
-# defaults task for macos-cli
+# defaults task for macos-infra
 ---
 macos_homebrew_taps:
   - homebrew/cask-drivers # logitech-options
 
 macos_infrastructure_packages:
   - aerial
+  - alt-tab
   - iterm2
   - logitech-options
   - rectangle

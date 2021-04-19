@@ -1,24 +1,56 @@
 # main task for rust
 
-- name: rust & rust packages are present
+- name: RUST - rust & rust packages are present
 
   block:
-    - name: Add rust plugin for asdf
+    - name: RUST - Add rust plugin for asdf
       command: "asdf plugin-add rust {{ rust_plugin_url }}"
       register: rust_add
       failed_when: rust_add == 2
 
-    - name: Symlink .default-cargo-crates
+    - name: RUST - Symlink .default-cargo-crates
       file:
         src: "{{ ansible_dir }}/roles/infrastructure/rust/files/default-cargo-crates"
         dest: "{{ dotfiles_user_home }}/.default-cargo-crates"
         state: link
 
-    - name: Install rust versions
+    - name: RUST - Install rust versions
       command: asdf install rust {{ item }}
       loop: "{{ rust_versions }}"
       loop_control:
         label: "{{ item }}"
 
-    - name: Set global version for rust to {{ rust_versions[0] }}
+    - name: RUST - Set global version for rust to {{ rust_versions[0] }}
       command: asdf global rust {{ rust_versions[0] }}
+
+    - name: RUST - check rustc
+      command: which rustup
+      register: which_rustup
+
+    - name: RUST - which rustup?
+      debug: msg="which rustup?{{ which_rustup.stdout }}"
+
+    - name: RUST - rustup install stable
+      shell: "{{ which_rustup.stdout }} install stable"
+
+    - name: RUST - rustup default stable
+      shell: "{{ which_rustup.stdout }} default stable"
+
+    # FROM: https://github.com/abaez/ansible-role-rustup
+    # - name: RUST - create ~/.zfunc directory
+    #   file:
+    #     path: ~/.zfunc
+    #     state: directory
+    #     recurse: yes
+    #   when: ansible_user_shell == "/bin/zsh"
+
+    # - name: RUST - install rustup completions for zsh
+    #   shell: "{{ which_rustup.stdout }} completions zsh > ~/.zfunc/_rustup"
+    #   when: ansible_user_shell == "/bin/zsh"
+
+    - name: RUST - rustup show
+      command: rustup show
+      register: rustup_show
+
+    - name: rustup show results
+      debug: msg="rustup_show?{{ rustup_show.stdout }}"
