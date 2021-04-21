@@ -9,8 +9,7 @@
 export SUPPORT_DIR="${HOME}/.dotfiles/support"
 source "${SUPPORT_DIR}/common-utilities.sh"
 
-# CONFIG_FILE="${dotfilesDirectory}/asdf/config-asdf"
-CONFIG_FILE="${dotfilesDirectory}/ansible/group_vars/asdf.yml"
+CONFIG_FILE="${dotfilesDirectory}/ansible/group_vars/all/asdf.yml"
 
 main() {
     start=$(date +%s)
