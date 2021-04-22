@@ -1,0 +1,10 @@
+---
+# main task for aws-vault
+
+- name: AWS-VAULT is present
+  block:
+    - name: AWS-VAULT - install for darwin
+      when: ansible_os_family == 'Darwin'
+      homebrew_cask:
+        name: aws-vault
+        state: present

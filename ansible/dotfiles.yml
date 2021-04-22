@@ -49,6 +49,7 @@
 
     # programming languages/frameworks managed by asdf
     - { role: infrastructure/asdf, tags: [asdf] }
+    - { role: infrastructure/awscli, tags: [awscli] }
     - { role: infrastructure/gohugo, tags: [gohugo] }
     - { role: infrastructure/golang, tags: [golang] }
     - { role: infrastructure/nodejs, tags: [nodejs] }
@@ -123,5 +124,10 @@
     - {
         role: work/aviatrix-vpn-client,
         tags: [aviatrix-vpn-client],
+        when: ansible_os_family == "Darwin",
+      }
+    - {
+        role: work/aws-vault,
+        tags: [aws-vault],
         when: ansible_os_family == "Darwin",
       }
