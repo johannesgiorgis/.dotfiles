@@ -122,12 +122,7 @@
 
     # work
     - {
-        role: work/aviatrix-vpn-client,
-        tags: [aviatrix-vpn-client],
-        when: ansible_os_family == "Darwin",
-      }
-    - {
-        role: work/aws-vault,
-        tags: [aws-vault],
+        role: work/work-macos-software,
+        tags: [work-macos-software],
         when: ansible_os_family == "Darwin",
       }

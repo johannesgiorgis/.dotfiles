@@ -1,0 +1,24 @@
+---
+# main task for work-macos-software
+
+- name: WORK-MACOS-SOFTWARE - formula and casks are present
+  block:
+    - name: WORK-MACOS-SOFTWARE - Tap into homebrew & custom taps
+      homebrew_tap:
+        tap: "{{ item }}"
+        state: present
+      loop: "{{ macos_homebrew_taps }}"
+
+    - name: WORK-MACOS-SOFTWARE - formula are present via homebrew
+      homebrew:
+        name: "{{ item }}"
+        state: present
+      loop: "{{ work_macos_software_formula }}"
+
+    - name: WORK-MACOS-SOFTWARE - casks are present via homebrew casks
+      homebrew_cask:
+        name: "{{ item }}"
+        state: present
+      loop: "{{ work_macos_software_casks }}"
+
+  when: ansible_os_family in ["Darwin"]

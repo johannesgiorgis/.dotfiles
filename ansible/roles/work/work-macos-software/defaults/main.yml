@@ -1,0 +1,10 @@
+# defaults for work-macos-software
+---
+macos_homebrew_taps: []
+
+work_macos_software_formula:
+  - tfsec
+
+work_macos_software_casks:
+  - aviatrix-vpn-client
+  - aws-vault
