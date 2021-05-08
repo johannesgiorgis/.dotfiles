@@ -6,3 +6,6 @@
 
 # work zsh stuff
 zsh_work
+
+# macos stuff
+.DS_Store

@@ -99,7 +99,6 @@ plugins=(
     npm
     node
     pip
-    pipenv
     python
     ripgrep
     rsync
@@ -455,9 +454,11 @@ function refresh_sso() {
 DEFAULT_USER=$(whoami)
 
 # Load work related stuff
-# link: ln -s ~/.dotfiles/roles/infrastructure/zsh/files/zsh_work ~/.zsh_work
+# link: ln -s ~/.dotfiles/ansible/roles/infrastructure/zsh/files/zsh_work ~/.zsh_work
+# if [[ "$kernel_name" = 'Darwin' ]] && \
+#     [[ "$DEFAULT_USER" = 'jgiorgis' ]]
 if [[ "$kernel_name" = 'Darwin' ]] && \
-    [[ "$DEFAULT_USER" = 'jgiorgis' ]]
+    [[ "$USER" = 'johannes.giorgis' ]]
 then
     [[ ! -f ~/.zsh_work ]] || source ~/.zsh_work
 fi
@@ -494,7 +495,21 @@ if command -v aws 1>/dev/null 2>&1; then
 
 	if test -f "/usr/local/bin/aws_completer"; then
 		complete -C '/usr/local/bin/aws_completer' aws awsm
+    elif test -f "${HOME}/.asdf/shims/aws_completer"; then
+        complete -C "${HOME}/.asdf/shims/aws_completer" aws 
 	fi
+fi
+
+if command -v aws-vault 1>/dev/null 2>&1; then
+
+    function avp() { aws-vault exec acl-playground -- aws "$@"; }
+
+	if test -f "/usr/local/bin/aws_completer"; then
+		complete -C '/usr/local/bin/aws_completer' aws-vault avp
+    elif test -f "${HOME}/.asdf/shims/aws_completer"; then
+        complete -C "${HOME}/.asdf/shims/aws_completer" aws-vault avp
+	fi
+
 fi
 
 # <<< ##################################### COMPLETIONS

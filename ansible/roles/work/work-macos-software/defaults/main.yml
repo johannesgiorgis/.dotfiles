@@ -3,6 +3,7 @@
 macos_homebrew_taps: []
 
 work_macos_software_formula:
+  - checkov
   - tfsec
 
 work_macos_software_casks:
