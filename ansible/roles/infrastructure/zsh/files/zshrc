@@ -266,6 +266,7 @@ function af() { # list all functions
     awk 'BEGIN {FS = " {.*?# "}; {printf "\033[36m%-20s\033[0m %s\n", $1, $2}'
 }
 
+function yw() { date +"%Y Week %U"; } # Date in Year Week format
 function mydate() { date +"%Y-%m-%d %H:%M:%S %Z"; } # Date in my format
 function today() { date +"%A, %B %d, %Y"; } # Date in secondary format
 function note() { echo `date +"%Y-%m-%d %H:%M:%S  "`"$*" >> ~/notes; } # Add a note to my file
@@ -306,7 +307,7 @@ function cproj() { # create dated project directory
 	echo -e "# $(date +%F): ${(C)project_name//-/ } Project Overview" > "${readme_file}"
 }
 
-function cmd() { # create dated markdown file
+function jira_cmd() { # create dated jira markdown file
 	project_name="$@"
 	# echo "Project:$project_name"
 	new_project_dir="$(date +%F)-${project_name}"
@@ -318,6 +319,18 @@ function cmd() { # create dated markdown file
 
 	# capitalize each word + replace all '-' with ' ' in $project_name
 	echo -e "# $(date +%F): ${(C)project_name//-/ } Project Overview" > "${readme_file}"
+}
+
+function cmd() { # create dated markdown file
+	project_name="$@"
+	# echo "Project:$project_name"
+
+    # create file
+	md_file="$(date +%F)-${project_name}.md"
+	touch "$md_file"
+
+	# capitalize each word + replace all '-' with ' ' in $project_name
+	echo -e "# $(date +%F): ${(C)project_name//-/ } Project Overview" > "${md_file}"
 }
 
 function colors() { # see range of colors
@@ -503,6 +516,9 @@ fi
 if command -v aws-vault 1>/dev/null 2>&1; then
 
     function avp() { aws-vault exec acl-playground -- aws "$@"; }
+
+    alias play='aws-vault exec acl-playground --'
+    alias stg='aws-vault exec acl-staging --'
 
 	if test -f "/usr/local/bin/aws_completer"; then
 		complete -C '/usr/local/bin/aws_completer' aws-vault avp
