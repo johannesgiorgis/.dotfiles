@@ -3,7 +3,10 @@
 macos_homebrew_taps:
   - homebrew/cask-drivers # logitech-options
 
-macos_infrastructure_packages:
+macos_infrastructure_formula:
+  - mas # Mac App Store command-line interface
+
+macos_infrastructure_casks:
   - aerial
   - alt-tab
   - iterm2

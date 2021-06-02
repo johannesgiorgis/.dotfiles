@@ -1,7 +1,7 @@
 ---
 # main tasks for macos-infra(structure)
 
-- name: MACOS-INFRA - packages are present (macos)
+- name: MACOS-INFRA - formula and casks are present (macos)
 
   block:
     - name: MACOS-INFRA - Tap into homebrew & custom taps
@@ -10,10 +10,16 @@
         state: present
       loop: "{{ macos_homebrew_taps }}"
 
-    - name: MACOS-INFRA - apps are present via homebrew cask
+    - name: MACOS-INFRA - formula are present via homebrew
+      homebrew:
+        name: "{{ item }}"
+        state: present
+      loop: "{{ macos_infrastructure_formula }}"
+
+    - name: MACOS-INFRA - casks are present via homebrew cask
       homebrew_cask:
         name: "{{ item }}"
         state: present
-      loop: "{{ macos_infrastructure_packages }}"
+      loop: "{{ macos_infrastructure_casks }}"
 
   when: ansible_os_family in ["Darwin"]
