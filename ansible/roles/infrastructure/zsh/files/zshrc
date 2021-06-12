@@ -92,6 +92,7 @@ plugins=(
     command-not-found
     brew
     history
+    pipenv
     poetry
     cargo
     fd
@@ -106,6 +107,7 @@ plugins=(
     rustup
     terraform
     web-search
+    yarn
     zsh-interactive-cd
 )
 
