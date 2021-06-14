@@ -2,8 +2,8 @@
 
 import argparse
 import datetime
-import time
 
+from pathlib import Path
 from typing import List
 
 
@@ -12,7 +12,7 @@ def main():
     current_year = get_current_year()
     if args.week_number:
         week_number = args.week_number
-    if not args.week_number:
+    else:
         # print("NO week number provided")
         week_number = get_current_week_number()
 
@@ -24,8 +24,12 @@ def main():
     weekly_template = get_template(week_number, dates)
     weekly_template += "\n"
     file_name = get_file_name(week_number, dates)
-    print(weekly_template)
-    print(f"File_name:{file_name}")
+
+    if args.output_to_file:
+        write_to_file(file_name, weekly_template)
+    else:
+        print(weekly_template)
+        print(f"File_name:{file_name}")
 
 
 def get_current_week_number() -> int:
@@ -37,7 +41,7 @@ def get_current_week_number() -> int:
     # https://www.kite.com/python/answers/how-to-get-the-week-number-from-a-date-in-python
     # http://week-number.net/programming/week-number-in-python.html
     today = datetime.date.today()
-    print(f"today:{today}")
+    print(f"today:{today} | {today.strftime('%A, %B %d, %Y')}")
     return today.isocalendar()[1]
 
 
@@ -73,6 +77,7 @@ def display_dates(dates: list, prefix: str = "", suffix: str = ""):
 def setup_args() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=None)
     parser.add_argument("-w", "--week_number", type=int, required=False)
+    parser.add_argument("-o", "--output_to_file", action="store_true", default=False)
     return parser.parse_args()
 
 
@@ -177,6 +182,15 @@ def get_file_name(week_number: int, dates: List[datetime.datetime]) -> str:
     # file_name = f"w{week_number}-{dates[0].strftime('%m-%d')}-{dates[-1].strftime('%m-%d')}.md"
 
     return "-".join(file_name) + ".md"
+
+
+def write_to_file(file_name: str, file_content: str):
+    """
+    Write to file in current working directory
+    """
+    output_file = Path.cwd() / file_name
+    print(f"Writing to {output_file}")
+    output_file.write_text(file_content)
 
 
 if __name__ == "__main__":
