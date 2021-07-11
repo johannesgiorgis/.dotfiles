@@ -9,11 +9,12 @@
       register: python_add
       failed_when: python_add == 1
 
-    - name: Symlink .default-python-packages
-      file:
-        src: "{{ ansible_dir }}/roles/infrastructure/python/files/default-python-packages"
-        dest: "{{ dotfiles_user_home }}/.default-python-packages"
-        state: link
+    # 2021-07-10: pipx takes care of this now :)
+    # - name: Symlink .default-python-packages
+    #   file:
+    #     src: "{{ ansible_dir }}/roles/infrastructure/python/files/default-python-packages"
+    #     dest: "{{ dotfiles_user_home }}/.default-python-packages"
+    #     state: link
 
     - name: Install python versions
       command: asdf install python {{ item }}

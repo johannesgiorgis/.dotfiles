@@ -9,3 +9,5 @@
       package:
         name: git
         state: present
+
+    - import_tasks: configure.yml

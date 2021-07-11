@@ -17,116 +17,83 @@ ANSIBLE_DIR="${HOME}/.dotfiles/ansible"
 PLAYBOOK_FILE="${ANSIBLE_DIR}/dotfiles.yml"
 HOSTS_FILE="${ANSIBLE_DIR}/hosts"
 
+
 function usage() {
-  echo "ERROR: Script requires the following inputs:"
-  echo "Usage:
-    ${0##*/} -t zsh -a
-    ${0##*/} -f macos
-    "
-  echo "Options:
-    -f: find tag
-    -t: tag for ansible (default: all)
-    -i: get info for an aggregate tag (tags with multiple packages. e.g. macos-cli, macos-infra)
-    -e: extra variables (equivalent to --extra-vars)
-    -a: enable ask_become_pass"
+    echo "ERROR: Script requires the following inputs:"
+    echo "Usage:
+        ${0##*/} # will display all available tags
+        ${0##*/} -t zsh -a
+        ${0##*/} -f macos
+        "
+    echo "Options:
+        -f: find tag
+        -t: tag for ansible (default: all)
+        -i: get info for an aggregate tag (tags with multiple packages. e.g. macos-cli, macos-infra)
+        -e: extra variables (equivalent to --extra-vars)
+        -a: enable ask_become_pass"
 }
+
 
 main() {
 
-  ask_become_pass="false"
-  extra_vars=""
-  debug="false"
+    ask_become_pass="false"
+    extra_vars=""
+    debug="false"
 
-  options="t:f:e:i:adh"
-  while getopts "$options" opt; do
-    case $opt in
-      a ) ask_become_pass="true" ;;
-      f ) to_find="$OPTARG" ;;
-      t ) tags+=("$OPTARG") ;;
-      i ) to_info="$OPTARG" ;;
-      e ) extra_vars="$OPTARG" ;;
-      d ) debug="true" ;;
-      h ) usage; exit 0 ;;
-      : ) echo "Option -$OPTARG requires an argument." >&2; usage; exit 1 ;;
-      \? ) echo "Invalid option: -$OPTARG" >&2; usage; exit 1 ;;
-    esac
-  done
-  shift $((OPTIND -1))
+    options="t:f:e:i:adh"
+    while getopts "$options" opt; do
+        case $opt in
+            a  ) ask_become_pass="true" ;;
+            f  ) to_find="$OPTARG" ;;
+            t  ) tags+=("$OPTARG") ;;
+            i  ) to_info="$OPTARG" ;;
+            e  ) extra_vars="$OPTARG" ;;
+            d  ) debug="true" ;;
+            h  ) usage; exit 0 ;;
+            :  ) echo "Option -$OPTARG requires an argument." >&2; usage; exit 1 ;;
+            \? ) echo "Invalid option: -$OPTARG" >&2; usage; exit 1 ;;
+        esac
+    done
+    shift $((OPTIND -1))
 
-  start=$(date +%s)
-  echo "${SCRIPT_BREAK}"
-  print_info "$0 Started"
-  
-  print_info "playbook_file:${PLAYBOOK_FILE}"
-#   print_info "tags before:'${tags[*]}'"
-  tags=$(echo "$tags" | sed 's/ /,/g')
-#   print_info "tags after:'${tags}'"
-  print_info "tags:'${tags}'"
-  print_info "ask_becomen_pass?${ask_become_pass}"
-  
-  ensure_ansible_is_present
-
-  # search for tag
-  if [[ "$to_find" != "" ]]; then
-    echo "Searching for '$to_find'..."
-    found_tag=$(cat "${PLAYBOOK_FILE}" | grep -v '#' | grep -o '\[\([^]]\+\)\]' | sed 's/\[//; s/\]//' | grep "$to_find")
-    echo -e "\nFound Tag(s):\n'$found_tag'"
-    exit 0
-  fi
-
-  # get info for specified tag
-  if [[ "$to_info" != "" ]]; then
-    echo "Searching for '$to_info'..."
-    found_info_tag=$(cat "${PLAYBOOK_FILE}" | grep -v '#' | grep -o '\[\([^]]\+\)\]' | sed 's/\[//; s/\]//' | grep "$to_info")
-    num_found_tags=$(echo "$found_info_tag" | wc -l | sed 's/ //g')
-    echo -e "\n$num_found_tags Found Info Tag(s):\n'$found_info_tag'"
+    start=$(date +%s)
+    echo "${SCRIPT_BREAK}"
+    print_info "$0 Started"
     
-    if [[ "$found_info_tag" == "" ]]; then
-        echo "ERROR: tag doesn't exist. Exiting with error"
-        exit 1
+    print_info "playbook_file:${PLAYBOOK_FILE}"
+    print_info "tags before:'${tags[*]}'"
+    tags=$(echo "$tags" | sed 's/ /,/g')
+    print_info "tags after:'${tags}'"
+    print_info "tags:'${tags}'"
+    print_info "ask_becomen_pass?${ask_become_pass}"
+
+    ensure_ansible_is_present
+
+    # search for tag
+    if [[ "$to_find" != "" ]]; then
+        search_for_tag "$to_find"
+        exit 0
     fi
 
-    if [[ "$num_found_tags" != 1 ]]; then
-        echo "ERROR: More than 1 tags found. Exiting with error"
-        exit 1
+    # get info for specified tag
+    if [[ "$to_info" != "" ]]; then
+        get_tag_info "$to_info"
+        exit 0
     fi
 
-    # ensure fdfind is installed!
-    directory=$(fd "$to_info" $ANSIBLE_DIR)
-    echo "Directory:$directory"
-
-    echo -e "\nPackages for '$to_info' tag:"
-    cat "$directory/README.md" |\
-        # grab lines with either '- ack' or '- [coreutils]'
-        grep -E '(^\- \[\([^]]\+\)\]|^- )' |\
-        # remove '[' and ']' + everything afterwards
-        sed 's/\[//g; s/\].*//g' |\
-        sort
-    exit 0
-  fi
-
-  # list available tags
-  if [[ "$tags" == "" ]]; then
-    available_tags=$(cat "${PLAYBOOK_FILE}" |\
-        # ignore commented out lines
-        grep -v '#' |\
-        # grab tags - [*]
-        grep -o '\[\([^]]\+\)\]' |\
-        # remove brackets - [,]
-        sed 's/\[//; s/\]//' | sort)
-    available_tags="all\n$available_tags"
-    echo -e "\nAvailable Tags:"
-    echo -e "$available_tags"
-    exit 0
-  fi
- 
-  if [[ "$ask_become_pass" == "true" ]]; then
-    ansible-playbook -i "${HOSTS_FILE}" "${PLAYBOOK_FILE}" --tags "${tags[*]}" --ask-become-pass
-  
-  else
-    ansible-playbook -i "${HOSTS_FILE}" "${PLAYBOOK_FILE}" --tags "${tags[*]}"
-    # echo "ansible-playbook -i '${HOSTS_FILE}' '${PLAYBOOK_FILE}' --tags '${tags[*]}'"
-  fi
+    # list available tags
+    if [[ "$tags" == "" ]]; then
+        list_available_tags
+        exit 0
+    fi
+    
+    if [[ "$ask_become_pass" == "true" ]]; then
+        ansible-playbook -i "${HOSTS_FILE}" "${PLAYBOOK_FILE}" --tags "${tags[*]}" --ask-become-pass
+    
+    else
+        ansible-playbook -i "${HOSTS_FILE}" "${PLAYBOOK_FILE}" --tags "${tags[*]}"
+        # echo "ansible-playbook -i '${HOSTS_FILE}' '${PLAYBOOK_FILE}' --tags '${tags[*]}'"
+    fi
  
 #   if [[ "$ask_become_pass" == "true" ]]; then
 #     hi="hi"
@@ -170,45 +137,138 @@ main() {
 #     ansible-playbook $command_options
 #   fi
   
-  end=$(date +%s)
-  runtime=$((end-start))
-  runtime_min=$(convert_seconds_to_min $runtime)
-  
-  finished "$0 Completed with $runtime seconds ($runtime_min mins)"
-  echo "${SCRIPT_BREAK}"
+    end=$(date +%s)
+    runtime=$((end-start))
+    runtime_min=$(convert_seconds_to_min $runtime)
+    
+    finished "$0 Completed with $runtime seconds ($runtime_min mins)"
+    echo "${SCRIPT_BREAK}"
+}
+
+
+function search_for_tag() { # search for a tag
+    local to_find=$1
+    echo "Searching for '$to_find'..."
+    found_tag=$(cat "${PLAYBOOK_FILE}" | grep -v '#' | grep -o '\[\([^]]\+\)\]' | sed 's/\[//; s/\]//' | grep "$to_find")
+    echo -e "\nFound Tag(s):\n'$found_tag'"
+}
+
+
+function get_tag_info() { # get tag info
+    local to_info=$1
+    echo "Searching for '$to_info'..."
+    found_info_tag=$(cat "${PLAYBOOK_FILE}" | grep -v '#' | grep -o '\[\([^]]\+\)\]' | sed 's/\[//; s/\]//' | grep "$to_info")
+    num_found_tags=$(echo "$found_info_tag" | wc -l | sed 's/ //g')
+    echo -e "\n$num_found_tags Found Info Tag(s):\n'$found_info_tag'"
+    
+    if [[ "$found_info_tag" == "" ]]; then
+        echo "ERROR: tag doesn't exist. Exiting with error"
+        exit 1
+    fi
+
+    if [[ "$num_found_tags" != 1 ]]; then
+        echo "ERROR: More than 1 tags found. Exiting with error"
+        exit 1
+    fi
+
+    # ensure fdfind is installed!
+    if [[ $(uname) = "Linux" ]]; then
+        directory=$(fdfind "$to_info" $ANSIBLE_DIR)
+    elif [[ $(uname) = "Darwin" ]]; then
+        directory=$(fd "$to_info" $ANSIBLE_DIR)
+    fi
+    echo "Directory:$directory"
+
+    echo -e "\nPackages for '$to_info' tag:"
+    cat "$directory/README.md" |\
+        # grab lines with either '- ack' or '- [coreutils]'
+        grep -E '(^\- \[\([^]]\+\)\]|^- )' |\
+        # remove '[' and ']' + everything afterwards
+        sed 's/\[//g; s/\].*//g' |\
+        sort
+}
+
+
+function list_available_tags() { # lists available tags
+    available_tags=$(cat "${PLAYBOOK_FILE}" |\
+        # ignore commented out lines
+        grep -v '#' |\
+        # grab tags - [*]
+        grep -o '\[\([^]]\+\)\]' |\
+        # remove brackets - [,]
+        sed 's/\[//; s/\]//' | sort)
+    available_tags="all\n$available_tags"
+    echo -e "\nAvailable Tags:"
+    echo -e "$available_tags"
 }
 
 
 function ensure_ansible_is_present() {
-  print_info "› Ensuring ansible is present..."
-  if [ -x "$(command -v ansible)" ]
-  then
-    success "ansible is present - proceeding..."
-    return 0
-  fi
+    print_info "› Ensuring ansible is present..."
+    if [ -x "$(command -v ansible)" ]
+    then
+        success "ansible is present - proceeding..."
+        return 0
+    fi
 
-  # need to install ansible
-  print_info "› Installing ansible..."
-  if [[ "$(uname)" == "Darwin" ]]
-  then
-      print_info "› On Mac..."
-      brew install ansible #@2.9.6
-      #brew pin ansible
-  else
-      release_code=$(lsb_release -c -s)
-      print_info "› On Linux '$release_code'..."
-      if [[ "$release_code" == "bionic" ]]; then
-          sudo apt-add-repository ppa:ansible/ansible -y
-          sudo apt update
-          sudo apt install ansible=2.9.9-1ppa~bionic -V -y
-      elif [[ "$release_code" == "focal" ]]; then
-          sudo apt update
-          sudo apt install ansible -V -y
-      else
-          fail "ERROR: Unknown linux release code - '$release_code'. Exiting with error"
-          exit 1
-      fi
-  fi
+    # need to install ansible
+    print_info "› Installing ansible..."
+    if [[ "$(uname)" == "Darwin" ]]
+    then
+        print_info "› On Mac..."
+        brew install ansible
+    else
+        release_code=$(lsb_release -c -s)
+        print_info "› On Linux '$release_code'..."
+
+        if [[ "$release_code" == "bionic" ]]; then
+            sudo apt-add-repository ppa:ansible/ansible -y
+            sudo apt update
+            sudo apt install ansible=2.9.9-1ppa~bionic -V -y
+
+        elif [[ "$release_code" == "focal" ]]; then
+            install_ansible_base_and_collections_on_debian
+
+        else
+            fail "ERROR: Unknown linux release code - '$release_code'. Exiting with error"
+            exit 1
+        fi
+    fi
 }
+
+
+# Ansible Install notes
+# via pipx: tied to specific python so needs path hardcoded
+# via apt install ansible: get a Traceback issue
+# Traceback (most recent call last):
+#  File "/usr/bin/ansible-playbook", line 34, in <module>
+#    from ansible import context
+# ModuleNotFoundError: No module named 'ansible'
+# solution: install ansible-base via apt + install community.general collection
+# 2021-07-11
+# λ  apts ansible
+# 
+# WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+# 
+# ansible/focal,focal,now 2.9.6+dfsg-1 all [residual-config]
+# ansible-base/focal,focal,now 2.10.11-1ppa~focal all [residual-config]
+# ansible-doc/focal,focal 2.9.6+dfsg-1 all
+# ansible-lint/focal,focal 4.2.0-1 all
+# ansible-test/focal,focal 2.10.11-1ppa~focal all
+# ansible-tower-cli/focal,focal 3.3.0-1.1 all
+# ansible-tower-cli-doc/focal,focal 3.3.0-1.1 all
+function install_ansible_base_and_collections_on_debian() {
+    print_info "Install ansible-base + collections on debian"
+    # https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#installing-ansible-on-ubuntu
+    sudo apt update
+    sudo apt install software-properties-common
+    # sudo add-apt-repository --yes --update ppa:ansible/ansible
+    sudo apt install ansible-base -V -y
+
+    # install collections
+    ansible-galaxy collection install community.general
+    success "Install ansible-base + collections on debian"
+}
+
 
 main "$@"

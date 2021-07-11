@@ -27,8 +27,12 @@
     - { role: infrastructure/linux-snap, tags: [linux-snap] }
     - { role: infrastructure/linux-terminator, tags: [linux-terminator] }
     - { role: infrastructure/macos-infra, tags: [macos-infra] }
-    - { role: infrastructure/postgresql, tags: [postgresql] }
-    - { role: infrastructure/ssh-key, tags: [ssh-key] }
+    # 2021-07-11: commented out due to following error messages:
+    # ERROR! couldn't resolve module/action 'postgresql_user'. This often indicates a misspelling, missing collection, or incorrect module path.
+    # ERROR! couldn't resolve module/action 'postgresql_db'. This often indicates a misspelling, missing collection, or incorrect module path.
+    # ERROR! couldn't resolve module/action 'openssh_keypair'. This often indicates a misspelling, missing collection, or incorrect module path.
+    # - { role: infrastructure/postgresql, tags: [postgresql] }
+    # - { role: infrastructure/ssh-key, tags: [ssh-key] }
     - { role: infrastructure/wallpaper, tags: [wallpaper] }
     - { role: infrastructure/zsh, tags: [zsh] }
 

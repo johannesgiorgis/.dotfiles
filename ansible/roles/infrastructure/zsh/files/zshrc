@@ -232,6 +232,10 @@ if [ "${kernel_name}" = "Debian" -o "${kernel_name}" = "Linux" ]; then
         alias cat='batcat'
     fi
 
+    if command -v fdfind 1>/dev/null 2>&1; then
+        alias fd='fdfind'
+    fi
+
     # source: https://opensource.com/article/19/7/bash-aliases
     # see mounted drives
     if [ "${kernel_name}" = "Linux" ]; then
