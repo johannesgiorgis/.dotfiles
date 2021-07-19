@@ -207,7 +207,9 @@ if [[ "${kernel_name}" == "Darwin" ]]; then
 
     if command -v brew 1>/dev/null 2>&1; then
         alias b='brew'
-        alias bo='brew outdated --greedy'
+        alias bo='b outdated --greedy'
+        alias bi='b info'
+        alias bs='b search'
         alias brewup='brew update && brew outdated && brew upgrade && brew cleanup && brew doctor'
         alias brewupcask='brew update && brew cask outdated && brew cask upgrade && brew cleanup && brew cask doctor'
     fi
@@ -272,7 +274,7 @@ function af() { # list all functions
     awk 'BEGIN {FS = " {.*?# "}; {printf "\033[36m%-20s\033[0m %s\n", $1, $2}'
 }
 
-function yw() { date +"%Y Week %U"; } # Date in Year Week format
+function myw() { date +"%Y Week %U"; } # Date in Year Week format
 function mydate() { date +"%Y-%m-%d %H:%M:%S %Z"; } # Date in my format
 function today() { date +"%A, %B %d, %Y"; } # Date in secondary format
 function note() { echo `date +"%Y-%m-%d %H:%M:%S  "`"$*" >> ~/notes; } # Add a note to my file
