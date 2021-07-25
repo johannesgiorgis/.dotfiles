@@ -1,0 +1,9 @@
+---
+# main task for audacity
+
+- name: AUDACITY - is present
+  become: "{{ should_be_root }}"
+
+  block:
+    - import_tasks: debian.yml
+      when: ansible_os_family in ["Debian", "Pop!_OS"]

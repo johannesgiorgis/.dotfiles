@@ -84,6 +84,7 @@
     - { role: cli/youtube-dl, tags: [youtube-dl] }
 
     # software
+    - { role: software/audacity, tags: [audacity] }
     - { role: software/authy, tags: [authy] }
     - { role: software/bitwarden, tags: [bitwarden] }
     - { role: software/brave-browser, tags: [brave-browser] }
