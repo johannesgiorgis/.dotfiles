@@ -475,13 +475,13 @@ function refresh_sso() {
 DEFAULT_USER=$(whoami)
 
 # Load work related stuff
-# link: ln -s ~/.dotfiles/ansible/roles/infrastructure/zsh/files/zsh_work ~/.zsh_work
+# link: ln -s ~/.dotfiles/ansible/roles/infrastructure/zsh/files/zsh_work.zsh ~/.zsh_work.zsh
 # if [[ "$kernel_name" = 'Darwin' ]] && \
 #     [[ "$DEFAULT_USER" = 'jgiorgis' ]]
 if [[ "$kernel_name" = 'Darwin' ]] && \
     [[ "$USER" = 'johannes.giorgis' ]]
 then
-    [[ ! -f ~/.zsh_work ]] || source ~/.zsh_work
+    [[ ! -f ~/.zsh_work.zsh ]] || source ~/.zsh_work.zsh
 fi
 
 # <<< ##################################### WORK STUFF
