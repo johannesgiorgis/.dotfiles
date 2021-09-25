@@ -3,11 +3,16 @@
 # https://rambox.app/
 
 - name: RAMBOX - rambox is present
-  become: "{{ should_be_root }}"
 
   block:
-    - import_tasks: debian.yml
-      when: ansible_os_family in ["Debian",  "Pop!_OS" ]
-
-    - import_tasks: mac.yml
+    - name: RAMBOX - Install via homebrew cask
       when: ansible_os_family in ["Darwin"]
+      homebrew_cask:
+        name: rambox
+        state: present
+
+    - name: RAMBOX - Install for debian system
+      when: ansible_os_family in ["Debian",  "Pop!_OS" ]
+      become: "{{ should_be_root }}"
+      apt:
+        deb: https://github.com/ramboxapp/community-edition/releases/download/{{ rambox_version }}/Rambox-{{ rambox_version }}-{{ ansible_system | lower }}-{{ machine_map[ansible_machine] }}.deb

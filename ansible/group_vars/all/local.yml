@@ -15,3 +15,7 @@ machine_map:
   i386: 386
   x86_64: amd64
   amd64: amd64
+
+system_map:
+  Darwin: macos
+  Linux: linux

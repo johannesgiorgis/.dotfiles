@@ -1,7 +1,0 @@
----
-# darwin tasks for delta
-
-- name: DELTA - Install via homebrew
-  homebrew:
-    name: git-delta
-    state: present

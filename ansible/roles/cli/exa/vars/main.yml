@@ -1,6 +1,0 @@
----
-# vars file for exa
-
-exa_machine_map:
-  Darwin: macos
-  Linux: linux

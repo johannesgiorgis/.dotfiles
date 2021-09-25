@@ -11,7 +11,7 @@
 
     - name: EXA - Register folder name
       set_fact:
-        exa_folder_name: "exa-{{ exa_machine_map[ansible_system] }}-x86_64-{{ exa_version }}"
+        exa_folder_name: "exa-{{ system_map[ansible_system] }}-x86_64-v{{ exa_version }}"
 
     - name: Download exa binary to {{ exa_binary_download_dir.path }}
       ansible.builtin.unarchive:
@@ -24,10 +24,29 @@
         msg: "{{ exa_binary_download_dir.path }}"
 
     - debug:
-        msg: "Run command: sudo mv {{ exa_binary_download_dir.path }}/exa-{{ exa_machine_map[ansible_system] }}-x86_64 /usr/local/bin/exa"
+        msg: "Run command: sudo mv {{ exa_binary_download_dir.path }}/bin/exa /usr/local/bin/exa"
 
     - name: add exa to /usr/local/bin
-      command: mv "exa-{{ exa_machine_map[ansible_system] }}-x86_64" /usr/local/bin/exa
+      command: mv bin/exa /usr/local/bin/exa
+      args:
+        chdir: "{{ exa_binary_download_dir.path }}"
+      become: "{{ should_be_root }}"
+
+    - debug:
+        msg: "Run command: sudo mv {{ exa_binary_download_dir.path }}/man/* /usr/share/man/man1/"
+
+    # use shell module to use globbing - https://stackoverflow.com/a/43877235
+    - name: add exa man page to application man pages
+      shell: mv man/* /usr/share/man/man1/
+      args:
+        chdir: "{{ exa_binary_download_dir.path }}"
+      become: "{{ should_be_root }}"
+
+    - debug:
+        msg: "Run command: mv {{ exa_binary_download_dir.path }}/completions/exa.zsh /usr/local/share/zsh/site-functions/exa.zsh"
+
+    - name: add exa shell completion for zsh
+      shell: mv completions/exa.zsh /usr/local/share/zsh/site-functions/exa.zsh
       args:
         chdir: "{{ exa_binary_download_dir.path }}"
       become: "{{ should_be_root }}"

@@ -1,18 +1,18 @@
 ---
 # main task for simplenote
 
-- name: simplenote is present
-  become: "{{ should_be_root }}"
+- name: SIMPLENOTE - simplenote is present
 
   block:
-    - name: simplenote is present (debian)
-      import_tasks: debian.yml
-      when: ansible_os_family in ["Debian",  "Pop!_OS"]
-
-    - name: simplenote is present (darwin)
-      import_tasks: darwin.yml
+    - name: SIMPLENOTE - present for Darwin
       when: ansible_os_family in ["Darwin"]
-    # - name: simplenote is present (linux)
-    #   when: ansible_os_family in ["Debian", "Pop!_OS"]
-    #   apt:
-    #     deb: https://github.com/Automattic/simplenote-electron/releases/download/v1.21.1/Simplenote-linux-1.21.1-amd64.deb
+      homebrew_cask:
+        name: simplenote
+        state: present
+
+    - name: SIMPLENOTE - present for Debian
+      when: ansible_os_family in ["Debian",  "Pop!_OS"]
+      become: "{{ should_be_root }}"
+      apt:
+        # https://github.com/Automattic/simplenote-electron/releases/download/v2.16.0/Simplenote-linux-2.16.0-amd64.deb
+        deb: https://github.com/Automattic/simplenote-electron/releases/download/v{{ simplenote_version }}/Simplenote-{{ ansible_system | lower }}-{{ simplenote_version }}-{{ machine_map[ansible_machine] }}.deb
