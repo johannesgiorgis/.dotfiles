@@ -21,5 +21,10 @@
         name: "{{ item }}"
         state: present
       loop: "{{ macos_infrastructure_casks }}"
+    
+    - name: MACOS-INFRA - install Display Menu from Mac App Store
+      community.general.mas:
+        id: 549083868
+        state: present
 
   when: ansible_os_family in ["Darwin"]

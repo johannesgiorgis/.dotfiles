@@ -74,7 +74,6 @@
     - { role: cli/jump, tags: [jump] }
     - { role: cli/linux-xclip, tags: [linux-xclip] }
     - { role: cli/macos-cli, tags: [macos-cli] }
-    - { role: cli/delta, tags: [delta] }
     - { role: cli/mlocate, tags: [mlocate] }
     - { role: cli/neovim, tags: [neovim] }
     - { role: cli/noti, tags: [noti] }
@@ -105,6 +104,7 @@
     - { role: software/linux-solaar, tags: [linux-solaar] }
     - { role: software/linux-timeshift, tags: [linux-timeshift] }
     - { role: software/linux-thunderbird, tags: [linux-thunderbird] }
+    - { role: software/macos-shureplus-motiv, tags: [macos-shureplus-motiv] }
     - { role: software/meld, tags: [meld] }
     - { role: software/obs-studio, tags: [obs-studio] }
     - { role: software/plex, tags: [plex] }

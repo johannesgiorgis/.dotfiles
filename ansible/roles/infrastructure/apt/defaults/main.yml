@@ -1,14 +1,7 @@
 package_upgrade: yes
 packages:
-  - ack
-  # - ansible
   - bison
   - build-essential
-  # - curl
-  # - entr
-  # - gpg
-  # - htop
-  # - jq
   - less
   - libbz2-dev
   - libffi-dev
@@ -21,13 +14,9 @@ packages:
   - llvm
   - make
   - man
-  - meld
   - python-openssl
   - software-properties-common
   - tk-dev
-  - tldr
-  - tree
-  - wget
   - xclip
   - xz-utils
   - zlib1g-dev

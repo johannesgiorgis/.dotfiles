@@ -1,0 +1,8 @@
+---
+# main task for macos-shureplus-motiv
+
+- name: SHUREPLUS-MOTIV - is present (darwin)
+  homebrew_cask:
+    name: shureplus-motiv
+    state: present
+  when: ansible_os_family == "Darwin"
