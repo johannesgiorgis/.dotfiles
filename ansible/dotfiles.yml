@@ -96,6 +96,7 @@
     - { role: software/joplin, tags: [joplin] }
     - { role: software/kite, tags: [kite] }
     - { role: software/lastpass, tags: [lastpass] }
+    - { role: software/lepton, tags: [lepton] }
     - { role: software/linux-blueman, tags: [linux-blueman] }
     - { role: software/linux-conky-manager, tags: [linux-conky-manager] }
     - { role: software/linux-fbreader, tags: [linux-fbreader] }
