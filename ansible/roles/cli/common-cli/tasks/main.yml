@@ -10,3 +10,5 @@
         name: "{{ item[ansible_pkg_mgr] | default(item['default']) }}"
         state: latest
       loop: "{{ common_packages }}"
+
+    - import_tasks: jump.yml

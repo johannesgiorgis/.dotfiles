@@ -16,6 +16,7 @@ This `common-cli` role installs the following command line tools:
 - gpg
 - htop
 - httpie
+- jump
 - mdp
 - ncdu
 - neofetch

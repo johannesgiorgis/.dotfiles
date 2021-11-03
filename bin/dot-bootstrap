@@ -217,6 +217,7 @@ function ensure_ansible_is_present() {
     then
         # TODO: Install homebrew if it doesn't exist
         print_info "› On Mac..."
+        ensure_homebrew_is_present
         brew install ansible
     else
         release_code=$(lsb_release -c -s)
@@ -234,6 +235,27 @@ function ensure_ansible_is_present() {
             fail "ERROR: Unknown linux release code - '$release_code'. Exiting with error"
             exit 1
         fi
+    fi
+}
+
+function ensure_homebrew_is_present() {
+    print_info "› Ensuring homebrew is present..."
+    if [ -x "$(command -v brew)" ]
+    then
+        success "homebrew is present - proceeding..."
+        return 0
+    fi
+
+    # need to install homebrew
+    print_info "› Installing homebrew..."
+    if [[ "$(uname)" == "Darwin" ]]
+    then
+        # https://brew.sh/
+        print_info "› On Mac..."
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    else
+        fail "ERROR: homebrew is only for MacOS, not for $(uname)"
+        exit 1
     fi
 }
 

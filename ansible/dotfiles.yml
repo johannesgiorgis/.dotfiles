@@ -112,6 +112,7 @@
     - { role: software/postman, tags: [postman] }
     - { role: software/rambox, tags: [rambox] }
     - { role: software/simplenote, tags: [simplenote] }
+    - { role: software/signal, tags: [signal] }
     - { role: software/slack, tags: [slack] }
     - { role: software/spotify, tags: [spotify] }
     - { role: software/sqlite-browser, tags: [sqlite-browser] }
