@@ -65,7 +65,7 @@ mac_cask_packages:
   - beekeeper-studio
   # - iterm2
   # - jetbrains-toolbox
-  - lepton
+  # - lepton
   # - meld
   - omnidb
   - openvpn-connect

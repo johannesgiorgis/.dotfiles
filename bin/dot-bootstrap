@@ -29,7 +29,6 @@ function usage() {
         -f: find tag
         -t: tag for ansible (default: all)
         -i: get info for an aggregate tag (tags with multiple packages. e.g. macos-cli, macos-infra)
-        -e: extra variables (equivalent to --extra-vars)
         -a: enable ask_become_pass"
 }
 
@@ -37,8 +36,6 @@ function usage() {
 main() {
 
     ask_become_pass="false"
-    extra_vars=""
-    debug="false"
 
     options="t:f:e:i:adh"
     while getopts "$options" opt; do
@@ -47,8 +44,6 @@ main() {
             f  ) to_find="$OPTARG" ;;
             t  ) tags+=("$OPTARG") ;;
             i  ) to_info="$OPTARG" ;;
-            e  ) extra_vars="$OPTARG" ;;
-            d  ) debug="true" ;;
             h  ) usage; exit 0 ;;
             :  ) echo "Option -$OPTARG requires an argument." >&2; usage; exit 1 ;;
             \? ) echo "Invalid option: -$OPTARG" >&2; usage; exit 1 ;;
@@ -86,57 +81,15 @@ main() {
         list_available_tags
         exit 0
     fi
+
+    command_options=" ${PLAYBOOK_FILE} -i ${HOSTS_FILE} --tags ${tags[*]}"
     
     if [[ "$ask_become_pass" == "true" ]]; then
-        ansible-playbook -i "${HOSTS_FILE}" "${PLAYBOOK_FILE}" --tags "${tags[*]}" --ask-become-pass
-    
-    else
-        ansible-playbook -i "${HOSTS_FILE}" "${PLAYBOOK_FILE}" --tags "${tags[*]}"
-        # echo "ansible-playbook -i '${HOSTS_FILE}' '${PLAYBOOK_FILE}' --tags '${tags[*]}'"
+        command_options="${command_options} --ask-become-pass"
     fi
+
+    ansible-playbook $command_options
  
-#   if [[ "$ask_become_pass" == "true" ]]; then
-#     hi="hi"
-    # ansible-playbook -i "${HOSTS_FILE}" "${PLAYBOOK_FILE}" --tags "${tags[*]}" --ask-become-pass
-  
-#   else
-    # ansible-playbook -i "${HOSTS_FILE}" "${PLAYBOOK_FILE}" --tags "${tags[*]}"
-    # command_options="-i \"${HOSTS_FILE}\" \"${PLAYBOOK_FILE}\" --tags \"${tags[*]}\""
-    # echo "ansible-playbook $command_options"
-    # ansible-playbook $command_options
-    # echo -e "\n\n\n==================="
-    # echo "ansible-playbook -i ${HOSTS_FILE} ${PLAYBOOK_FILE} --tags \"${tags[*]}\""
-    # command_options="-i ${HOSTS_FILE} ${PLAYBOOK_FILE} --tags \"${tags[*]}\""
-    # command_options="--tags \"${tags[*]}\""
-    # echo -e "ansible-playbook -i ${HOSTS_FILE} ${PLAYBOOK_FILE} $command_options"
-    # ansible-playbook -i ${HOSTS_FILE} ${PLAYBOOK_FILE} --tags "${tags[*]}"
-    # ansible-playbook $command_options
-    # ansible-playbook -i $HOSTS_FILE $PLAYBOOK_FILE $command_options
-    # echo -e "\n\n\n==================="
-    # echo "ansible-playbook -i \"${HOSTS_FILE}\" \"${PLAYBOOK_FILE}\" --tags \"${tags[*]}\""
-    # ansible-playbook -i "${HOSTS_FILE}" "${PLAYBOOK_FILE}" --tags "${tags[*]}"
-    # echo "ansible-playbook -i '${HOSTS_FILE}' '${PLAYBOOK_FILE}' --tags '${tags[*]}'"
-#   fi
-
-#   exit 1
-
-#   command_options="-i ${HOSTS_FILE} ${PLAYBOOK_FILE} --tags \"${tags[*]}\""
-#   if [[ "$ask_become_pass" == "true" ]]; then
-#     command_options="${command_options} --ask-become-pass"
-#   fi
-
-#   if [[ "$extra_vars" != "" ]]; then
-#     command_options="${command_options} --extra-vars \"${extra_vars}\""
-#   fi
-
-#   if [[ "$debug" == "true" ]]; then
-#     echo "DEBUG MODE: Will print command to run and exit with no action!"
-#     echo "ansible-playbook ${command_options}"
-#   else
-#     echo "ansible-playbook $command_options"
-#     ansible-playbook $command_options
-#   fi
-  
     end=$(date +%s)
     runtime=$((end-start))
     runtime_min=$(convert_seconds_to_min $runtime)
@@ -171,7 +124,7 @@ function get_tag_info() { # get tag info
         exit 1
     fi
 
-    # ensure fdfind is installed!
+    # TODO: ensure fdfind is installed!
     if [[ $(uname) = "Linux" ]]; then
         directory=$(fdfind "$to_info" $ANSIBLE_DIR)
     elif [[ $(uname) = "Darwin" ]]; then
@@ -215,7 +168,6 @@ function ensure_ansible_is_present() {
     print_info "› Installing ansible..."
     if [[ "$(uname)" == "Darwin" ]]
     then
-        # TODO: Install homebrew if it doesn't exist
         print_info "› On Mac..."
         ensure_homebrew_is_present
         brew install ansible
