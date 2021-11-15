@@ -12,3 +12,4 @@
       loop: "{{ common_packages }}"
 
     - import_tasks: jump.yml
+    - import_tasks: delta.yml

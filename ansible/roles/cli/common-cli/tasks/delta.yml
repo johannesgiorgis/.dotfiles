@@ -1,11 +1,10 @@
 ---
-# main task for delta
+# delta task
 
 - name: DELTA - delta is present
 
   block:
     - name: DELTA - Install via homebrew
-      # when: ansible_pkg_mgr == 'homebrew'
       when: ansible_os_family in ["Darwin"]
       homebrew:
         name: git-delta

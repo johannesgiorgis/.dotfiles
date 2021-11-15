@@ -1,5 +1,9 @@
 # defaults task for common-cli
 ---
+
+jump_version: "0.40.0"
+delta_version: "0.9.2"
+
 common_packages:
   - ack:
     default:
@@ -86,5 +90,3 @@ common_packages:
   - wget:
     default:
       - wget
-
-jump_version: "0.30.1"

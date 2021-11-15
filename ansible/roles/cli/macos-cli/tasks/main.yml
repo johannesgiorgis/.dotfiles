@@ -1,8 +1,6 @@
 ---
 # main task for macos-cli
 
-# - name: macos-cli are present
-
 - name: MACOS-CLI - package are present (macos)
 
   block:
@@ -12,10 +10,10 @@
         state: present
       loop: "{{ macos_homebrew_taps }}"
 
-    - name: MACOS-CLI - apps are present via homebrew
+    - name: MACOS-CLI - formulae are present via homebrew
       homebrew:
         name: "{{ item }}"
         state: present
-      loop: "{{ macos_cli_packages }}"
+      loop: "{{ macos_cli_formulae }}"
 
   when: ansible_os_family in ["Darwin"]
