@@ -1,0 +1,6 @@
+---
+# meta for github-ssh-key
+
+dependencies:
+  - role: cli/gh
+  - role: infrastructure/git

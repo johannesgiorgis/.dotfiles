@@ -2,9 +2,11 @@
 ---
 macos_homebrew_taps:
   - homebrew/cask-drivers # logitech-options
+  - jakehilborn/jakehilborn # displayplacer
 
-macos_infrastructure_formula:
+macos_infrastructure_formulae:
   - mas # Mac App Store command-line interface
+  - jakehilborn/jakehilborn/displayplacer
 
 macos_infrastructure_casks:
   - aerial
@@ -12,3 +14,7 @@ macos_infrastructure_casks:
   - iterm2
   - logitech-options
   - rectangle
+
+macos_mas_apps:
+  - { name: DisplayMenu, id: 549083868 }
+  - { name: Bitwarden, id: 1352778147 }

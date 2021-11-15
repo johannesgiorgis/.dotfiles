@@ -1,7 +1,7 @@
 ---
 # main tasks for macos-infra(structure)
 
-- name: MACOS-INFRA - formula and casks are present (macos)
+- name: MACOS-INFRA - formula, casks and apps are present (macos)
 
   block:
     - name: MACOS-INFRA - Tap into homebrew & custom taps
@@ -10,11 +10,11 @@
         state: present
       loop: "{{ macos_homebrew_taps }}"
 
-    - name: MACOS-INFRA - formula are present via homebrew
+    - name: MACOS-INFRA - formulae are present via homebrew
       homebrew:
         name: "{{ item }}"
         state: present
-      loop: "{{ macos_infrastructure_formula }}"
+      loop: "{{ macos_infrastructure_formulae }}"
 
     - name: MACOS-INFRA - casks are present via homebrew cask
       homebrew_cask:
@@ -22,9 +22,10 @@
         state: present
       loop: "{{ macos_infrastructure_casks }}"
     
-    - name: MACOS-INFRA - install Display Menu from Mac App Store
+    - name: MACOS-INFRA - apps are present via Mac App Store
       community.general.mas:
-        id: 549083868
+        id: "{{ item.id }}"
         state: present
+      loop: "{{ macos_mas_apps }}"
 
   when: ansible_os_family in ["Darwin"]

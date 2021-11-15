@@ -1,0 +1,88 @@
+---
+# main task for github-ssh-key
+# source: https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account
+# https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account
+
+# vars_prompt:
+#   - name: "github-ssh_passphrase"
+#     prompt: "Enter the passphrase for the SSH key"
+
+# - name: Verify ssh_key_filename is provided (e.g. id_rsa_personal_github)
+#   assert:
+#     that: 
+#       - "{{ item }} is defined"
+#       - "{{ item }} | length > 0"
+#       - "{{ item }} != None"
+#     fail_msg: "{{ item }} needs to be set for the role to work"
+#     success_msg: "Required variable {{ item }} is defined"
+#   loop_control:
+#     loop_var: item
+#   with_items:
+#     - ssh_key_filename
+#     - email
+
+- name: Pause for user input
+  pause:
+      prompt: "Please enter the value for ssh_key_filename (e.g. id_rsa_personal_github)"
+      echo: yes
+  register: result
+
+- name: set fact
+  set_fact:
+    ssh_key_file_name: "{{ result.user_input }}"
+
+- name: Pause for user input
+  pause:
+      prompt: "Please enter the value for email"
+      echo: yes
+  register: result
+
+- name: set fact
+  set_fact:
+    email_address: "{{ result.user_input }}"
+
+- name: Pause for user input
+  pause:
+      prompt: "Please enter the value for title (e.g. Macbook Pro (Personal)"
+      echo: yes
+  register: result
+
+- name: set fact
+  set_fact:
+    title: "{{ result.user_input }}"
+
+- name: debug message
+  debug:
+    msg:
+      - "ssh_key_file_name:{{ ssh_key_file_name }}"
+      - "email_address:{{ email_address }}"
+      - "title:{{ title }}"
+
+- name: Ensure .ssh directory exists
+  file:
+    path: "{{ dotfiles_user_home }}/.ssh"
+    state: directory
+
+
+- name: Generate SSH keypair for Github
+  command: "ssh-keygen -t ed25519 -C {{ email_address }} -f ~/.ssh/{{ ssh_key_file_name }}"
+  args:
+    creates: "~/.ssh/{{ ssh_key_file_name }}"
+
+- name: Add ssh key to ssh-agent
+  command: "ssh-add -K ~/.ssh/{{ ssh_key_file_name }}"
+
+- name: Authenticate with gh
+  command: "gh ssh-key add ~/.ssh/{{ ssh_key_file_name }}.pub -t \"{{ title }}\""
+  register: gh_result
+
+# - name: Set authorized key taken from file
+#   ansible.posix.authorized_key:
+#     user: johannes
+#     state: present
+#     # key: "~/.ssh/{{ ssh_key_file_name }}.pub"
+#     key: "{{ lookup('file', "{{ dotfiles_user_home }}/.ssh/{{ ssh_key_file_name }}.pub") }}"
+
+- name: Post creation message
+  debug:
+    msg: "{{ gh_result }}"

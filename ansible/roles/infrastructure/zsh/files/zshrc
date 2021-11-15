@@ -207,7 +207,7 @@ if [[ "${kernel_name}" == "Darwin" ]]; then
 
     if command -v brew 1>/dev/null 2>&1; then
         alias b='brew'
-        alias bo='b outdated --greedy'
+        alias bo='b outdated --greedy-auto-updates'
         alias bi='b info'
         alias bs='b search'
         alias brewup='brew update && brew outdated && brew upgrade && brew cleanup && brew doctor'
@@ -602,6 +602,14 @@ export PATH="$HOME/.poetry/bin:$PATH"
 tyk_dir="/opt/tyk-gateway"
 if test -d "$tyk_dir"; then
     export PATH="${tyk_dir}:$PATH"
+fi
+
+# M1
+if [[ $(uname -p) == "arm" ]]
+then
+    # ensure homebrew packages are recognized before system built in
+    # e.g. brew git vs. osx git
+    export PATH="/opt/homebrew/bin:$PATH"
 fi
 
 # <<< ##################################### PATH MODIFICATIONS

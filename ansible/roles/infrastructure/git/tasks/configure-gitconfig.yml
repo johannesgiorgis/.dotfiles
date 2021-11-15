@@ -1,0 +1,39 @@
+---
+# configure gitconfig files
+
+- name: GIT - configure gitconfig files
+
+  block:
+    - name: GIT - Check for .gitconfig
+      stat:
+        path: "{{ dotfiles_user_home }}/.gitconfig"
+      register: gitconfig_stat
+
+    - name: GIT - Back up .gitconfig
+      command: mv ~/.gitconfig ~/.gitconfig.bak
+      args:
+        creates: "{{ dotfiles_user_home }}.gitconfig.bak"
+      when: gitconfig_stat.stat.exists
+
+    - name: GIT - Symlink .gitconfig
+      file:
+        src: "{{ ansible_dir }}/roles/infrastructure/git/files/gitconfig"
+        dest: "{{ dotfiles_user_home }}/.gitconfig"
+        state: link
+
+    # - name: GIT - Check for .gitconfig
+    #   stat:
+    #     path: "{{ dotfiles_user_home }}/.gitconfig"
+    #   register: gitconfig_stat
+
+    # - name: GIT - Back up .gitconfig
+    #   command: mv ~/.gitconfig ~/.gitconfig.bak
+    #   args:
+    #     creates: "{{ dotfiles_user_home }}.gitconfig.bak"
+    #   when: gitconfig_stat.stat.exists
+
+    # - name: GIT - Symlink .gitconfig
+    #   file:
+    #     src: "{{ ansible_dir }}/roles/infrastructure/git/files/gitconfig"
+    #     dest: "{{ dotfiles_user_home }}/.gitconfig"
+    #     state: link

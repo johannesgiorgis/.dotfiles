@@ -1,0 +1,17 @@
+---
+# main task for macos-initial-configure
+
+- name: initial configuration for macos
+
+  block:
+    # https://chuyeow.wtf/2020/06/24/remapping-keys-on-macos
+    - name: Symlink com.example.KeyRemapping.plist for keyboard remapping
+      become_user: "{{ ansible_user_id }}"
+      file:
+        src: "{{ ansible_dir }}/roles/infrastructure/macos-initial-configuration/files/com.example.KeyRemapping.plist"
+        dest: ~/Library/LaunchAgents/com.example.KeyRemapping.plist
+        state: link
+
+    - debug:
+        msg: "Keyboard Remapping requires a restart"
+  when: ansible_os_family in ["Darwin"]

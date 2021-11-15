@@ -1,0 +1,5 @@
+---
+# defaults for ssh-key
+
+# ssh_key_filename: id_rsa_personal_github
+ssh_key_size: 4096

@@ -2,10 +2,12 @@
 # main tasks for git
 
 - name: git is present
-  become: "{{ should_be_root }}"
+  # become: "{{ should_be_root }}"
 
   block:
     - name: git is present
       package:
         name: git
         state: present
+
+    - import_tasks: configure-gitconfig.yml
