@@ -124,12 +124,7 @@ function get_tag_info() { # get tag info
         exit 1
     fi
 
-    # TODO: ensure fdfind is installed!
-    if [[ $(uname) = "Linux" ]]; then
-        directory=$(fdfind "$to_info" $ANSIBLE_DIR)
-    elif [[ $(uname) = "Darwin" ]]; then
-        directory=$(fd "$to_info" $ANSIBLE_DIR)
-    fi
+    find_directory "$to_info"
     echo "Directory:$directory"
 
     echo -e "\nPackages for '$to_info' tag:"
@@ -139,6 +134,28 @@ function get_tag_info() { # get tag info
         # remove '[' and ']' + everything afterwards
         sed 's/\[//g; s/\].*//g' |\
         sort
+}
+
+
+function find_directory() { # find directory
+    local to_info=$1
+    
+    if [[ $(uname) == "Linux" ]]; then
+        if [ -x "$(command -v fdfind)" ]; then
+            directory=$(fdfind "$to_info" $ANSIBLE_DIR)
+        else
+            echo "ERROR: Ensure fdfind (Linux) is installed via common-cli role"
+            exit 1
+        fi
+
+    elif [[ $(uname) == "Darwin" ]]; then
+        if [ -x "$(command -v fd)" ]; then
+            directory=$(fd "$to_info" $ANSIBLE_DIR)
+        else
+            echo "ERROR: Ensure fd (Darwin) is installed via common-cli role"
+            exit 1
+        fi
+    fi
 }
 
 
