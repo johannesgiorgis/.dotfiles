@@ -523,32 +523,32 @@ fi
 
 # <<< Darwin/Mac OS
 
-# AWS Completion
-if command -v aws 1>/dev/null 2>&1; then
+# AWS Completion - moved to ~/.zsh_work.zsh
+#if command -v aws 1>/dev/null 2>&1; then
 
-    function awsm() { aws --profile main "$@"; }
+    #function awsm() { aws --profile main "$@"; }
 
-	if test -f "/usr/local/bin/aws_completer"; then
-		complete -C '/usr/local/bin/aws_completer' aws awsm
-    elif test -f "${HOME}/.asdf/shims/aws_completer"; then
-        complete -C "${HOME}/.asdf/shims/aws_completer" aws 
-	fi
-fi
+	#if test -f "/usr/local/bin/aws_completer"; then
+	#	complete -C '/usr/local/bin/aws_completer' aws awsm
+    #elif test -f "${HOME}/.asdf/shims/aws_completer"; then
+    #    complete -C "${HOME}/.asdf/shims/aws_completer" aws 
+	#fi
+#fi
 
-if command -v aws-vault 1>/dev/null 2>&1; then
+#if command -v aws-vault 1>/dev/null 2>&1; then
 
-    function avp() { aws-vault exec acl-playground -- aws "$@"; }
+    # function avp() { aws-vault exec aws-account -- aws "$@"; }
 
-    alias play='aws-vault exec acl-playground --'
-    alias stg='aws-vault exec acl-staging --'
+    # alias play='aws-vault exec aws-account --'
+    # alias stg='aws-vault exec aws-account --'
 
-	if test -f "/usr/local/bin/aws_completer"; then
-		complete -C '/usr/local/bin/aws_completer' aws-vault avp
-    elif test -f "${HOME}/.asdf/shims/aws_completer"; then
-        complete -C "${HOME}/.asdf/shims/aws_completer" aws-vault avp
-	fi
+	#if test -f "/usr/local/bin/aws_completer"; then
+	#	complete -C '/usr/local/bin/aws_completer' aws-vault avp
+    #elif test -f "${HOME}/.asdf/shims/aws_completer"; then
+    #    complete -C "${HOME}/.asdf/shims/aws_completer" aws-vault avp
+	#fi
 
-fi
+#fi
 
 # <<< ##################################### COMPLETIONS
 ###############################################################################################
