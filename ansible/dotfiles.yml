@@ -53,9 +53,6 @@
         when: ansible_os_family == "Pop!_OS",
       }
 
-    # package manager -> slowly decomposing into separate roles
-    - { role: package_manager, tags: [package_manager, bootstrap] }
-
     # programming languages/frameworks managed by asdf
     - { role: infrastructure/asdf, tags: [asdf] }
     - { role: infrastructure/awscli, tags: [awscli] }
@@ -67,7 +64,8 @@
     - { role: infrastructure/rust, tags: [rust] }
     - { role: infrastructure/terraform, tags: [terraform] }
 
-    # - { role: apt, tags: [apt] }
+    # TODO: Remove
+    - { role: infrastructure/apt, tags: [apt] }
 
     # cli
     - { role: cli/awscliv2, tags: [awscliv2] }
@@ -127,9 +125,6 @@
     - { role: software/vscode, tags: [vscode] }
     - { role: software/whatsapp, tags: [whatsapp] }
     - { role: software/zoom, tags: [zoom] }
-
-    # mac os x
-    # - { role: macos, tags: [macos], when: ansible_os_family == "Darwin" }
 
     # work
     - {

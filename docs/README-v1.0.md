@@ -28,6 +28,8 @@ git tag -a <dotfiles-version> -m 'Dotfiles <dotfiles-version>: <some-description
 
 # example
 git tag -a v1.0 -m 'Dotfiles v1.0: The Bash Way'
+
+git push --tags
 ```
 
 ## Testing
