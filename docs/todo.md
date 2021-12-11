@@ -81,22 +81,37 @@
 Look for (may need manual install/may not be needed anymore)
 
 - Development Tools
+    - [ ] basictex
     - [ ] beekeeper-studio
+    - [ ] dash
+    - [ ] leiningen (clojure projects)
+    - [ ] macvim
+    - [ ] mysql
     - [ ] omnidb
-    - [ ] openvpn-connect
+    - [ ] parquet-tools
     - [ ] pgadmin4
+    - [ ] putty
     - [ ] sourcetree
+    - [ ] telnet
+    - [ ] wkhtmltopdf
 - Logitech
     - [ ] logitech-control-center
     - [ ] logitech-unifying
 - Window Management
     - [ ] lg-onscreen-control
 - Utilities
+    - [ ] alfred
+    - [ ] karabiner-elements
     - [ ] omnidisksweeper
+    - [ ] vanilla (macos)
 - VPN
+    - [ ] openvpn-connect
     - [ ] tunnelblick
 - Streaming
     - [ ] gstreamer1.0-pipewire (Linux)
+- Mac App Store
+    - [ ] CopyClip - 595191960
+    - [ ] Lightshot Screenshot - 526298438
 - [ ] caffeine
 - [ ] trello
 - [ ] compiz
