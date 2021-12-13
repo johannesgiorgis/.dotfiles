@@ -133,3 +133,14 @@ This tracks all my common packages.
 - tasksh
 - xz
 - zlib
+
+## Snap
+
+- slack --classic
+- code --classic
+- sublime-text --classic
+- firefox
+- vlc
+- simplenote
+- spotify
+- whatsdesk

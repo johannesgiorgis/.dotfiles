@@ -48,11 +48,10 @@
 - [x] [fd-find](https://github.com/sharkdp/fd)
 - [x] [ripgrep](https://github.com/BurntSushi/ripgrep)
 - [x] gnome-tweaks
-- [ ] firefox **in progress**
+- [x] firefox
 - [x] gawk
 - [x] kazam
 - [ ] cuda
-- [ ] openssh (_in progress_)
 - [x] solaar - logitech Unifying Receiver
 - [x] sqlitebrowser
 - [x] postgres
@@ -61,6 +60,7 @@
 - [x] taskwarrior
 - [x] thunderbird
 - [x] virtualbox
+- [ ] openssh (_in progress_)
 
 ## Configuration Save
 
@@ -94,6 +94,9 @@ Look for (may need manual install/may not be needed anymore)
     - [ ] sourcetree
     - [ ] telnet
     - [ ] wkhtmltopdf
+- CLI
+    - [ ] figlet
+    - [ ] lolcat
 - Logitech
     - [ ] logitech-control-center
     - [ ] logitech-unifying
