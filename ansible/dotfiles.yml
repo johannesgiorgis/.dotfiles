@@ -101,7 +101,7 @@
     - { role: software/linux-blueman, tags: [linux-blueman] }
     - { role: software/linux-conky-manager, tags: [linux-conky-manager] }
     - { role: software/linux-fbreader, tags: [linux-fbreader] }
-    - { role: software/linux-flameshot, tags: [linux-flameshot] }
+    - { role: software/flameshot, tags: [flameshot] }
     - { role: software/linux-kazam, tags: [linux-kazam] }
     - { role: software/linux-solaar, tags: [linux-solaar] }
     - { role: software/linux-timeshift, tags: [linux-timeshift] }

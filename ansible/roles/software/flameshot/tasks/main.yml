@@ -1,0 +1,18 @@
+---
+# main task for linux-flameshot
+
+- name: flameshot is present
+
+  block:
+    - name: flameshot is present (Debian/Pop!_OS)
+      package:
+        name: flameshot
+        state: present
+      become: "{{ should_be_root }}"
+      when: ansible_os_family in ["Debian", "Pop!_OS"]
+
+    - name: flameshot is present (homebrew cask)
+      homebrew_cask:
+        name: flameshot
+        state: present
+      when: ansible_os_family in ["Darwin"]
