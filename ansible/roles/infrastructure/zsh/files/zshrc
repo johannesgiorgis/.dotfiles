@@ -209,9 +209,8 @@ if [[ "${kernel_name}" == "Darwin" ]]; then
         alias b='brew'
         alias bo='b outdated --greedy-auto-updates'
         alias bi='b info'
+        alias bis='b install'
         alias bs='b search'
-        alias brewup='brew update && brew outdated && brew upgrade && brew cleanup && brew doctor'
-        alias brewupcask='brew update && brew cask outdated && brew cask upgrade && brew cleanup && brew cask doctor'
     fi
 
     if command -v bat 1>/dev/null 2>&1; then
@@ -267,7 +266,7 @@ function af() { # list all functions
     # inspiration: https://www.freecodecamp.org/news/self-documenting-makefile/
     rg 'function.*?#' ~/.zshrc | \
     # remove space in the front
-    sed 's/^[ \t]*//g;s/^function //' | \
+    sed 's/^[ \t]*//g;s/^function //' | sort | \
     # get rid of undesired lines
     rg -v '^#|rg ' | \
     # nice format of functions
@@ -384,7 +383,38 @@ fi
 
 # <<< Debian/Linux
 
-function zupdate() { # update oh my zsh + powerlevel10k
+# >>> Darwin/Mac OS
+
+if [[ "${kernel_name}" == "Darwin" ]]; then
+
+    # Brew
+
+    if command -v brew 1>/dev/null 2>&1; then
+        function bup() { # brew update/upgrade formula & casks
+            brew update
+            result=$(brew outdated)
+            if [[ $result != "" ]]; then
+                echo "Upgrading Formulae"
+                echo -e "$result\n"
+                brew upgrade
+            fi
+
+            greedy_result=$(brew outdated --greedy-auto-updates)
+            if [[ $greedy_result != "" ]]; then
+                echo -e "\nUpgrading Casks with auto updates"
+                echo -e "$greedy_result\n"
+                brew upgrade --greedy-auto-updates
+            fi
+
+            brew cleanup
+        }
+    fi
+
+fi
+
+# <<< Darwin/Mac OS
+
+function zup() { # update oh my zsh + powerlevel10k
     if [[ "$SHELL" == *"zsh"* ]]; then
         if command -v p10k 1>/dev/null 2>&1; then
             echo "Updating powerlevel10k..."
