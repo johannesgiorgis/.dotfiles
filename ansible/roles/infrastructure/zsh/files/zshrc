@@ -94,7 +94,6 @@ plugins=(
     history
     pipenv
     poetry
-    cargo
     fd
     fzf
     npm
@@ -104,7 +103,6 @@ plugins=(
     ripgrep
     rsync
     rust
-    rustup
     terraform
     web-search
     yarn
