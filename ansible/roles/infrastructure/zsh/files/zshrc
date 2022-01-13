@@ -209,6 +209,7 @@ if [[ "${kernel_name}" == "Darwin" ]]; then
         alias bi='b info'
         alias bis='b install'
         alias bs='b search'
+        alias bu='b update'
     fi
 
     if command -v bat 1>/dev/null 2>&1; then
@@ -274,11 +275,11 @@ function af() { # list all functions
 function myw() { date +"%Y Week %U"; } # Date in Year Week format
 function mydate() { date +"%Y-%m-%d %H:%M:%S %Z"; } # Date in my format
 function today() { date +"%A, %B %d, %Y"; } # Date in secondary format
-function note() { echo `date +"%Y-%m-%d %H:%M:%S  "`"$*" >> ~/notes; } # Add a note to my file
-function notes() { vim + ~/notes; } # View/edit notes
+function note() { echo `date +"%Y-%m-%d %H:%M:%S  "`"$*" >> ~/notes.md; } # Add a note to my file
+function notes() { vim + ~/notes.md; } # View/edit notes
 
 # add - to 2 and changed head to tail to make it zsh compatible
-function gotit() { history -2 | tail -n 1 | cut -c 8- >> ~/notes; }
+function gotit() { history -2 | tail -n 1 | cut -c 8- >> ~/notes.md; }
 
 # Youtube Download to MP3 :)
 if command -v youtube-dl 1>/dev/null 2>&1; then
