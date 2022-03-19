@@ -120,6 +120,7 @@
     - { role: software/sublime-merge, tags: [sublime-merge] }
     - { role: software/sublime-text, tags: [sublime-text] }
     - { role: software/teamviewer, tags: [teamviewer] }
+    - { role: software/todoist, tags: [todoist] }
     - { role: software/virtualbox, tags: [virtualbox] }
     - { role: software/vlc, tags: [vlc] }
     - { role: software/vscode, tags: [vscode] }
