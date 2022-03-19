@@ -4,5 +4,17 @@
 - name: TERRAFORM - terraform is present
 
   block:
-    - name: TERRAFORM - install terraform, terraform packages, pipx, pipx packages
-      import_tasks: install.yml
+    - name: TERRAFORM - Add terraform plugin for asdf ({{ terraform_plugin_url }})
+      command: "asdf plugin-add terraform {{ terraform_plugin_url }}"
+      register: terraform_add
+      failed_when: terraform_add == 1
+
+    - name: TERRAFORM - Install terraform versions
+      command: asdf install terraform {{ item }}
+      loop: "{{ terraform_versions }}"
+      loop_control:
+        label: "{{ item }}"
+
+    - name: TERRAFORM - Set global version for terraform to {{ terraform_versions[0] }}
+      command: asdf global terraform {{ terraform_versions[0] }}
+

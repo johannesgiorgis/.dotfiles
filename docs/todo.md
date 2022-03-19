@@ -61,6 +61,7 @@
 - [x] thunderbird
 - [x] virtualbox
 - [ ] openssh (_in progress_)
+- [ ] yarn
 
 ## Configuration Save
 

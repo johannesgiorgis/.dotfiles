@@ -8,17 +8,19 @@
       when: ansible_os_family in ["Debian",  "Pop!_OS"]
       apt:
         name: go-dep
+      tags: golang-install
 
     - name: Add golang plugin for asdf
       command: "asdf plugin-add golang {{ golang_plugin_url }}"
       register: golang_add
       failed_when: golang_add == 2
+      tags: golang-install
 
-    - name: Symlink .default-golang-pkgs
-      file:
-        src: "{{ ansible_dir }}/roles/infrastructure/golang/files/default-golang-pkgs"
-        dest: "{{ dotfiles_user_home }}/.default-golang-pkgs"
-        state: link
+    # - name: Symlink .default-golang-pkgs
+    #   file:
+    #     src: "{{ ansible_dir }}/roles/infrastructure/golang/files/default-golang-pkgs"
+    #     dest: "{{ dotfiles_user_home }}/.default-golang-pkgs"
+    #     state: link
 
     - name: Install golang versions
       command: asdf install golang {{ item }}
