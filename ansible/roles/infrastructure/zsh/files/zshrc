@@ -158,6 +158,7 @@ alias dpa="echo 'pruning system...' && docker system prune -f && echo 'pruning v
 alias tailf='tail -f'
 alias tt='timetrap'
 alias c='code'
+alias co='codium'
 alias ag='alias | grep'
 alias wh='which'
 
