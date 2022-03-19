@@ -9,5 +9,7 @@
       when: ansible_os_family in ["Debian",  "Pop!_OS" ]
 
     - name: BROOT - install for darwin
-      include_tasks: mac.yml
       when: ansible_os_family in ["Darwin"]
+      homebrew:
+        name: broot
+        state: present

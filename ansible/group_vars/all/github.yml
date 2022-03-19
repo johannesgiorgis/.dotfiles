@@ -3,13 +3,13 @@
 # CLI
 
 delta_project: dandavison/delta
-delta_version: 0.8.3
+delta_version: 0.12.1
 
 exa_project: ogham/exa
 exa_version: 0.10.1
 
 jump_project: gsamokovarov/jump
-jump_version: 0.40.0
+jump_version: 0.41.0
 
 noti_project: variadico/noti
 noti_version: 3.5.0
@@ -17,7 +17,7 @@ noti_version: 3.5.0
 # Infrastructure
 
 dockercompose_project: docker/compose
-dockercompose_version: 1.29.2
+dockercompose_version: 2.3.3
 
 # Software
 
@@ -25,4 +25,4 @@ rambox_project: ramboxapp/community-edition
 rambox_version: 0.7.9
 
 simplenote_project: Automattic/simplenote-electron
-simplenote_version: 2.16.0
+simplenote_version: 2.21.0

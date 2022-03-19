@@ -1,7 +1,0 @@
----
-# mac tasks for broot
-
-- name: BROOT - Install via homebrew
-  homebrew:
-    name: broot
-    state: present

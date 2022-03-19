@@ -1,0 +1,13 @@
+---
+# main tasks for gparted
+
+- name: gparted is present
+  become: "{{ should_be_root }}"
+  when: ansible_os_family in ["Debian",  "Pop!_OS" ]
+
+- name: Ensure dependencies are installed
+  apt:
+    name:
+      - gparted
+      - gpart
+    state: present

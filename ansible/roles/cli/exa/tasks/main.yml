@@ -9,5 +9,7 @@
       when: ansible_os_family in ["Debian",  "Pop!_OS" ]
 
     - name: EXA - install for darwin
-      include_tasks: darwin.yml
       when: ansible_os_family in ["Darwin"]
+      homebrew:
+        name: exa
+        state: present

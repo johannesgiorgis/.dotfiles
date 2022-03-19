@@ -16,5 +16,6 @@ macos_infrastructure_casks:
   - rectangle
 
 macos_mas_apps:
-  - { name: DisplayMenu, id: 549083868 }
-  - { name: Bitwarden, id: 1352778147 }
+  - { id: 1352778147, name: Bitwarden }
+  - { id: 1056643111, name: Clocker }
+  - { id: 549083868,  name: DisplayMenu }
