@@ -1,2 +1,3 @@
 dependencies:
-  - role: python-poetry
+  # pipx takes cares of installing poetry
+  - role: python

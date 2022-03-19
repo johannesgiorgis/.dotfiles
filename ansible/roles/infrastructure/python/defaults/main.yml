@@ -6,8 +6,9 @@ python_versions:
 
 pipx_packages:
   - aws-shell
-  - ansible
+  # - ansible # issues installing on mac m1
   - black
   - flake8
   - bpython
   - pipenv
+  - poetry

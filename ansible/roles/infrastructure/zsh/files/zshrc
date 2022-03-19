@@ -618,8 +618,8 @@ zstyle ':completion:*:complete:(cd|pushd):*' tag-order \
 #    export PATH="${rust_install_dir}/bin:$PATH"
 #fi
 
+# 2022-03-19: Have pipx install poetry
 # add poetry
-export PATH="$HOME/.poetry/bin:$PATH"
 
 # awspowertools
 #aws_power_tools_dir="$HOME/bin/aws-powertools"
