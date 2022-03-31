@@ -9,7 +9,6 @@
     - { role: infrastructure/fonts-firacode, tags: [fonts-firacode] }
     - { role: infrastructure/git, tags: [git] }
     - { role: infrastructure/github-ssh-key, tags: [github-ssh-key] }
-    - { role: infrastructure/gparted, tags: [gparted] }
     - {
         role: infrastructure/linux-dconf-settings,
         tags: [linux-dconf-settings],
@@ -19,6 +18,7 @@
         tags: [linux-gnome-extensions],
       }
     - { role: infrastructure/linux-gnome-tweaks, tags: [linux-gnome-tweaks] }
+    - { role: infrastructure/linux-gparted, tags: [linux-gparted] }
     - {
         role: infrastructure/linux-initial-configuration,
         tags: [linux-initial-configuration],
@@ -67,14 +67,13 @@
     - { role: infrastructure/apt, tags: [apt] }
 
     # cli
-    - { role: cli/awscliv2, tags: [awscliv2] }
     - { role: cli/broot, tags: [broot] }
     - { role: cli/common-cli, tags: [common-cli] }
     - { role: cli/exa, tags: [exa] }
     - { role: cli/gh, tags: [gh] }
+    - { role: cli/linux-mlocate, tags: [linux-mlocate] }
     - { role: cli/linux-xclip, tags: [linux-xclip] }
     - { role: cli/macos-cli, tags: [macos-cli] }
-    - { role: cli/mlocate, tags: [mlocate] }
     - { role: cli/neovim, tags: [neovim] }
     - { role: cli/noti, tags: [noti] }
     - { role: cli/taskwarrior, tags: [taskwarrior] }
