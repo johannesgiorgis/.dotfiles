@@ -69,8 +69,8 @@
   args:
     creates: "~/.ssh/{{ ssh_key_file_name }}"
 
-- name: Add ssh key to ssh-agent
-  command: "ssh-add -K ~/.ssh/{{ ssh_key_file_name }}"
+# - name: Add ssh key to ssh-agent
+#   command: "ssh-add -K ~/.ssh/{{ ssh_key_file_name }}"
 
 - name: Authenticate with gh
   command: "gh ssh-key add ~/.ssh/{{ ssh_key_file_name }}.pub -t \"{{ title }}\""

@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
-###################################################################
+##########################################################################
 #
-# dot-bootstrap Script
-# ----------------
-# Runs ansible playbooks for bootstrapping/updating system
+# doi: dotfiles manager
+# ---------------------
+# Uses ansible playbooks for managing system software, configuration
 #
-###################################################################
+##########################################################################
 
 set -e
 

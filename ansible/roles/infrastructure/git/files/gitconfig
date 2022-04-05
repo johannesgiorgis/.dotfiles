@@ -35,9 +35,7 @@
 [init]
 	# Set branch for git init. GitHub uses main but git uses master unless you override here.
 	defaultBranch = "main"
-[user]
-	name = Johannes Giorgis
-	email = johannesgiorgis@users.noreply.github.com
+
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f

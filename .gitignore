@@ -9,3 +9,6 @@ zsh_work*
 
 # macos stuff
 .DS_Store
+
+# asdf
+.tool-versions

@@ -1,0 +1,7 @@
+---
+# main tasks for rancher
+
+- name: rancher is present for macos
+  homebrew_cask:
+    name: rancher
+    state: present

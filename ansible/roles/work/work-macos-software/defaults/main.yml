@@ -7,6 +7,7 @@ work_macos_software_formula:
   - tfsec
 
 work_macos_software_casks:
-  - amazon-chime
+  # - amazon-chime
   - aviatrix-vpn-client
   - aws-vault
+  - microsoft-outlook

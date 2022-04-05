@@ -4,6 +4,18 @@
 - name: initial configuration for macos
 
   block:
+
+    - name: Check LaunchAgents directory exists
+      stat:
+        path: "{{ dotfiles_user_home }}/Library/LaunchAgents"
+      register: launch_agents_dir
+    
+    - name: Create LaunchAgents directory if it doesn't exist
+      file:
+        path: "{{ dotfiles_user_home }}/Library/LaunchAgents"
+        state: directory
+      when: launch_agents_dir.stat.exists == false
+
     # https://chuyeow.wtf/2020/06/24/remapping-keys-on-macos
     - name: Symlink com.example.KeyRemapping.plist for keyboard remapping
       become_user: "{{ ansible_user_id }}"

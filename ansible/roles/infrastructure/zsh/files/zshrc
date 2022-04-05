@@ -88,7 +88,7 @@ plugins=(
     asdf
     taskwarrior
     timewarrior
-    ansible
+    # ansible
     command-not-found
     brew
     history
@@ -188,6 +188,10 @@ fi
 
 if command -v nvim 1>/dev/null 2>&1; then
     alias v='nvim'
+fi
+
+if command -v asdf 1>/dev/null 2>&1; then
+    alias al="asdf list"
 fi
 
 # Common Python Virtual Environment
@@ -358,6 +362,12 @@ function cdot() { # go to dotfiles directory
 	fi
 }
 
+if command -v asdf 1>/dev/null 2>&1; then
+    function ala() { # asdf list-all for plugin and pipe to less
+        asdf list-all "$1" | less
+    }
+fi
+
 # >>> Debian/Linux
 
 if [ "${kernel_name}" = "Debian" -o "${kernel_name}" = "Linux" ]; then
@@ -522,11 +532,14 @@ DEFAULT_USER=$(whoami)
 # link: ln -s ~/.dotfiles/ansible/roles/infrastructure/zsh/files/zsh_work.zsh ~/.zsh_work.zsh
 # if [[ "$kernel_name" = 'Darwin' ]] && \
 #     [[ "$DEFAULT_USER" = 'jgiorgis' ]]
-if [[ "$kernel_name" = 'Darwin' ]] && \
-    [[ "$USER" = 'johannes.giorgis' ]]
-then
-    [[ ! -f ~/.zsh_work.zsh ]] || source ~/.zsh_work.zsh
-fi
+# if [[ "$kernel_name" = 'Darwin' ]] || \
+#     [[ $(hostname) = "JG-Diligent-MacBook-Pro.local" ]] && \
+#     [[ "$USER" = 'johannes.giorgis' ]]
+# then
+#     [[ ! -f ~/.zsh_work.zsh ]] || source ~/.zsh_work.zsh
+# fi
+
+[[ ! -f ~/.zsh_work.zsh ]] || source ~/.zsh_work.zsh
 
 # <<< ##################################### WORK STUFF
 ###############################################################################################

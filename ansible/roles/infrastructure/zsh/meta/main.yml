@@ -1,3 +1,0 @@
-dependencies:
-  # pipx takes cares of installing poetry
-  - role: python
