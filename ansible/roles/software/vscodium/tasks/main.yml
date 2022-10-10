@@ -1,0 +1,13 @@
+---
+# main tasks for vscodium
+
+- name: vscodium is present
+
+  block:
+    - name: Install vscodium via homebrew cask
+      when: ansible_os_family in ["Darwin"]
+      homebrew_cask:
+        name: vscodium
+        state: present
+
+    # - import_tasks: install-extensions.yml

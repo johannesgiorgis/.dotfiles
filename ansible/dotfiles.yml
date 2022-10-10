@@ -31,6 +31,7 @@
     - {
         role: infrastructure/macos-initial-configuration,
         tags: [macos-initial-configuration],
+        when ansible_os_family == "Darwin",
       }
     # 2021-07-11: commented out due to following error messages:
     # ERROR! couldn't resolve module/action 'postgresql_user'. This often indicates a misspelling, missing collection, or incorrect module path.
@@ -123,6 +124,7 @@
     - { role: software/virtualbox, tags: [virtualbox] }
     - { role: software/vlc, tags: [vlc] }
     - { role: software/vscode, tags: [vscode] }
+    - { role: software/vscodium, tags: [vscodium] }
     - { role: software/whatsapp, tags: [whatsapp] }
     - { role: software/zoom, tags: [zoom] }
 
