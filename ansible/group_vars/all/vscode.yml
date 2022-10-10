@@ -16,7 +16,7 @@ visual_studio_code_extensions:
   - Gruntfuggly.todo-tree
   - hashicorp.terraform
   - hediet.vscode-drawio
-  - kiteco.kite
+  # - kiteco.kite
   - mgmcdermott.vscode-language-babel
   - mrmlnc.vscode-duplicate
   - ms-azuretools.vscode-docker

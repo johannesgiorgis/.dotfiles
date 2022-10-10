@@ -54,6 +54,7 @@ terraform_versions:
   - 1.0.11
   - 1.0.2
   - 1.0.7
+  - 1.0.8
   - 1.1.0
   # below aren't supported in m1 mac
   # arch -x86_64 asdf install terraform 0.14.11

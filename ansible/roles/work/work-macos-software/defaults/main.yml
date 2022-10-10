@@ -5,6 +5,7 @@ macos_homebrew_taps: []
 work_macos_software_formula:
   - checkov
   - tfsec
+  - kreuzwerker/taps/m1-terraform-provider-helper
 
 work_macos_software_casks:
   # - amazon-chime

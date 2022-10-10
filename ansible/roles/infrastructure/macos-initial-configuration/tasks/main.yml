@@ -5,6 +5,7 @@
 
   block:
 
+    # Remap Keyboard
     - name: Check LaunchAgents directory exists
       stat:
         path: "{{ dotfiles_user_home }}/Library/LaunchAgents"
@@ -26,4 +27,9 @@
 
     - debug:
         msg: "Keyboard Remapping requires a restart"
+        
+    # Auto hide dock
+    - debug:
+        msg: "Autohide dock keyboard shortcut: Command(⌘)+Option+D"
+
   when: ansible_os_family in ["Darwin"]

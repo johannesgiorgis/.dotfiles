@@ -131,6 +131,8 @@ function get_tag_info() { # get tag info
     cat "$directory/README.md" |\
         # grab lines with either '- ack' or '- [coreutils]'
         grep -E '(^\- \[\([^]]\+\)\]|^- )' |\
+        # remove lines with comments on them - ###
+        grep -v '###' |\
         # remove '[' and ']' + everything afterwards
         sed 's/\[//g; s/\].*//g' |\
         sort

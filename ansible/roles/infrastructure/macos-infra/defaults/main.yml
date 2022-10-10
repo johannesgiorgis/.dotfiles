@@ -13,6 +13,8 @@ macos_infrastructure_casks:
   - alt-tab
   - iterm2
   - logitech-options
+  - logi-options-plus
+  - logitech-unifying
   - rectangle
 
 macos_mas_apps:
