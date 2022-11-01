@@ -7,18 +7,28 @@
       homebrew_tap:
         tap: "{{ item }}"
         state: present
-      loop: "{{ macos_homebrew_taps }}"
+      loop: []
 
     - name: WORK-MACOS-SOFTWARE - formula are present via homebrew
       homebrew:
         name: "{{ item }}"
         state: present
-      loop: "{{ work_macos_software_formula }}"
+      loop: 
+        - checkov
+        - tfsec
+        - kreuzwerker/taps/m1-terraform-provider-helper
 
     - name: WORK-MACOS-SOFTWARE - casks are present via homebrew casks
       homebrew_cask:
         name: "{{ item }}"
         state: present
-      loop: "{{ work_macos_software_casks }}"
+      loop: 
+        - aviatrix-vpn-client
+        - aws-vault
+        # - microsoft-outlook
+        - onedrive
+        - microsoft-word
+        - microsoft-excel
+        - microsoft-powerpoint
 
   when: ansible_os_family in ["Darwin"]

@@ -130,7 +130,7 @@
 
     # work
     - {
-        role: work/work-macos-software,
+        role: work-macos-software,
         tags: [work-macos-software],
         when: ansible_os_family == "Darwin",
       }
