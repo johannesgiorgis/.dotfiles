@@ -1,0 +1,22 @@
+---
+# Handle each ZSH config file
+
+- name: ZSH - configure "{{ item }}" file
+  block:
+
+    - name: ZSH - Check for "{{ dotfiles_user_home }}/{{ item }}"
+      stat:
+        path: "{{ dotfiles_user_home }}/{{ item }}"
+      register: zshconfig_stat
+
+    - name: ZSH - Back up "{{ item }}"
+      command: mv "{{ dotfiles_user_home }}/{{ item }}" "{{ dotfiles_user_home }}/{{ item }}.bak"
+      args:
+        creates: "{{ dotfiles_user_home }}/{{ item }}.bak"
+      when: zshconfig_stat.stat.exists
+
+    - name: ZSH - Symlink "{{ item }}"
+      file:
+        src: "{{ ansible_dir }}/roles/infrastructure/zsh/files/{{ item }}"
+        dest: "{{ dotfiles_user_home }}/{{ item }}"
+        state: link

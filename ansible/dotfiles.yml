@@ -8,7 +8,6 @@
     - { role: infrastructure/docker, tags: [docker] }
     - { role: infrastructure/fonts-firacode, tags: [fonts-firacode] }
     - { role: infrastructure/git, tags: [git] }
-    - { role: infrastructure/github-ssh-key, tags: [github-ssh-key] }
     - {
         role: infrastructure/linux-dconf-settings,
         tags: [linux-dconf-settings],

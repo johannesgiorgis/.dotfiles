@@ -1,0 +1,8 @@
+# Git Ignore for zsh files
+
+/zsh/.zcompcache/*
+/zsh/.zcompdump
+/zsh/.zsh_history
+
+/zsh/plugins/zsh-*
+/zsh/themes/

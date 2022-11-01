@@ -12,27 +12,15 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
+# Command Auto Completion
+autoload -Uz compinit
+compinit
 
-# Path to your oh-my-zsh installation.
-export ZSH="$HOME/.oh-my-zsh"
+ZSH_THEME="powerlevel10k"
 
-# Set name of the theme to load --- if set to "random", it will
-# load a random theme each time oh-my-zsh is loaded, in which case,
-# to know which specific one was loaded, run: echo $RANDOM_THEME
-# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-# ZSH_THEME="robbyrussell"
-# ZSH_THEME="powerlevel10k/powerlevel10k"
-ZSH_THEME="powerlevel10k/powerlevel10k"
-
-# Uncomment one of the following lines to change the auto-update behavior
-zstyle ':omz:update' mode disabled  # disable automatic updates
-# zstyle ':omz:update' mode auto      # update automatically without asking
-# zstyle ':omz:update' mode reminder  # just remind me to update when it's time
-
-# Uncomment the following line to change how often to auto-update (in days).
-# zstyle ':omz:update' frequency 13
+if [[ -n "$ZSH_THEME" ]]; then
+    source "$ZDOTDIR/themes/$ZSH_THEME/$ZSH_THEME.zsh-theme"
+fi
 
 
 # Uncomment the following line if you want to disable marking untracked files
@@ -40,23 +28,17 @@ zstyle ':omz:update' mode disabled  # disable automatic updates
 # much, much faster.
 DISABLE_UNTRACKED_FILES_DIRTY="true"
 
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
-# You can set one of the optional three formats:
-# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# or set a custom format using the strftime function format specifications,
+# Control command execution tiemstamp for history
 # see 'man strftime' for details.
-# HIST_STAMPS="mm/dd/yyyy"
 HIST_STAMPS="%F_%T"
 
 plugins=(
-   aws
-   asdf
-   brew
-   command-not-found
+#    aws
+#    asdf
+#    command-not-found
    git
-   history
-   terraform
+#    history
+#    terraform
    zsh-autosuggestions
    zsh-syntax-highlighting
 )
@@ -89,7 +71,11 @@ plugins=(
 #    zsh-interactive-cd
 #)
 
-source $ZSH/oh-my-zsh.sh
+for plugin ($plugins); do
+    source $ZDOTDIR/plugins/$plugin/$plugin.plugin.zsh
+done
+
+# source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
@@ -150,6 +136,29 @@ alias va='source .venv/bin/activate'
 # original
 #alias venv='python3 -m venv ./venv && source ./venv/bin/activate && pip install --upgrade pip setuptools > /dev/null'
 #alias va='source ./venv/bin/activate'
+
+# brew
+alias bcubc='brew upgrade --cask && brew cleanup'
+alias bcubo='brew update && brew outdated --cask'
+alias brewp='brew pin'
+alias brewsp='brew list --pinned'
+alias bubc='brew upgrade && brew cleanup'
+alias bubo='brew update && brew outdated'
+alias bubu='bubo && bubc'
+alias buf='brew upgrade --formula'
+
+function brews() {
+  local formulae="$(brew leaves | xargs brew deps --installed --for-each)"
+  local casks="$(brew list --cask)"
+
+  local blue="$(tput setaf 4)"
+  local bold="$(tput bold)"
+  local off="$(tput sgr0)"
+
+  echo "${blue}==>${off} ${bold}Formulae${off}"
+  echo "${formulae}" | sed "s/^\(.*\):\(.*\)$/\1${blue}\2${off}/"
+  echo "\n${blue}==>${off} ${bold}Casks${off}\n${casks}"
+}
 
 # Control output of less
 if command -v less 1>/dev/null 2>&1; then
@@ -538,9 +547,9 @@ if [[ "${kernel_name}" = "Darwin" ]]; then
     if test -d "$awsv1_dir"; then
         alias aws="${awsv1_dir}bin/aws"
 
-        if test -f "/usr/local/opt/awscli@1/bin/aws_completer"; then
-            complete -C '/usr/local/opt/awscli@1/bin/aws_completer' aws
-        fi
+        # if test -f "/usr/local/opt/awscli@1/bin/aws_completer"; then
+        #     complete -C '/usr/local/opt/awscli@1/bin/aws_completer' aws
+        # fi
     fi
 fi
 
