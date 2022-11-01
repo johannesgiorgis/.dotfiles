@@ -1,13 +1,17 @@
 ---
 # main tasks for git
 
-- name: git is present
-  # become: "{{ should_be_root }}"
+- name: GIT - Install and Configure
 
   block:
-    - name: git is present
+    - name: GIT - git is present
       package:
         name: git
         state: present
 
-    - import_tasks: configure-gitconfig.yml
+    - name: GIT - configure gitconfig files
+      include_tasks: "configure-gitconfig-each.yml"
+      loop:
+        - .gitconfig
+        - .gitconfig-personal
+        - .gitconfig-professional

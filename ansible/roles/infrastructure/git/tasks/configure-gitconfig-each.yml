@@ -1,0 +1,22 @@
+---
+# Handle each gitconfig file
+
+- name: GIT - configure "{{ item }}" file
+  block:
+
+    - name: GIT - Check for "{{ dotfiles_user_home }}/{{ item }}"
+      stat:
+        path: "{{ dotfiles_user_home }}/{{ item }}"
+      register: gitconfig_stat
+
+    - name: GIT - Back up "{{ item }}"
+      command: mv "{{ dotfiles_user_home }}/{{ item }}" "{{ dotfiles_user_home }}/{{ item }}.bak"
+      args:
+        creates: "{{ dotfiles_user_home }}/{{ item }}.bak"
+      when: gitconfig_stat.stat.exists
+
+    - name: GIT - Symlink "{{ item }}"
+      file:
+        src: "{{ ansible_dir }}/roles/infrastructure/git/files/{{ item }}"
+        dest: "{{ dotfiles_user_home }}/{{ item }}"
+        state: link
