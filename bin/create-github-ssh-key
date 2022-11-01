@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+# Create Github SSH Key
+
+echo "Please enter the value for ssh_key_filename (default:id_rsa_personal_github)"
+read ssh_key_filename
+ssh_key_filename="${ssh_key_filename:-id_rsa_personal_github}"
+
+echo "Please enter the value for email"
+read email
+
+echo -e "\n
+    ssh_key_file_name:$ssh_key_filename
+    email:$email\n"
+
+file="$HOME/.ssh/$ssh_key_filename"
+
+if [[ -f "$file" ]]; then
+    echo "WARNING: File $file already exists. Skipping creating it"
+else
+    echo "Creating new ssh key"
+    ssh-keygen -t ed25519 -C "$email_address" -f $file
+fi
+
+gh auth login
+
+gh ssh-key add $file.pub
