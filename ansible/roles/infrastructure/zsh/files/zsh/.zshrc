@@ -14,6 +14,7 @@ fi
 
 # Command Auto Completion
 autoload -Uz compinit
+autoload -U +X bashcompinit && bashcompinit
 compinit
 
 ZSH_THEME="powerlevel10k"
@@ -34,7 +35,7 @@ HIST_STAMPS="%F_%T"
 
 plugins=(
 #    aws
-#    asdf
+   asdf
 #    command-not-found
    git
 #    history
