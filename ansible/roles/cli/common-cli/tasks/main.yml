@@ -1,11 +1,11 @@
 ---
 # main task for common-cli
 
-- name: common-cli are present
+- name: COMMON-CLI - common-cli are present
   become: "{{ should_be_root }}"
 
   block:
-    - name: common-cli packages are present
+    - name: COMMON-CLI - common-cli packages are present
       package:
         name: "{{ item[ansible_pkg_mgr] | default(item['default']) }}"
         state: latest
@@ -13,3 +13,35 @@
 
     - import_tasks: jump.yml
     - import_tasks: delta.yml
+
+
+
+- name: COMMON-CLI - jump is present
+  block:
+    - name: COMMON-CLI - Install jump via homebrew
+      when: ansible_pkg_mgr == 'homebrew'
+      homebrew:
+        name: jump
+        state: present
+
+    - name: COMMON-CLI - Install jump Debian package
+      when: ansible_os_family in ["Debian", "Pop!_OS"]
+      apt:
+        deb: https://github.com/gsamokovarov/jump/releases/download/v0.51.0/jump_0.51.0_{{ machine_map[ansible_machine] }}.deb
+      become: "{{ should_be_root }}"
+
+
+
+- name: COMMON-CLI  - delta is present
+  block:
+    - name: COMMON-CLI  - Install delta via homebrew
+      when: ansible_os_family in ["Darwin"]
+      homebrew:
+        name: git-delta
+        state: present
+
+    - name: COMMON-CLI - install delta for debian
+      when: ansible_os_family in ["Debian",  "Pop!_OS" ]
+      apt:
+        deb: https://github.com/dandavison/delta/releases/download/0.14.0/git-delta_0.14.0_{{ machine_map[ansible_machine] }}.deb
+      become: "{{ should_be_root }}"

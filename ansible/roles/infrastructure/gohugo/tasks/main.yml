@@ -1,19 +1,26 @@
 ---
 # main task for asdf-gohugo
 
-- name: gohugo is present
 
+- name: GOHUGO - Set GoHugo Versions
+  set_fact:
+    gohugo_versions:
+      - extended_0.85.0
+      - extended_0.81.0
+
+- name: GOHUGO - gohugo is present
   block:
-    - name: Add gohugo plugin for asdf
-      command: "asdf plugin-add gohugo {{ gohugo_plugin_url }}"
+    - name: GOHUGO - Add gohugo plugin for asdf (https://bitbucket.org/mgladdish/asdf-gohugo.git)
+      command: asdf plugin-add gohugo https://bitbucket.org/mgladdish/asdf-gohugo.git
       register: gohugo_add
       failed_when: gohugo_add == 2
 
-    - name: Install gohugo versions
+    - name: GOHUGO - Install gohugo versions
       command: asdf install gohugo {{ item }}
       loop: "{{ gohugo_versions }}"
       loop_control:
         label: "{{ item }}"
 
-    - name: Set global version for gohugo to {{ gohugo_versions[0] }}
+    - name: GOHUGO - Set global version for gohugo to {{ gohugo_versions[0] }}
       command: asdf global gohugo {{ gohugo_versions[0] }}
+  

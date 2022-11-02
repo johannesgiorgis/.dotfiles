@@ -8,12 +8,15 @@
       homebrew_tap:
         tap: "{{ item }}"
         state: present
-      loop: "{{ macos_homebrew_taps }}"
+      loop: []
 
     - name: MACOS-CLI - formulae are present via homebrew
       homebrew:
         name: "{{ item }}"
         state: present
-      loop: "{{ macos_cli_formulae }}"
+      loop:
+        - coreutils
+        - wifi-password
 
   when: ansible_os_family in ["Darwin"]
+  

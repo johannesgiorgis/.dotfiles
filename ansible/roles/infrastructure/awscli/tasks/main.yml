@@ -1,32 +1,45 @@
 # main task for awscli
 
-- name: AWSCLI - awscli & awscli packages are present
+---
+- name: AWSCLI - awscli is present (darwin)
+  homebrew:
+    name: awscli
+    state: present
 
-  block:
-    - name: AWSCLI - Add awscli plugin for asdf
-      command: "asdf plugin-add awscli {{ awscli_plugin_url }}"
-      register: awscli_add
-      failed_when: awscli_add == 2
 
-    - name: AWSCLI - Install awscli versions
-      command: asdf install awscli {{ item }}
-      loop: "{{ awscli_versions }}"
-      loop_control:
-        label: "{{ item }}"
+# asdf alternative
+# - name: AWSCLI - Set awscli Versions
+#   set_fact:
+#     awscli_versions:
+#       - 2.5.2
 
-    - name: AWSCLI - Set global version for awscli to {{ awscli_versions[0] }}
-      command: asdf global awscli {{ awscli_versions[0] }}
 
-    - name: AWSCLI - check aws installed
-      command: which aws
-      register: which_aws
+# - name: AWSCLI - awscli & awscli packages are present
+#   block:
+#     - name: AWSCLI - Add awscli plugin for asdf (https://github.com/MetricMike/asdf-awscli.git)
+#       command: asdf plugin-add awscli https://github.com/MetricMike/asdf-awscli.git
+#       register: awscli_add
+#       failed_when: awscli_add == 2
 
-    - name: AWSCLI - which aws?
-      debug: msg="which aws?{{ which_aws.stdout }}"
+#     - name: AWSCLI - Install awscli versions
+#       command: asdf install awscli {{ item }}
+#       loop: "{{ awscli_versions }}"
+#       loop_control:
+#         label: "{{ item }}"
 
-    - name: AWSCLI - check aws version
-      command: aws --version
-      register: aws_version
+#     - name: AWSCLI - Set global version for awscli to {{ awscli_versions[0] }}
+#       command: asdf global awscli {{ awscli_versions[0] }}
 
-    - name: AWSCLI - aws version
-      debug: msg="aws version?{{ aws_version.stdout }}"
+#     - name: AWSCLI - check aws installed
+#       command: which aws
+#       register: which_aws
+
+#     - name: AWSCLI - which aws?
+#       debug: msg="which aws?{{ which_aws.stdout }}"
+
+#     - name: AWSCLI - check aws version
+#       command: aws --version
+#       register: aws_version
+
+#     - name: AWSCLI - aws version
+#       debug: msg="aws version?{{ aws_version.stdout }}"

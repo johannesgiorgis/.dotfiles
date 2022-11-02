@@ -1,10 +1,15 @@
 # main task for rust
 
-- name: RUST - rust & rust packages are present
+- name: RUST - Set Rust Versions
+  set_fact:
+    rust_versions:
+      - stable
 
+
+- name: RUST - rust & rust packages are present
   block:
-    - name: RUST - Add rust plugin for asdf
-      command: "asdf plugin-add rust {{ rust_plugin_url }}"
+    - name: RUST - Add rust plugin for asdf (https://github.com/code-lever/asdf-rust.git)
+      command: asdf plugin-add rust https://github.com/code-lever/asdf-rust.git
       register: rust_add
       failed_when: rust_add == 2
 

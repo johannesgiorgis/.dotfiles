@@ -1,4 +1,0 @@
-awscli_plugin_url: https://github.com/MetricMike/asdf-awscli.git
-
-awscli_versions:
-  - 2.1.39

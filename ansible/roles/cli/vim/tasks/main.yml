@@ -17,4 +17,22 @@
         name: vim
         state: present
 
-- import_tasks: configure.yml
+
+# Configure
+- name: Check if .vimrc exists
+  stat:
+    path: "{{ dotfiles_user_home }}/.vimrc"
+  register: vimrc_stat
+  failed_when: False
+
+- name: Backup .vimrc
+  command: mv ~/.vimrc ~/.vimrc.bak
+  args:
+    creates: "{{ dotfiles_user_home }}/.vimrc.bak"
+  when: vimrc_stat.stat.exists
+
+- name: Symlink vimrc
+  file:
+    src: "{{ ansible_dir }}/roles/cli/vim/files/vimrc"
+    dest: "{{ dotfiles_user_home }}/.vimrc"
+    state: link

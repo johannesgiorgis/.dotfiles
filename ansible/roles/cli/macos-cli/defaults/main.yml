@@ -1,7 +1,0 @@
-# defaults task for macos-cli
----
-macos_homebrew_taps: []
-
-macos_cli_formulae:
-  - coreutils
-  - wifi-password

@@ -1,4 +1,0 @@
-rust_plugin_url: https://github.com/code-lever/asdf-rust.git
-
-rust_versions:
-  - stable

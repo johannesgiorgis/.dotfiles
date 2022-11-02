@@ -3,6 +3,6 @@
 
 - name: Clone asdf repository
   git:
-    repo: "{{ asdf_repo }}"
+    repo: https://github.com/asdf-vm/asdf.git
     dest: "~/.asdf"
-    version: "{{ asdf_version }}"
+    version: v0.10.2

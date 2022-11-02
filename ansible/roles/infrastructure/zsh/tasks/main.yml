@@ -83,6 +83,11 @@
       ansible.builtin.git:
         repo: https://github.com/zsh-users/zsh-syntax-highlighting.git
         dest: ~/zsh/plugins/zsh-syntax-highlighting
+    
+    - name: ZSH - Get tool zsh-bench
+      ansible.builtin.git:
+        repo: https://github.com/romkatv/zsh-bench.git
+        dest: ~/zsh/zsh-bench
 
     # - name: Get plugin timewarrior
     #   command: "git clone https://github.com/svenXY/timewarrior ~/.oh-my-zsh/custom/plugins/timewarrior"

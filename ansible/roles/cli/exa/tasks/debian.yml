@@ -11,11 +11,11 @@
 
     - name: EXA - Register folder name
       set_fact:
-        exa_folder_name: "exa-{{ system_map[ansible_system] }}-x86_64-v{{ exa_version }}"
+        exa_folder_name: "exa-{{ system_map[ansible_system] }}-x86_64-v0.10.1"
 
     - name: Download exa binary to {{ exa_binary_download_dir.path }}
       ansible.builtin.unarchive:
-        src: "https://github.com/ogham/exa/releases/download/v{{ exa_version }}/{{ exa_folder_name }}.zip"
+        src: "https://github.com/ogham/exa/releases/download/v0.10.1/{{ exa_folder_name }}.zip"
         dest: "{{ exa_binary_download_dir.path }}/"
         remote_src: yes
       register: r_exa_unarchive
