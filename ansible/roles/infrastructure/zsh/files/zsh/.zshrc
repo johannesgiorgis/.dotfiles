@@ -84,8 +84,8 @@ done
 # export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
-export EDITOR=/usr/bin/vim
-export VISUAL=/usr/bin/vim
+# export EDITOR=/usr/bin/vim
+# export VISUAL=/usr/bin/vim
 
 # kernel name
 kernel_name="$(uname -s)"
@@ -529,7 +529,7 @@ DEFAULT_USER=$(whoami)
 #     [[ ! -f ~/.zsh_work.zsh ]] || source ~/.zsh_work.zsh
 # fi
 
-[[ ! -f ~/.zsh_work.zsh ]] || source ~/.zsh_work.zsh
+[[ ! -f $ZDOTDIR/.zsh_work.zsh ]] || source $ZDOTDIR/.zsh_work.zsh
 
 # <<< ##################################### WORK STUFF
 ###############################################################################################
@@ -642,13 +642,6 @@ if test -d "$tyk_dir"; then
     export PATH="${tyk_dir}:$PATH"
 fi
 
-# M1
-if [[ $(uname -p) == "arm" ]]
-then
-    # ensure homebrew packages are recognized before system built in
-    # e.g. brew git vs. osx git
-    export PATH="/opt/homebrew/bin:$PATH"
-fi
 
 # <<< ##################################### PATH MODIFICATIONS
 ###############################################################################################
@@ -697,7 +690,7 @@ unsetopt SHARE_HISTORY
 
 
 ### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
-export PATH="/Users/johannes/.rd/bin:$PATH"
+export PATH="$HOME/.rd/bin:$PATH"
 ### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
 
 [ -z "$ZPROF" ] || zprof
