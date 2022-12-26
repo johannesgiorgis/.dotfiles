@@ -12,8 +12,21 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+# M1 - assume brew installed
+if [[ $(uname -p) == "arm" ]]
+then
+    # ensure homebrew packages are recognized before system built in
+    # e.g. brew git vs. osx git
+    export PATH="/opt/homebrew/bin:$PATH"
+fi
+
+# add a function path
+# fpath=("$ZSH/functions" "$ZSH/completions" $fpath)
+fpath+=~/.zfunc
+
 # Command Auto Completion
-autoload -Uz compinit
+# autoload -Uz compinit
+autoload -Uz compaudit compinit zrecompile
 autoload -U +X bashcompinit && bashcompinit
 compinit
 
@@ -31,52 +44,73 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 # Control command execution tiemstamp for history
 # see 'man strftime' for details.
+# TODO: Fix history
 HIST_STAMPS="%F_%T"
 
 plugins=(
-#    aws
-   asdf
-#    command-not-found
-   git
-#    history
-#    terraform
-   zsh-autosuggestions
-   zsh-syntax-highlighting
+    git
+    brew
+    docker
+    docker-compose
+    virtualenv
+    golang
+    asdf
+    # ansible
+    command-not-found
+    history
+    #pipenv
+    fd
+    #fzf
+    npm
+    node
+    pip
+    python
+    ripgrep
+    rsync
+    rust
+    terraform
+    web-search
+    yarn
+    zsh-interactive-cd
+    zsh-autosuggestions
+    zsh-syntax-highlighting
+    #taskwarrior
+    #timewarrior
 )
-# plugins=(
-#    git
-#    docker
-#    docker-compose
-#    virtualenv
-#    golang
-#    asdf
-#    taskwarrior
-#    timewarrior
-#    # ansible
-#    command-not-found
-#    history
-#    #pipenv
-#    poetry
-#    fd
-#    #fzf
-#    npm
-#    node
-#    pip
-#    python
-#    ripgrep
-#    rsync
-#    rust
-#    terraform
-#    web-search
-#    yarn
-#    zsh-interactive-cd
-#)
 
+
+# Load all stock functions (from $fpath files) called below.
+
+
+is_plugin() {
+  local base_dir=$1
+  local name=$2
+  builtin test -f $base_dir/plugins/$name/$name.plugin.zsh \
+    || builtin test -f $base_dir/plugins/$name/_$name
+}
+
+# Add all defined plugins to fpath. This must be done
+# before running compinit.
+OMZ_DIR="$ZDOTDIR/ohmyzsh"
 for plugin ($plugins); do
-    source $ZDOTDIR/plugins/$plugin/$plugin.plugin.zsh
+    if is_plugin "$ZDOTDIR" "$plugin"; then
+        fpath=("$ZDOTDIR/plugins/$plugin" $fpath)
+    elif is_plugin "$OMZ_DIR" "$plugin"; then
+        fpath=("$OMZ_DIR/plugins/$plugin" $fpath)
+    else
+        echo "[zsh] plugin '$plugin' not found"
+    fi
 done
 
-# source $ZSH/oh-my-zsh.sh
+# Load all of the plugins that were defined in ~/.zshrc
+for plugin ($plugins); do
+    if [[ -f "$ZDOTDIR/plugins/$plugin/$plugin.plugin.zsh" ]]; then
+        source "$ZDOTDIR/plugins/$plugin/$plugin.plugin.zsh"
+    elif [[ -f "$OMZ_DIR/plugins/$plugin/$plugin.plugin.zsh" ]]; then
+        source "$OMZ_DIR/plugins/$plugin/$plugin.plugin.zsh"
+    fi
+done
+
 
 # User configuration
 
@@ -114,7 +148,7 @@ alias tailf='tail -f'
 alias tt='timetrap'
 alias c='code'
 alias co='codium'
-alias ag='alias | grep'
+alias ag='alias | rg'
 alias wh='which'
 
 # count files
@@ -134,33 +168,6 @@ alias cg='cd `git rev-parse --show-toplevel`'
 alias venv='python3 -m venv .venv && source .venv/bin/activate && pip install --upgrade pip setuptools > /dev/null'
 alias va='source .venv/bin/activate'
 
-# original
-#alias venv='python3 -m venv ./venv && source ./venv/bin/activate && pip install --upgrade pip setuptools > /dev/null'
-#alias va='source ./venv/bin/activate'
-
-# brew
-alias bcubc='brew upgrade --cask && brew cleanup'
-alias bcubo='brew update && brew outdated --cask'
-alias brewp='brew pin'
-alias brewsp='brew list --pinned'
-alias bubc='brew upgrade && brew cleanup'
-alias bubo='brew update && brew outdated'
-alias bubu='bubo && bubc'
-alias buf='brew upgrade --formula'
-
-function brews() {
-  local formulae="$(brew leaves | xargs brew deps --installed --for-each)"
-  local casks="$(brew list --cask)"
-
-  local blue="$(tput setaf 4)"
-  local bold="$(tput bold)"
-  local off="$(tput sgr0)"
-
-  echo "${blue}==>${off} ${bold}Formulae${off}"
-  echo "${formulae}" | sed "s/^\(.*\):\(.*\)$/\1${blue}\2${off}/"
-  echo "\n${blue}==>${off} ${bold}Casks${off}\n${casks}"
-}
-
 # Control output of less
 if command -v less 1>/dev/null 2>&1; then
 	alias mroe=less more=less
@@ -177,14 +184,6 @@ if command -v asdf 1>/dev/null 2>&1; then
     alias al="asdf list"
 fi
 
-# Common Python Virtual Environment
-if [[ -d "/usr/local/venv/" ]]
-then
-    alias awslocal=/usr/local/venv/bin/awslocal
-    alias yq=/usr/local/venv/bin/yq
-    alias xq=/usr/local/venv/bin/xq
-fi
-
 # >>> Darwin/Mac OS
 
 if [[ "${kernel_name}" == "Darwin" ]]; then
@@ -196,12 +195,12 @@ if [[ "${kernel_name}" == "Darwin" ]]; then
 
     if command -v brew 1>/dev/null 2>&1; then
         alias b='brew'
-        alias bo='b outdated --greedy-auto-updates'
-        alias bof='b outdated --formulae'
-        alias bi='b info'
-        alias bis='b install'
-        alias bs='b search'
-        alias bu='b update'
+        alias bo='brew outdated --greedy-auto-updates'
+        alias bof='brew outdated --formulae'
+        alias bi='brew info'
+        alias bis='brew install'
+        alias bs='brew search'
+        alias bu='brew update'
     fi
 
     if command -v bat 1>/dev/null 2>&1; then
@@ -358,6 +357,49 @@ if command -v asdf 1>/dev/null 2>&1; then
     }
 fi
 
+
+# >>> Oh My Zsh inspired
+# https://github.com/ohmyzsh/ohmyzsh/blob/master/lib/functions.zsh
+function zsh_stats() {
+  fc -l 1 \
+    | awk '{ CMD[$2]++; count++; } END { for (a in CMD) print CMD[a] " " CMD[a]*100/count "% " a }' \
+    | grep -v "./" | sort -nr | head -n 20 | column -c3 -s " " -t | nl
+}
+
+# take functions
+
+# mkcd is equivalent to takedir
+function mkcd takedir() {
+  mkdir -p $@ && cd ${@:$#}
+}
+
+function takeurl() {
+  local data thedir
+  data="$(mktemp)"
+  curl -L "$1" > "$data"
+  tar xf "$data"
+  thedir="$(tar tf "$data" | head -n 1)"
+  rm "$data"
+  cd "$thedir"
+}
+
+function takegit() {
+  git clone "$1"
+  cd "$(basename ${1%%.git})"
+}
+
+function take() {
+  if [[ $1 =~ ^(https?|ftp).*\.tar\.(gz|bz2|xz)$ ]]; then
+    takeurl "$1"
+  elif [[ $1 =~ ^([A-Za-z0-9]\+@|https?|git|ssh|ftps?|rsync).*\.git/?$ ]]; then
+    takegit "$1"
+  else
+    takedir "$@"
+  fi
+}
+
+# <<< Oh My Zsh inspired
+
 # >>> Debian/Linux
 
 if [ "${kernel_name}" = "Debian" -o "${kernel_name}" = "Linux" ]; then
@@ -407,6 +449,19 @@ if [[ "${kernel_name}" == "Darwin" ]]; then
             fi
 
             brew cleanup
+        }
+
+        function brews() {
+            local formulae="$(brew leaves | xargs brew deps --installed --for-each)"
+            local casks="$(brew list --cask)"
+
+            local blue="$(tput setaf 4)"
+            local bold="$(tput bold)"
+            local off="$(tput sgr0)"
+
+            echo "${blue}==>${off} ${bold}Formulae${off}"
+            echo "${formulae}" | sed "s/^\(.*\):\(.*\)$/\1${blue}\2${off}/"
+            echo "\n${blue}==>${off} ${bold}Casks${off}\n${casks}"
         }
     fi
 
@@ -597,7 +652,7 @@ fi
 # TODO: Clean up
 export PATH=~/bin:$PATH
 export PATH=~/.bin:$PATH
-export PATH=~/.local/bin:$PATH
+# export PATH=~/.local/bin:$PATH
 
 # >>> CDPATH - https://jcode.me/cdpath-with-zsh/
 
@@ -694,3 +749,6 @@ export PATH="$HOME/.rd/bin:$PATH"
 ### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
 
 [ -z "$ZPROF" ] || zprof
+
+# Created by `pipx` on 2022-12-25 23:07:43
+export PATH="$PATH:$HOME/.local/bin"

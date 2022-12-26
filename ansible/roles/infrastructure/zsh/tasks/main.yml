@@ -16,6 +16,7 @@
         state: present
 
 
+
 # Set ZSH default shell
 - name: ZSH - Set zsh as default shell for x86_64 systems
   become: true
@@ -33,7 +34,7 @@
 
 
 # Configure ZSH - files, themes, plugins
-- name: ZSH - configure gitconfig files
+- name: ZSH - configure .p10k.zsh and .zshenv files
   include_tasks: "configure-zfiles-each.yml"
   loop:
     - .p10k.zsh
@@ -42,7 +43,7 @@
 
 - name: ZSH - Ensure $HOME/zsh/ is setup
   block:
-    - name: Check for $HOME/.zsh/
+    - name: Check for $HOME/zsh/
       stat:
         path: "{{ dotfiles_user_home }}/zsh/"
       register: zshdir_stat
@@ -94,16 +95,37 @@
     #   args:
     #     creates: "{{ dotfiles_user_home }}/.oh-my-zsh/custom/plugins/timewarrior"
 
-# TODO: Move to place where poetry is installed
-# - name: Create directory for plugin poetry
-#   command: "mkdir ~/.oh-my-zsh/custom/plugins/poetry"
-#   args:
-#     creates: "{{ dotfiles_user_home}}/.oh-my-zsh/custom/plugins/poetry"
-#     warn: false
 
-# - name: Enable poetry completions for zsh
-#   shell: "poetry completions zsh > ~/.oh-my-zsh/custom/plugins/poetry/_poetry"
+    # Ensure Oh My Zsh Plugins are present
+    - name: ZSH - Setup Oh My Zsh Plugins
+      ansible.builtin.shell:
+        cmd: $HOME/zsh/setup-ohmyzsh-plugins.sh
+        chdir: $HOME/zsh/
+      register: results
 
+    - debug:
+        msg:
+          - "Return Code: {{ results.rc }}"
+          - "Stdout: {{ results.stdout_lines }}"
+          - "Stderr: {{ results.stderr_lines }}"
+          - "Mesage: {{ results.msg }}"
+
+
+    # Required for command-not-found plugin
+    - name: ZSH - Tap homebrew/command-not-found (homebrew)
+      homebrew_tap:
+        tap: homebrew/command-not-found
+        state: present
+      when: ansible_os_family == "Darwin" and ansible_pkg_mgr == 'homebrew'
+
+
+- name: ZSH - Create ~/.zfunc folder
+  ansible.builtin.file:
+    path: "{{ dotfiles_user_home}}/.zfunc"
+    state: directory
+
+
+# FONTS
 - name: ZSH - Setup Meslo Nerd Fonts in Linux
   block:
     - name: ZSH - Create ~/.fonts directory for Linux
