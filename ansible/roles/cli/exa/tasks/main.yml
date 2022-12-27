@@ -13,3 +13,8 @@
       homebrew:
         name: exa
         state: present
+
+    - name: EXA - get completions from github
+      ansible.builtin.get_url:
+        url: https://github.com/ogham/exa/blob/master/completions/zsh/_exa
+        dest: "{{ dotfiles_user_home }}/.zfunc/_exa"
