@@ -42,10 +42,18 @@ fi
 # much, much faster.
 DISABLE_UNTRACKED_FILES_DIRTY="true"
 
-# Control command execution tiemstamp for history
-# see 'man strftime' for details.
-# TODO: Fix history
-HIST_STAMPS="%F_%T"
+# +---------+
+# | HISTORY |
+# +---------+
+
+## History command configuration
+setopt EXTENDED_HISTORY          # Write the history file in the ':start:elapsed;command' format.
+setopt HIST_EXPIRE_DUPS_FIRST    # Expire a duplicate event first when trimming history.
+setopt HIST_IGNORE_SPACE         # Do not record an event starting with a space.
+setopt HIST_SAVE_NO_DUPS         # Do not write a duplicate event to the history file.
+setopt INC_APPEND_HISTORY        # Ensure commands are added to the history immediately 
+setopt HIST_IGNORE_DUPS       # ignore duplicated commands history list
+setopt HIST_VERIFY            # show command with history expansion to user before running it
 
 plugins=(
     git
@@ -127,14 +135,7 @@ kernel_name="$(uname -s)"
 ###############################################################################################
 # >>> ##################################### ALIAS
 
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
+alias history='history -i'
 
 # ls
 alias lt='ls -lahtFr'
