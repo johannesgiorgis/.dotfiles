@@ -1,15 +1,10 @@
 ---
 # main task for exa
 
-- name: EXA - exa is present
-
+- name: EXA - present for MacOS
+  when: ansible_os_family == "Darwin"
   block:
-    - name: EXA - install for debian
-      include_tasks: debian.yml
-      when: ansible_os_family in ["Debian",  "Pop!_OS" ]
-
     - name: EXA - install for darwin
-      when: ansible_os_family in ["Darwin"]
       homebrew:
         name: exa
         state: present
@@ -18,3 +13,62 @@
       ansible.builtin.get_url:
         url: https://github.com/ogham/exa/blob/master/completions/zsh/_exa
         dest: "{{ dotfiles_user_home }}/.zfunc/_exa"
+
+
+- name: EXA - exa is present
+  when: ansible_os_family in ["Debian",  "Pop!_OS" ]
+  block:
+    - name: EXA - Create temporary download directory
+      tempfile:
+        state: directory
+        suffix: ".exa_binary_download_dir"
+      register: exa_binary_download_dir
+
+    - name: EXA - Register folder name
+      set_fact:
+        exa_folder_name: "exa-{{ system_map[ansible_system] }}-x86_64-v0.10.1"
+
+    - name: Download exa binary to {{ exa_binary_download_dir.path }}
+      ansible.builtin.unarchive:
+        src: "https://github.com/ogham/exa/releases/download/v0.10.1/{{ exa_folder_name }}.zip"
+        dest: "{{ exa_binary_download_dir.path }}/"
+        remote_src: yes
+      register: r_exa_unarchive
+
+    - debug:
+        msg: "{{ exa_binary_download_dir.path }}"
+
+    - debug:
+        msg: "Run command: sudo mv {{ exa_binary_download_dir.path }}/bin/exa /usr/local/bin/exa"
+
+    - name: add exa to /usr/local/bin
+      command: mv bin/exa /usr/local/bin/exa
+      args:
+        chdir: "{{ exa_binary_download_dir.path }}"
+      become: "{{ should_be_root }}"
+
+    - debug:
+        msg: "Run command: sudo mv {{ exa_binary_download_dir.path }}/man/* /usr/share/man/man1/"
+
+    # use shell module to use globbing - https://stackoverflow.com/a/43877235
+    - name: add exa man page to application man pages
+      shell: mv man/* /usr/share/man/man1/
+      args:
+        chdir: "{{ exa_binary_download_dir.path }}"
+      become: "{{ should_be_root }}"
+
+    - debug:
+        msg: "Run command: mv {{ exa_binary_download_dir.path }}/completions/exa.zsh /usr/local/share/zsh/site-functions/exa.zsh"
+
+    - name: add exa shell completion for zsh
+      shell: mv completions/exa.zsh /usr/local/share/zsh/site-functions/exa.zsh
+      args:
+        chdir: "{{ exa_binary_download_dir.path }}"
+      become: "{{ should_be_root }}"
+
+  always:
+    - name: Delete binary download directory - {{ exa_binary_download_dir.path }}
+      file:
+        path: "{{ exa_binary_download_dir.path }}"
+        state: absent
+      changed_when: no

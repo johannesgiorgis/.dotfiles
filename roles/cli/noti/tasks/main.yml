@@ -9,6 +9,7 @@
 
 
 - name: NOTI - install for debian machine
+  when: ansible_os_family in ["Debian",  "Pop!_OS" ]
   block:
     - name: NOTI - Create temporary download directory
       tempfile:
@@ -55,4 +56,3 @@
         path: "{{ noti_binary_download_dir.path }}"
         state: absent
       changed_when: no
-  when: ansible_os_family in ["Debian",  "Pop!_OS" ]

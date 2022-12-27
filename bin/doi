@@ -188,7 +188,7 @@ function list_available_tags() { # lists available tags
 
     echo -e "$tags"
     echo -e "${light_gray}LEGEND: 
-    ${light_blue}INFRASTRUCTURE  ${light_yellow}CLI  ${light_green}SOFTWARE  ${magenta}MISC"
+    ${light_blue}INFRASTRUCTURE  ${light_yellow}CLI  ${light_green}SOFTWARE  ${magenta}MISC${default}"
 
 }
 
@@ -213,9 +213,10 @@ function ensure_ansible_is_present() {
         print_info "› On Linux '$release_code'..."
 
         if [[ "$release_code" == "bionic" ]]; then
-            sudo apt-add-repository ppa:ansible/ansible -y
-            sudo apt update
-            sudo apt install ansible=2.9.9-1ppa~bionic -V -y
+            # sudo apt-add-repository ppa:ansible/ansible -y
+            # sudo apt update
+            # sudo apt install ansible=2.9.9-1ppa~bionic -V -y
+            apt-get install -y ansible
 
         elif [[ "$release_code" == "focal" ]]; then
             install_ansible_base_and_collections_on_debian

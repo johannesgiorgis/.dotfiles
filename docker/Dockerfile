@@ -10,6 +10,7 @@ RUN apt-get update \
     sudo \
     vim-nox \
     less \
+    lsb-release \
     # # libbz2-dev \
     # # libreadline-dev \
     # # libssl-dev \

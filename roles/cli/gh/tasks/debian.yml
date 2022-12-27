@@ -1,8 +1,0 @@
----
-# debian task for gh
-
-- name: GH - install for debian machine
-  become: "{{ should_be_root }}"
-  block:
-    - debug:
-        msg: "TODO: Hasn't been implemented yet!"
