@@ -86,3 +86,6 @@
       loop_control:
         label: "{{ item }}"
       tags: pipx
+
+- name: Enable poetry completions for zsh
+  shell: "poetry completions zsh > {{ dotfiles_user_home}}/.zfunc/_poetry"
