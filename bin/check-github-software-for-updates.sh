@@ -7,10 +7,9 @@
 #
 ###################################################################
 
-export SUPPORT_DIR="${HOME}/.dotfiles/support"
-source "${SUPPORT_DIR}/common-utilities.sh"
+source "${HOME}/.dotfiles/bin/common-utilities.sh"
 
-CONFIG_FILE="${dotfilesDirectory}/ansible/group_vars/all/github.yml"
+CONFIG_FILE="${DOTFILES_DIR}/ansible/group_vars/all/github.yml"
 GITHUB_API_URL="https://api.github.com/repos"
 
 main() {

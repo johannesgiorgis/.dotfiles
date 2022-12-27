@@ -5,31 +5,32 @@
 # doi: dotfiles manager
 # ---------------------
 # Uses ansible playbooks for managing system software, configuration
+# Dependencies kept to a minimal - ansible, homebrew
 #
 ##########################################################################
 
 set -e
 
-export SUPPORT_DIR="${HOME}/.dotfiles/support"
-source "${SUPPORT_DIR}/common-utilities.sh"
+source "${HOME}/.dotfiles/bin/common-utilities.sh"
 
-ANSIBLE_DIR="${HOME}/.dotfiles/ansible"
+ANSIBLE_DIR="${HOME}/.dotfiles"
 PLAYBOOK_FILE="${ANSIBLE_DIR}/dotfiles.yml"
 HOSTS_FILE="${ANSIBLE_DIR}/hosts"
 
 
 function usage() {
-    echo "ERROR: Script requires the following inputs:"
-    echo "Usage:
+    echo -e "${red}ERROR: Script requires the following inputs:
+    ${blue}
+    -f: find tag
+    -t: tag for ansible (default: all)
+    -i: get info for an aggregate tag (tags with multiple packages. e.g. macos-cli, macos-infra)
+    -a: enable ask_become_pass
+    "
+    echo -e "${yellow}Usage:
         ${0##*/} # will display all available tags
         ${0##*/} -t zsh -a
         ${0##*/} -f macos
         "
-    echo "Options:
-        -f: find tag
-        -t: tag for ansible (default: all)
-        -i: get info for an aggregate tag (tags with multiple packages. e.g. macos-cli, macos-infra)
-        -a: enable ask_become_pass"
 }
 
 
@@ -102,32 +103,38 @@ main() {
 function search_for_tag() { # search for a tag
     local to_find=$1
     echo "Searching for '$to_find'..."
-    found_tag=$(cat "${PLAYBOOK_FILE}" | grep -v '#' | grep -o '\[\([^]]\+\)\]' | sed 's/\[//; s/\]//' | grep "$to_find")
-    echo -e "\nFound Tag(s):\n'$found_tag'"
+    tags=$(get_tags)
+    found_tag=$(echo -e "$tags" | grep "$to_find")
+    # TODO: Test alternative: grep -o $to_find | head -1
+    echo -e "\n${green}Found Tag(s):\n'$found_tag'"
+}
+
+function get_tags() {
+    grep -v '#' "$PLAYBOOK_FILE" |\
+        # Extract tags as [*]
+        grep -o '\[\([^]]\+\)\]' |\
+        # Remove surrounding brackets - [,]
+        awk -F '[][]' '{print $2}'
 }
 
 
 function get_tag_info() { # get tag info
     local to_info=$1
     echo "Searching for '$to_info'..."
-    found_info_tag=$(cat "${PLAYBOOK_FILE}" | grep -v '#' | grep -o '\[\([^]]\+\)\]' | sed 's/\[//; s/\]//' | grep "$to_info")
+    tags=$(get_tags)
+    found_info_tag=$(echo -e "$tags" | grep "$to_info")
     num_found_tags=$(echo "$found_info_tag" | wc -l | sed 's/ //g')
-    echo -e "\n$num_found_tags Found Info Tag(s):\n'$found_info_tag'"
+    echo -e "\n${green}$num_found_tags Found Info Tag(s):\n$found_info_tag"
     
-    if [[ "$found_info_tag" == "" ]]; then
-        echo "ERROR: tag doesn't exist. Exiting with error"
-        exit 1
-    fi
-
     if [[ "$num_found_tags" != 1 ]]; then
-        echo "ERROR: More than 1 tags found. Exiting with error"
+        echo -e "${red}ERROR: More than 1 tags found. Exiting with error"
         exit 1
     fi
 
     find_directory "$to_info"
-    echo "Directory:$directory"
+    echo -e "Directory:${yellow}$directory"
 
-    echo -e "\nPackages for '$to_info' tag:"
+    echo -e "\n${light_blue}Packages for '$to_info' tag:"
     cat "$directory/README.md" |\
         # grab lines with either '- ack' or '- [coreutils]'
         grep -E '(^\- \[\([^]]\+\)\]|^- )' |\
@@ -143,35 +150,46 @@ function find_directory() { # find directory
     local to_info=$1
     
     if [[ $(uname) == "Linux" ]]; then
-        if [ -x "$(command -v fdfind)" ]; then
-            directory=$(fdfind "$to_info" $ANSIBLE_DIR)
-        else
-            echo "ERROR: Ensure fdfind (Linux) is installed via common-cli role"
-            exit 1
-        fi
+        cmd="fdfind"
 
     elif [[ $(uname) == "Darwin" ]]; then
-        if [ -x "$(command -v fd)" ]; then
-            directory=$(fd "$to_info" $ANSIBLE_DIR)
-        else
-            echo "ERROR: Ensure fd (Darwin) is installed via common-cli role"
-            exit 1
-        fi
+        cmd="fd"
     fi
+
+    if [ ! -x "$(command -v $cmd)" ]; then
+        echo -e "${red}ERROR: Ensure $cmd is installed via common-cli role"
+        exit 1
+    fi
+
+    directory=$($cmd "$to_info" $ANSIBLE_DIR)
 }
 
 
 function list_available_tags() { # lists available tags
-    available_tags=$(cat "${PLAYBOOK_FILE}" |\
-        # ignore commented out lines
-        grep -v '#' |\
-        # grab tags - [*]
-        grep -o '\[\([^]]\+\)\]' |\
-        # remove brackets - [,]
-        sed 's/\[//; s/\]//' | sort)
-    available_tags="all\n$available_tags"
+    tag_sections=$(grep -v '#' "$PLAYBOOK_FILE" |\
+        # extract full role name
+        grep -o 'role:.\+,' | sed 's/^role: //;s/.$//')
     echo -e "\nAvailable Tags:"
-    echo -e "$available_tags"
+    # Color Code based on type
+    tags=""
+    for tag in $tag_sections
+    do
+        if [[ $tag == *"cli/"* ]]; then
+            tags="${tags}  ${light_yellow}${tag#"cli/"}"
+        elif [[ $tag == *"infrastructure/"* ]]; then
+            tags="${tags}  ${light_blue}${tag#"infrastructure/"}"
+        elif [[ $tag == *"software/"* ]]; then
+            tags="${tags}  ${light_green}${tag#"software/"}"
+        else
+            tags="${tags}  ${magenta}${tag}"
+        fi
+        tags="$tags\n"
+    done
+
+    echo -e "$tags"
+    echo -e "${light_gray}LEGEND: 
+    ${light_blue}INFRASTRUCTURE  ${light_yellow}CLI  ${light_green}SOFTWARE  ${magenta}MISC"
+
 }
 
 
@@ -219,15 +237,9 @@ function ensure_homebrew_is_present() {
 
     # need to install homebrew
     print_info "› Installing homebrew..."
-    if [[ "$(uname)" == "Darwin" ]]
-    then
-        # https://brew.sh/
-        print_info "› On Mac..."
-        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-    else
-        fail "ERROR: homebrew is only for MacOS, not for $(uname)"
-        exit 1
-    fi
+    # https://brew.sh/
+    print_info "› On Mac..."
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 }
 
 

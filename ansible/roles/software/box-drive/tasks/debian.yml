@@ -1,6 +1,0 @@
----
-# debian tasks for box-drive
-
-- name: box-drive is present for debian system
-  debug:
-    msg: "TODO: Add Debian stuff"

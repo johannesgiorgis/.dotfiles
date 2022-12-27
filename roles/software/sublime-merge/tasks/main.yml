@@ -1,0 +1,36 @@
+---
+# main task for sublime-merge
+
+- name: Install Sublime Merge (brew-cask)
+  when: ansible_os_family == "Darwin"
+  homebrew_cask:
+    name: sublime-merge
+    state: present
+
+
+- name: sublime-merge is present for debian system
+  become: "{{ should_be_root }}"
+  when: ansible_os_family in ["Debian", "Pop!_OS"]
+  block:
+    - name: Install Sublime Merge GPG key
+      apt_key:
+        url: https://download.sublimetext.com/sublimehq-pub.gpg
+        state: present
+
+    - name: Install dependencies for Sublime Merge
+      apt:
+        name:
+          - apt-transport-https
+        state: present
+
+    - name: Install Sublime Merge repository
+      apt_repository:
+        repo: deb https://download.sublimetext.com/ apt/stable/
+        filename: sublime-merge
+        state: present
+
+    - name: Install Sublime Merge
+      apt:
+        name: sublime-merge
+        state: present
+        update_cache: true

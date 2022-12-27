@@ -1,0 +1,8 @@
+---
+# main task for signal
+
+- name: SIGNAL - Install signal via homebrew cask
+  when: ansible_os_family == "Darwin"
+  homebrew_cask:
+    name: signal
+    state: present

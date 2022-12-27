@@ -1,7 +1,0 @@
----
-# mac tasks for dropbox
-
-- name: Install Dropbox via homebrew cask
-  homebrew_cask:
-    name: dropbox
-    state: present

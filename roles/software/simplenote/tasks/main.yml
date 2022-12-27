@@ -1,0 +1,20 @@
+---
+# main task for simplenote
+
+- name: SIMPLENOTE - simplenote is present
+
+  block:
+    - name: SIMPLENOTE - present for Darwin
+      when: ansible_os_family in ["Darwin"]
+      homebrew_cask:
+        name: simplenote
+        state: present
+
+    - name: SIMPLENOTE - present for Debian
+      when: ansible_os_family in ["Debian",  "Pop!_OS"]
+      become: "{{ should_be_root }}"
+      debug:
+        msg: "TODO: Implement/Recheck for Debian"
+      # apt:
+      #   # https://github.com/Automattic/simplenote-electron/releases/download/v2.16.0/Simplenote-linux-2.16.0-amd64.deb
+      #   deb: https://github.com/Automattic/simplenote-electron/releases/download/v{{ simplenote_version }}/Simplenote-{{ ansible_system | lower }}-{{ simplenote_version }}-{{ machine_map[ansible_machine] }}.deb

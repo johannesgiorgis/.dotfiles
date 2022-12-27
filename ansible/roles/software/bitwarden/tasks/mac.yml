@@ -1,7 +1,0 @@
----
-# mac tasks for bitwarden
-
-- name: BITWARDEN - Install via homebrew cask
-  homebrew_cask:
-    name: bitwarden
-    state: present

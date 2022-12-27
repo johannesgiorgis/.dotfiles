@@ -1,0 +1,10 @@
+---
+# main task for bitwarden
+
+- name: BITWARDEN - Install via homebrew cask (MacOS)
+  # homebrew_cask:
+  #   name: bitwarden
+  #   state: present
+  debug:
+    msg: "Install from Mac App Store to allow Browser Integration"
+  when: ansible_os_family in ["Darwin"]

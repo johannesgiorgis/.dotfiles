@@ -1,0 +1,17 @@
+---
+# main tasks for box-drive
+
+- name: BOX-DRIVE - is present
+  become: "{{ should_be_root }}"
+
+  block:
+    - name: BOX-DRIVE - present for Debian System
+      debug:
+        msg: "TODO: Add Debian stuff"
+      when: ansible_os_family in ["Debian", "Pop!_OS"]
+
+    - name: BOX - Install box-drive for MacOS via homebrew cask
+      homebrew_cask:
+        name: box-drive
+        state: present
+      when: ansible_os_family == "Darwin"

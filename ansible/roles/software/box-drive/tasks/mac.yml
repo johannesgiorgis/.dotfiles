@@ -1,7 +1,0 @@
----
-# mac tasks for box-drive
-
-- name: Install box-drive via homebrew cask
-  homebrew_cask:
-    name: box-drive
-    state: present

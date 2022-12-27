@@ -1,0 +1,21 @@
+# LOCAL
+
+dotfiles_user_home: "{{ '~' | expanduser }}"
+dotfiles_home: "{{ dotfiles_user_home }}/.dotfiles"
+ansible_dir: "{{ dotfiles_home }}"
+
+full_name: Johannes Giorgis
+git_user: johannesgiorgis
+git_email: johannesgiorgis@users.noreply.github.com
+
+installation_download_dir: "/tmp/installation_downloads"
+
+machine_map:
+  i686: 386
+  i386: 386
+  x86_64: amd64
+  amd64: amd64
+
+system_map:
+  Darwin: macos
+  Linux: linux

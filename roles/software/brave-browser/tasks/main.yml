@@ -1,0 +1,34 @@
+---
+# main task for brave-browser
+
+- name: BRAVE-BROWESER - is present
+  become: "{{ should_be_root }}"
+
+  block:
+    - name: BRAVE-BROWESER - Install brave-browser for MacOS via homebrew cask
+      homebrew_cask:
+        name: brave-browser
+        state: present
+      when: ansible_os_family in ["Darwin"]
+
+    - name: BRAVE-BROWESER - brave browser is present for debian system
+      block:
+        - name: BRAVE-BROWESER - Install key
+          apt_key:
+            url: https://brave-browser-apt-release.s3.brave.com/brave-core.asc
+            keyring: /etc/apt/trusted.gpg.d/brave-browser-release.gpg
+            state: present
+
+        - name: BRAVE-BROWESER - Install repository
+          apt_repository:
+            repo: deb [arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main
+            filename: brave-browser-release
+            state: present
+
+        - name: BRAVE-BROWESER - Install for Debian 
+          apt:
+            name: brave-browser
+            state: present
+            update_cache: yes
+      when: ansible_os_family in ["Debian",  "Pop!_OS" ]
+

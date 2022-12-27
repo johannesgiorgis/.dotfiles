@@ -1,0 +1,32 @@
+---
+# main task for firefox
+
+- name: FIREFOX - Install for MacOS via homebrew cask
+  homebrew_cask:
+    name: firefox
+    state: present
+  when: ansible_os_family in ["Darwin"]
+
+
+- name: FIREFOX - Install for Debian System
+  become: "{{ should_be_root }}"
+  debug:
+    msg: "TODO: Implement Firefox install for Debian Systems"
+    # - name: FIREFOX - Install key (Debian)
+    #   apt_key:
+    #     url: https://firefox-apt-release.s3.brave.com/brave-core.asc
+    #     keyring: /etc/apt/trusted.gpg.d/firefox-release.gpg
+    #     state: present
+
+    # - name: FIREFOX - Install repository (Debian)
+    #   apt_repository:
+    #     repo: deb [arch=amd64] https://firefox-apt-release.s3.brave.com/ stable main
+    #     filename: firefox-release
+    #     state: present
+
+    # - name: FIREFOX - Install (Debian)
+    #   apt:
+    #     name: firefox
+    #     state: present
+    #     update_cache: yes
+  when: ansible_os_family in ["Debian",  "Pop!_OS" ]

@@ -1,0 +1,71 @@
+---
+# main task for teamviewer
+
+- name: Install Teamviewer (brew-cask)
+  when: ansible_os_family == "Darwin"
+  homebrew_cask:
+    name: teamviewer
+    state: present
+
+
+- name: Teamviewer and dependencies are present (Debian)
+  when: ansible_os_family in ["Debian", "Pop!_OS"]
+  # become: "{{ should_be_root }}"
+  debug:
+    msg: "TODO: Implement for Debian"
+
+  # block:
+  #   - name: Install Teamviewer GPG key
+  #     apt_key:
+  #       url: "https://download.teamviewer.com/download/linux/signature/TeamViewer2017.asc"
+  #       id: "8CAE012EBFAC38B17A937CD8C5E224500C1289C0"
+  #       state: present
+
+  #   - name: Install Teamviewer repository
+  #     apt_repository:
+  #       repo: deb http://linux.teamviewer.com/deb stable main
+  #       filename: teamviewer
+  #       state: present
+
+  #   - debug:
+  #       msg: "Should be root? {{ should_be_root }}"
+
+  #   - name: Install Teamviewer
+  #     apt:
+  #       name: teamviewer
+  #       # handle teamviewer : Depends: libqt5webkit5 (>= 5.5) but it is not installed or
+  #       # qt56-teamviewer but it is not installable
+  #       state: fixed
+  #       update_cache: true
+  #   # - name: Install dependencies for Teamviewer
+  #   #   apt:
+  #   #     name:
+  #   #       - lib32asound2
+  #   #     state: present
+  #   #     update_cache: true
+  #   # - name: Set teamviewer_debian_package_url
+  #   #   set_fact:
+  #   #     # teamviewer_debian_package_url: "https://download.teamviewer.com/download/version_{{ teamviewer_version }}/teamviewer_{{ machine_map[ansible_machine] }}.deb"
+  #   #     teamviewer_debian_package_url: "https://download.teamviewer.com/download/linux/teamviewer_{{ machine_map[ansible_machine] }}.deb"
+  #   # - debug:
+  #   #     msg: "Teamviewer deb url: {{ teamviewer_debian_package_url }}"
+  #   # - name: Create temporary download directory
+  #   #   tempfile:
+  #   #     state: directory
+  #   #     suffix: ".teamviewer_download"
+  #   #   register: teamviewer_download_dir
+  #   #   changed_when: no
+  #   # - debug:
+  #   #     msg: "Download dir: {{ teamviewer_download_dir.path }}"
+  #   # - name: Download Teamviewer debian package
+  #   #   get_url:
+  #   #     url: "{{ teamviewer_debian_package_url }}"
+  #   #     dest: "{{ teamviewer_download_dir.path }}/teamviewer.deb"
+  #   #   register: teamviewer_installer
+  #   # - debug:
+  #   #     msg: "teamviewer_installer: {{ teamviewer_installer }}"
+  #   # - name: Install Teamviewer Debian package
+  #   #   apt:
+  #   #     deb: "{{ teamviewer_installer.dest }}"
+  #   #     state: fixed
+

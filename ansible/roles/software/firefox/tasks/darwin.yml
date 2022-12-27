@@ -1,7 +1,0 @@
----
-# darwin tasks for firefox
-
-- name: Install firefox via homebrew cask
-  homebrew_cask:
-    name: firefox
-    state: present

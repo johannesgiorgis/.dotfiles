@@ -1,6 +1,0 @@
----
-# vars file for noti
-
-noti_system_map:
-  Darwin: macos
-  Linux: linux
