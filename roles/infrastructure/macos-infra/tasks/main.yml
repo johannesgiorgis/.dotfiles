@@ -1,5 +1,6 @@
 ---
 # main tasks for macos-infra(structure)
+# TODO: Deal with iterm2 backup file!
 
 - name: MACOS-INFRA - formula, casks and apps are present (macos)
 

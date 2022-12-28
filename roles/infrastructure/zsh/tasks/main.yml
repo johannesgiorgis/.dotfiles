@@ -56,7 +56,7 @@
 
     - name: ZSH - Symlink zsh/ to $HOME/zsh/
       file:
-        src: "{{ ansible_dir }}/roles/infrastructure/zsh/files/zsh"
+        src: "{{ dotfiles_home }}/files/zsh"
         dest: "{{ dotfiles_user_home }}/zsh"
         state: link
 

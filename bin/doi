@@ -188,7 +188,7 @@ function list_available_tags() { # lists available tags
 
     echo -e "$tags"
     echo -e "${light_gray}LEGEND: 
-    ${light_blue}INFRASTRUCTURE  ${light_yellow}CLI  ${light_green}SOFTWARE  ${magenta}MISC${default}"
+    ${light_yellow}CLI  ${light_blue}INFRASTRUCTURE  ${light_green}SOFTWARE  ${magenta}MISC${default}"
 
 }
 

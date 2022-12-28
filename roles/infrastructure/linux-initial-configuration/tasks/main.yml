@@ -13,7 +13,7 @@
     - name: Symlink .selected_editor
       become_user: "{{ ansible_user_id }}"
       file:
-        src: "{{ ansible_dir }}/roles/infrastructure/linux-initial-configuration/files/selected_editor"
+        src: "{{ dotfiles_home }}/files/linux/selected_editor"
         dest: "{{dotfiles_user_home}}/.selected_editor"
         state: link
 

@@ -21,7 +21,7 @@
     - name: Symlink com.example.KeyRemapping.plist for keyboard remapping
       become_user: "{{ ansible_user_id }}"
       file:
-        src: "{{ ansible_dir }}/roles/infrastructure/macos-initial-configuration/files/com.example.KeyRemapping.plist"
+        src: "{{ dotfiles_home }}/files/macos/com.example.KeyRemapping.plist"
         dest: ~/Library/LaunchAgents/com.example.KeyRemapping.plist
         state: link
 

@@ -3,13 +3,33 @@
 
 - name: terminator is present
   # become: "{{ should_be_root }}"
-
+  when: ansible_os_family in ["Debian", "Pop!_OS"]
   block:
     - name: terminator is present (linux)
       package:
         name: terminator
         state: present
 
-    - name: configure terminator
-      import_tasks: configure.yml
-  when: ansible_os_family in ["Debian", "Pop!_OS"]
+
+    # Configure
+    - name: Create terminator plugin directory
+      # command: "mkdir ~/.config/terminator/plugins"
+      # args:
+      #   creates: "{{ dotfiles_user_home}}/.config/terminator/plugins"
+      # warn: false
+      file:
+        path: ~/.config/terminator/plugins
+        state: directory
+        mode: "775"
+    
+    - name: Get terminator-themes plugin
+      get_url:
+        url: "https://git.io/v5Zww"
+        dest: "~/.config/terminator/plugins/terminator-themes.py"
+    
+    - name: Symlink terminator config file
+      file:
+        src: "{{ dotfiles_home }}/files/linux/terminator-config"
+        dest: "{{ dotfiles_user_home }}/.config/terminator/config"
+        state: link
+        force: yes

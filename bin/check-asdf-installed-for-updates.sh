@@ -71,7 +71,8 @@ main() {
             # Check against latest version - ignore dev, rc, beta
             if [[ "$latest_version_root" == *"dev"* ]] \
                 || [[ "$latest_version_root" == *"rc"* ]] \
-                    || [[ "$latest_version_root" == *"beta"* ]]
+                    || [[ "$latest_version_root" == *"beta"* ]] \
+                        || [[ "$latest_version_root" == *"alpha"* ]]
             then
                 # 2022-12 Update: Check against latest version of plugin via asdf latest <plugin>
                 compare_versions "$installed_version" "$latest_version"

@@ -2,7 +2,6 @@
 
 dotfiles_user_home: "{{ '~' | expanduser }}"
 dotfiles_home: "{{ dotfiles_user_home }}/.dotfiles"
-ansible_dir: "{{ dotfiles_home }}"
 
 full_name: Johannes Giorgis
 git_user: johannesgiorgis

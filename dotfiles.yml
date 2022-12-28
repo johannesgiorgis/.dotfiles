@@ -3,9 +3,23 @@
   vars:
     should_be_root: "{{ true if ansible_pkg_mgr != 'homebrew' else false }}"
   roles:
+    # cli
+    - { role: cli/broot, tags: [broot] }
+    - { role: cli/common-cli, tags: [common-cli] }
+    - { role: cli/exa, tags: [exa] }
+    - { role: cli/gh, tags: [gh] }
+    - { role: cli/linux-mlocate, tags: [linux-mlocate] }
+    - { role: cli/linux-xclip, tags: [linux-xclip] }
+    - { role: cli/macos-cli, tags: [macos-cli] }
+    - { role: cli/neovim, tags: [neovim] }
+    - { role: cli/noti, tags: [noti] }
+    - { role: cli/taskwarrior, tags: [taskwarrior] }
+    - { role: cli/timewarrior, tags: [timewarrior] }
+    - { role: cli/vim, tags: [vim] }
+    - { role: cli/youtube-dl, tags: [youtube-dl] }
+
     # infrastructure
     - { role: infrastructure/bin-folder, tags: [bin-folder] }
-    - { role: infrastructure/docker, tags: [docker] }
     - { role: infrastructure/fonts-firacode, tags: [fonts-firacode] }
     - { role: infrastructure/git, tags: [git] }
     - {
@@ -61,21 +75,6 @@
 
     # TODO: Remove
     - { role: infrastructure/apt, tags: [apt] }
-
-    # cli
-    - { role: cli/broot, tags: [broot] }
-    - { role: cli/common-cli, tags: [common-cli] }
-    - { role: cli/exa, tags: [exa] }
-    - { role: cli/gh, tags: [gh] }
-    - { role: cli/linux-mlocate, tags: [linux-mlocate] }
-    - { role: cli/linux-xclip, tags: [linux-xclip] }
-    - { role: cli/macos-cli, tags: [macos-cli] }
-    - { role: cli/neovim, tags: [neovim] }
-    - { role: cli/noti, tags: [noti] }
-    - { role: cli/taskwarrior, tags: [taskwarrior] }
-    - { role: cli/timewarrior, tags: [timewarrior] }
-    - { role: cli/vim, tags: [vim] }
-    - { role: cli/youtube-dl, tags: [youtube-dl] }
 
     # software
     - { role: software/audacity, tags: [audacity] }

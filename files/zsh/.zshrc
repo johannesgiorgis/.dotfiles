@@ -135,6 +135,9 @@ kernel_name="$(uname -s)"
 ###############################################################################################
 # >>> ##################################### ALIAS
 
+alias md='mkdir -p'
+alias rd=rmdir
+
 alias history='history -i'
 
 if command -v exa 1>/dev/null 2>&1; then
@@ -597,17 +600,7 @@ function refresh_sso() {
 DEFAULT_USER=$(whoami)
 
 # Load work related stuff
-# link: ln -s ~/.dotfiles/ansible/roles/infrastructure/zsh/files/zsh_work.zsh ~/.zsh_work.zsh
-# if [[ "$kernel_name" = 'Darwin' ]] && \
-#     [[ "$DEFAULT_USER" = 'jgiorgis' ]]
-# if [[ "$kernel_name" = 'Darwin' ]] || \
-#     [[ $(hostname) = "JG-Diligent-MacBook-Pro.local" ]] && \
-#     [[ "$USER" = 'johannes.giorgis' ]]
-# then
-#     [[ ! -f ~/.zsh_work.zsh ]] || source ~/.zsh_work.zsh
-# fi
-
-[[ ! -f $ZDOTDIR/.zsh_work.zsh ]] || source $ZDOTDIR/.zsh_work.zsh
+[[ ! -f $HOME/.zsh_work.zsh ]] || source $HOME/.zsh_work.zsh
 
 # <<< ##################################### WORK STUFF
 ###############################################################################################
@@ -616,54 +609,9 @@ DEFAULT_USER=$(whoami)
 ###############################################################################################
 # >>> ##################################### COMPLETIONS
 
-# >>> Darwin/Mac OS
-
-if [[ "${kernel_name}" = "Darwin" ]]; then
-
-    # AWS COMPLETION - https://github.com/aws/aws-cli/issues/4656
-    # Mac - aws v1
-    awsv1_dir="/usr/local/opt/awscli@1/"
-    if test -d "$awsv1_dir"; then
-        alias aws="${awsv1_dir}bin/aws"
-
-        # if test -f "/usr/local/opt/awscli@1/bin/aws_completer"; then
-        #     complete -C '/usr/local/opt/awscli@1/bin/aws_completer' aws
-        # fi
-    fi
-fi
-
-# <<< Darwin/Mac OS
-
 if command -v aws 1>/dev/null 2>&1; then
     export AWS_CLI_AUTO_PROMPT=on-partial
 fi
-
-# AWS Completion - moved to ~/.zsh_work.zsh
-#if command -v aws 1>/dev/null 2>&1; then
-
-    #function awsm() { aws --profile main "$@"; }
-
-	#if test -f "/usr/local/bin/aws_completer"; then
-	#	complete -C '/usr/local/bin/aws_completer' aws awsm
-    #elif test -f "${HOME}/.asdf/shims/aws_completer"; then
-    #    complete -C "${HOME}/.asdf/shims/aws_completer" aws 
-	#fi
-#fi
-
-#if command -v aws-vault 1>/dev/null 2>&1; then
-
-    # function avp() { aws-vault exec aws-account -- aws "$@"; }
-
-    # alias play='aws-vault exec aws-account --'
-    # alias stg='aws-vault exec aws-account --'
-
-	#if test -f "/usr/local/bin/aws_completer"; then
-	#	complete -C '/usr/local/bin/aws_completer' aws-vault avp
-    #elif test -f "${HOME}/.asdf/shims/aws_completer"; then
-    #    complete -C "${HOME}/.asdf/shims/aws_completer" aws-vault avp
-	#fi
-
-#fi
 
 # <<< ##################################### COMPLETIONS
 ###############################################################################################

@@ -20,7 +20,7 @@
 
     - name: Symlink redshift config file
       file:
-        src: "{{ ansible_dir }}/roles/infrastructure/linux-redshift/files/redshift.conf"
+        src: "{{ dotfiles_home }}/files/linux/redshift.conf"
         dest: "{{ dotfiles_user_home }}/.config/redshift/redshift.conf"
         state: link
         force: yes

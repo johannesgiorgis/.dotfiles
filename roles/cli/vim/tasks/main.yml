@@ -1,38 +1,37 @@
 ---
 # main task for vim
 
-- name: vim is present
+
+- name: VIM - present for MacOS via homebrew
+  when: ansible_pkg_mgr == 'homebrew'
+  homebrew:
+    name: vim
+    state: present
+
+
+- name: VIM - present for Debian
   become: "{{ should_be_root }}"
-
-  block:
-    - name: vim is present (apt)
-      when: ansible_pkg_mgr == 'apt'
-      apt:
-        name: vim-nox
-        state: latest
-
-    - name: vim is present (homebrew)
-      when: ansible_pkg_mgr == 'homebrew'
-      homebrew:
-        name: vim
-        state: present
+  when: ansible_pkg_mgr == 'apt'
+  apt:
+    name: vim-nox
+    state: latest
 
 
 # Configure
-- name: Check if .vimrc exists
+- name: VIM - Check if .vimrc exists
   stat:
     path: "{{ dotfiles_user_home }}/.vimrc"
   register: vimrc_stat
   failed_when: False
 
-- name: Backup .vimrc
+- name: VIM - Backup .vimrc
   command: mv ~/.vimrc ~/.vimrc.bak
   args:
     creates: "{{ dotfiles_user_home }}/.vimrc.bak"
   when: vimrc_stat.stat.exists
 
-- name: Symlink vimrc
+- name: VIM - Symlink vimrc
   file:
-    src: "{{ ansible_dir }}/roles/cli/vim/files/vimrc"
+    src: "{{ dotfiles_home }}/files/vimrc"
     dest: "{{ dotfiles_user_home }}/.vimrc"
     state: link

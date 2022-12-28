@@ -1,5 +1,6 @@
 ---
 # tasks for linux-gnome-extensions
+# TODO: Document what to do with dash-to-panel-settings.txt
 
 - name: installing gnome extensions
 

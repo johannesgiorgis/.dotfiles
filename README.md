@@ -123,6 +123,16 @@ Folks are using Python, Typescript to write wrapper programs around their .dotfi
     - <https://github.com/pbassiner/dev-env>
 - dconf-settings: <https://github.com/jaredhocutt/ansible-dconf-settings>
 
+Simplifying zsh shell to remove dependency on Oh My Zsh!
+
+- https://github.com/Phantas0s/.dotfiles
+- https://github.com/ohmyzsh/ohmyzsh/tree/master/lib (Used for references)
+
+Zsh history
+
+- https://www.soberkoder.com/better-zsh-history/
+- https://gist.github.com/matthewmccullough/787142
+
 ### Issues
 
 I was unable to install my desired theeme `powerlevel10k` via antigen. I kept getting the following error:
