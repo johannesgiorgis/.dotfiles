@@ -32,6 +32,6 @@
 
 - name: VIM - Symlink vimrc
   file:
-    src: "{{ dotfiles_home }}/files/vimrc"
+    src: "{{ dotfiles_home }}/files/.vimrc"
     dest: "{{ dotfiles_user_home }}/.vimrc"
     state: link

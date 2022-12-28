@@ -501,17 +501,11 @@ function zup() { # update oh my zsh + powerlevel10k
             echo "Updating powerlevel10k..."
             update_p10k
         fi
-
-        if command -v omz 1>/dev/null 2>&1; then
-            echo "Updating Oh My Zsh..."
-            omz update
-        fi
-
     fi
 }
 
 function update_p10k() { # update powerlevel10k
-	git -C $ZSH_CUSTOM/themes/powerlevel10k pull
+	git -C $ZDOTDIR/themes/powerlevel10k pull
 }
 
 # >>> AWS

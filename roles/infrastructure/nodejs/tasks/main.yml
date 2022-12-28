@@ -41,7 +41,7 @@
 
     - name: NODEJS - Symlink .default-npm-packages
       file:
-        src: "{{ dotfiles_home }}/files/default-npm-packages"
+        src: "{{ dotfiles_home }}/files/.default-npm-packages"
         dest: "{{ dotfiles_user_home }}/.default-npm-packages"
         state: link
 

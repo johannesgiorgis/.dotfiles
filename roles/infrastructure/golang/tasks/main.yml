@@ -25,7 +25,7 @@
 
     # - name: Symlink .default-golang-pkgs
     #   file:
-    #     src: "{{ dotfiles_home }}/files/default-golang-pkgs"
+    #     src: "{{ dotfiles_home }}/files/.default-golang-pkgs"
     #     dest: "{{ dotfiles_user_home }}/.default-golang-pkgs"
     #     state: link
 

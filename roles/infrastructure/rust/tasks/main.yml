@@ -15,7 +15,7 @@
 
     # - name: RUST - Symlink .default-cargo-crates
     #   file:
-    #     src: "{{ dotfiles_home }}/files/default-cargo-crates"
+    #     src: "{{ dotfiles_home }}/files/.default-cargo-crates"
     #     dest: "{{ dotfiles_user_home }}/.default-cargo-crates"
     #     state: link
 
