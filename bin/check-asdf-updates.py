@@ -15,8 +15,6 @@ from pprint import pprint
 from typing import List, Tuple  # Python <3.11 compatiblility
 from dataclasses import dataclass
 
-# from tabulate import tabulate
-
 # set logging
 LOG_LEVEL = os.environ.get("LOG_LEVEL", "INFO").upper()
 
@@ -76,11 +74,10 @@ class Colors:
 
 def main():
     start = time.time()
-    log.info("HELLO")
     plugins = get_plugins_info()
     check_latest_versions(plugins)
 
-    print("=" * 70)
+    print("=" * 90)
     if LOG_LEVEL == "DEBUG":
         for plugin in plugins:
             plugin.display()
@@ -126,9 +123,12 @@ def get_plugins_info() -> List[Plugin]:
     return plugins
 
 
+# Check Updates
+
+
 def check_latest_versions(plugins: List[Plugin]):
     """
-    Checks latest for versions, subversions for each installed plugin version
+    Checks latest versions, subversions for each installed plugin version
     """
     log.info("Checking latest versions")
     log.debug(plugins)
@@ -160,23 +160,26 @@ def search_for_versions(version: str, all_versions: List[str], num_chars: int = 
     return result
 
 
+# Report Generation
+
+
 def display_report(plugins: List[Plugin]):
     log.info("Generating report")
-    status, commands = generate_status_and_commands(plugins)
+    status, commands = generate_status_and_update_commands(plugins)
 
     print()
-    log.info(f"{Colors.blue}› Show 'asdf current' output:")
+    log.info(f"{Colors.light_blue}› Show 'asdf current' output:")
     subprocess.check_call(["asdf", "current"])
 
     print()
-    log.info(f"{Colors.light_yellow}› asdf installed software version status:{Colors.default}")
-    headers = ["PLUGIN", "VERSION", "SUBVERSION"]
-    print(f"{headers[0]: <15}{headers[1]: <25}{headers[2]}")
-    # PLUGIN        VERSION                SUBVERSION
-    # nodejs        14.20.1 -> 14.21.2     14.20.1 good
-    # python        3.8.15 -> 3.11.1       3.8.15 -> 3.8.16
+    log.info(f"{Colors.light_yellow}› asdf Update Summary:{Colors.default}")
+    headers = ["PLUGIN", "INSTALLED", "LATEST", "VERSION", "SUBVERSION"]
+    print(f"{headers[0]: <15}{headers[1]: <15}{headers[2]: <15}{headers[3]: <25}{headers[4]}")
+    # PLUGIN      INSTALLED      LATEST       VERSION                SUBVERSION
+    # nodejs      14.20.1        19.3.0       14.20.1 -> 14.21.2     14.20.1 good
+    # python      3.8.15         3.11.1       3.8.15 -> 3.11.1       3.8.15 -> 3.8.16
     for row in status:
-        print(f"{row[0]: <15}{row[1]: <35}{row[2]}")
+        print(f"{row[0]: <15}{row[1]: <15}{row[2]: <20}{row[3]: <35}{row[4]}")
 
     print()
     print(f"{Colors.green}› asdf update software update command:")
@@ -185,51 +188,62 @@ def display_report(plugins: List[Plugin]):
     print(Colors.default)
 
 
-def generate_status_and_commands(plugins: List[Plugin]) -> Tuple[List, List]:
-    commands = []
-    status = []
+def generate_status_and_update_commands(plugins: List[Plugin]) -> Tuple[List, List]:
+    """
+    Generate status and commands for each installed plugin version by
+    comparing subversion and version against respective latest
+    """
+    log.info("Generating status and update commands")
+    commands, status = [], []
     for plugin in plugins:
         # Ignore terraform as different verions are required for work purposes
         if plugin.name == "terraform":
             continue
-        log.debug(plugin.name)
-        plugin_status = [plugin.name]
+
         for version, updates in plugin.installed.items():
+            plugin_status = [plugin.name, version, f"{Colors.magenta}{plugin.latest}"]
             version_status, version_command = compare_versions(
-                plugin.name, version, updates["latest_version"]
+                plugin.name, version, updates["latest_version"], Colors.cyan
             )
             plugin_status.append(version_status)
             if version_command:
                 commands.append(version_command)
 
             subversion_status, subversion_command = compare_versions(
-                plugin.name, version, updates["latest_subversion"]
+                plugin.name, version, updates["latest_subversion"], Colors.light_red
             )
             plugin_status.append(subversion_status)
             if subversion_command:
                 commands.append(subversion_command)
 
-        status.append(plugin_status)
+            status.append(plugin_status)
+
     return status, commands
 
 
-def compare_versions(plugin_name, installed, latest) -> str:
+def compare_versions(
+    plugin_name: str, installed: str, latest: str, status_color: str
+) -> Tuple[str, str]:
     """
-    Compare versions and creates
+    Compare versions, captures status and creates update commands
     """
     if installed != latest:
-        print(
-            f"{Colors.red}WARNING: Need to update {plugin_name} {installed} to {latest}{Colors.default}"
+        log.debug(
+            f"{Colors.red}WARNING: Need to update {plugin_name} {installed} to "
+            f"{latest}{Colors.default}"
         )
-        status = f"{Colors.yellow}{installed} -> {latest}{Colors.default}"
-        command = (
+        status = f"{status_color}{installed} -> {latest}{Colors.default}"
+        update_command = (
+            f"{status_color}"
             f"asdf install {plugin_name} {latest} && asdf uninstall {plugin_name} {installed} "
             f"&& asdf reshim {plugin_name} {latest} && asdf global {plugin_name} {latest}"
+            f"{Colors.default}"
         )
     else:
         status = f"{Colors.green}{installed} good{Colors.default}"
-        command = ""
-    return status, command
+        update_command = ""
+
+    return status, update_command
 
 
 if __name__ == "__main__":
