@@ -166,22 +166,70 @@ function find_directory() { # find directory
 
 
 function list_available_tags() { # lists available tags
-    tag_sections=$(grep -v '#' "$PLAYBOOK_FILE" |\
-        # extract full role name
-        grep -o 'role:.\+,' | sed 's/^role: //;s/.$//')
+    # tag_sections=$(grep -v '#' "$PLAYBOOK_FILE" |\
+    #     # extract full role name
+    #     grep -o 'role:.\+,' | sed 's/^role: //;s/.$//')
+    ######################################################
+    # The extraction logic transforms all role and 
+    # corresponding tags into <role_prefix>/<tag> format
+    #
+    # Below is logic demo:
+    #
+    # - { role: cli/broot, tags: [broot] }
+    # -> cli/broot
+    #
+    # - { 
+    #  role: infrastructure/git,
+    #  tags: [git-personal],
+    # -> infrastructure/git-personal
+    #
+    #  role: infrastructure/git,
+    #  tags: [git-professional],
+    # -> infrastructure/git-professional
+    #
+    # It was motivated by the re-use of git role via
+    # separate tags to allow different variables in
+    # This resulted in doi only showing 1 git tag
+    # as previous logic extracted roles to get
+    # role prefixes
+    #
+    # Logic has to ensure each line has both role
+    # and corresponding tag before it does clean up
+    # to get the final <role_prefix>/<tag> format
+    ######################################################
+    role_tags_sections=$(grep -v '#' dotfiles.yml |\
+        grep -e 'role\|tag' |\
+        # remove all white space
+        tr -d ' ' |\
+        # ensure role and corresponding tags in same line
+        # ref: https://unix.stackexchange.com/questions/389764/merge-next-line-with-previous-line
+        sed 'H;1h;$!d;g;s/\ntags/tags/g' |\
+        # remove surrounding brackets
+        sed 's/^-{//g;s/}//g' |\
+        # extract role, tag sections
+        cut -d':' -f2,3 |\
+        # replace role name with value from tag
+        # git -> git-professional, git-personal
+        # remove surrounding brackets
+        sed 's:/.*\[:/:g;s/\]//g' |\
+        # handle work-macos-software
+        cut -d',' -f1
+    )
+
+
     echo -e "\nAvailable Tags:"
     # Color Code based on type
     tags=""
-    for tag in $tag_sections
+    for line in $role_tags_sections
     do
-        if [[ $tag == *"cli/"* ]]; then
-            tags="${tags}  ${light_yellow}${tag#"cli/"}"
-        elif [[ $tag == *"infrastructure/"* ]]; then
-            tags="${tags}  ${light_blue}${tag#"infrastructure/"}"
-        elif [[ $tag == *"software/"* ]]; then
-            tags="${tags}  ${light_green}${tag#"software/"}"
+        if [[ $line == *"cli/"* ]]; then
+            tags="${tags}  ${light_yellow}${line#"cli/"}"
+        elif [[ $line == *"infrastructure/"* ]]; then
+            tags="${tags}  ${light_blue}${line#"infrastructure/"}"
+        elif [[ $line == *"software/"* ]]; then
+            tags="${tags}  ${light_green}${line#"software/"}"
         else
-            tags="${tags}  ${magenta}${tag}"
+            tags="${tags}  ${magenta}${line}"
         fi
         tags="$tags\n"
     done
