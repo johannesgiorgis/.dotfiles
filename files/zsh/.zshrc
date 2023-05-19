@@ -5,6 +5,9 @@
 # DEBUG
 GITSTATUS_LOG_LEVEL=DEBUG
 
+# alias set-dns="sudo sed -i.old 's/# macOS Notice/nameserver 8.8.8.8/' /var/run/resolv.conf; dscacheutil -flushcache"
+# SBR_AUTO_INIT=true
+
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block, everything else may go below.
@@ -225,6 +228,7 @@ if [[ "${kernel_name}" == "Darwin" ]]; then
         alias bof='brew outdated --formulae'
         alias bi='brew info'
         alias bis='brew install'
+        alias bisc='brew install --cask'
         alias bs='brew search'
         alias bu='brew update'
     fi
@@ -283,7 +287,7 @@ fi
 
 function af() { # list all functions
     # inspiration: https://www.freecodecamp.org/news/self-documenting-makefile/
-    rg 'function.*?#' ~/.zshrc | \
+    rg 'function.*?#' $ZDOTDIR/.zshrc | \
     # remove space in the front
     sed 's/^[ \t]*//g;s/^function //' | sort | \
     # get rid of undesired lines
@@ -524,18 +528,18 @@ function get_params() { # get aws ssm parameters
 }
 
 function awsprofiles() { # list aws profiles from config file
-	config=$(cat $HOME/.aws/config | grep '\[' | sed 's/\[//; s/\]//')
+	config=$(cat $HOME/.aws/config | grep '\[' | sed 's/\[profile //; s/\]//')
 	echo 'config:'
 	echo "$config"
 }
 
 function config_sso() {
-    echo 'https://d-92670d77ef.awsapps.com/start#/'
+    echo 'https://d-9267742869.awsapps.com/start#/'
     aws configure sso
 }
 
 function list_profile() {
-    cat ~/.aws/config | grep profile
+    cat ~/.aws/config | grep '\[profile'
 }
 
 function request_credentials() {
@@ -670,6 +674,11 @@ if command -v jump 1>/dev/null 2>&1; then
     eval "$(jump shell)"
 fi
 
+if command -v zoxide 1>/dev/null 2>&1; then
+    eval "$(zoxide init zsh)"
+fi
+
+
 if command -v pipx 1>/dev/null 2>&1; then
     eval "$(register-python-argcomplete pipx)"
 fi
@@ -713,7 +722,14 @@ unsetopt SHARE_HISTORY
 export PATH="$HOME/.rd/bin:$PATH"
 ### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
 
-[ -z "$ZPROF" ] || zprof
 
 # Created by `pipx` on 2022-12-25 23:07:43
 export PATH="$PATH:$HOME/.local/bin"
+
+if command -v broot 1>/dev/null 2>&1; then
+	export NVM_DIR="$HOME/.nvm"
+	[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
+	[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+fi
+
+[ -z "$ZPROF" ] || zprof

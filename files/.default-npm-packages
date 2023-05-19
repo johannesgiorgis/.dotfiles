@@ -3,3 +3,4 @@ markserv
 reveal-md
 typescript
 yarn
+ts-node

@@ -54,7 +54,7 @@
     - name: PYTHON - Install python3-pip and python3-venv for system python3 (debian)
       apt:
         name: python3-pip, python3-venv
-      tags: pipx
+      tags: [pipx]
       when: ansible_os_family in ["Debian",  "Pop!_OS" ]
       become: "{{ should_be_root }}"
 
@@ -66,14 +66,14 @@
       args:
         creates: "{{ dotfiles_user_home }}/.local/bin/pipx"
       when: ansible_os_family in ["Debian",  "Pop!_OS" ]
-      tags: pipx
+      tags: [pipx]
 
     - name: PYTHON - Install pipx (darwin)
       shell: |
         brew install pipx
         pipx ensurepath
       when: ansible_os_family in ["Darwin"]
-      tags: pipx
+      tags: [pipx]
 
     - name: PYTHON - Install packages via pipx
       command: "pipx install {{ item }}"
@@ -85,7 +85,7 @@
         - poetry
       loop_control:
         label: "{{ item }}"
-      tags: pipx
+      tags: [pipx]
 
 - name: Enable poetry completions for zsh
   shell: "poetry completions zsh > {{ dotfiles_user_home}}/.zfunc/_poetry"

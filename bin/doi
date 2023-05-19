@@ -197,7 +197,7 @@ function list_available_tags() { # lists available tags
     # and corresponding tag before it does clean up
     # to get the final <role_prefix>/<tag> format
     ######################################################
-    role_tags_sections=$(grep -v '#' dotfiles.yml |\
+    role_tags_sections=$(grep -v '#' $PLAYBOOK_FILE |\
         grep -e 'role\|tag' |\
         # remove all white space
         tr -d ' ' |\
