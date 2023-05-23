@@ -1,7 +1,14 @@
 ---
 # main takss for obs-studio
 
-- name: obs-studio is present
+- name: OBS-STUDIO - present
+
+  homebrew_cask:
+    name: obs
+    state: present
+  when: ansible_os_family == "Darwin"
+
+- name: obs-studio is present (Debian, Pop!_OS)
   become: "{{ should_be_root }}"
 
   block:

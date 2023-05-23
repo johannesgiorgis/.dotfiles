@@ -28,9 +28,11 @@
       loop:
         - aerial
         - alt-tab
+        - appcleaner
         - iterm2
         - logi-options-plus
         - logitech-unifying
+        - omnidisksweeper
         - rectangle
     
     - name: MACOS-INFRA - apps are present via Mac App Store
