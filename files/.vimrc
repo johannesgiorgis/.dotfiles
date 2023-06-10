@@ -11,7 +11,7 @@ set tabstop=2
 set autoindent
 set number
 
-" syntax off
+syntax on
 
 " Enable mouse usage (all modes)
 set mouse=a
