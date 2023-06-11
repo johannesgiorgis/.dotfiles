@@ -40,6 +40,30 @@ Doing it this way ensures that you can run your updates while you get set up to 
 - [Generate a New SSH Key]
 - [Add new SSH key to GitHub account]
 
+### MacOS
+
+```sh
+# Install Command Line Developer Tools
+xcode-select --install
+
+
+git clone https://github.com/johannesgiorgis/dotfiles.git ~/.dotfiles
+cd ~/.dotfiles  
+git checkout explore-ansible-2
+git pull
+bash bin/dot-bootstrap # install homebrew/ansible
+
+# Add home-brew to PATH (manually) from installation output
+echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> /Users/johannes/.zprofile
+
+# disable analytics
+export HOMEBREW_NO_ANALYTICS=1
+brew analytics off
+
+# Install packages
+$ bash bin/dot-bootstrap <tag>
+```
+
 ## Updates
 
 When doing a meaningful upgrade, tag it via:
@@ -53,6 +77,7 @@ git tag -a v1.0 -m 'Dotfiles v1.0: The Bash Way'
 
 ## Testing
 
+<!-- TODO: Convert to Github Action -->
 Run the following:
 
 ```sh
@@ -85,44 +110,6 @@ This led me to research how to manage dotfiles and found several options - ansib
 
 Folks are using Python, Typescript to write wrapper programs around their .dotfiles management. Maybe some combination of bash + ansible could work.
 
-**Current**: Migrating to Ansible
-
-- Pop!_OS Post Install 5 Steps - <https://techhut.tv/5-things-to-do-after-installing-pop-os/>
-- <https://github.com/kespinola/dotfiles>
-- <https://github.com/sloria/dotfiles>
-- VS Code Role Inspiration: <https://github.com/gantsign/ansible-role-visual-studio-code>
-- Zsh + Antigen + Oh-My-Zsh Role Inspiration: <https://github.com/gantsign/ansible_role_antigen>
-- Oh-My-Zsh Role Inspiration: <https://github.com/gantsign/ansible-role-oh-my-zsh>
-- Interesting organization: <https://github.com/tentacode/blacksmithery>
-- Gnome Extensions Inspiration: <https://github.com/jaredhocutt/ansible-gnome-extensions>
-- Customize Pop OS: <https://www.youtube.com/watch?v=LHj2ulIm7AQ>
-- Dropbox Inspirations:
-    - <https://github.com/AlbanAndrieu/ansible-dropbox>
-    - <https://github.com/Oefenweb/ansible-dropbox>
-    - <https://github.com/geerlingguy/ansible-role-docker> (Used this one)
-- Slack role Inspiration: <https://github.com/wtanaka/ansible-role-slack>
-- Sublime-text role Inspiration: <https://github.com/chaosmail/ansible-roles-sublime-text>
-- Docker role: <https://github.com/geerlingguy/ansible-role-docker>
-- PyCharm role: <https://github.com/Oefenweb/ansible-pycharm>
-- Handle Apt & Homebrew with Package: <https://stackoverflow.com/questions/63242221/use-ansible-package-module-to-work-with-apt-and-homebrew>
-- OpenSSH
-    - <https://github.com/linuxhq/ansible-role-openssh>
-    - <https://github.com/archf/ansible-openssh-server>
-- PostgreSQL: <https://github.com/geerlingguy/ansible-role-postgresql>
-- Custom Login Screen - <https://techhut.tv/lightdm-custom-login-screen-in-linux/>
-- Linux Display Manager: <https://github.com/ypid/ansible-dm>
-- LightDM Webkit Greeter role: <https://github.com/void-ansible-roles/lightdm-webkit-greeter>
-- Jetbrains Toolbox role: <https://github.com/jaredhocutt/ansible-jetbrains-toolbox>
-- Firefox: <https://github.com/alzadude/ansible-firefox>
-- Chusiang Ubuntu Ansible Setup: <https://github.com/chusiang/hacking-ubuntu.ansible>
-- Nerd-fonts: <https://github.com/drew-kun/ansible-nerdfonts>
-- Workstation: <https://github.com/leberrem/workstation>
-- Mac Specific Dotfiles: <https://gitlab.dwbn.org/TobiasSteinhoff/dotfiles-ansible/-/tree/8f251067b69b118b28510551ffcea423ef032044/>
-- Automating My Dev Setup
-    - <https://pbassiner.github.io/blog/automating_my_dev_setup.html>
-    - <https://github.com/pbassiner/dev-env>
-- dconf-settings: <https://github.com/jaredhocutt/ansible-dconf-settings>
-
 Simplifying zsh shell to remove dependency on Oh My Zsh!
 
 - https://github.com/Phantas0s/.dotfiles
@@ -132,25 +119,6 @@ Zsh history
 
 - https://www.soberkoder.com/better-zsh-history/
 - https://gist.github.com/matthewmccullough/787142
-
-### Issues
-
-I was unable to install my desired theeme `powerlevel10k` via antigen. I kept getting the following error:
-
-```sh
-➜ antigen theme https://github.com/romkatv/powerlevel10k powerlevel10k
-(anon):source:27: no such file or directory: /home/johannes/.antigen/internal/p10k.zsh
-```
-
-So I decided to use Oh-My-Zsh to manage my theme only to find out the theme wouldn't load.
-
-Googling around led me to this github issue thread <https://github.com/romkatv/powerlevel10k/issues/825> where the theme author himself says he doesn't use a plugin manager himself. Also it seems antigen hasn't been updated in a while. Since I had everything working perfectly via using Oh-My-Zsh, I'll set up Ansible to do just that.
-
-### Unexpected Test
-
-On September 10th, I accidentally messed up my initial installation of Pop_OS! via trying to install some Virtual Machine related installations the Pop!_Shop prompted me with. Re-installing from the ISO image I originally used, there were too many updates so I grabbed a more recent ISO image from their website.
-
-Re-installing Pop_OS! was an unexpected test to see how my Ansible work was coming along. I was back to being productive on VS Code and adding more cool stuff before long. It's awesome!
 
 ## Reference
 

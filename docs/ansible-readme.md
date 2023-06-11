@@ -1,5 +1,79 @@
 # Ansible Section
 
+- [Resources](#resources)
+- [Issues](#issues)
+- [Unexpected Test](#unexpected-test)
+- [Installation Guide](#installation-guide)
+- [Answer to Use ansible package module to work with apt and homebrew](#answer-to-use-ansible-package-module-to-work-with-apt-and-homebrew)
+    - [Declare `become: yes` (root) globally for Linux only](#declare-become-yes-root-globally-for-linux-only)
+    - [Address packages that need platform-specific treatment as-needed with when](#address-packages-that-need-platform-specific-treatment-as-needed-with-when)
+    - [Map package name discrepancies with variables](#map-package-name-discrepancies-with-variables)
+    - [Combining everything into a real play](#combining-everything-into-a-real-play)
+
+## Resources
+
+Below are resources I came across that helped me migrate to ansible
+
+**Current**: Migrating to Ansible
+
+- Pop!_OS Post Install 5 Steps - <https://techhut.tv/5-things-to-do-after-installing-pop-os/>
+- <https://github.com/kespinola/dotfiles>
+- <https://github.com/sloria/dotfiles>
+- VS Code Role Inspiration: <https://github.com/gantsign/ansible-role-visual-studio-code>
+- Zsh + Antigen + Oh-My-Zsh Role Inspiration: <https://github.com/gantsign/ansible_role_antigen>
+- Oh-My-Zsh Role Inspiration: <https://github.com/gantsign/ansible-role-oh-my-zsh>
+- Interesting organization: <https://github.com/tentacode/blacksmithery>
+- Gnome Extensions Inspiration: <https://github.com/jaredhocutt/ansible-gnome-extensions>
+- Customize Pop OS: <https://www.youtube.com/watch?v=LHj2ulIm7AQ>
+- Dropbox Inspirations:
+    - <https://github.com/AlbanAndrieu/ansible-dropbox>
+    - <https://github.com/Oefenweb/ansible-dropbox>
+    - <https://github.com/geerlingguy/ansible-role-docker> (Used this one)
+- Slack role Inspiration: <https://github.com/wtanaka/ansible-role-slack>
+- Sublime-text role Inspiration: <https://github.com/chaosmail/ansible-roles-sublime-text>
+- Docker role: <https://github.com/geerlingguy/ansible-role-docker>
+- PyCharm role: <https://github.com/Oefenweb/ansible-pycharm>
+- Handle Apt & Homebrew with Package: <https://stackoverflow.com/questions/63242221/use-ansible-package-module-to-work-with-apt-and-homebrew>
+- OpenSSH
+    - <https://github.com/linuxhq/ansible-role-openssh>
+    - <https://github.com/archf/ansible-openssh-server>
+- PostgreSQL: <https://github.com/geerlingguy/ansible-role-postgresql>
+- Custom Login Screen - <https://techhut.tv/lightdm-custom-login-screen-in-linux/>
+- Linux Display Manager: <https://github.com/ypid/ansible-dm>
+- LightDM Webkit Greeter role: <https://github.com/void-ansible-roles/lightdm-webkit-greeter>
+- Jetbrains Toolbox role: <https://github.com/jaredhocutt/ansible-jetbrains-toolbox>
+- Firefox: <https://github.com/alzadude/ansible-firefox>
+- Chusiang Ubuntu Ansible Setup: <https://github.com/chusiang/hacking-ubuntu.ansible>
+- Nerd-fonts: <https://github.com/drew-kun/ansible-nerdfonts>
+- Workstation: <https://github.com/leberrem/workstation>
+- Mac Specific Dotfiles: <https://gitlab.dwbn.org/TobiasSteinhoff/dotfiles-ansible/-/tree/8f251067b69b118b28510551ffcea423ef032044/>
+- Automating My Dev Setup
+    - <https://pbassiner.github.io/blog/automating_my_dev_setup.html>
+    - <https://github.com/pbassiner/dev-env>
+- dconf-settings: <https://github.com/jaredhocutt/ansible-dconf-settings>
+
+## Issues
+
+I was unable to install my desired theeme `powerlevel10k` via antigen. I kept getting the following error:
+
+```sh
+➜ antigen theme https://github.com/romkatv/powerlevel10k powerlevel10k
+(anon):source:27: no such file or directory: /home/johannes/.antigen/internal/p10k.zsh
+```
+
+So I decided to use Oh-My-Zsh to manage my theme only to find out the theme wouldn't load.
+
+Googling around led me to this github issue thread <https://github.com/romkatv/powerlevel10k/issues/825> where the theme author himself says he doesn't use a plugin manager himself. Also it seems antigen hasn't been updated in a while. Since I had everything working perfectly via using Oh-My-Zsh, I'll set up Ansible to do just that.
+
+## Unexpected Test
+
+On September 10th, I accidentally messed up my initial installation of Pop_OS! via trying to install some Virtual Machine related installations the Pop!_Shop prompted me with. Re-installing from the ISO image I originally used, there were too many updates so I grabbed a more recent ISO image from their website.
+
+Re-installing Pop_OS! was an unexpected test to see how my Ansible work was coming along. I was back to being productive on VS Code and adding more cool stuff before long. It's awesome!
+
+
+## Installation Guide
+
 This directory contains all the ansible related material.
 
 **Note**: I used the below strategy to install meld (2020-09-21). It makes things much simpler!

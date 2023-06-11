@@ -5,6 +5,16 @@
 Terminal -> iterm2 (MacOS)
 Terminal -> Terminator (Linux)
 
+## Fonts
+
+- [font-fira-code](https://github.com/tonsky/FiraCode)
+
+## Tools Management
+
+- [asdf](https://asdf-vm.com/)
+- [Homebrew](https://brew.sh/)
+- [pipx](https://pypa.github.io/pipx/)
+
 ## CLI Alternatives
 
 cat -> bat
@@ -14,9 +24,11 @@ ls -> exa (still testing)
 cd -> jump
 top -> htop
 bash -> ansible (installation/setup)
+find -> fd (fdfind for linux)
 
 ## CLI Tools
 
+- awscli
 - fzf
 - gpg/gnupg
 - noti
@@ -31,6 +43,19 @@ bash -> ansible (installation/setup)
 - entr
 - jq
 - shellcheck
+- fortune
+- httpie
+- vim
+- vim-nox
+- neovim
+- ndcu
+- neofetch
+- rename
+- xclip (linux)
+- figlet
+- openssl
+- sqlite3
+- tasksh
 
 ## Development Tools
 
@@ -59,15 +84,28 @@ bash -> ansible (installation/setup)
 
 ## Python Utilities
 
+- aws-shell
 - black
+- bpython
 - flake8
 - pipenv
 - poetry
 
+## Node Utilities
+
+- aws-cdk
+- markserv
+- reveal-md
+- ts-node
+- typescript
+- yarn
+
 ## Desktop Applications
 
+- authy
 - dropbox
 - firefox
+- brave-browser
 - google-chrome
 - zoom
 
@@ -101,3 +139,64 @@ bash -> ansible (installation/setup)
 
 - openvpn-connect
 - tunnelblick
+
+## Snap
+
+- slack --classic
+- code --classic
+- sublime-text --classic
+- firefox
+- vlc
+- simplenote
+- spotify
+- whatsdesk
+
+## Previously Installed
+
+Tools previously used:
+
+### MacOS
+
+```sh
+brew list --cask | tr ' ' '\n' | pbcopy
+```
+
+alfred
+amethyst # windows tiling - replaced by rectangle
+beekeeper-studio # database management
+dbvisualizer # dba
+jetbrains-toolbox # track
+joplin # track
+karabiner-elements
+kite
+lg-onscreen-control
+logitech-control-center
+macvim
+openvpn-connect
+pgadmin4
+plex
+sourcetree
+sublime-merge
+tunnelblick
+
+```sh
+brew list --formula | tr ' ' '\n' | pbcopy
+```
+
+awslogs
+broot
+diff-so-fancy
+displayplacer
+parquet-tools
+task
+tasksh
+telnet
+tesseract
+timewarrior
+tmux
+
+### Linux
+
+- llvm
+- conky-all
+- gnome-tweaks
