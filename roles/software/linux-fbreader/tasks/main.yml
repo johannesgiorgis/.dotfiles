@@ -1,0 +1,12 @@
+---
+# main task for linux-fbreader
+
+- name: linux fbreader is present
+  become: "{{ should_be_root }}"
+
+  block:
+    - name: fbreader is present
+      package:
+        name: fbreader
+        state: present
+  when: ansible_os_family in ["Debian", "Pop!_OS"]

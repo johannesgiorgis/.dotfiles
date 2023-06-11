@@ -1,0 +1,24 @@
+---
+# main takss for obs-studio
+
+- name: OBS-STUDIO - present
+
+  homebrew_cask:
+    name: obs
+    state: present
+  when: ansible_os_family == "Darwin"
+
+- name: obs-studio is present (Debian, Pop!_OS)
+  become: "{{ should_be_root }}"
+
+  block:
+    - name: Add OBS Studio repository
+      apt_repository:
+        repo: "ppa:obsproject/obs-studio"
+        state: present
+    
+    - name: Update repositories cache and install obs-studio package
+      apt:
+        name: obs-studio
+        update_cache: yes
+  when: ansible_os_family in ["Debian", "Pop!_OS"]

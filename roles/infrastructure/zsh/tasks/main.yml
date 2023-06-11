@@ -1,0 +1,150 @@
+---
+
+# Install
+- name: ZSH - zsh and dependencies is present
+  block:
+    - name: ZSH - Install dependencies for zsh
+      package:
+        name:
+          - "git"
+          - "curl"
+        state: present
+
+    - name: ZSH - Install zsh
+      package:
+        name: zsh
+        state: present
+
+
+
+# Set ZSH default shell
+- name: ZSH - Set zsh as default shell for x86_64 systems
+  become: true
+  user:
+    name: "{{ ansible_user_id }}"
+    shell: /bin/zsh
+  when: ansible_architecture == "x86_64"
+
+- name: ZSH - Set homebrew zsh as default shell for Macbook ARM systems
+  become: true
+  user:
+    name: "{{ ansible_user_id }}"
+    shell: /opt/homebrew/bin/zsh
+  when: ansible_architecture == "arm64" and ansible_os_family == "Darwin"
+
+
+# Configure ZSH - files, themes, plugins
+- name: ZSH - configure .p10k.zsh and .zshenv files
+  include_tasks: "configure-zfiles-each.yml"
+  loop:
+    - .p10k.zsh
+    - .zshenv
+
+
+- name: ZSH - Ensure $HOME/zsh/ is setup
+  block:
+    - name: Check for $HOME/zsh/
+      stat:
+        path: "{{ dotfiles_user_home }}/zsh/"
+      register: zshdir_stat
+
+    - name: ZSH - Back up $HOME/zsh/
+      command: mv -f ~/zsh ~/zsh_bak
+      args:
+        creates: "{{ dotfiles_user_home }}/.zsh_bak"
+      when: zshdir_stat.stat.exists
+
+    - name: ZSH - Symlink zsh/ to $HOME/zsh/
+      file:
+        src: "{{ dotfiles_home }}/files/zsh"
+        dest: "{{ dotfiles_user_home }}/zsh"
+        state: link
+
+
+- name: ZSH - Get theme and plugins
+  block:
+    - name: ZSH - Get powerlevel10k theme
+      ansible.builtin.git:
+        repo: https://github.com/romkatv/powerlevel10k.git
+        dest: ~/zsh/themes/powerlevel10k
+        depth: 1
+
+    - name: ZSH - Set permissions of powerlevel10k theme
+      file:
+        path: "{{ dotfiles_user_home }}/zsh/themes/powerlevel10k"
+        mode: "go-w"
+        recurse: yes
+
+    - name: ZSH - Get plugin zsh-autosuggestions
+      ansible.builtin.git:
+        repo: https://github.com/zsh-users/zsh-autosuggestions.git
+        dest: ~/zsh/plugins/zsh-autosuggestions
+
+    - name: ZSH - Get plugin zsh-syntax-highlighting
+      ansible.builtin.git:
+        repo: https://github.com/zsh-users/zsh-syntax-highlighting.git
+        dest: ~/zsh/plugins/zsh-syntax-highlighting
+    
+    - name: ZSH - Get tool zsh-bench
+      ansible.builtin.git:
+        repo: https://github.com/romkatv/zsh-bench.git
+        dest: ~/zsh/zsh-bench
+
+    # - name: Get plugin timewarrior
+    #   command: "git clone https://github.com/svenXY/timewarrior ~/.oh-my-zsh/custom/plugins/timewarrior"
+    #   args:
+    #     creates: "{{ dotfiles_user_home }}/.oh-my-zsh/custom/plugins/timewarrior"
+
+
+    # Ensure Oh My Zsh Plugins are present
+    - name: ZSH - Setup Oh My Zsh Plugins
+      ansible.builtin.shell:
+        cmd: $HOME/zsh/setup-ohmyzsh-plugins.sh
+        chdir: $HOME/zsh/
+      register: results
+
+    - debug:
+        msg:
+          - "Return Code: {{ results.rc }}"
+          - "Stdout: {{ results.stdout_lines }}"
+          - "Stderr: {{ results.stderr_lines }}"
+          - "Mesage: {{ results.msg }}"
+
+
+    # Required for command-not-found plugin
+    - name: ZSH - Tap homebrew/command-not-found (homebrew)
+      homebrew_tap:
+        tap: homebrew/command-not-found
+        state: present
+      when: ansible_os_family == "Darwin" and ansible_pkg_mgr == 'homebrew'
+
+
+- name: ZSH - Create ~/.zfunc folder
+  ansible.builtin.file:
+    path: "{{ dotfiles_user_home}}/.zfunc"
+    state: directory
+
+
+# FONTS
+- name: ZSH - Setup Meslo Nerd Fonts in Linux
+  block:
+    - name: ZSH - Create ~/.fonts directory for Linux
+      file:
+        path: ~/.fonts
+        state: directory
+
+    - name: ZSH - Install Meslo Nerd Font for Linux
+      get_url:
+        url: "https://github.com/romkatv/powerlevel10k-media/raw/master/{{ item }}"
+        dest: "~/.fonts/{{ item }}"
+      with_items:
+        # regular
+        - "MesloLGS%20NF%20Regular.ttf"
+        # bold
+        - "MesloLGS%20NF%20Bold.ttf"
+        # italic
+        - "MesloLGS%20NF%20Italic.ttf"
+        # italic_bold
+        - "MesloLGS%20NF%20Bold%20Italic.ttf"
+  when: ansible_os_family in ["Debian", "Pop!_OS"]
+

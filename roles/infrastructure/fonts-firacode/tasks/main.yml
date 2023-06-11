@@ -1,0 +1,34 @@
+---
+# main tasks for font-firacode
+
+- name: fonts-firacode is present for debian system
+  block:
+    - name: Ensure dependencies are installed
+      apt:
+        name: fonts-firacode
+        state: present
+  when: ansible_os_family in ["Debian",  "Pop!_OS" ]
+
+
+- name: fonts-firacode is present on mac os x
+  block:
+    - name: Install dependencies for fonts-firacode
+      package:
+        name:
+          - svn
+        state: present
+
+    - name: Access caskroom/fonts via brew tap
+      homebrew_tap:
+        name: homebrew/cask-fonts
+        state: present
+
+    - name: font-fira-* are present via brew cask
+      homebrew_cask:
+        name:
+          - font-fira-code
+          - font-fira-mono
+          - font-fira-mono-for-powerline
+          - font-fira-sans
+        state: present
+  when: ansible_os_family in ["Darwin"]

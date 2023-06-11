@@ -1,0 +1,8 @@
+---
+# handlers for lightdm
+
+- name: Restart lightdm
+  service:
+    name: "lightdm"
+    state: "restarted"
+  when: dm__restart_on_configuration_change | bool

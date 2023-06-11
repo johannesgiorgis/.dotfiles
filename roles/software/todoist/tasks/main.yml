@@ -1,0 +1,18 @@
+---
+# main task for todoist
+
+- name: todoist is present
+
+  block:
+    - name: todoist is present (Debian/Pop!_OS)
+      package:
+        name: todoist
+        state: present
+      become: "{{ should_be_root }}"
+      when: ansible_os_family in ["Debian", "Pop!_OS"]
+
+    - name: todoist is present (homebrew cask)
+      homebrew_cask:
+        name: todoist
+        state: present
+      when: ansible_os_family in ["Darwin"]

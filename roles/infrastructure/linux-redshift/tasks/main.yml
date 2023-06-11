@@ -1,0 +1,27 @@
+---
+# tasks for linux-redshift
+
+- name: redshift is present (debian)
+
+  block:
+    - name: redshift is present (debian)
+      apt:
+        name:
+          - redshift
+          - redshift-gtk # gui
+        state: present
+      become: "{{ should_be_root }}"
+
+    - name: Create redshift plugin directory
+      file:
+        path: ~/.config/redshift
+        state: directory
+        mode: "775"
+
+    - name: Symlink redshift config file
+      file:
+        src: "{{ dotfiles_home }}/files/linux/redshift.conf"
+        dest: "{{ dotfiles_user_home }}/.config/redshift/redshift.conf"
+        state: link
+        force: yes
+  when: ansible_os_family in ["Debian", "Pop!_OS"]

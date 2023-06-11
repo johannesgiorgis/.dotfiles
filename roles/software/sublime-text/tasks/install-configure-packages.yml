@@ -1,0 +1,23 @@
+---
+# install & configure sublime text packages
+
+- name: check sublime Package directory
+  stat:
+    path: "{{ sublime_packages_dir }}"
+  register: check_sublime_packages_dir
+  when: sublime_package_control
+
+- name: create Package directory
+  file:
+    path: "{{ sublime_packages_dir }}"
+    state: directory
+  when: sublime_package_control and check_sublime_packages_dir.stat.exists == False
+
+- name: install all sublime plugins
+  git:
+    repo: "{{ item.name | default(item) }}"
+    version: "{{ item.version | default('master') }}"
+    dest: "{{ sublime_packages_dir }}/"
+    accept_hostkey: "yes"
+  with_items: "{{ sublime_packages }}"
+  when: sublime_package_control

@@ -1,0 +1,140 @@
+- name: Set up local workstation
+  hosts: local
+  vars:
+    should_be_root: "{{ true if ansible_pkg_mgr != 'homebrew' else false }}"
+  roles:
+    # cli
+    - { role: cli/broot, tags: [broot] }
+    - { role: cli/common-cli, tags: [common-cli] }
+    - { role: cli/exa, tags: [exa] }
+    - { role: cli/gh, tags: [gh] }
+    - { role: cli/linux-mlocate, tags: [linux-mlocate] }
+    - { role: cli/linux-xclip, tags: [linux-xclip] }
+    - { role: cli/macos-cli, tags: [macos-cli] }
+    - { role: cli/neovim, tags: [neovim] }
+    - { role: cli/noti, tags: [noti] }
+    - { role: cli/taskwarrior, tags: [taskwarrior] }
+    - { role: cli/timewarrior, tags: [timewarrior] }
+    - { role: cli/vim, tags: [vim] }
+    - { role: cli/youtube-dl, tags: [youtube-dl] }
+
+    # infrastructure
+    - { role: infrastructure/bin-folder, tags: [bin-folder] }
+    - { role: infrastructure/fonts-firacode, tags: [fonts-firacode] }
+    - { 
+      role: infrastructure/git,
+      tags: [git-personal],
+      user_name: "Johannes Giorgis",
+      user_email: "johannesgiorgis@users.noreply.github.com"
+    }
+    - { 
+      role: infrastructure/git,
+      tags: [git-professional],
+      user_name: "Johannes Giorgis",
+      user_email: "80792713+johannesgiorgis-galvanize@users.noreply.github.com"
+    }
+    - {
+        role: infrastructure/linux-dconf-settings,
+        tags: [linux-dconf-settings],
+      }
+    - {
+        role: infrastructure/linux-gnome-extensions,
+        tags: [linux-gnome-extensions],
+      }
+    - { role: infrastructure/linux-gnome-tweaks, tags: [linux-gnome-tweaks] }
+    - { role: infrastructure/linux-gparted, tags: [linux-gparted] }
+    - {
+        role: infrastructure/linux-initial-configuration,
+        tags: [linux-initial-configuration],
+      }
+    - { role: infrastructure/linux-openssh, tags: [linux-openssh] }
+    - { role: infrastructure/linux-redshift, tags: [linux-redshift] }
+    - { role: infrastructure/linux-snap, tags: [linux-snap] }
+    - { role: infrastructure/linux-terminator, tags: [linux-terminator] }
+    - { role: infrastructure/macos-infra, tags: [macos-infra] }
+    - {
+        role: infrastructure/macos-initial-configuration,
+        tags: [macos-initial-configuration],
+        when ansible_os_family == "Darwin",
+      }
+    - { role: infrastructure/rancher, tags: [rancher] }
+    # - { role: infrastructure/ssh-key, tags: [ssh-key] }
+    - { role: infrastructure/wallpaper, tags: [wallpaper] }
+    - { role: infrastructure/zsh, tags: [zsh] }
+
+    # pop-os specific
+    - {
+        role: infrastructure/popos-initial-configuration,
+        tags: [popos-initial-configuration],
+        when: ansible_os_family == "Pop!_OS" or ansible_os_family == "Debian",
+      }
+    - {
+        role: infrastructure/linux-lightdm,
+        tags: [linux-lightdm],
+        when: ansible_os_family == "Pop!_OS",
+      }
+
+    # programming languages/frameworks managed by asdf
+    - { role: infrastructure/asdf, tags: [asdf] }
+    - { role: infrastructure/awscli, tags: [awscli] }
+    - { role: infrastructure/gohugo, tags: [gohugo] }
+    - { role: infrastructure/golang, tags: [golang] }
+    - { role: infrastructure/nodejs, tags: [nodejs] }
+    - { role: infrastructure/python, tags: [python] }
+    - { role: infrastructure/rust, tags: [rust] }
+    - { role: infrastructure/terraform, tags: [terraform] }
+
+    # TODO: Remove
+    - { role: infrastructure/apt, tags: [apt] }
+
+    # software
+    - { role: software/audacity, tags: [audacity] }
+    - { role: software/authy, tags: [authy] }
+    - { role: software/bitwarden, tags: [bitwarden] }
+    - { role: software/brave-browser, tags: [brave-browser] }
+    - { role: software/box-drive, tags: [box-drive] }
+    - { role: software/dropbox, tags: [dropbox] }
+    - { role: software/firefox, tags: [firefox] }
+    - { role: software/flux, tags: [flux] }
+    - { role: software/google-chrome, tags: [google-chrome] }
+    - { role: software/jetbrains-toolbox, tags: [jetbrains-toolbox] }
+    - { role: software/joplin, tags: [joplin] }
+    - { role: software/lastpass, tags: [lastpass] }
+    - { role: software/lepton, tags: [lepton] }
+    - { role: software/linux-blueman, tags: [linux-blueman] }
+    - { role: software/linux-conky-manager, tags: [linux-conky-manager] }
+    - { role: software/linux-fbreader, tags: [linux-fbreader] }
+    - { role: software/flameshot, tags: [flameshot] }
+    - { role: software/linux-kazam, tags: [linux-kazam] }
+    - { role: software/linux-solaar, tags: [linux-solaar] }
+    - { role: software/linux-timeshift, tags: [linux-timeshift] }
+    - { role: software/linux-thunderbird, tags: [linux-thunderbird] }
+    - { role: software/macos-shureplus-motiv, tags: [macos-shureplus-motiv] }
+    - { role: software/meld, tags: [meld] }
+    - { role: software/nordvpn, tags: [nordvpn] }
+    - { role: software/obs-studio, tags: [obs-studio] }
+    - { role: software/plex, tags: [plex] }
+    - { role: software/postman, tags: [postman] }
+    - { role: software/rambox, tags: [rambox] }
+    - { role: software/simplenote, tags: [simplenote] }
+    - { role: software/signal, tags: [signal] }
+    - { role: software/slack, tags: [slack] }
+    - { role: software/spotify, tags: [spotify] }
+    - { role: software/sqlite-browser, tags: [sqlite-browser] }
+    - { role: software/sublime-merge, tags: [sublime-merge] }
+    - { role: software/sublime-text, tags: [sublime-text] }
+    - { role: software/teamviewer, tags: [teamviewer] }
+    - { role: software/todoist, tags: [todoist] }
+    - { role: software/virtualbox, tags: [virtualbox] }
+    - { role: software/vlc, tags: [vlc] }
+    - { role: software/vscode, tags: [vscode] }
+    - { role: software/vscodium, tags: [vscodium] }
+    - { role: software/whatsapp, tags: [whatsapp] }
+    - { role: software/zoom, tags: [zoom] }
+
+    # work
+    - {
+        role: work-macos-software,
+        tags: [work-macos-software],
+        when: ansible_os_family == "Darwin",
+      }

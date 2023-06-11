@@ -1,0 +1,17 @@
+---
+# main task for gh
+
+# - meta: end_play
+
+- name: GH - Install for darwin via homebrew
+  when: ansible_os_family == "Darwin"
+  homebrew:
+    name: gh
+    state: present
+
+- name: GH - gh is present
+  when: ansible_os_family in ["Debian",  "Pop!_OS" ]
+  become: "{{ should_be_root }}"
+  block:
+    - debug:
+        msg: "TODO: Hasn't been implemented yet!"

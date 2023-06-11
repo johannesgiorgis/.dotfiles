@@ -1,0 +1,3 @@
+dependencies:
+  - role: cli/neovim
+  - role: infrastructure/fonts-firacode

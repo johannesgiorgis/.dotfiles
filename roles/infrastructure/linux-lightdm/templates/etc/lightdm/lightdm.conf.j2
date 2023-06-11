@@ -1,0 +1,21 @@
+# {{ ansible_managed }}
+
+{% if dm__register_lightdm_version.stdout is version_compare('1.11', '<') %}
+[SeatDefaults]
+{% else %}
+[Seat:*]
+{% endif %}
+greeter-session=lightdm-webkit2-greeter
+
+{% if dm__automatic_login_enabled | bool %}
+autologin-user = {{ dm__automatic_login_user_name | string }}
+autologin-user-timeout = {{ dm__automatic_login_time_delay | string }}
+{% endif %}
+# autologin-session = Session to load for automatic login (overrides user-session)
+# autologin-in-background = True if autologin session should not be immediately activated
+
+greeter-hide-users = {{ (not dm__greeter_show_user_list|bool) | lower }}
+
+{% if dm_user_session != omit %}
+user-session = {{ dm_user_session }}
+{% endif %}

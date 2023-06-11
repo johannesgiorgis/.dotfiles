@@ -1,0 +1,35 @@
+---
+# main task for joplin
+
+- name: JOPLIN - Install joplin for MacOS via homebrew cask
+  homebrew_cask:
+    name: joplin
+    state: present
+  when: ansible_os_family in ["Darwin"]
+
+
+- name: JOPLIN - is present for debian machine
+  block:
+    - name: JOPLIN - Create temporary download directory
+      tempfile:
+        state: directory
+        suffix: ".joplin_installation_download_dir"
+      register: joplin_installation_download_dir
+
+    - name: JOPLIN - Download joplin installer to {{ joplin_installation_download_dir.path }}
+      get_url:
+        url: https://raw.githubusercontent.com/laurent22/joplin/master/Joplin_install_and_update.sh
+        dest: "{{ joplin_installation_download_dir.path }}/"
+        mode: a+x
+      register: r_joplin_installer_download
+
+    - name: JOPLIN - Install joplin via {{ r_joplin_installer_download.dest }}
+      shell: "{{ r_joplin_installer_download.dest }}"
+  
+  always:
+    - name: JOPLIN - Delete installation download directory - {{ joplin_installation_download_dir.path }}
+      file:
+        path: "{{ joplin_installation_download_dir.path }}"
+        state: absent
+      changed_when: no
+  when: ansible_os_family in ["Debian",  "Pop!_OS" ]

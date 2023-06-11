@@ -1,0 +1,19 @@
+---
+# main task for Lepton
+# https://hackjutsu.com/Lepton/
+# https://github.com/hackjutsu/Lepton
+
+- name: LEPTON - lepton is present
+
+  block:
+    - name: LEPTON - Install via homebrew cask
+      when: ansible_os_family in ["Darwin"]
+      homebrew_cask:
+        name: lepton
+        state: present
+
+    - name: LEPTON - Install via snap
+      when: ansible_os_family in ["Debian",  "Pop!_OS" ]
+      become: "{{ should_be_root }}"
+      snap:
+        name: lepton

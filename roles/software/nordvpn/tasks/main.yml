@@ -1,0 +1,8 @@
+---
+# main task for nordvpn
+
+- name: NORD-VPN - is present (darwin)
+  homebrew_cask:
+    name: nordvpn
+    state: present
+  when: ansible_os_family == "Darwin"

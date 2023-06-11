@@ -1,0 +1,16 @@
+---
+# main task for postman
+
+- name: POSTMAN - postman is present
+
+  block:
+    - name: POSTMAN - postman is present via snap (linux)
+      when: ansible_os_family in ["Debian", "Pop!_OS"]
+      snap:
+        name: postman
+
+    - name: postman is present (brew cask)
+      when: ansible_os_family == "Darwin"
+      homebrew_cask:
+        name: postman
+        state: present

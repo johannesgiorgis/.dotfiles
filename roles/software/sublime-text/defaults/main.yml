@@ -1,0 +1,29 @@
+---
+# defaults file for sublime-text
+
+# Set the version for Sublime-Text
+sublime_version: 3
+
+sublime_package_control: true
+
+sublime_packages:
+  - "https://github.com/arvi/Agila-Theme.git"
+  - "https://github.com/randy3k/AlignTab.git"
+  - "https://github.com/facelessuser/BracketHighlighter.git"
+  - "https://github.com/asbjornenge/Docker.tmbundle.git"
+  - "https://github.com/emmetio/sublime-text-plugin.git"
+  - "https://github.com/bitst0rm-pub/Formatter.git"
+  - "https://github.com/jisaacks/GitGutter.git"
+  - "https://github.com/victorporof/Sublime-HTMLPrettify.git"
+  - "https://github.com/gtarawneh/languagetool-sublime.git"
+  - "https://github.com/jonschlinkert/sublime-markdown-extended.git"
+  - "https://github.com/SublimeText-Markdown/MarkdownEditing.git"
+  - "https://github.com/math2001/MarkdownLivePreview.git"
+  - "https://github.com/facelessuser/MarkdownPreview.git"
+  - "https://github.com/naokazuterada/MarkdownTOC.git"
+  - "https://github.com/wuub/requirementstxt.git"
+  - "https://github.com/titoBouzout/SideBarEnhancements.git"
+  - "https://github.com/SublimeLinter/SublimeLinter.git"
+  - "https://github.com/mfuentesg/SyncSettings.git"
+  - "https://github.com/wesbos/cobalt2.git"
+  - "https://github.com/travmik/ZenTabs.git"

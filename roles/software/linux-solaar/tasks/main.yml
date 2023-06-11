@@ -1,0 +1,13 @@
+---
+# main task for linux-solaar
+
+- name: linux solaar is present
+  become: "{{ should_be_root }}"
+
+  block:
+    - name: Install Solaar
+      apt:
+        name: solaar
+        state: present
+        update_cache: true
+  when: ansible_os_family in ["Debian", "Pop!_OS"]

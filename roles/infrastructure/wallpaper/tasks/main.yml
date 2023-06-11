@@ -1,0 +1,9 @@
+---
+# main task for wallpaper
+
+- name: Symlink wallpaper for debian
+  file:
+    src: "{{ dotfiles_home }}/files/forest-sunset.jpg"
+    dest: "{{ dotfiles_user_home }}/Pictures/forest-sunset.jpg"
+    state: link
+  when: ansible_os_family in ["Debian",  "Pop!_OS" ]

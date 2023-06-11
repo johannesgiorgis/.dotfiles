@@ -1,0 +1,8 @@
+---
+# main task for bin-folder
+
+- name: Symlink bin/ folder
+  file:
+    src: "{{ dotfiles_home }}/bin"
+    dest: "{{ dotfiles_user_home }}/.bin"
+    state: link

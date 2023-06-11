@@ -1,0 +1,16 @@
+---
+# main task for audacity
+
+- name: AUDACITY - is present for debian system
+  become: "{{ should_be_root }}"
+  block:
+    - name: AUDACITY - add repository
+      apt_repository:
+        repo: "ppa:ubuntuhandbook1/audacity"
+        state: present
+
+    - name: AUDACITY - Update repositories cache and install audacity (debian)
+      apt:
+        name: audacity
+        update_cache: yes
+  when: ansible_os_family in ["Debian", "Pop!_OS"]

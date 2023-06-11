@@ -1,0 +1,11 @@
+---
+# main task for linux-xclip
+
+- name: xclip is present
+  become: "{{ should_be_root }}"
+
+  block:
+    - name: xclip is present in debian
+      apt:
+        name: xclip
+      when: ansible_os_family in ["Debian", "Pop!_OS"]

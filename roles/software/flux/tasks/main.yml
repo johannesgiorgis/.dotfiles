@@ -1,0 +1,12 @@
+---
+# main task for flux
+
+- name: FLUX - Install for MacOS via homebrew cask
+  homebrew_cask:
+    name: flux
+    state: present
+
+- name: FLUX - Install for Debian Systems
+  debug:
+    msg: "TODO: Implement for Debian Systems"
+  when: ansible_os_family in ["Debian",  "Pop!_OS" ]

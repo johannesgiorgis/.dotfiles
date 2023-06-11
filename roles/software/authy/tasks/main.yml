@@ -1,0 +1,17 @@
+---
+# main task for authy
+
+- name: authy is present
+
+  block:
+    - name: authy is present via snap with option --channel=beta (linux)
+      when: ansible_os_family in ["Debian", "Pop!_OS"]
+      snap:
+        name: authy
+        channel: beta
+
+    - name: authy is present (brew cask)
+      when: ansible_os_family == "Darwin"
+      homebrew_cask:
+        name: authy
+        state: present

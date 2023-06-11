@@ -1,0 +1,6 @@
+---
+# defaults file for linux-gnome-extensions
+
+gnome_extension_ids:
+  # Dash to Panel
+  - 1160

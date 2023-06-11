@@ -1,0 +1,32 @@
+---
+# main tasks for git
+
+
+# - debug:
+#     msg: 
+#       - "Name: {{ user_name }}"
+#       - "Email: {{ user_email }}"
+
+
+- name: GIT - Install and Configure
+
+  block:
+    - name: GIT - git is present
+      package:
+        name: git
+        state: present
+    
+    - name: ensure git is configured for users
+      template:
+        src: "{{ dotfiles_home }}/files/gitconfig.j2"
+        dest: "{{ dotfiles_user_home }}/.gitconfig"
+      with_items:
+        - { user_name: "{{ user_name }}", user_email: "{{ user_email }}"}
+
+    - meta: end_play
+    - name: GIT - configure gitconfig files
+      include_tasks: "configure-gitconfig-each.yml"
+      loop:
+        # - .gitconfig
+        - .gitconfig-personal
+        - .gitconfig-professional

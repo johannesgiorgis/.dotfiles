@@ -1,0 +1,75 @@
+---
+# defaults for lightdm
+
+# Selected display manager
+dm__name: "lightdm"
+
+# required packages
+dm__package_map:
+  lightdm: "lightdm"
+
+# list of package to install regardless of selected display manager
+dm__packages: []
+
+# lightdm packages
+dm__lightdm_packages: []
+
+# login settings
+# The default session to configure. The file :file:`/usr/share/xsessions/{{
+# dm_user_session }}.desktop` must exist when you configure this.
+dm_user_session: "{{ omit }}"
+
+# User automatic login
+dm__automatic_login_enabled: False
+
+dm__automatic_login_user_name: "user"
+
+dm_automatic_login_time_delay: 0
+
+# Greeter
+# Only include selected logins in the greeter.
+dm__greeter_include_all_users: False
+
+# Only include selected logins in the greeter.
+dm__greeter_include_users: []
+
+# Should the greeter show the time?
+dm__greeter_time_show: True
+
+# :manpage:`strftime(3)` format string.
+dm__greeter_time_format: "%F %T %a"
+
+# List of indicators to show on the panel.
+dm__greeter_lightdm_indicators: "~host;~spacer;~clock;~spacer;~language;~session;~a11y;~power"
+
+# Should a list of users be shown?
+dm__greeter_show_user_list: False
+
+# Debugging
+# More verbose logs.
+# Additionally lets the X server dump core if it crashes.
+dm__debugging_enabled: False
+
+# Display manager restart
+# Should the display manager be restarted when the configuration is changed?
+# Useful for testing.
+#
+# .. warning:: This will kill active user sessions!
+#
+dm__restart_on_configuration_change: False
+
+# Session manager
+# File to the executable session manager file. If given, it will be configured
+# as the default session manager.
+#
+# You can check the available session managers using
+# :command:`update-alternatives --list x-session-manager`.
+#
+# If this variable is set to the special value ``{{ omit }}``, the
+# configuration is not altered.
+dm__session_manager: "{{ omit }}"
+
+# Paths
+# Path to the executable display manager file. This is used to set the default
+# display manager for the X server.
+dm__binary_path: "/usr/sbin/{{ dm__package_map[dm__name] }}"

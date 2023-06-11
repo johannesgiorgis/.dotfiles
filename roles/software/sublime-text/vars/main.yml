@@ -1,0 +1,9 @@
+---
+# vars file for sublime-text
+
+sublime_dir: "{{ dotfiles_user_home }}/.config/sublime-text-{{ sublime_version }}"
+sublime_packages_dir: "{{ sublime_dir }}/Packages"
+sublime_installed_packages_dir: "{{ sublime_dir }}/Installed Packages"
+
+sublime_package_control_url: https://packagecontrol.io
+sublime_package_control_package_path: "{{ sublime_installed_packages_dir }}/Package Control.sublime-package"

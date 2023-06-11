@@ -1,0 +1,12 @@
+---
+# main task for snap
+
+- name: snapd is present (linux)
+  become: "{{ should_be_root }}"
+
+  block:
+    - name: Install snap
+      package:
+        name: snapd
+        state: present
+  when: ansible_os_family in ["Debian", "Pop!_OS"]

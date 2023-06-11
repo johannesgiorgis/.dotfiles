@@ -1,0 +1,35 @@
+---
+# main task for terraform
+
+- name: TERRAFORM - Set Terraform Versions
+  set_fact:
+    terraform_versions:
+      - 1.0.11
+      - 1.0.2
+      - 1.0.7
+      - 1.0.8
+      - 1.1.0
+      - 1.1.5
+      - 1.2.1
+      # below aren't supported in m1 mac
+      # arch -x86_64 asdf install terraform 0.14.11
+      # - 0.14.11
+      # - 0.13.6
+      # - 0.13.5
+
+- name: TERRAFORM - terraform is present
+  block:
+    - name: TERRAFORM - Add terraform plugin for asdf (https://github.com/Banno/asdf-hashicorp.git)
+      command: asdf plugin-add terraform https://github.com/Banno/asdf-hashicorp.git
+      register: terraform_add
+      failed_when: terraform_add == 1
+
+    - name: TERRAFORM - Install terraform versions
+      command: asdf install terraform {{ item }}
+      loop: "{{ terraform_versions }}"
+      loop_control:
+        label: "{{ item }}"
+
+    - name: TERRAFORM - Set global version for terraform to {{ terraform_versions[0] }}
+      command: asdf global terraform {{ terraform_versions[0] }}
+

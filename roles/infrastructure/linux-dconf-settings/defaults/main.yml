@@ -1,0 +1,12 @@
+---
+# defaults file for linux-dconf-settings
+
+dconf_settings:
+  # Desktop Interface
+  - key: /org/gnome/desktop/interface/clock-format
+    value: "'24h'"
+  - key: /org/gnome/desktop/interface/clock-show-weekday
+    value: "true"
+  # Night light
+  - key: /org/gnome/settings-daemon/plugins/color/night-light-enabled
+    value: "true"

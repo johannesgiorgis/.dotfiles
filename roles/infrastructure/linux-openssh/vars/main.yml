@@ -1,0 +1,7 @@
+---
+# vars for linux-openssh
+
+sshd_service_name: ssh
+
+sshd_packages:
+  - openssh-server

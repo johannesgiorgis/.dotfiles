@@ -1,0 +1,15 @@
+---
+# Handle customizing popos - gnome-tweaks + clean ups
+
+- name: customize pop!-os
+  become: "{{ should_be_root }}"
+
+  block:
+    - name: Enabling minimize, maximize, close buttons on the right of titlebar
+      command: 'gsettings set org.gnome.desktop.wm.preferences button-layout ":minimize,maximize,close"'
+
+    - name: Install RestrictedFormats
+      apt:
+        name: ubuntu-restricted-extras
+  # ansible 2.10.3 displays Debian for ansible_os_family within Pop!_OS
+  when: ansible_os_family in ['Pop!_OS', 'Debian']

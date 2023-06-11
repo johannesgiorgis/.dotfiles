@@ -1,0 +1,5 @@
+---
+# meta for asdf-gohugo
+
+dependencies:
+  - role: infrastructure/asdf

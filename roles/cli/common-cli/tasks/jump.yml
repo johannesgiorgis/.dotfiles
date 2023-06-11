@@ -1,0 +1,17 @@
+---
+# jump task
+
+- name: JUMP - jump is present
+
+  block:
+    - name: JUMP - Install via homebrew
+      when: ansible_pkg_mgr == 'homebrew'
+      homebrew:
+        name: jump
+        state: present
+
+    - name: JUMP - Install Debian package from the internet
+      when: ansible_os_family in ["Debian", "Pop!_OS"]
+      apt:
+        deb: https://github.com/gsamokovarov/jump/releases/download/v{{ jump_version }}/jump_{{ jump_version }}_{{ machine_map[ansible_machine] }}.deb
+      become: "{{ should_be_root }}"

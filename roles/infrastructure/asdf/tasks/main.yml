@@ -1,0 +1,8 @@
+---
+# main task for asdf
+
+- name: Clone asdf repository
+  git:
+    repo: https://github.com/asdf-vm/asdf.git
+    dest: "~/.asdf"
+    version: v0.10.2

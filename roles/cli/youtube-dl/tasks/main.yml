@@ -1,0 +1,35 @@
+---
+# main task for youtube-dl
+
+- name: youtube-dl and dependencies are present
+  become: "{{ should_be_root }}"
+
+  block:
+    - name: ffmpeg is present
+      when: ansible_pkg_mgr != 'homebrew'
+      package:
+        name: ffmpeg
+        state: latest
+
+    - name: Tap homebrew-ffmpeg/ffmmpeg (homebrew)
+      when: ansible_pkg_mgr == 'homebrew'
+      homebrew_tap:
+        tap: homebrew-ffmpeg/ffmpeg
+        state: present
+
+    - name: homebrew-ffmpeg/ffmpeg/ffmpeg is present (homebrew)
+      when: ansible_pkg_mgr == 'homebrew'
+      homebrew:
+        name: homebrew-ffmpeg/ffmpeg/ffmpeg
+        state: head
+        install_options: with-fdk-aac
+
+    - name: atomicparsley is present
+      package:
+        name: atomicparsley
+        state: latest
+
+    - name: youtube-dl is present
+      package:
+        name: youtube-dl
+        state: latest

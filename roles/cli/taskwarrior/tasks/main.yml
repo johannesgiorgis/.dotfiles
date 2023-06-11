@@ -1,0 +1,21 @@
+---
+# main task for taskwarrior
+
+- name: taskwarrior and dependencies are present
+  become: "{{ should_be_root }}"
+
+  block:
+    - name: taskwarrior is present (apt)
+      when: ansible_pkg_mgr == 'apt'
+      package:
+        name: taskwarrior
+        state: latest
+
+    - name: task, taskd, tasksh are present (homebrew)
+      when: ansible_pkg_mgr == 'homebrew'
+      homebrew:
+        name:
+          - task
+          - taskd
+          - tasksh
+        state: present

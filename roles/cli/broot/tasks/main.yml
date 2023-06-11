@@ -1,0 +1,51 @@
+---
+# main task for broot
+
+
+- name: BROOT - install for darwin
+  when: ansible_os_family in ["Darwin"]
+  homebrew:
+    name: broot
+    state: present
+
+
+- name: BROOT - install for debian
+  become: "{{ should_be_root }}"
+  when: ansible_os_family in ["Debian",  "Pop!_OS" ]
+  block:
+    - name: BROOT - Create temporary download directory
+      tempfile:
+        state: directory
+        suffix: ".broot_binary_download_dir"
+      register: broot_binary_download_dir
+
+    - name: BROOT - Download broot binary to {{ broot_binary_download_dir.path }}
+      get_url:
+        url: https://dystroy.org/broot/download/x86_64-linux/broot
+        dest: "{{ broot_binary_download_dir.path }}/"
+        mode: a+x
+      register: r_broot_binary_download
+
+    - debug:
+        msg: "{{ broot_binary_download_dir.path }}"
+
+    - debug:
+        msg: "{{ r_broot_binary_download }}"
+
+    - debug:
+        msg: "Run command: bash {{ broot_binary_download_dir.path }}/install_broot.sh"
+
+    - name: BROOT - add broot to /usr/local/bin
+      command: install broot /usr/local/bin
+      args:
+        chdir: "{{ broot_binary_download_dir.path }}"
+
+    - name: BROOT - install br shell function
+      command: /usr/local/bin/broot --install
+
+  always:
+    - name: BROOT - Delete binary download directory - {{ broot_binary_download_dir.path }}
+      file:
+        path: "{{ broot_binary_download_dir.path }}"
+        state: absent
+      changed_when: no

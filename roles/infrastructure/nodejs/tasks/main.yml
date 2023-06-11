@@ -1,0 +1,55 @@
+---
+# main task for nodejs
+
+- name: NODEJS - Ensure dependencies for nodejs are present
+  block:
+    - name: NODEJS - Ensure nodejs system dependencies are present (debian)
+      apt:
+        name:
+          - dirmngr
+          - gpg
+          - curl
+          - gawk
+        state: present
+      when: ansible_os_family in ["Debian",  "Pop!_OS" ]
+      become: "{{ should_be_root }}"
+
+    - name: NODEJS - Ensure nodejs system dependencies are present (darwin)
+      homebrew:
+        name:
+          - gpg
+          - gawk
+        state: present
+      when: ansible_os_family in ["Darwin"]
+
+
+
+- name: NODEJS - Set NodeJS Versions
+  set_fact:
+    nodejs_versions:
+      - 14.20.1
+      - 16.18.0
+
+
+# Install
+- name: NODEJS - Ensure nodejs & nodejs packages are present
+  block:
+    - name: NODEJS - Add nodejs plugin for asdf (https://github.com/asdf-vm/asdf-nodejs.git)
+      command: asdf plugin-add nodejs https://github.com/asdf-vm/asdf-nodejs.git
+      register: nodejs_add
+      failed_when: nodejs_add == 2
+
+    - name: NODEJS - Symlink .default-npm-packages
+      file:
+        src: "{{ dotfiles_home }}/files/.default-npm-packages"
+        dest: "{{ dotfiles_user_home }}/.default-npm-packages"
+        state: link
+
+    - name: NODEJS - Install nodejs versions
+      command: asdf install nodejs {{ item }}
+      loop: "{{ nodejs_versions }}"
+      loop_control:
+        label: "{{ item }}"
+
+    - name: NODEJS - Set global version for nodejs to {{ nodejs_versions[0] }}
+      command: asdf global nodejs {{ nodejs_versions[0] }}

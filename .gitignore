@@ -1,7 +1,23 @@
 .vscode/
+.idea/
 
 # ignore any log files
 *log
 
 # work zsh stuff
-zsh_work.symlink
+*zsh_work*
+
+# macos stuff
+.DS_Store
+
+# asdf
+.tool-versions
+
+# Git Ignore for zsh files
+
+*/zsh/.zcomp*
+*/zsh/plugins/zsh-*
+*/zsh/themes/
+*/zsh/zsh-*
+*/zsh/ohmyzsh/
+*/zsh/.zsh*

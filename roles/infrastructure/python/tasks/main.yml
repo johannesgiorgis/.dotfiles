@@ -1,0 +1,91 @@
+---
+# main task for python
+
+- name: PYTHON - Ensure dependencies for python are present
+  block:
+    - name: PYTHON - Ensure python system dependencies are present (debian)
+      apt:
+        name:
+          - make
+          - build-essential
+          - libssl-dev
+          - zlib1g-dev
+        state: present
+      when: ansible_os_family in ["Debian",  "Pop!_OS" ]
+      become: "{{ should_be_root }}"
+
+    - name: PYTHON - Ensure python system dependencies are present (homebrew)
+      homebrew:
+        name:
+          - openssl
+          - readline
+          - sqlite3
+          - xz
+          - zlib
+        state: present
+      when: ansible_os_family in ["Darwin"]
+
+
+- name: PYTHON - Set Python Versions
+  set_fact:
+    python_versions:
+      - 3.8.15
+      - 3.9.15
+
+
+# Install
+- name: PYTHON - python, python packages, pipx, pipx packages are present
+
+  block:
+    - name: PYTHON - Add python plugin for asdf (https://github.com/danhper/asdf-python.git)
+      command: asdf plugin-add python https://github.com/danhper/asdf-python.git
+      register: python_add
+      failed_when: python_add == 1
+
+    - name: PYTHON - Install python versions
+      command: asdf install python {{ item }}
+      loop: "{{ python_versions }}"
+      loop_control:
+        label: "{{ item }}"
+
+    - name: PYTHON - Set global version for python to {{ python_versions[0] }}
+      command: asdf global python {{ python_versions[0] }}
+
+    - name: PYTHON - Install python3-pip and python3-venv for system python3 (debian)
+      apt:
+        name: python3-pip, python3-venv
+      tags: [pipx]
+      when: ansible_os_family in ["Debian",  "Pop!_OS" ]
+      become: "{{ should_be_root }}"
+
+    - name: PYTHON - Install pipx (debian)
+      shell: |
+        PYENV_VERSION=system python3 -m pip install --user pipx
+        PYENV_VERSION=system python3 -m pipx install pipx
+        PYENV_VERSION=system python3 -m pipx ensurepath
+      args:
+        creates: "{{ dotfiles_user_home }}/.local/bin/pipx"
+      when: ansible_os_family in ["Debian",  "Pop!_OS" ]
+      tags: [pipx]
+
+    - name: PYTHON - Install pipx (darwin)
+      shell: |
+        brew install pipx
+        pipx ensurepath
+      when: ansible_os_family in ["Darwin"]
+      tags: [pipx]
+
+    - name: PYTHON - Install packages via pipx
+      command: "pipx install {{ item }}"
+      loop:
+        - black
+        - flake8
+        - bpython
+        - pipenv
+        - poetry
+      loop_control:
+        label: "{{ item }}"
+      tags: [pipx]
+
+- name: Enable poetry completions for zsh
+  shell: "poetry completions zsh > {{ dotfiles_user_home}}/.zfunc/_poetry"

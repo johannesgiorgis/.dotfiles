@@ -1,0 +1,20 @@
+---
+# install package control for sublime-text
+
+- name: check sublime Installed Package directory
+  stat:
+    path: "{{ sublime_installed_packages_dir }}"
+  register: check_sublime_installed_packages_dir
+  when: sublime_package_control
+
+- name: crease Installed Package directory
+  file:
+    path: "{{ sublime_installed_packages_dir }}"
+    state: directory
+  when: sublime_package_control and check_sublime_installed_packages_dir.stat.exists == False
+
+- name: Install package control for sublime
+  get_url:
+    url: "{{ sublime_package_control_url }}/Package%20Control.sublime-package"
+    dest: "{{ sublime_installed_packages_dir }}/Package Control.sublime-package"
+  when: sublime_package_control

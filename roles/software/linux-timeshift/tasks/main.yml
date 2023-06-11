@@ -1,0 +1,12 @@
+---
+# main task for linux-timeshift
+
+- name: linux timeshift is present
+  become: "{{ should_be_root }}"
+
+  block:
+    - name: timeshift is present
+      package:
+        name: timeshift
+        state: present
+  when: ansible_os_family in ["Debian", "Pop!_OS"]

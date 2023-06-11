@@ -1,0 +1,21 @@
+---
+# main task for sublime-text
+
+- name: sublime-text is present
+  # become: "{{ should_be_root }}"
+
+  block:
+    - name: import os specific vars
+      include_vars: "{{ ansible_os_family }}.yml"
+
+    - import_tasks: debian.yml
+      when: ansible_os_family in ["Debian", "Pop!_OS"]
+
+    - import_tasks: mac.yml
+      when: ansible_os_family == "Darwin"
+
+    # Install package Control
+    - import_tasks: install-package-control.yml
+
+    # Install & Configure Sublime Text Packages
+    - import_tasks: install-configure-packages.yml

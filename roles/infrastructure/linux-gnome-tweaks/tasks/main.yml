@@ -1,0 +1,12 @@
+---
+# main task for linux-gnome-tweaks
+
+- name: linux gnome-tweaks is present
+  become: "{{ should_be_root }}"
+
+  block:
+    - name: gnome-tweaks is present
+      apt:
+        name: gnome-tweaks
+        state: present
+  when: ansible_os_family in ["Debian", "Pop!_OS"]

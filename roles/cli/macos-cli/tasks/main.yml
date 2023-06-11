@@ -1,0 +1,22 @@
+---
+# main task for macos-cli
+
+- name: MACOS-CLI - package are present (macos)
+
+  block:
+    - name: MACOS-CLI - Tap into homebrew & custom taps
+      homebrew_tap:
+        tap: "{{ item }}"
+        state: present
+      loop: []
+
+    - name: MACOS-CLI - formulae are present via homebrew
+      homebrew:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - coreutils
+        - wifi-password
+
+  when: ansible_os_family in ["Darwin"]
+  

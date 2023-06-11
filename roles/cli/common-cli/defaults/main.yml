@@ -1,0 +1,89 @@
+# defaults task for common-cli
+---
+
+common_packages:
+  - ack:
+    default:
+      - ack
+  - bat:
+    default:
+      - bat
+  - cowsay:
+    default:
+      - cowsay
+  - csvkit:
+    default:
+      - csvkit
+  - curl:
+    default:
+      - curl
+  - diffstat:
+    default:
+      - diffstat
+  - entr:
+    default:
+      - entr
+  - fd-find:
+    default:
+      - fd-find
+    homebrew:
+      - fd
+  - fortune:
+    default:
+      - fortune
+  - fzf:
+    default:
+      - fzf
+  - gawk:
+    default:
+      - gawk
+  - gpg:
+    default:
+      - gpg
+    homebrew:
+      - gnupg
+  - htop:
+    default:
+      - htop
+  - httpie:
+    default:
+      - httpie
+  - jq:
+    default:
+      - jq
+  - mdp:
+    default:
+      - mdp
+  - ncdu:
+    default:
+      - ncdu
+  - neofetch:
+    default:
+      - neofetch
+  - pandoc:
+    default:
+      - pandoc
+  - rename:
+    default:
+      - rename
+  - ripgrep:
+    default:
+      - ripgrep
+  - shellcheck:
+    default:
+      - shellcheck
+  - speedtest-cli:
+    default:
+      - speedtest-cli
+  - tldr:
+    default:
+      - tldr
+  - tree:
+    default:
+      - tree
+  - watch:
+    default:
+      - watch
+  - wget:
+    default:
+      - wget

@@ -1,0 +1,17 @@
+---
+# delta task
+
+- name: DELTA - delta is present
+
+  block:
+    - name: DELTA - Install via homebrew
+      when: ansible_os_family in ["Darwin"]
+      homebrew:
+        name: git-delta
+        state: present
+
+    - name: DELTA - install for debian from the internet
+      when: ansible_os_family in ["Debian",  "Pop!_OS" ]
+      apt:
+        deb: https://github.com/dandavison/delta/releases/download/{{ delta_version }}/git-delta_{{ delta_version }}_{{ machine_map[ansible_machine] }}.deb
+      become: "{{ should_be_root }}"

@@ -1,0 +1,7 @@
+---
+# mac task for sublime-text
+
+- name: Install Sublime Text (brew-cask)
+  homebrew_cask:
+    name: sublime-text
+    state: present

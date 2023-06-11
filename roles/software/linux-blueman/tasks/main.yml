@@ -1,0 +1,12 @@
+---
+# main task for linux-blueman
+
+- name: linux blueman is present
+  become: "{{ should_be_root }}"
+
+  block:
+    - name: blueman is present
+      package:
+        name: blueman
+        state: present
+  when: ansible_os_family in ["Debian", "Pop!_OS"]
