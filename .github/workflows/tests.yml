@@ -6,6 +6,7 @@ on:
   pull_request:
     branches:
       - "main" 
+
 jobs:
 
   # shellcheck:
@@ -19,29 +20,26 @@ jobs:
   tests:
     runs-on: ${{ matrix.os }}
     strategy:
+      # cancel all in-progress and queued jobs in the matrix if any job in the matrix fails
       fail-fast: true
       matrix:
         os:
           - ubuntu-latest
           - macos-latest
+
     steps:
-      - name: Set up Git repository
-        uses: actions/checkout@main
+      - uses: actions/checkout@main
 
-      - name: Run bin/doi
-        run: bash bin/doi
+      - name: Check versions of pre-installed software/system
+        run: ./.cisupport/pre.sh
 
-      - name: Verify base packages are installed
+      - name: Install and verify packages are installed
+        working-directory: bin
         run: |
+          pwd
+          bash doi -t neovim
           command -v ansible
+          command -v nvim
 
-      # - name: Test script/setup
-      #   run: bash script/setup
-
-      # - name: Test bashrc
-      #   run: bash -xc "source ~/.bashrc"
-
-      - name: Verify base packages are installed (MacOS)
-        if: matrix.os == 'macos-latest'
-        run: |
-          command -v brew
+      - name: Check installed versions 
+        run: ./.cisupport/post.sh
