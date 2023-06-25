@@ -4,6 +4,7 @@
     should_be_root: "{{ true if ansible_pkg_mgr != 'homebrew' else false }}"
   roles:
     # cli
+    - { role: cli/atest, tags: [atest] }
     - { role: cli/common-cli, tags: [common-cli] }
     - { role: cli/linux-mlocate, tags: [linux-mlocate] }
     - { role: cli/linux-xclip, tags: [linux-xclip] }

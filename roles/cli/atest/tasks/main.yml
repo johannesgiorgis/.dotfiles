@@ -1,0 +1,92 @@
+---
+# main task for broot
+
+# - name: Testing in
+#   shell: >
+#     curl -s https://api.github.com/repos/dandavison/delta/releases/latest 
+#     | jq -r '.tag_name'
+#   register: myoutput
+
+# - name: Getting latest version from Github API
+#   shell: >
+#     curl -s https://api.github.com/repos/gsamokovarov/jump/releases/latest
+#     | jq -r '.name'
+#   register: myoutput
+
+# - name: setting version
+#   set_fact:
+#     version:
+#       - "{{ myoutput.stdout }}"
+  
+# - debug:
+#     msg: 
+#       - "Version: {{ version }}"
+#       - "Result: {{ myoutput.stdout }}"
+
+# echo "deb [signed-by=/usr/share/keyrings/azlux-archive-keyring.gpg] http://packages.azlux.fr/debian/ stable main" | sudo tee /etc/apt/sources.list.d/azlux.list
+#    sudo wget -O /usr/share/keyrings/azlux-archive-keyring.gpg  https://azlux.fr/repo.gpg
+
+# - name: Install Broot key (apt)
+#   become: "{{ should_be_root }}"
+#   # apt-key deprecated
+#   # https://itsfoss.com/apt-key-deprecated/
+#   shell: >
+#     echo "deb [signed-by=/usr/share/keyrings/azlux-archive-keyring.gpg] http://packages.azlux.fr/debian/ stable main" 
+#     | sudo tee /etc/apt/sources.list.d/azlux.list
+
+#     sudo wget -O /usr/share/keyrings/azlux-archive-keyring.gpg  https://azlux.fr/repo.gpg
+
+# - name: Install Broot
+#   become: "{{ should_be_root }}"
+#   apt:
+#     name: broot
+#     update_cache: yes
+# - name: Install Personnal Azlux's repository apt_repository:
+#     repo: "deb [signed-by=/usr/share/keyrings/azlux-archive-keyring.gpg] http://packages.azlux.fr/debian/ stable main"
+#     state: present
+
+
+# - name: Testing in
+#   shell: >
+#     name=$(asdf list-all python | grep '^3.9' | tail -1)
+#     echo $name
+#   register: myoutput
+
+# - debug:
+#     msg: 
+#       - "Result: {{ myoutput }}"
+
+# - name: narrow down
+#   shell: >
+#     echo "{{ myoutput.stdout }}" | tail -1
+#   register: narrow
+
+# - debug:
+#     msg:
+#       - "Latest: {{ narrow.stdout }}"
+
+# Requires community.general collection
+# https://docs.ansible.com/ansible/latest/collections/community/general/github_release_module.html
+# - name: Get latest release of a public repo
+#   community.general.github_release:
+#     user: ansible
+#     repo: ansible
+#     action: latest_release
+
+
+# https://techviewleo.com/ansible-check-if-software-package-is-installed/
+- name: Check if app is installed
+  ansible.builtin.package:
+    name: bitwarden
+    state: present
+  check_mode: true
+  register: package_check
+  ignore_errors: true
+
+- debug:
+    msg: "Package is installed: {{ package_check }}"
+  when: package_check is succeeded
+
+- debug:
+    msg: "Installing package"
+  when: package_check is failed
