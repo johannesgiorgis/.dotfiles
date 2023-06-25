@@ -43,6 +43,7 @@
         role: infrastructure/linux-initial-configuration,
         tags: [linux-initial-configuration],
       }
+    - { role: infrastructure/linux-nvidia, tags: [linux-nvidia] }
     - { role: infrastructure/linux-openssh, tags: [linux-openssh] }
     - { role: infrastructure/linux-redshift, tags: [linux-redshift] }
     - { role: infrastructure/linux-snap, tags: [linux-snap] }

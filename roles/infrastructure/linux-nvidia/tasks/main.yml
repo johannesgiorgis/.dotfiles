@@ -1,0 +1,12 @@
+---
+# https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/index.html
+
+
+- name: Install Nvidia Container Toolkit
+  become: "{{ should_be_root }}"
+  package:
+    name: 
+      - nvidia-container-toolkit
+      - nvidia-container-toolkit-base
+    state: present
+  when: ansible_os_family in ["Debian", "Pop!_OS"]
