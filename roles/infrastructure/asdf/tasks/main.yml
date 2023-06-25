@@ -1,8 +1,16 @@
 ---
 # main task for asdf
 
-- name: Clone asdf repository
+- name: ASDF - Getting latest version from Github API
+  shell: >
+    curl -s https://api.github.com/repos/asdf-vm/asdf/releases/latest
+    | jq -r '.tag_name'
+  args:
+    warn: false
+  register: output
+
+- name: ASDF - Clone asdf repository {{ output.stdout }}
   git:
     repo: https://github.com/asdf-vm/asdf.git
     dest: "~/.asdf"
-    version: v0.10.2
+    version: "{{ output.stdout }}"

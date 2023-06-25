@@ -8,14 +8,18 @@
     name: rambox
     state: present
 
-- name: RAMBOX - rambox is present for Debian
+- name: RAMBOX - present for Debian
   become: "{{ should_be_root }}"
   block:
-    - name: RAMBOX - Set rambox version (Debian)
-      set_fact:
-        rambox_version: "0.7.7"
+    - name: RAMBOX - Getting latest version from Github API
+      shell: >
+        curl -s https://api.github.com/repos/ramboxapp/community-edition/releases/latest 
+        | jq -r '.tag_name'
+      args:
+        warn: false
+      register: output
 
-    - name: RAMBOX - Install (Debian)
+    - name: RAMBOX - Install {{ output.stdout }} (Debian)
       apt:
-        deb: https://github.com/ramboxapp/community-edition/releases/download/{{ rambox_version }}/Rambox-{{ rambox_version }}-{{ ansible_system | lower }}-{{ machine_map[ansible_machine] }}.deb
+        deb: https://github.com/ramboxapp/community-edition/releases/download/{{ output.stdout }}/Rambox-{{ output.stdout }}-{{ ansible_system | lower }}-{{ machine_map[ansible_machine] }}.deb
   when: ansible_os_family in ["Debian",  "Pop!_OS" ]
