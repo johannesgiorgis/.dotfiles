@@ -9,6 +9,7 @@
           - make
           - build-essential
           - libssl-dev
+          - libsqlite3-dev
           - zlib1g-dev
         state: present
       when: ansible_os_family in ["Debian",  "Pop!_OS" ]
@@ -29,8 +30,10 @@
 - name: PYTHON - Set Python Versions
   set_fact:
     python_versions:
-      - 3.8.15
-      - 3.9.15
+      - 3.11.4
+      - 3.10.12
+      - 3.9.17
+      - 3.8.17
 
 
 # Install
@@ -42,13 +45,13 @@
       register: python_add
       failed_when: python_add == 1
 
-    - name: PYTHON - Install python versions
+    - name: PYTHON - Install {{ python_versions }}
       command: asdf install python {{ item }}
       loop: "{{ python_versions }}"
       loop_control:
         label: "{{ item }}"
 
-    - name: PYTHON - Set global version for python to {{ python_versions[0] }}
+    - name: PYTHON - Set global version to {{ python_versions[0] }}
       command: asdf global python {{ python_versions[0] }}
 
     - name: PYTHON - Install python3-pip and python3-venv for system python3 (debian)
