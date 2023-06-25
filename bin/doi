@@ -102,6 +102,10 @@ main() {
         command_options="${command_options} --ask-become-pass"
     fi
 
+    if [ $(lsb_release -c -s) == "jammy" ]; then
+        command_options="${command_options} -e ansible_python_interpreter=/usr/bin/python3.10"
+    fi
+
     echo "ansible-playbook $command_options"
     # shellcheck disable=SC2086
     ansible-playbook $command_options
@@ -284,6 +288,9 @@ function ensure_ansible_is_present() {
 
         elif [[ "$release_code" == "focal" ]]; then
             install_ansible_base_and_collections_on_debian
+
+        elif [[ "$release_code" == "jammy" ]]; then
+            apt-get install -y ansible
 
         else
             fail "ERROR: Unknown linux release code - '$release_code'. Exiting with error"
