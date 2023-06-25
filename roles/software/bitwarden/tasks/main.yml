@@ -2,9 +2,53 @@
 # main task for bitwarden
 
 - name: BITWARDEN - Install via homebrew cask (MacOS)
+  when: ansible_os_family in ["Darwin"]
   # homebrew_cask:
   #   name: bitwarden
   #   state: present
   debug:
     msg: "Install from Mac App Store to allow Browser Integration"
-  when: ansible_os_family in ["Darwin"]
+
+
+
+- name: BITWARDEN|Install for Debian
+  when: ansible_os_family in ["Debian", "Pop!_OS"]
+  become: "{{ should_be_root }}"
+  ansible.builtin.package:
+    name: bitwarden 
+    state: present
+  check_mode: true
+  register: package_check
+  ignore_errors: true
+
+- name: BITWARDEN|Install for Debian
+  when: package_check is failed and ansible_os_family in ["Debian", "Pop!_OS"]
+  become: "{{ should_be_root }}"
+  block:
+    - name: BITWARDEN|Create temporary download directory
+      tempfile:
+        state: directory
+        suffix: ".bitwarden"
+      register: download_dir
+
+    - name: BITWARDEN|Get package
+      ansible.builtin.get_url:
+        url: http://vault.bitwarden.com/download/?app=desktop&platform=linux&variant=deb
+        dest: "{{ download_dir.path }}"
+      register: deb_file
+    
+    - debug:
+        msg: 
+          - "URL: {{ deb_file.url }}"
+          - "DEST: {{ deb_file.dest }}"
+    
+    - name: BITWARDEN|Install
+      ansible.builtin.apt:
+        deb: "{{ deb_file.dest }}"
+
+  always:
+    - name: BITWARDEN|Delete temporary download directory
+      file:
+        path: "{{ download_dir.path }}"
+        state: absent
+      changed_when: no
