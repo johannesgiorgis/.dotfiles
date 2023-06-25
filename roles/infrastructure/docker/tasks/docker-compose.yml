@@ -1,0 +1,18 @@
+---
+# Define and run multi-container applications with Docker
+# https://github.com/docker/compose
+# https://docs.docker.com/compose/
+
+- name: DOCKER-COMPOSE - Getting latest version from Github API
+  shell: >
+    curl -s https://api.github.com/repos/docker/compose/releases/latest 
+    | jq -r '.tag_name'
+  args:
+    warn: false
+  register: output
+
+- name: DOCKER-COMPOSE - Install Docker Compose
+  get_url:
+    url: "https://github.com/docker/compose/releases/download/{{ output.stdout }}/docker-compose-linux-{{ ansible_machine }}"
+    dest: /usr/local/bin/docker-compose
+    mode: 0755

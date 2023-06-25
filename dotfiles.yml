@@ -15,6 +15,7 @@
 
     # infrastructure
     - { role: infrastructure/bin-folder, tags: [bin-folder] }
+    - { role: infrastructure/docker, tags: [docker] }
     - { role: infrastructure/fonts-firacode, tags: [fonts-firacode] }
     - { 
       role: infrastructure/git,

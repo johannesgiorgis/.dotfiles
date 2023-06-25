@@ -39,6 +39,12 @@ if [[ -n "$ZSH_THEME" ]]; then
     source "$ZDOTDIR/themes/$ZSH_THEME/$ZSH_THEME.zsh-theme"
 fi
 
+# Set ZSH_CACHE_DIR to the path where cache files should be created
+# or else we will use the default cache/
+if [[ -z "$ZSH_CACHE_DIR" ]]; then
+  ZSH_CACHE_DIR="$ZDOTDIR/cache"
+fi
+
 
 # Uncomment the following line if you want to disable marking untracked files
 # under VCS as dirty. This makes repository status check for large repositories
