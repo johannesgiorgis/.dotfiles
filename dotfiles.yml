@@ -4,15 +4,10 @@
     should_be_root: "{{ true if ansible_pkg_mgr != 'homebrew' else false }}"
   roles:
     # cli
-    - { role: cli/broot, tags: [broot] }
     - { role: cli/common-cli, tags: [common-cli] }
-    - { role: cli/exa, tags: [exa] }
-    - { role: cli/gh, tags: [gh] }
     - { role: cli/linux-mlocate, tags: [linux-mlocate] }
     - { role: cli/linux-xclip, tags: [linux-xclip] }
     - { role: cli/macos-cli, tags: [macos-cli] }
-    - { role: cli/neovim, tags: [neovim] }
-    - { role: cli/noti, tags: [noti] }
     - { role: cli/taskwarrior, tags: [taskwarrior] }
     - { role: cli/timewarrior, tags: [timewarrior] }
     - { role: cli/vim, tags: [vim] }
