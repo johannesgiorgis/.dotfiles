@@ -7,7 +7,7 @@
   block:
     - name: Install openssh-server and openssh-client
       package:
-        name: "{{ sshd_packages }}"
+        name: openssh-server
         state: latest
 
       # example output: OpenSSH_5.3p1, OpenSSL 1.0.1e-fips 11 Feb 2013

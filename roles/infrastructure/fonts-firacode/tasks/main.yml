@@ -2,11 +2,9 @@
 # main tasks for font-firacode
 
 - name: fonts-firacode is present for debian system
-  block:
-    - name: Ensure dependencies are installed
-      apt:
-        name: fonts-firacode
-        state: present
+  apt:
+    name: fonts-firacode
+    state: present
   when: ansible_os_family in ["Debian",  "Pop!_OS" ]
 
 
