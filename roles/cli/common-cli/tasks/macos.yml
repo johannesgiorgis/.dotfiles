@@ -1,8 +1,8 @@
 ---
-# main task for macos-cli
+# macos cli tools
 
-- name: MACOS-CLI - package are present (macos)
-
+- name: COMMON-CLI|MACOS - Install CLI tools
+  when: ansible_os_family in ["Darwin"]
   block:
     - name: MACOS-CLI - Tap into homebrew & custom taps
       homebrew_tap:
@@ -18,5 +18,4 @@
         - coreutils
         - wifi-password
 
-  when: ansible_os_family in ["Darwin"]
   

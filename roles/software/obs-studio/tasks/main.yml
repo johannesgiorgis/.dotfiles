@@ -8,7 +8,7 @@
     state: present
   when: ansible_os_family == "Darwin"
 
-- name: obs-studio is present (Debian, Pop!_OS)
+- name: obs-studio is present (Debian)
   become: "{{ should_be_root }}"
 
   block:
@@ -21,4 +21,4 @@
       apt:
         name: obs-studio
         update_cache: yes
-  when: ansible_os_family in ["Debian", "Pop!_OS"]
+  when: ansible_os_family in ["Debian"]

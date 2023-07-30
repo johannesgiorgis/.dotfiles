@@ -153,5 +153,5 @@
         - "MesloLGS%20NF%20Italic.ttf"
         # italic_bold
         - "MesloLGS%20NF%20Bold%20Italic.ttf"
-  when: ansible_os_family in ["Debian", "Pop!_OS"]
+  when: ansible_os_family in ["Debian"]
 

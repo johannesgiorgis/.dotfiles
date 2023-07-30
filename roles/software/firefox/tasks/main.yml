@@ -29,4 +29,4 @@
     #     name: firefox
     #     state: present
     #     update_cache: yes
-  when: ansible_os_family in ["Debian",  "Pop!_OS" ]
+  when: ansible_os_family in ["Debian"]

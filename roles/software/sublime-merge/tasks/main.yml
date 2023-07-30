@@ -10,7 +10,7 @@
 
 - name: sublime-merge is present for debian system
   become: "{{ should_be_root }}"
-  when: ansible_os_family in ["Debian", "Pop!_OS"]
+  when: ansible_os_family in ["Debian"]
   block:
     - name: Install Sublime Merge GPG key
       apt_key:

@@ -41,4 +41,4 @@
   #       path: "{{ lastpass_installation_download_dir.path }}"
   #       state: absent
   #     changed_when: no
-  when: ansible_os_family in ["Debian",  "Pop!_OS" ]
+  when: ansible_os_family in ["Debian"]

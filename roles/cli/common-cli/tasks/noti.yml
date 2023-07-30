@@ -3,14 +3,14 @@
 # https://github.com/variadico/noti
 
 - name: COMMON-CLI|NOTI - Install via homebrew for Darwin
+  when: ansible_os_family in ["Darwin"]
   homebrew:
     name: noti
     state: present
-  when: ansible_os_family in ["Darwin"]
 
 
 - name: COMMON-CLI|NOTI - install for debian machine
-  when: ansible_os_family in ["Debian",  "Pop!_OS" ]
+  when: ansible_os_family in ["Debian"]
   block:
     - name: COMMON-CLI|NOTI - Create temporary download directory
       tempfile:

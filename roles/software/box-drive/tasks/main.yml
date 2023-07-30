@@ -8,7 +8,7 @@
     - name: BOX-DRIVE - present for Debian System
       debug:
         msg: "TODO: Add Debian stuff"
-      when: ansible_os_family in ["Debian", "Pop!_OS"]
+      when: ansible_os_family in ["Debian"]
 
     - name: BOX - Install box-drive for MacOS via homebrew cask
       homebrew_cask:

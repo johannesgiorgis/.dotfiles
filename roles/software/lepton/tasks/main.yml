@@ -13,7 +13,7 @@
         state: present
 
     - name: LEPTON - Install via snap
-      when: ansible_os_family in ["Debian",  "Pop!_OS" ]
+      when: ansible_os_family in ["Debian"]
       become: "{{ should_be_root }}"
       snap:
         name: lepton

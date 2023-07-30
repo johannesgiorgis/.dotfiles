@@ -11,7 +11,7 @@
 
 
 - name: COMMON-CLI|DELTA - Install delta for Debian
-  when: ansible_os_family in ["Debian",  "Pop!_OS" ]
+  when: ansible_os_family in ["Debian"]
   block:
     - name: Getting latest version from Github API
       shell: >

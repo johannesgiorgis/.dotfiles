@@ -6,9 +6,6 @@
     # cli
     - { role: cli/atest, tags: [atest] }
     - { role: cli/common-cli, tags: [common-cli] }
-    - { role: cli/linux-mlocate, tags: [linux-mlocate] }
-    - { role: cli/linux-xclip, tags: [linux-xclip] }
-    - { role: cli/macos-cli, tags: [macos-cli] }
     - { role: cli/taskwarrior, tags: [taskwarrior] }
     - { role: cli/timewarrior, tags: [timewarrior] }
     - { role: cli/vim, tags: [vim] }
@@ -64,12 +61,12 @@
     - {
         role: infrastructure/popos-initial-configuration,
         tags: [popos-initial-configuration],
-        when: ansible_os_family == "Pop!_OS" or ansible_os_family == "Debian",
+        when: ansible_os_family == "Debian",
       }
     - {
         role: infrastructure/linux-lightdm,
         tags: [linux-lightdm],
-        when: ansible_os_family == "Pop!_OS",
+        when: ansible_distribution == "Pop!_OS",
       }
 
     # programming languages/frameworks managed by asdf

@@ -5,7 +5,7 @@
   apt:
     name: fonts-firacode
     state: present
-  when: ansible_os_family in ["Debian",  "Pop!_OS" ]
+  when: ansible_os_family in ["Debian"]
 
 
 - name: fonts-firacode is present on mac os x

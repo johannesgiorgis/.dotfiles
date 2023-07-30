@@ -12,7 +12,7 @@
 
   block:
     - name: GOLANG - Install dep apt package
-      when: ansible_os_family in ["Debian",  "Pop!_OS"]
+      when: ansible_os_family in ["Debian"]
       apt:
         name: go-dep
       tags: [golang-install]

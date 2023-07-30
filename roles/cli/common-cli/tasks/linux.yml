@@ -1,0 +1,12 @@
+---
+# linux cli tools
+
+- name: COMMON-CLI|LINUX - Install CLI tools
+  when: ansible_os_family in ["Debian"]
+  become: "{{ should_be_root }}"
+  package:
+    name: "{{ item }}"
+    state: latest
+  loop: 
+    - xclip
+    - mlocate

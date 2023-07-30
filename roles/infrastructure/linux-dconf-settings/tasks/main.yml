@@ -15,4 +15,4 @@
         dconf_key: "{{ item.key }}"
         dconf_value: "{{ item.value }}"
       with_items: "{{ dconf_settings }}"
-  when: ansible_os_family in ["Debian", "Pop!_OS"]
+  when: ansible_os_family in ["Debian"]

@@ -12,7 +12,7 @@
 
 
 - name: BITWARDEN|Install for Debian
-  when: ansible_os_family in ["Debian", "Pop!_OS"]
+  when: ansible_os_family in ["Debian"]
   become: "{{ should_be_root }}"
   ansible.builtin.package:
     name: bitwarden 
@@ -22,7 +22,7 @@
   ignore_errors: true
 
 - name: BITWARDEN|Install for Debian
-  when: package_check is failed and ansible_os_family in ["Debian", "Pop!_OS"]
+  when: package_check is failed and ansible_os_family in ["Debian"]
   become: "{{ should_be_root }}"
   block:
     - name: BITWARDEN|Create temporary download directory

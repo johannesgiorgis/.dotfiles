@@ -1,17 +1,16 @@
 ---
 # main task for whatsapp
 
-- name: whatsapp is present
+- name: Install whatsapp via homebrew cask
+  when: ansible_os_family == "Darwin"
+  homebrew_cask:
+    name: whatsapp
+    state: present
+
+
+- name: Install whatsdesk via snap with option --channel=beta
+  when: ansible_os_family in ["Debian"]
   become: "{{ should_be_root }}"
+  snap:
+    name: whatsdesk
 
-  block:
-    - name: Install whatsdesk via snap with option --channel=beta
-      when: ansible_os_family in ["Debian", "Pop!_OS"]
-      snap:
-        name: whatsdesk
-
-    - name: Install whatsapp via homebrew cask
-      when: ansible_os_family == "Darwin"
-      homebrew_cask:
-        name: whatsapp
-        state: present

@@ -12,7 +12,7 @@
           - libsqlite3-dev
           - zlib1g-dev
         state: present
-      when: ansible_os_family in ["Debian",  "Pop!_OS" ]
+      when: ansible_os_family in ["Debian"]
       become: "{{ should_be_root }}"
 
     - name: PYTHON - Ensure python system dependencies are present (homebrew)
@@ -58,7 +58,7 @@
       apt:
         name: python3-pip, python3-venv
       tags: [pipx]
-      when: ansible_os_family in ["Debian",  "Pop!_OS" ]
+      when: ansible_os_family in ["Debian"]
       become: "{{ should_be_root }}"
 
     - name: PYTHON - Install pipx (debian)
@@ -68,7 +68,7 @@
         PYENV_VERSION=system python3 -m pipx ensurepath
       args:
         creates: "{{ dotfiles_user_home }}/.local/bin/pipx"
-      when: ansible_os_family in ["Debian",  "Pop!_OS" ]
+      when: ansible_os_family in ["Debian"]
       tags: [pipx]
 
     - name: PYTHON - Install pipx (darwin)

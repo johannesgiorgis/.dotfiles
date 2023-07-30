@@ -10,7 +10,7 @@
 
 
 - name: COMMON-CLI|JUMP - Install for Darwin
-  when: ansible_os_family in ["Debian", "Pop!_OS"]
+  when: ansible_os_family in ["Debian"]
   block:
     - name: Getting latest version from Github API
       shell: >
@@ -21,6 +21,6 @@
       register: output
 
     - name: COMMON-CLI|JUMP - Install {{ output.stdout }} Debian package
+      become: "{{ should_be_root }}"
       apt:
         deb: https://github.com/gsamokovarov/jump/releases/download/v{{ output.stdout }}/jump_{{ output.stdout }}_{{ machine_map[ansible_machine] }}.deb
-      become: "{{ should_be_root }}"

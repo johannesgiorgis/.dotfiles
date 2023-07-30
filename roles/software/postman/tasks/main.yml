@@ -5,7 +5,7 @@
 
   block:
     - name: POSTMAN - postman is present via snap (linux)
-      when: ansible_os_family in ["Debian", "Pop!_OS"]
+      when: ansible_os_family in ["Debian"]
       snap:
         name: postman
 

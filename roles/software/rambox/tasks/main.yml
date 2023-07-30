@@ -9,6 +9,7 @@
     state: present
 
 - name: RAMBOX - present for Debian
+  when: ansible_os_family in ["Debian"]
   become: "{{ should_be_root }}"
   block:
     - name: RAMBOX - Getting latest version from Github API
@@ -22,4 +23,3 @@
     - name: RAMBOX - Install {{ output.stdout }} (Debian)
       apt:
         deb: https://github.com/ramboxapp/community-edition/releases/download/{{ output.stdout }}/Rambox-{{ output.stdout }}-{{ ansible_system | lower }}-{{ machine_map[ansible_machine] }}.deb
-  when: ansible_os_family in ["Debian",  "Pop!_OS" ]
