@@ -79,9 +79,6 @@
     - { role: infrastructure/rust, tags: [rust] }
     - { role: infrastructure/terraform, tags: [terraform] }
 
-    # TODO: Remove
-    - { role: infrastructure/apt, tags: [apt] }
-
     # software
     - { role: software/audacity, tags: [audacity] }
     - { role: software/authy, tags: [authy] }
