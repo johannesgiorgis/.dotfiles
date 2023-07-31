@@ -220,7 +220,12 @@ if [[ "${kernel_name}" == "Darwin" ]]; then
     # Brew
 
     # Due to changes on https://github.com/Homebrew/brew/pull/13299
-    export HOMEBREW_UPDATE_REPORT_ALL_FORMULAE=1
+    # export HOMEBREW_UPDATE_REPORT_ALL_FORMULAE=1
+
+    # Due to changes on https://github.com/Homebrew/brew/pull/14866 indicating `brew update`
+    # will only report all without API
+    # documented on https://github.com/Homebrew/brew/pull/12305
+    export HOMEBREW_INSTALL_FROM_API=1
 
     if command -v brew 1>/dev/null 2>&1; then
         alias b='brew'
