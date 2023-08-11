@@ -1,34 +1,39 @@
 ---
-# main tasks for dropbox
 
-- name: DROPBOX is present
-  become: "{{ should_be_root }}"
-
-  block:
-    - name: DROPBOX - Install for MacOS via homebrew cask
-      homebrew_cask:
-        name: dropbox
-        state: present
+- name: DROPBOX - Install for MacOS via homebrew cask
+  homebrew_cask:
+    name: dropbox
+    state: present
   when: ansible_os_family == "Darwin"
 
 
-- name: DROPBOX - Install for Debian OS
-  block:
-    - name: DROPBOX - Install key (Debian)
-      apt_key:
-        keyserver: keyserver.ubuntu.com
-        id: 1C61A2656FB57B7E4DE0F4C1FC918B335044912E
-        state: present
+# - name: DROPBOX - Install for Debian OS
+#   become: "{{ should_be_root }}"
+#   block:
+#     - name: DROPBOX - Install
+#       apt:
+         # 2023-08: Had challenges installing the latest version of dropbox
+         # Installed via Pop OS Store which finally worked!
+         # deb: https://www.dropbox.com/download?dl=packages/ubuntu/dropbox_2022.12.05_amd64.deb
+#         deb: https://www.dropbox.com/download?dl=packages/ubuntu/dropbox_2020.03.04_amd64.deb
 
-    - name: DROPBOX - Install repository (Debian)
-      apt_repository:
-        repo: deb [arch=i386,amd64] http://linux.dropbox.com/ubuntu/ bionic main
-        filename: dropbox
-        state: present
+    # 2023-08: apt-key deprecated
+    # https://itsfoss.com/apt-key-deprecated/
+    # - name: DROPBOX - Install key (Debian)
+    #   apt_key:
+    #     keyserver: keyserver.ubuntu.com
+    #     id: 1C61A2656FB57B7E4DE0F4C1FC918B335044912E
+    #     state: present
 
-    - name: DROPBOX - Install Dropbox (Debian)
-      apt:
-        name: dropbox
-        state: present
-  when: ansible_os_family in ["Debian"]
+    # - name: DROPBOX - Install repository (Debian)
+    #   apt_repository:
+    #     repo: deb [arch=i386,amd64] http://linux.dropbox.com/ubuntu/ bionic main
+    #     filename: dropbox
+    #     state: present
+
+    # - name: DROPBOX - Install Dropbox (Debian)
+    #   apt:
+    #     name: dropbox
+    #     state: present
+  # when: ansible_os_family in ["Debian"]
 
