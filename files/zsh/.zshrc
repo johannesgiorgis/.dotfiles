@@ -191,6 +191,7 @@ alias tcn='mv --force -t ~/.local/share/Trash '
 
 # navigate to top leve of a git project
 alias cg='cd `git rev-parse --show-toplevel`'
+alias gil="git log --pretty=format:'%H' -n 1 | pbcopy"
 
 # python virtual environment management
 

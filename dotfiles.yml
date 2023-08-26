@@ -112,6 +112,7 @@
     - { role: software/macos-shureplus-motiv, tags: [macos-shureplus-motiv] }
     - { role: software/meld, tags: [meld] }
     - { role: software/nordvpn, tags: [nordvpn] }
+    - { role: software/notesnook, tags: [notesnook] }
     - { role: software/obs-studio, tags: [obs-studio] }
     - { role: software/plex, tags: [plex] }
     - { role: software/postman, tags: [postman] }

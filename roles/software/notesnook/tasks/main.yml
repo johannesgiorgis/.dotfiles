@@ -1,0 +1,13 @@
+---
+
+- name: NOTESNOOK - Install notesnook for MacOS via homebrew cask
+  when: ansible_os_family in ["Darwin"]
+  homebrew_cask:
+    name: notesnook
+    state: present
+
+
+- name: NOTESNOOK - is present for debian machine
+  block:
+    - debug:
+        msg: "TODO: Implement for debian?"
