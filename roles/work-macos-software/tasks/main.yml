@@ -31,5 +31,6 @@
         - microsoft-powerpoint
         - nosql-workbench
         - onedrive
+        - microsoft-remote-desktop
 
   when: ansible_os_family in ["Darwin"]

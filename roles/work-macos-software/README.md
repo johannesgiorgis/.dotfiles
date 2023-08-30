@@ -10,3 +10,4 @@ This `work-software` role installs the following packages:
 - [tfsec](https://github.com/tfsec/tfsec): 🔒🌍 Security scanner for your Terraform code
 <!-- - [microsoft outlook](https://products.office.com/en-us/outlook/email-and-calendar-software-microsoft-outlook) -->
 - [onedrive](https://onedrive.live.com/)
+- [microsoft-remote-desktop](https://apps.microsoft.com/store/detail/microsoft-remote-desktop/9WZDNCRFJ3PS?hl=en-ca&gl=ca)
