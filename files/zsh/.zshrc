@@ -304,11 +304,12 @@ function af() { # list all functions
     # inspiration: https://www.freecodecamp.org/news/self-documenting-makefile/
     rg 'function.*?#' $ZDOTDIR/.zshrc | \
     # remove space in the front
-    sed 's/^[ \t]*//g;s/^function //' | sort | \
+    # sed 's/^[ \t]*//g;s/^function //' | sort | \
+    sd '^\s+' '' | sd '^function ' '' | sort | \
     # get rid of undesired lines
     rg -v '^#|rg ' | \
     # nice format of functions
-    awk 'BEGIN {FS = " {.*?# "}; {printf "\033[36m%-20s\033[0m %s\n", $1, $2}'
+    awk 'BEGIN {FS = " {.*?# "}; {printf "\033[33m%-20s\033[0m %s\n", $1, $2}'
 }
 
 function myw() { date +"%Y Week %U"; } # Date in Year Week format
@@ -544,8 +545,17 @@ function get_params() { # get aws ssm parameters
 }
 
 function awsprofiles() { # list aws profiles from config file
-	config=$(cat $HOME/.aws/config | grep '\[' | sed 's/\[profile //; s/\]//')
-	echo 'config:'
+	# config=$(cat $HOME/.aws/config | grep '\[' | sed 's/\[profile //; s/\]//')
+    # ignore commented lines + specific profiles
+    # extract files starting with [profile 
+    # clean up & sort
+    config=$(cat $HOME/.aws/config |\
+        rg -v '^;|sso-session|default|johannes-gov' |\
+        rg '^\[profile ' |\
+        sd '\[profile ' '' | sd '\]' '' | sort
+
+    )
+	echo -e '\nAWS Profiles:\n'
 	echo "$config"
 }
 

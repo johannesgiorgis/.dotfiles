@@ -78,6 +78,9 @@ common_packages:
   - ripgrep:
     default:
       - ripgrep
+  - sd:
+    default:
+      - sd
   - shellcheck:
     default:
       - shellcheck
