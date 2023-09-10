@@ -1,0 +1,45 @@
+name: CI Tests
+on:
+  push:
+    paths:
+      - "*"
+  pull_request:
+    branches:
+      - "main" 
+
+jobs:
+
+  # shellcheck:
+  #   name: Shellcheck
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - name: Run ShellCheck
+  #       uses: ludeeus/action-shellcheck@master
+
+  tests:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      # cancel all in-progress and queued jobs in the matrix if any job in the matrix fails
+      fail-fast: true
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-latest
+
+    steps:
+      - uses: actions/checkout@main
+
+      - name: Check versions of pre-installed software/system
+        run: ./.cisupport/pre.sh
+
+      - name: Install and verify packages are installed
+        working-directory: bin
+        run: |
+          pwd
+          bash doi -t neovim
+          command -v ansible
+          command -v nvim
+
+      - name: Check installed versions 
+        run: ./.cisupport/post.sh

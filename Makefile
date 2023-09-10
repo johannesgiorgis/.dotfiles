@@ -39,3 +39,6 @@ list-ansible-tags:		## list ansible tags
 
 zsh-sections:		## display zshrc sections
 	rg '<<<|>>>' ~/zsh/.zshrc
+
+ci: 		## CI - Github Actions Test
+	act push

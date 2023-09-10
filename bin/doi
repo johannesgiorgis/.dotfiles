@@ -9,11 +9,26 @@
 #
 ##########################################################################
 
+
 set -e
 
-source "${HOME}/.dotfiles/bin/common-utilities.sh"
+if test -f common-utilities.sh; then
+    source common-utilities.sh
+else
+    source "${HOME}/.dotfiles/bin/common-utilities.sh"
+fi
 
-ANSIBLE_DIR="${HOME}/.dotfiles"
+
+if is_ci; then
+    echo "Running in CI"
+    ANSIBLE_DIR="../"
+else
+    echo "Running normally!"
+    ANSIBLE_DIR="${HOME}/.dotfiles"
+fi
+
+echo "Ansible_dir:$ANSIBLE_DIR"
+
 PLAYBOOK_FILE="${ANSIBLE_DIR}/dotfiles.yml"
 HOSTS_FILE="${ANSIBLE_DIR}/hosts"
 

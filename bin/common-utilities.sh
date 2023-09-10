@@ -99,3 +99,19 @@ function finished() {
 
 # print_info "Parent Directory:'$PARENT_DIR'"
 # print_info "Dotfiles Directory:'$DOTFILES_DIR'"
+
+# Github CI
+# Inspired by https://github.com/mattorb/dotfiles/blob/master/.github/workflows/install.yml
+# https://mattorb.com/ci-your-dotfiles-with-github-actions/
+
+is_ci() {
+    # Running inside a GITHUB Action build
+    [ ${GITHUB_ACTION} ] && return 0
+    
+    # # Running inside an Azure DevOps pipeline
+    # if [ "$TF_BUILD" == "True" ]; then
+    #  return 0
+    # fi
+    
+    return 1
+}
