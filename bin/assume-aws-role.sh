@@ -13,11 +13,11 @@ fi
 role_arn=$1
 role_session_name=$2
 
-resp=$(aws sts assume-role --role-arn $role_arn --role-session-name $role_session_name)
+resp=$(aws sts assume-role --role-arn "$role_arn" --role-session-name "$role_session_name")
 
-RoleAccessKeyID=$(echo $resp | jq -r '.Credentials.AccessKeyId')
-RoleSecretKey=$(echo $resp | jq -r '.Credentials.SecretAccessKey')
-RoleSessionToken=$(echo $resp | jq -r '.Credentials.SessionToken')
+RoleAccessKeyID=$(echo "$resp" | jq -r '.Credentials.AccessKeyId')
+RoleSecretKey=$(echo "$resp" | jq -r '.Credentials.SecretAccessKey')
+RoleSessionToken=$(echo "$resp" | jq -r '.Credentials.SessionToken')
 
 
 echo "Assume role $role_arn:

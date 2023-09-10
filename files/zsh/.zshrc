@@ -103,7 +103,9 @@ is_plugin() {
 # Add all defined plugins to fpath. This must be done
 # before running compinit.
 OMZ_DIR="$ZDOTDIR/ohmyzsh"
-for plugin ($plugins); do
+
+for plugin in $plugins
+do
     if is_plugin "$ZDOTDIR" "$plugin"; then
         fpath=("$ZDOTDIR/plugins/$plugin" $fpath)
     elif is_plugin "$OMZ_DIR" "$plugin"; then
@@ -114,7 +116,8 @@ for plugin ($plugins); do
 done
 
 # Load all of the plugins that were defined in ~/.zshrc
-for plugin ($plugins); do
+for plugin in $plugins
+do
     if [[ -f "$ZDOTDIR/plugins/$plugin/$plugin.plugin.zsh" ]]; then
         source "$ZDOTDIR/plugins/$plugin/$plugin.plugin.zsh"
     elif [[ -f "$OMZ_DIR/plugins/$plugin/$plugin.plugin.zsh" ]]; then
@@ -405,6 +408,7 @@ function zsh_stats() {
 # take functions
 
 # mkcd is equivalent to takedir
+# shellcheck disable=SC1064,SC1072,SC1073
 function mkcd takedir() {
   mkdir -p $@ && cd ${@:$#}
 }

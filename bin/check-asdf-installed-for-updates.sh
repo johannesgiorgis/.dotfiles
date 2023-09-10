@@ -7,11 +7,13 @@
 #
 ###################################################################
 
+# shellcheck source=/dev/null
 source "${HOME}/.dotfiles/bin/common-utilities.sh"
 
-CONFIG_FILE="${DOTFILES_DIR}/group_vars/all/asdf.yml"
+# CONFIG_FILE="${DOTFILES_DIR}/group_vars/all/asdf.yml"
 INFRA_ROLES="${DOTFILES_DIR}/roles/infrastructure"
 
+#shellcheck disable=SC2154
 
 main() {
     start=$(date +%s)
@@ -29,7 +31,7 @@ main() {
     for plugin in $(echo "$asdf_list" | grep "^[a-zA-Z]")
     # for plugin in "golang"
     do
-        print_info "${blue}› Checking updates for ${plugin}...${default}"
+        print_info "${BLUE}› Checking updates for ${plugin}...${DEFAULT}"
         plugin_task_file="${INFRA_ROLES}/${plugin}/tasks/main.yml"
         # echo $plugin_task_file
         latest_version=$(asdf latest "$plugin")
@@ -39,15 +41,16 @@ main() {
             grep -v "$plugin" |\
             sed 's/ //g')
 
-        for installed_version in $(echo $installed_versions)
+        for installed_version in $installed_versions
         do
-            print_info "› Checking for ${cyan}$plugin $installed_version...${default}"
+            print_info "› Checking for ${CYAN}$plugin $installed_version...${DEFAULT}"
             STATUS="${STATUS}${plugin}"
         
             # FIXME: Logic can't handle when installed_version is 1.18
             # It returns the '1.' which isn't what we want
             # For now will ensure golang 1.18.x is installed instead of 1.18
-            subversion_root=$(echo "$installed_version" | sed 's/[0-9]*$//')
+            # Cool learning for bash shell parameter expansion
+            subversion_root=${installed_version/%[0-9]/}
             print_info "subversion_root:$subversion_root"
             version_root=$(echo "$installed_version" | grep -o '^\w\+')
             print_info "version_root:$version_root"
@@ -64,7 +67,7 @@ main() {
             print_info "'$installed_version' vs '$file_version' vs '$latest_subversion_root' vs '$latest_version_root' vs $latest_version"
 
             if [[ "$file_version" == "" ]]; then
-                warn "${light_red}$plugin $installed_version no longer in file!${default}"
+                warn "${LIGHT_RED}$plugin $installed_version no longer in file!${DEFAULT}"
             fi
 
             
@@ -95,20 +98,20 @@ main() {
     UPDATE_VERSIONS="${UPDATE_VERSIONS}\n"
 
     echo ''
-    print_info "${light_blue}› Show 'asdf current' output:"
-    echo -e "$(asdf current)${default}\n"
+    print_info "${LIGHT_BLUE}› Show 'asdf current' output:"
+    echo -e "$(asdf current)${DEFAULT}\n"
 
-    print_info "${light_yellow}› asdf installed software version status:${default}"
+    print_info "${LIGHT_YELLOW}› asdf installed software version status:${DEFAULT}"
     echo -e "$STATUS" | column -s '|' -t
     echo -e ""
 
-    print_info "${green}› asdf update software command for versions:"
+    print_info "${GREEN}› asdf update software command for versions:"
     echo -e "$UPDATE_VERSIONS"
-    echo -e "${default}"
+    echo -e "${DEFAULT}"
 
-    print_info "${light_green}› asdf update software command for subversions:"
+    print_info "${LIGHT_GREEN}› asdf update software command for subversions:"
     echo -e "$UPDATE_SUBVERSIONS"
-    echo -e "${default}"
+    echo -e "${DEFAULT}"
 
     end=$(date +%s)
     runtime=$((end-start))
@@ -124,14 +127,15 @@ main() {
 function compare_subversions() {
     local installed_version=$1
     local latest_subversion=$2
-    if [[ "$installed_version" == "$latest_subversion_root" ]]
+    if [[ "$installed_version" == "$latest_subversion" ]]
     then
         success "No need to update $plugin $installed_version!"
         STATUS="${STATUS}|$installed_version good\n"
     else
-        warn "${red}NEED TO UPDATE $plugin $installed_version to $latest_subversion_root${default}"
-        STATUS="${STATUS}|$installed_version -> $latest_subversion_root\n"
-        command="asdf install $plugin $latest_subversion_root && asdf uninstall $plugin $installed_version && asdf reshim $plugin $latest_subversion_root && asdf global $plugin $latest_subversion_root"
+        #shellcheck disable=SC2154
+        warn "${red}NEED TO UPDATE $plugin $installed_version to $latest_subversion${DEFAULT}"
+        STATUS="${STATUS}|$installed_version -> $latest_subversion\n"
+        command="asdf install $plugin $latest_subversion && asdf uninstall $plugin $installed_version && asdf reshim $plugin $latest_subversion && asdf global $plugin $latest_subversion"
         UPDATE_SUBVERSIONS="${UPDATE_SUBVERSIONS}${command}\n"
     fi
 }
@@ -143,10 +147,10 @@ function compare_versions() {
     if [[ "$installed_version" == "$latest_version_root" ]]
     then
         success "No need to update $plugin $installed_version!"
-        STATUS="${STATUS}|${green}$installed_version good${default}"
+        STATUS="${STATUS}|${GREEN}$installed_version good${DEFAULT}"
     else
         warn "MAYBE NEED TO UPDATE $plugin $installed_version to $latest_version_root?"
-        # STATUS="${STATUS}|${red}$installed_version -> $latest_version_root?${default}"
+        # STATUS="${STATUS}|${red}$installed_version -> $latest_version_root?${DEFAULT}"
         STATUS="${STATUS}|$installed_version -> $latest_version_root?"
         command="asdf install $plugin $latest_version_root && asdf uninstall $plugin $installed_version && asdf reshim $plugin $latest_version_root && asdf global $plugin $latest_version_root"
         UPDATE_VERSIONS="${UPDATE_VERSIONS}${command}\n"

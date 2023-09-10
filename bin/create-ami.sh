@@ -60,7 +60,7 @@ print_stamp "Script $0 Started"
 description="${name}-$(date +"%Y-%m-%d_%H:%M:%S")"
 echo "Description:'$description'"
 
-aws --profile $profile s3 ls
+aws --profile "$profile" s3 ls
 #aws --profile $profile create-image --instance-id $instance-id --name $name --no-reboot
 
 print_stamp "Script $0 Completed"
