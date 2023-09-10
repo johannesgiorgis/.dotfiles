@@ -14,7 +14,7 @@
 PERSONAL_GITHUB_URL="github.com-personal"
 
 # HELPER FUNCTIONS
-function print_stamp() { echo -e "\n$(date +'%F %T') $@"; }
+function print_stamp() { echo -e "\n$(date +'%F %T') $*"; }
 
 print_stamp "$0 Started"
 
@@ -41,7 +41,11 @@ fi
 if [[ "$fetch_url" == *"https"* ]]
 then
     echo -e "\nWARN: Convert https to ssh"
-    new_ssh_url=$(echo "$fetch_url" | sed "s;https://github.com/johannes;git@github.com:johannes;")
+    # new_ssh_url=$(echo "$fetch_url" | sed "s;https://github.com/johannes;git@github.com:johannes;")
+    # TODO: Test and verify this!
+    # Convert https://github.com/johannesgiorgis/.dotfiles.git to
+    # git@github.com:johannesgiorgis/.dotfiles.git
+    new_ssh_url=${fetch_url/https:\/\/github.com\/johannes/git@github.com:johannes}
     # git remote set-url origin git@github.com:USERNAME/REPOSITORY.git
     echo "git remote set-url origin $new_ssh_url"
     exit 0
@@ -62,7 +66,9 @@ else
 	echo "Git will be set to the Personal Github URL"
 fi
 
-new_git_url=$(echo "$fetch_url" | sed "s/github.com/$PERSONAL_GITHUB_URL/g")
+# new_git_url=$(echo "$fetch_url" | sed "s/github.com/$PERSONAL_GITHUB_URL/g")
+# TODO: Test and verify this!
+new_git_url=${fetch_url//github.com/$PERSONAL_GITHUB_URL/}
 echo -e "\nNew Git URL:$new_git_url"
 
 echo -e '\nSET:\n'

@@ -7,7 +7,7 @@ if [[ ! -e $my_file ]]; then
 fi
 
 number_of_profiles=4
-term_counter=$(cat ${my_file})
-gnome-terminal --window-with-profile=RedPanda${term_counter}
-let term_counter="(term_counter + 1) % ${number_of_profiles}"
+term_counter=$(cat "${my_file}")
+gnome-terminal --window-with-profile=RedPanda"${term_counter}"
+term_counter="(term_counter + 1) % ${number_of_profiles}"
 echo "$term_counter" > "$my_file"

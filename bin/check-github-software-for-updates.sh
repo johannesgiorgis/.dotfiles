@@ -7,6 +7,7 @@
 #
 ###################################################################
 
+# shellcheck source=/dev/null
 source "${HOME}/.dotfiles/bin/common-utilities.sh"
 
 CONFIG_FILE="${DOTFILES_DIR}/ansible/group_vars/all/github.yml"

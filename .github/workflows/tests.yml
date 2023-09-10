@@ -9,13 +9,18 @@ on:
 
 jobs:
 
-  # shellcheck:
-  #   name: Shellcheck
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #     - name: Run ShellCheck
-  #       uses: ludeeus/action-shellcheck@master
+  shellcheck:
+    name: Shellcheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run ShellCheck
+        uses: ludeeus/action-shellcheck@master
+        # only scan files in `bin/` ignoring icalBuddy file (since its an executable)
+        with:
+          scandir: './bin'
+          ignore_names: >-
+            icalBuddy
 
   tests:
     runs-on: ${{ matrix.os }}
