@@ -61,7 +61,7 @@ From docs:
 
 ```sh
 # If pattern is preceded by ‘%’ (the fourth form above), it must match at the end of the expanded value of parameter.
-${parameter/#pattern/string}
+${parameter/%pattern/string}
 ```
 
 ## References
