@@ -42,9 +42,9 @@ jobs:
         working-directory: bin
         run: |
           pwd
-          bash doi -t neovim
+          bash doi -t youtube-dl
           command -v ansible
-          command -v nvim
+          command -v youtube-dl
 
       - name: Check installed versions 
         run: ./.cisupport/post.sh
