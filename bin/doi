@@ -22,7 +22,7 @@ fi
 
 if is_ci; then
     echo "Running in CI"
-    ANSIBLE_DIR="../"
+    ANSIBLE_DIR=".."
 else
     ANSIBLE_DIR="${HOME}/.dotfiles"
 fi

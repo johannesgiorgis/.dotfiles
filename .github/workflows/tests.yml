@@ -42,9 +42,9 @@ jobs:
         working-directory: bin
         run: |
           pwd
-          bash doi -t youtube-dl
+          bash doi -t timewarrior
           command -v ansible
-          command -v youtube-dl
+          command -v timew
 
       - name: Check installed versions 
         run: ./.cisupport/post.sh
