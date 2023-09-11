@@ -102,7 +102,7 @@ main() {
         command_options="${command_options} --ask-become-pass"
     fi
 
-    if [ $(lsb_release -c -s) == "jammy" ]; then
+    if [ "$(lsb_release -c -s)" == "jammy" ]; then
         command_options="${command_options} -e ansible_python_interpreter=/usr/bin/python3.10"
     fi
 
