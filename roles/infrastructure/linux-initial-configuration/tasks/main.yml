@@ -2,7 +2,7 @@
 # main task for linux-initial-configure
 
 - name: initial configuration for linux
-
+  when: ansible_os_family in ["Debian"]
   block:
     # > ensure vim is default editor
     - name: Install dependencies for zsh
@@ -29,4 +29,3 @@
 
     - name: Modifying capslock behavior to match escape key
       shell: gsettings set org.gnome.desktop.input-sources xkb-options "['caps:escape']"
-  when: ansible_os_family in ["Debian", "Pop!_OS"]

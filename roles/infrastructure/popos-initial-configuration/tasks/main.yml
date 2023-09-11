@@ -12,4 +12,4 @@
       apt:
         name: ubuntu-restricted-extras
   # ansible 2.10.3 displays Debian for ansible_os_family within Pop!_OS
-  when: ansible_os_family in ['Pop!_OS', 'Debian']
+  when: ansible_distribution in ["Pop!_OS"]

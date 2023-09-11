@@ -1,7 +1,7 @@
 ---
 # Handle adding custom login screen for popos
 
-- name: customize pop!-os
+- name: Customize Pop!_OS
   become: "{{ should_be_root }}"
 
   block:
@@ -16,4 +16,4 @@
 
     # configure lightdm
     - import_tasks: configure.yml
-  when: ansible_os_family in ['Pop!_OS']
+  when: ansible_distribution in ['Pop!_OS']

@@ -2,6 +2,7 @@
 
 # Install
 - name: ZSH - zsh and dependencies is present
+  become: "{{ should_be_root }}"
   block:
     - name: ZSH - Install dependencies for zsh
       package:
@@ -18,12 +19,19 @@
 
 
 # Set ZSH default shell
-- name: ZSH - Set zsh as default shell for x86_64 systems
+# - name: ZSH - Set zsh as default shell for x86_64 systems
+#   become: true
+#   user:
+#     name: "{{ ansible_user_id }}"
+#     shell: /bin/zsh
+#   when: ansible_architecture == "x86_64"
+
+- name: ZSH - Set /usr/bin/zsh as default shell for x86_64 systems
   become: true
   user:
     name: "{{ ansible_user_id }}"
-    shell: /bin/zsh
-  when: ansible_architecture == "x86_64"
+    shell: /usr/bin/zsh
+  when: ansible_architecture == "x86_64" and ansible_os_family == "Debian"
 
 - name: ZSH - Set homebrew zsh as default shell for Macbook ARM systems
   become: true
@@ -108,7 +116,6 @@
           - "Return Code: {{ results.rc }}"
           - "Stdout: {{ results.stdout_lines }}"
           - "Stderr: {{ results.stderr_lines }}"
-          - "Mesage: {{ results.msg }}"
 
 
     # Required for command-not-found plugin
@@ -146,5 +153,5 @@
         - "MesloLGS%20NF%20Italic.ttf"
         # italic_bold
         - "MesloLGS%20NF%20Bold%20Italic.ttf"
-  when: ansible_os_family in ["Debian", "Pop!_OS"]
+  when: ansible_os_family in ["Debian"]
 

@@ -1,17 +1,21 @@
 ---
 # main task for simplenote
 
-- name: SIMPLENOTE - simplenote is present
+- name: SIMPLENOTE - present for Darwin
+  when: ansible_os_family in ["Darwin"]
+  homebrew_cask:
+    name: simplenote
+    state: present
 
+- name: SIMPLENOTE - present for Debian
   block:
-    - name: SIMPLENOTE - present for Darwin
-      when: ansible_os_family in ["Darwin"]
-      homebrew_cask:
-        name: simplenote
-        state: present
+    - name: SIMPLENOTE - Set variables
+      set_fact:
+        simplenote_project: Automattic/simplenote-electron
+        simplenote_version: 2.21.0
 
     - name: SIMPLENOTE - present for Debian
-      when: ansible_os_family in ["Debian",  "Pop!_OS"]
+      when: ansible_os_family in ["Debian"]
       become: "{{ should_be_root }}"
       debug:
         msg: "TODO: Implement/Recheck for Debian"

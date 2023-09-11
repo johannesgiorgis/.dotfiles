@@ -8,6 +8,7 @@
     state: present
 
 - name: SLACK - present for Debian
+  when: ansible_os_family in ["Debian"]
   become: "{{ should_be_root }}"
   block:
     - name: SLACK - Set slack version
@@ -15,7 +16,6 @@
         slack_version: 4.8.0
         
     - name: SLACK - slack is present (linux)
-      when: ansible_os_family in ["Debian", "Pop!_OS"]
       apt:
         deb: "https://downloads.slack-edge.com/linux_releases/slack-desktop-{{ slack_version }}-{{ machine_map[ansible_machine] }}.deb"
 

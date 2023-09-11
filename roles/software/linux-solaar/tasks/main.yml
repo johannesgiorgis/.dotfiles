@@ -10,4 +10,4 @@
         name: solaar
         state: present
         update_cache: true
-  when: ansible_os_family in ["Debian", "Pop!_OS"]
+  when: ansible_os_family in ["Debian"]

@@ -1,17 +1,14 @@
 ---
 # main task for zoom
 
-- name: ZOOM - zoom is present
-  become: "{{ should_be_root }}"
+- name: ZOOM - Install for Darwin
+  when: ansible_os_family == "Darwin"
+  homebrew_cask:
+    name: zoom
+    state: present
 
-  block:
-    - name: ZOOM - Install Zoom Debian package from the internet
-      when: ansible_os_family == "Debian" or ansible_os_family == "Pop!_OS"
-      apt:
-        deb: "https://zoom.us/client/latest/zoom_{{ machine_map[ansible_machine] }}.deb"
 
-    - name: ZOOM - Install zoom via homebrew cask
-      when: ansible_os_family == "Darwin"
-      homebrew_cask:
-        name: zoom
-        state: present
+- name: ZOOM - Install for Debian
+  when: ansible_os_family in ["Debian"]
+  apt:
+    deb: "https://zoom.us/client/latest/zoom_{{ machine_map[ansible_machine] }}.deb"

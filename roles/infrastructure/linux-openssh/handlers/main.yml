@@ -3,5 +3,5 @@
 
 - name: restart_sshd
   service:
-    name: "{{ sshd_service_name }}"
+    name: ssh
     state: reloaded

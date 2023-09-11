@@ -1,0 +1,83 @@
+---
+# debian task for docker
+
+- name: DOCKER - docker is present for debian system
+  block:
+    - name: DOCKER - Ensure old versions of Docker are not installed
+      package:
+        name:
+          - docker
+          - docker-engine
+        state: absent
+
+    - name: DOCKER - Ensure dependencies are installed
+      apt:
+        name:
+          - apt-transport-https
+          - ca-certificates
+          # - gnupg
+          - curl
+        state: present
+    
+    - name: set info
+      set_fact:
+        docker_repo_url: "https://download.docker.com/linux"
+
+    - name: set info
+      set_fact:
+        docker_apt_repository: "deb [arch=amd64] {{ docker_repo_url }}/ubuntu {{ ansible_distribution_release }} stable"
+        docker_apt_gpg_key: "{{ docker_repo_url }}/ubuntu/gpg"
+
+    - name: DOCKER - Add Docker apt key
+      ansible.builtin.get_url:
+        url: "{{ docker_apt_gpg_key }}"
+        dest: /etc/apt/trusted.gpg.d/docker.asc
+        mode: '0644'
+        force: true
+      register: add_repository_key
+      # ignore_errors: "{{ docker_apt_ignore_key_error }}"
+
+    - debug:
+        msg: "repository: {{ docker_apt_repository }}"
+
+    - name: DOCKER - Add Docker repository
+      shell: >
+        curl -sSL {{ docker_apt_gpg_key }} | apt-key add -
+      args:
+        warn: false
+
+    - name: Add Docker repository.
+      apt_repository:
+        repo: "{{ docker_apt_repository }}"
+        state: present
+        update_cache: true
+  
+    - name: DOCKER - Install Docker
+      package:
+        name:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+          - docker-buildx-plugin
+          - docker-compose-plugin
+        state: present
+      notify: restart docker
+
+    - name: DOCKER - Ensure Docker is started and enabled at boot
+      service:
+        name: docker
+        state: started
+        enabled: true
+
+    - name: DOCKER - Ensure handlers are notified now to avoid firewall conflicts
+      meta: flush_handlers
+
+    - include_tasks: docker-compose.yml
+
+    - name: DOCKER - Ensure docker users are added to the docker group
+      user:
+        name: "{{ item }}"
+        groups: [docker]
+        append: true
+      with_items:
+        - johannes

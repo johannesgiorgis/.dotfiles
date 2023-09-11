@@ -9,4 +9,4 @@
       apt:
         name: gnome-tweaks
         state: present
-  when: ansible_os_family in ["Debian", "Pop!_OS"]
+  when: ansible_os_family in ["Debian"]

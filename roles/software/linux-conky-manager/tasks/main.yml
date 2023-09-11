@@ -25,4 +25,4 @@
         - conky-all
         - conky-manager
         - conky-manager-extra
-  when: ansible_os_family in ["Debian", "Pop!_OS"]
+  when: ansible_os_family in ["Debian"]

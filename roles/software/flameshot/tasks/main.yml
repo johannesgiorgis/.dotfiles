@@ -4,12 +4,12 @@
 - name: flameshot is present
 
   block:
-    - name: flameshot is present (Debian/Pop!_OS)
+    - name: flameshot is present (Linux)
       package:
         name: flameshot
         state: present
       become: "{{ should_be_root }}"
-      when: ansible_os_family in ["Debian", "Pop!_OS"]
+      when: ansible_os_family in ["Debian"]
 
     - name: flameshot is present (homebrew cask)
       homebrew_cask:

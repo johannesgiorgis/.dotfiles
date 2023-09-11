@@ -5,7 +5,7 @@
 
   block:
     - name: authy is present via snap with option --channel=beta (linux)
-      when: ansible_os_family in ["Debian", "Pop!_OS"]
+      when: ansible_os_family in ["Debian"]
       snap:
         name: authy
         channel: beta

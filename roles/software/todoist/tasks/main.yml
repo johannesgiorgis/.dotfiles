@@ -1,18 +1,16 @@
 ---
 # main task for todoist
 
-- name: todoist is present
+- name: TODOIST - Install for Darwin
+  when: ansible_os_family in ["Darwin"]
+  homebrew_cask:
+    name: todoist
+    state: present
 
-  block:
-    - name: todoist is present (Debian/Pop!_OS)
-      package:
-        name: todoist
-        state: present
-      become: "{{ should_be_root }}"
-      when: ansible_os_family in ["Debian", "Pop!_OS"]
 
-    - name: todoist is present (homebrew cask)
-      homebrew_cask:
-        name: todoist
-        state: present
-      when: ansible_os_family in ["Darwin"]
+- name: TODOIST - Install for Linux
+  when: ansible_os_family in ["Debian"]
+  become: "{{ should_be_root }}"
+  package:
+    name: todoist
+    state: present

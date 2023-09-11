@@ -9,7 +9,7 @@
       include_vars: "{{ ansible_os_family }}.yml"
 
     - import_tasks: debian.yml
-      when: ansible_os_family in ["Debian", "Pop!_OS"]
+      when: ansible_os_family in ["Debian"]
 
     - import_tasks: mac.yml
       when: ansible_os_family == "Darwin"

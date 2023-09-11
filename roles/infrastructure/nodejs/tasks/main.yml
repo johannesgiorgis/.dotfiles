@@ -11,7 +11,7 @@
           - curl
           - gawk
         state: present
-      when: ansible_os_family in ["Debian",  "Pop!_OS" ]
+      when: ansible_os_family in ["Debian"]
       become: "{{ should_be_root }}"
 
     - name: NODEJS - Ensure nodejs system dependencies are present (darwin)

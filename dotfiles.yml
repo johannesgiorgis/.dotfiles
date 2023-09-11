@@ -4,15 +4,8 @@
     should_be_root: "{{ true if ansible_pkg_mgr != 'homebrew' else false }}"
   roles:
     # cli
-    - { role: cli/broot, tags: [broot] }
+    - { role: cli/atest, tags: [atest] }
     - { role: cli/common-cli, tags: [common-cli] }
-    - { role: cli/exa, tags: [exa] }
-    - { role: cli/gh, tags: [gh] }
-    - { role: cli/linux-mlocate, tags: [linux-mlocate] }
-    - { role: cli/linux-xclip, tags: [linux-xclip] }
-    - { role: cli/macos-cli, tags: [macos-cli] }
-    - { role: cli/neovim, tags: [neovim] }
-    - { role: cli/noti, tags: [noti] }
     - { role: cli/taskwarrior, tags: [taskwarrior] }
     - { role: cli/timewarrior, tags: [timewarrior] }
     - { role: cli/vim, tags: [vim] }
@@ -20,6 +13,7 @@
 
     # infrastructure
     - { role: infrastructure/bin-folder, tags: [bin-folder] }
+    - { role: infrastructure/docker, tags: [docker] }
     - { role: infrastructure/fonts-firacode, tags: [fonts-firacode] }
     - { 
       role: infrastructure/git,
@@ -47,6 +41,7 @@
         role: infrastructure/linux-initial-configuration,
         tags: [linux-initial-configuration],
       }
+    - { role: infrastructure/linux-nvidia, tags: [linux-nvidia] }
     - { role: infrastructure/linux-openssh, tags: [linux-openssh] }
     - { role: infrastructure/linux-redshift, tags: [linux-redshift] }
     - { role: infrastructure/linux-snap, tags: [linux-snap] }
@@ -66,12 +61,12 @@
     - {
         role: infrastructure/popos-initial-configuration,
         tags: [popos-initial-configuration],
-        when: ansible_os_family == "Pop!_OS" or ansible_os_family == "Debian",
+        when: ansible_os_family == "Debian",
       }
     - {
         role: infrastructure/linux-lightdm,
         tags: [linux-lightdm],
-        when: ansible_os_family == "Pop!_OS",
+        when: ansible_distribution == "Pop!_OS",
       }
 
     # programming languages/frameworks managed by asdf
@@ -83,9 +78,6 @@
     - { role: infrastructure/python, tags: [python] }
     - { role: infrastructure/rust, tags: [rust] }
     - { role: infrastructure/terraform, tags: [terraform] }
-
-    # TODO: Remove
-    - { role: infrastructure/apt, tags: [apt] }
 
     # software
     - { role: software/audacity, tags: [audacity] }

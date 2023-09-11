@@ -1,0 +1,33 @@
+---
+# A new way to see and navigate directory trees
+# https://github.com/Canop/broot
+# https://dystroy.org/broot/
+
+- name: COMMON-CLI|BROOT - install for darwin
+  when: ansible_os_family in ["Darwin"]
+  homebrew:
+    name: broot
+    state: present
+
+
+- name: COMMON-CLI|BROOT - install for debian
+  become: "{{ should_be_root }}"
+  when: ansible_os_family in ["Debian"]
+  block:
+    - name: COMMON-CLI|BROOT - Install Broot key (apt)
+      become: "{{ should_be_root }}"
+      # apt-key deprecated
+      # https://itsfoss.com/apt-key-deprecated/
+      shell: >
+        echo "deb [signed-by=/usr/share/keyrings/azlux-archive-keyring.gpg] http://packages.azlux.fr/debian/ stable main" 
+        | sudo tee /etc/apt/sources.list.d/azlux.list
+    
+        sudo wget -O /usr/share/keyrings/azlux-archive-keyring.gpg  https://azlux.fr/repo.gpg
+      args:
+        warn: false
+    
+    - name: COMMON-CLI|BROOT - Install Broot for Debian
+      become: "{{ should_be_root }}"
+      apt:
+        name: broot
+        update_cache: yes

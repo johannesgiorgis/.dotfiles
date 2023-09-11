@@ -11,7 +11,7 @@
 
     - import_tasks: debian.yml
       become: "{{ should_be_root }}"
-      when: ansible_os_family == "Debian" or ansible_os_family == "Pop!_OS"
+      when: ansible_os_family in ["Debian"]
 
     - import_tasks: mac.yml
       when: ansible_os_family == "Darwin"

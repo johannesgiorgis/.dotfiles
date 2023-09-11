@@ -23,6 +23,9 @@ common_packages:
   - entr:
     default:
       - entr
+  - exa:
+    default:
+      - exa
   - fd-find:
     default:
       - fd-find
@@ -37,6 +40,9 @@ common_packages:
   - gawk:
     default:
       - gawk
+  - gh:
+    default:
+      - gh
   - gpg:
     default:
       - gpg
@@ -60,6 +66,9 @@ common_packages:
   - neofetch:
     default:
       - neofetch
+  - neovim:
+    default:
+      - neovim
   - pandoc:
     default:
       - pandoc

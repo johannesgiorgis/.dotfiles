@@ -1,13 +1,10 @@
 ---
 # main tasks for linux-gparted
 
-# - name: gparted is present
-#   become: "{{ should_be_root }}"
-
 - name: LINUX-GPARTED - Present for linux
   apt:
     name:
       - gparted
       - gpart
     state: present
-  when: ansible_os_family in ["Debian",  "Pop!_OS" ]
+  when: ansible_os_family in ["Debian"]

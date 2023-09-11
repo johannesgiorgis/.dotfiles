@@ -3,7 +3,7 @@
 
 - name: terminator is present
   # become: "{{ should_be_root }}"
-  when: ansible_os_family in ["Debian", "Pop!_OS"]
+  when: ansible_os_family in ["Debian"]
   block:
     - name: terminator is present (linux)
       package:

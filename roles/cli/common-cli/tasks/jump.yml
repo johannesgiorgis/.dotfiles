@@ -1,17 +1,26 @@
 ---
-# jump task
+# Jump helps you navigate faster by learning your habits
+# https://github.com/gsamokovarov/jump
 
-- name: JUMP - jump is present
+- name: COMMON-CLI|JUMP - Install via homebrew
+  when: ansible_pkg_mgr == 'homebrew'
+  homebrew:
+    name: jump
+    state: present
 
+
+- name: COMMON-CLI|JUMP - Install for Darwin
+  when: ansible_os_family in ["Debian"]
   block:
-    - name: JUMP - Install via homebrew
-      when: ansible_pkg_mgr == 'homebrew'
-      homebrew:
-        name: jump
-        state: present
+    - name: Getting latest version from Github API
+      shell: >
+        curl -s https://api.github.com/repos/gsamokovarov/jump/releases/latest 
+        | jq -r '.name'
+      args:
+        warn: false
+      register: output
 
-    - name: JUMP - Install Debian package from the internet
-      when: ansible_os_family in ["Debian", "Pop!_OS"]
-      apt:
-        deb: https://github.com/gsamokovarov/jump/releases/download/v{{ jump_version }}/jump_{{ jump_version }}_{{ machine_map[ansible_machine] }}.deb
+    - name: COMMON-CLI|JUMP - Install {{ output.stdout }} Debian package
       become: "{{ should_be_root }}"
+      apt:
+        deb: https://github.com/gsamokovarov/jump/releases/download/v{{ output.stdout }}/jump_{{ output.stdout }}_{{ machine_map[ansible_machine] }}.deb

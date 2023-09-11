@@ -1,0 +1,46 @@
+---
+# Monitor a process and trigger a notification.
+# https://github.com/variadico/noti
+
+- name: COMMON-CLI|NOTI - Install via homebrew for Darwin
+  when: ansible_os_family in ["Darwin"]
+  homebrew:
+    name: noti
+    state: present
+
+
+- name: COMMON-CLI|NOTI - install for debian machine
+  when: ansible_os_family in ["Debian"]
+  block:
+    - name: COMMON-CLI|NOTI - Create temporary download directory
+      tempfile:
+        state: directory
+        suffix: ".noti_binary_download_dir"
+      register: noti_binary_download_dir
+
+    - name: COMMON-CLI|NOTI - Getting latest version from Github API
+      shell: >
+        curl -s https://api.github.com/repos/variadico/noti/releases/latest 
+        | jq -r '.tag_name'
+      args:
+        warn: false
+      register: output
+    
+    - name: COMMON-CLI|NOTI - Download noti {{ output.stdout }} to {{ noti_binary_download_dir.path }}
+      ansible.builtin.unarchive:
+        src: "https://github.com/variadico/noti/releases/download/{{ output.stdout }}/noti{{ output.stdout }}.{{ ansible_system | lower }}-{{ machine_map[ansible_machine] }}.tar.gz"
+        dest: "{{ noti_binary_download_dir.path }}/"
+        remote_src: yes
+
+    - name: COMMON-CLI|NOTI - Install to /usr/local/bin/
+      command: install noti /usr/local/bin/
+      args:
+        chdir: "{{ noti_binary_download_dir.path }}"
+      become: "{{ should_be_root }}"
+
+  always:
+    - name: COMMON-CLI|NOTI - Delete binary download directory - {{ noti_binary_download_dir.path }}
+      file:
+        path: "{{ noti_binary_download_dir.path }}"
+        state: absent
+      changed_when: no
