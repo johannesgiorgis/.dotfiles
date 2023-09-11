@@ -1,8 +1,12 @@
 name: CI Tests
 on:
   push:
+    branches:
+      - main
     paths:
-      - "*"
+      - "bin/**"
+      - "**yml"
+      - "**.sh"
   pull_request:
     branches:
       - "main" 
