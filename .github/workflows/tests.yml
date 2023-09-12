@@ -5,11 +5,13 @@ on:
       - main
     paths:
       - "bin/**"
-      - "**yml"
+      - ".github/workflows/**yml"
       - "**.sh"
+      - "**zsh"
+      - "**.zshrc"
   pull_request:
     branches:
-      - "main" 
+      - main
 
 jobs:
 
@@ -49,6 +51,25 @@ jobs:
           bash doi -t timewarrior
           command -v ansible
           command -v timew
+      
+      - name: Install zsh (Ubuntu) # Runs faster than MacOS
+        if: matrix.os == 'ubuntu-latest'
+        working-directory: bin
+        run: |
+          bash doi -t zsh
+          echo "TESTING FILES"
+          test -f $HOME/zsh/.zshrc
+          test -f $HOME/.p10k.zsh
+          test -f $HOME/.zshenv
+          echo "TESTING COMMANDS"
+      
+      - name: Verify zsh (Ubuntu)
+        if: matrix.os == 'ubuntu-latest'
+        shell: zsh {0}
+        run: |
+          source $HOME/zsh/.zshrc
+          echo "POST exec zsh"
+          command -v p10k
 
       - name: Check installed versions 
         run: ./.cisupport/post.sh

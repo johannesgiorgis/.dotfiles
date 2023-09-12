@@ -9,14 +9,15 @@
         path: "{{ dotfiles_user_home }}/{{ item }}"
       register: zshconfig_stat
 
-    - name: ZSH - Back up "{{ item }}"
+    - name: ZSH - Back up "{{ item }} - {{ dotfiles_user_home }}/{{ item }}.back"
       command: mv "{{ dotfiles_user_home }}/{{ item }}" "{{ dotfiles_user_home }}/{{ item }}.bak"
       args:
         creates: "{{ dotfiles_user_home }}/{{ item }}.bak"
       when: zshconfig_stat.stat.exists
 
-    - name: ZSH - Symlink "{{ item }}"
+    - name: ZSH - Symlink "{{ item }} - {{ playbook_dir }}/files/{{ item }}"
       file:
-        src: "{{ dotfiles_home }}/files/{{ item }}"
+        # src: "{{ dotfiles_home }}/files/{{ item }}"
+        src: "{{ playbook_dir }}/files/{{ item }}" # Changed to allow working in Github CI
         dest: "{{ dotfiles_user_home }}/{{ item }}"
         state: link
