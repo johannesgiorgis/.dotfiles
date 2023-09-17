@@ -62,9 +62,9 @@
         creates: "{{ dotfiles_user_home }}/.zsh_bak"
       when: zshdir_stat.stat.exists
 
-    - name: ZSH - Symlink zsh/ to $HOME/zsh/
+    - name: "ZSH - Symlink zsh/ to $HOME/zsh/ | {{ dotfiles_user_home }}"
       file:
-        src: "{{ dotfiles_home }}/files/zsh"
+        src: "{{ playbook_dir }}/files/zsh"
         dest: "{{ dotfiles_user_home }}/zsh"
         state: link
 

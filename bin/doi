@@ -290,6 +290,7 @@ function ensure_ansible_is_present() {
             install_ansible_base_and_collections_on_debian
 
         elif [[ "$release_code" == "jammy" ]]; then
+            apt-get update
             apt-get install -y ansible
 
         else
