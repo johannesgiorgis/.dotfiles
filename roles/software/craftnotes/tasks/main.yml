@@ -1,0 +1,14 @@
+---
+# https://www.craft.do/
+
+- name: CRAFTNOTES - Install craftnotes for MacOS via homebrew cask
+  when: ansible_os_family in ["Darwin"]
+  package:
+    name: craft 
+    state: present
+
+
+- name: CRAFTNOTES - is present for debian machine
+  block:
+    - debug:
+        msg: "TODO: Implement for debian?"
