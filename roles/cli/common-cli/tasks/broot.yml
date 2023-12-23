@@ -23,8 +23,9 @@
         | sudo tee /etc/apt/sources.list.d/azlux.list
     
         sudo wget -O /usr/share/keyrings/azlux-archive-keyring.gpg  https://azlux.fr/repo.gpg
-      args:
-        warn: false
+      # TODO: Test in Linux and remove
+      # args:
+      #   warn: false
     
     - name: COMMON-CLI|BROOT - Install Broot for Debian
       become: "{{ should_be_root }}"

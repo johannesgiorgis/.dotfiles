@@ -16,6 +16,7 @@
       # command: "mkdir ~/.config/terminator/plugins"
       # args:
       #   creates: "{{ dotfiles_user_home}}/.config/terminator/plugins"
+      # TODO: Test in Linux and remove
       # warn: false
       file:
         path: ~/.config/terminator/plugins

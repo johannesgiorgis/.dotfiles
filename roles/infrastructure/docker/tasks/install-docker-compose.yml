@@ -7,8 +7,9 @@
   shell: >
     curl -s https://api.github.com/repos/docker/compose/releases/latest 
     | jq -r '.tag_name'
-  args:
-    warn: false
+  # TODO: Test in Linux and remove
+  # args:
+  #   warn: false
   register: output
 
 - name: DOCKER-COMPOSE - Install Docker Compose

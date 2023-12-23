@@ -17,8 +17,9 @@
       shell: >
         curl -s https://api.github.com/repos/dandavison/delta/releases/latest 
         | jq -r '.tag_name'
-      args:
-        warn: false
+      # TODO: Test in Linux and remove
+      # args:
+      #   warn: false
       register: output
     
     - name: COMMON-CLI|DELTA - install {{ output.stdout }} for debian
