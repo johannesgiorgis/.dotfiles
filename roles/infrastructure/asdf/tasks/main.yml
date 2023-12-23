@@ -5,8 +5,6 @@
   shell: >
     curl -s https://api.github.com/repos/asdf-vm/asdf/releases/latest
     | jq -r '.tag_name'
-  args:
-    warn: false
   register: output
 
 - name: ASDF - Clone asdf repository {{ output.stdout }}
