@@ -100,16 +100,28 @@ def get_plugins_info() -> List[Plugin]:
     for plugin_name in subprocess.check_output(["asdf", "plugin-list"]).split():
         plugin_name = plugin_name.decode()
         log.info(f"Getting info for plugin {plugin_name}...")
-        latest = subprocess.check_output(["asdf", "latest", plugin_name]).split()[0].decode()
+        latest = (
+            subprocess.check_output(["asdf", "latest", plugin_name]).split()[0].decode()
+        )
 
         all_plugins = subprocess.check_output(["asdf", "list-all", plugin_name])
         all = list(map(lambda x: x.decode(), all_plugins.split()))
 
         # Remove unreleased versions - alpha, beta, rc, dev, 0a* (e.g. python 3.12.0a*)
-        all_versions = list(filter(lambda x: not re.match(".+(alpha|beta|rc|dev|0a\d)", x), all))
+        all_versions = list(
+            filter(lambda x: not re.match(".+(alpha|beta|rc|dev|0a\d)", x), all)
+        )
 
         asdf_list = subprocess.check_output(["asdf", "list", plugin_name])
-        installed_versions = list(map(lambda x: x.decode().replace(" ", ""), asdf_list.split()))
+        installed_versions = list(
+            map(
+                lambda x: x.decode().replace(" ", "")
+                # 2024-01-04: asdf includes a * to indicate current active plugin version, so we need to remove it
+                # It was causing failures when extracting main and sub versions down stream
+                .replace("*", ""),
+                asdf_list.split(),
+            )
+        )
 
         plugin = Plugin(
             name=plugin_name,
@@ -145,7 +157,9 @@ def check_latest_versions(plugins: List[Plugin]):
     log.info("Completed checking latest versions")
 
 
-def search_for_versions(version: str, all_versions: List[str], num_chars: int = 2) -> List:
+def search_for_versions(
+    version: str, all_versions: List[str], num_chars: int = 2
+) -> List:
     """
     Search for versions - either subversion or version
     num_chars:
@@ -174,7 +188,9 @@ def display_report(plugins: List[Plugin]):
     print()
     log.info(f"{Colors.light_yellow}› asdf Update Summary:{Colors.default}")
     headers = ["PLUGIN", "INSTALLED", "LATEST", "VERSION", "SUBVERSION"]
-    print(f"{headers[0]: <15}{headers[1]: <15}{headers[2]: <15}{headers[3]: <25}{headers[4]}")
+    print(
+        f"{headers[0]: <15}{headers[1]: <15}{headers[2]: <15}{headers[3]: <25}{headers[4]}"
+    )
     # PLUGIN      INSTALLED      LATEST       VERSION                SUBVERSION
     # nodejs      14.20.1        19.3.0       14.20.1 -> 14.21.2     14.20.1 good
     # python      3.8.15         3.11.1       3.8.15 -> 3.11.1       3.8.15 -> 3.8.16
