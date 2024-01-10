@@ -1,0 +1,13 @@
+---
+# https://discord.com/
+
+- name: DISCORD|MacOS
+  when: ansible_os_family in ["Darwin"]
+  homebrew_cask:
+    name: discord
+    state: present
+
+
+- name: DISCORD|Debian|Not implemented
+  debug:
+    msg: "TODO: Implement for debian?"

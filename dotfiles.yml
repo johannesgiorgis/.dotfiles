@@ -86,6 +86,7 @@
     - { role: software/brave-browser, tags: [brave-browser] }
     - { role: software/box-drive, tags: [box-drive] }
     - { role: software/craftnotes, tags: [craftnotes] }
+    - { role: software/discord, tags: [discord] }
     - { role: software/dropbox, tags: [dropbox] }
     - { role: software/firefox, tags: [firefox] }
     - { role: software/flux, tags: [flux] }
