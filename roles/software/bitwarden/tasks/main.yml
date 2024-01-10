@@ -1,14 +1,11 @@
 ---
 # main task for bitwarden
 
-- name: BITWARDEN - Install via homebrew cask (MacOS)
+- name: BITWARDEN|MacOS|Install via mas-cli
   when: ansible_os_family in ["Darwin"]
-  # homebrew_cask:
-  #   name: bitwarden
-  #   state: present
-  debug:
-    msg: "Install from Mac App Store to allow Browser Integration"
-
+  community.general.mas:
+    id: 1352778147  # Bitwarden
+    state: present
 
 
 - name: BITWARDEN|Install for Debian

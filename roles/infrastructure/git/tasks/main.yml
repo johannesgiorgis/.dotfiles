@@ -13,7 +13,9 @@
   block:
     - name: GIT - git is present
       package:
-        name: git
+        name: 
+          - git
+          - git-lfs
         state: present
     
     - name: ensure git is configured for users

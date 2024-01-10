@@ -92,6 +92,7 @@
     - { role: software/google-chrome, tags: [google-chrome] }
     - { role: software/jetbrains-toolbox, tags: [jetbrains-toolbox] }
     - { role: software/joplin, tags: [joplin] }
+    - { role: software/kindle, tags: [kindle] }
     - { role: software/lastpass, tags: [lastpass] }
     - { role: software/lepton, tags: [lepton] }
     - { role: software/linux-blueman, tags: [linux-blueman] }
@@ -119,6 +120,7 @@
     - { role: software/sublime-text, tags: [sublime-text] }
     - { role: software/teamviewer, tags: [teamviewer] }
     - { role: software/todoist, tags: [todoist] }
+    - { role: software/trello, tags: [trello] }
     - { role: software/virtualbox, tags: [virtualbox] }
     - { role: software/vlc, tags: [vlc] }
     - { role: software/vscode, tags: [vscode] }
