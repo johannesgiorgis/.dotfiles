@@ -1,0 +1,13 @@
+---
+# Amazon Kindle App
+
+- name: KINDLE|MacOS|Install via mas-cli
+  when: ansible_os_family in ["Darwin"]
+  community.general.mas:
+    id: 302584613  # Kindle
+    state: present
+
+
+- name: KINDLE|Debian|Not implemented
+  debug:
+    msg: "TODO: Implement for debian?"

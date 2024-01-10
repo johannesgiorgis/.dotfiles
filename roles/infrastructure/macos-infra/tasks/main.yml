@@ -40,7 +40,6 @@
         id: "{{ item.id }}"
         state: present
       loop:
-        - { id: 1352778147, name: Bitwarden }
         - { id: 1056643111, name: Clocker }
         - { id: 549083868,  name: DisplayMenu }
 
