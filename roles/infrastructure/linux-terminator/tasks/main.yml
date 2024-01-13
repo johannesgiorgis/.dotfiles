@@ -2,7 +2,7 @@
 # main tasks for linux-terminator
 
 - name: terminator is present
-  # become: "{{ should_be_root }}"
+  become: "{{ should_be_root }}"
   when: ansible_os_family in ["Debian"]
   block:
     - name: terminator is present (linux)
@@ -19,7 +19,7 @@
       # TODO: Test in Linux and remove
       # warn: false
       file:
-        path: ~/.config/terminator/plugins
+        path: "{{ dotfiles_user_home }}/.config/terminator/plugins"
         state: directory
         mode: "775"
     
@@ -30,7 +30,7 @@
     
     - name: Symlink terminator config file
       file:
-        src: "{{ dotfiles_home }}/files/linux/terminator-config"
+        src: "{{ playbook_dir }}/files/linux/terminator-config"
         dest: "{{ dotfiles_user_home }}/.config/terminator/config"
         state: link
         force: yes
