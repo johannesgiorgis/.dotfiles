@@ -3,7 +3,7 @@
 
 - name: CRAFTNOTES - Install craftnotes for MacOS via homebrew cask
   when: ansible_os_family in ["Darwin"]
-  package:
+  homebrew_cask:
     name: craft 
     state: present
 
