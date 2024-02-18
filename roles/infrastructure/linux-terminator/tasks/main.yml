@@ -26,7 +26,7 @@
     - name: Get terminator-themes plugin
       get_url:
         url: "https://git.io/v5Zww"
-        dest: "~/.config/terminator/plugins/terminator-themes.py"
+        dest: "{{ dotfiles_user_home }}/.config/terminator/plugins/terminator-themes.py"
     
     - name: Symlink terminator config file
       file:

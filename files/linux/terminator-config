@@ -2,9 +2,25 @@
   enabled_plugins = TerminatorThemes, LaunchpadCodeURLHandler, APTURLHandler, LaunchpadBugURLHandler
   title_use_system_font = False
   title_font = MesloLGS NF 9
+  title_inactive_bg_color = "#4C566A"
+  title_inactive_fg_color = "#D8DEE9"
+  title_receive_bg_color = "#8FBCBB"
+  title_receive_fg_color = "#2E3440"
+  title_transmit_bg_color = "#88C0D0"
+  title_transmit_fg_color = "#2E3440"
 [keybindings]
 [profiles]
   [[default]]
+    palette = "#002831:#d11c24:#6cbe6c:#a57706:#2176c7:#c61c6f:#259286:#eae3cb:#006488:#f5163b:#51ef84:#b27e28:#178ec8:#e24d8e:#00b39e:#fcf4dc"
+    background_color = "#001e27"
+    cursor_color = "#f34b00"
+    foreground_color = "#9cc2c3"
+    background_image = None
+    font = MesloLGS NF 10
+    scrollback_infinite = True
+    use_system_font = False
+    copy_on_selection = True
+  [[default-original]]
     background_color = "#002b36"
     cursor_color = "#aaaaaa"
     font = MesloLGS NF 10
@@ -22,17 +38,28 @@
     palette = "#000000:#cc0000:#4e9a06:#c4a000:#3465a4:#75507b:#06989a:#d3d7cf:#555753:#ef2929:#8ae234:#fce94f:#729fcf:#ad7fa8:#34e2e2:#eeeeec"
     use_system_font = False
     copy_on_selection = True
+  [[Solarized Dark Higher Contrast]]
+    palette = "#002831:#d11c24:#6cbe6c:#a57706:#2176c7:#c61c6f:#259286:#eae3cb:#006488:#f5163b:#51ef84:#b27e28:#178ec8:#e24d8e:#00b39e:#fcf4dc"
+    background_color = "#001e27"
+    cursor_color = "#f34b00"
+    foreground_color = "#9cc2c3"
+    background_image = None
   [[Original]]
     cursor_color = "#aaaaaa"
     font = MesloLGS NF 10
     scrollback_infinite = True
     use_system_font = False
     copy_on_selection = True
+  [[nord]]
+    background_color = "#2E3440"
+    cursor_color = "#D8DEE9"
+    foreground_color = "#D8DEE9"
+    palette = "#3B4252:#BF616A:#A3BE8C:#EBCB8B:#81A1C1:#B48EAD:#88C0D0:#E5E9F0:#4C566A:#BF616A:#A3BE8C:#EBCB8B:#81A1C1:#B48EAD:#8FBCBB:#ECEFF4"
 [layouts]
   [[default]]
     [[[child1]]]
       parent = window0
-      profile = Solarized Dark
+      profile = default
       type = Terminal
     [[[window0]]]
       parent = ""
