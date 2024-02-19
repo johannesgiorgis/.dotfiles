@@ -1,0 +1,15 @@
+# TIntuitive find & replace CLI (sed alternative) 
+# https://github.com/chmln/sd
+
+- name: COMMON-CLI|SD - Install for Darwin
+  when: ansible_os_family in ["Darwin"]
+  homebrew:
+    name: sd
+    state: present
+
+- name: COMMON-CLI|SD - Install for Debian
+  when: ansible_os_family in ["Debian"]
+  community.general.cargo:
+    name: sd
+    executable: "{{ dotfiles_user_home }}/.asdf/shims/cargo"
+    locked: true

@@ -5,20 +5,56 @@
   become: "{{ should_be_root }}"
 
   block:
-    - name: COMMON-CLI - common-cli packages are present
-      package:
-        name: "{{ item[ansible_pkg_mgr] | default(item['default']) }}"
-        state: latest
-      loop: "{{ common_packages }}"
+    - name: debug
+      debug: 
+        msg: hello
+    # - name: debug
+    #   debug:
+    #     msg: "Variables: {{ common_packages | type_debug}}"
+    
+    # - name: debug
+    #   debug:
+    #     msg: "Variables: {{ item | type_debug }}"
+    #   loop: "{{ common_packages }}"
+    
+    # - name: debug
+    #   debug:
+    #     msg: "Variables: {{ item.keys() | type_debug }}"
+    #   loop: "{{ common_packages }}"
+    
+    # - meta: end_play
+    # - name: COMMON-CLI - common-cli packages are present
+    #   # debug:
+    #   #   var: item
+    #   include_tasks: install.yml
+    #   # loop: "{{ common_packages|subelements('packages') }}"
+    #   loop: "{{ common_packages }}"
+    #   loop_control:
+    #     loop_var: package
+    
+    # - meta: end_play
+    # - name: COMMON-CLI - common-cli packages are present
+    #   package:
+    #     name: "{{ item[ansible_pkg_mgr] | default(item['default']) }}"
+    #     state: latest
+    #   # Filter out cargo packages (better than conditional clause)
+    #   loop: "{{ common_packages | selectattr('cargo', 'undefined')}}"
 
-    - import_tasks: broot.yml
-    - import_tasks: delta.yml
-    - import_tasks: jump.yml
-    - import_tasks: noti.yml
-    - import_tasks: linux.yml
-    - import_tasks: macos.yml
+    # - import_tasks: jump.yml
+    # - import_tasks: noti.yml
+    # - import_tasks: linux.yml
+    # - import_tasks: macos.yml
+  environment:
+    PATH: "{{ ansible_env.PATH }}:{{ ansible_env.HOME }}/.asdf/shims"
 
+- name: COMMON-CLI|CARGO - Install packages via cargo
+  community.general.cargo:
+    name: "{{ item['cargo'] }}"
+    executable: "{{ ansible_env.HOME }}/.cargo/bin/cargo"
+    locked: true
+  loop: "{{ common_packages | selectattr('cargo', 'defined')}}"
 
+- meta: end_play
 # EXA
 - name: COMMON-CLI|EXA - get completions from github
   ansible.builtin.get_url:

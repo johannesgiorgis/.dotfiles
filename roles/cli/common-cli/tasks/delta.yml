@@ -10,19 +10,26 @@
     state: present
 
 
-- name: COMMON-CLI|DELTA - Install delta for Debian
-  when: ansible_os_family in ["Debian"]
-  block:
-    - name: Getting latest version from Github API
-      shell: >
-        curl -s https://api.github.com/repos/dandavison/delta/releases/latest 
-        | jq -r '.tag_name'
-      # TODO: Test in Linux and remove
-      # args:
-      #   warn: false
-      register: output
+# - name: COMMON-CLI|BROOT - install for debian
+#   when: ansible_os_family in ["Debian"]
+#   community.general.cargo:
+#     name: git-delta
+#     executable: "{{ dotfiles_user_home }}/.asdf/shims/cargo"
+#     locked: true
+
+# - name: COMMON-CLI|DELTA - Install delta for Debian
+#   when: ansible_os_family in ["Debian"]
+#   block:
+#     - name: Getting latest version from Github API
+#       shell: >
+#         curl -s https://api.github.com/repos/dandavison/delta/releases/latest 
+#         | jq -r '.tag_name'
+#       # TODO: Test in Linux and remove
+#       # args:
+#       #   warn: false
+#       register: output
     
-    - name: COMMON-CLI|DELTA - install {{ output.stdout }} for debian
-      apt:
-        deb: https://github.com/dandavison/delta/releases/download/{{ output.stdout }}/git-delta_{{ output.stdout }}_{{ machine_map[ansible_machine] }}.deb
-      become: "{{ should_be_root }}"
+#     - name: COMMON-CLI|DELTA - install {{ output.stdout }} for debian
+#       apt:
+#         deb: https://github.com/dandavison/delta/releases/download/{{ output.stdout }}/git-delta_{{ output.stdout }}_{{ machine_map[ansible_machine] }}.deb
+#       become: "{{ should_be_root }}"

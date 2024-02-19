@@ -1,0 +1,70 @@
+# Install common packages
+
+- name: print details
+  debug:
+    msg:
+      - "Value: {{ item }}"
+      - "Variables: {{ item | type_debug}}"
+  loop: "{{ package | dict2items }}"
+
+- ansible.builtin.set_fact:
+    install_via_cargo: "{{ true if 'cargo' in package else false }}"
+
+# - ansible.builtin.set_fact:
+#     install_via_homebrew: "{{ true if 'homebrew' in package else false }}"
+
+- name: COMMON-CLI|INSTALL - Install via cargo
+  when: install_via_cargo is true
+  community.general.cargo:
+    name: "{{ package['cargo'] }}"
+    state: present 
+
+- name: COMMON-CLI|INSTALL - via default package manager
+  when: install_via_cargo is false
+  package:
+    name: "{{ package[ansible_pkg_mgr] | default(package['default']) }}"
+    state: present
+
+# >>> NOTES
+# https://stackoverflow.com/questions/63731367/in-ansible-can-i-use-a-variable-for-a-module-instead-of-using-the-module-name
+# Can't use variable for module name :(
+# Wanted to dynamically set module name to avoid boilerplot code
+
+# - name: print details
+#   debug:
+#     msg:
+#       - "Value: {{ package }}"
+#       - "Elements: {{ package.0.package }}"
+#       - "Packages: {{ package.1 }}"
+#       # - "Variables: {{ package | type_debug}} | {{ package.values() }}"
+#   loop: "{{ package }}"
+#   # wantlist: true
+
+# - name: Install
+#   package.1.community.general.cargo:
+#     name: "{{ item }}"
+#     state: present
+#   loop: "{{ package }}"
+
+# - meta: end_play
+# <<< NOTES
+
+
+
+# - name: debug
+#   debug:
+#     msg: "{{ item.key }} - {{ item.value }}"
+#   loop: "{{ item | dict2items }}"
+#   loop_control:
+#     # label: "{{ item }}"
+#     loop_var: item
+# # - meta: end_play
+
+# # - name: COMMON-CLI|INSTALL - Install {{ item }}
+# #   debug:
+# #     msg:
+# #       - "Variables: {{ item }}"
+# #       # - "Variables: {{ item.key }}"
+# #       - "Variables: {{ item['community.general.cargo'] }}"
+
+
