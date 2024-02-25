@@ -10,11 +10,11 @@ import os
 import re
 import subprocess
 import time
-from collections import defaultdict
 from pprint import pprint
 from typing import List, Tuple  # Python <3.11 compatiblility
 from dataclasses import dataclass
 import asyncio
+
 
 # set logging
 LOG_LEVEL = os.environ.get("LOG_LEVEL", "INFO").upper()
@@ -38,9 +38,8 @@ log.addHandler(c_handler)
 @dataclass
 class Plugin:
     name: str
-    installed: defaultdict(str)
+    installed_latest_versions: dict[str, dict[str, str]]
     latest: str
-    all_versions: List[str]
 
     def display(self):
         print(
@@ -49,7 +48,7 @@ class Plugin:
     Latest: {self.latest}
     """
         )
-        pprint(dict(self.installed))
+        pprint(self.installed_latest_versions)
 
 
 @dataclass
@@ -77,68 +76,15 @@ async def main():
     start = time.time()
     plugins = await get_plugins_info()
 
-    # plugins = sync_get_plugins_info()
-    check_latest_versions(plugins)
+    asdf_current = plugins.pop()
 
-    # print("=" * 90)
-    # if LOG_LEVEL == "DEBUG":
-    #     for plugin in plugins:
-    #         plugin.display()
+    if LOG_LEVEL == "DEBUG":
+        for plugin in plugins:
+            plugin.display()
 
-    asyncio.get_event_loop().run_in_executor(None, display_report, plugins)
+    display_report(asdf_current, plugins)
     run_time = time.time() - start
-    log.info(f"Completed with {run_time:0.2f} seconds ({run_time/60:0.2f} mins)")
-
-
-def sync_get_plugins_info() -> List[Plugin]:
-    """
-    For each plugin, get
-        - Installed versions
-        - All versions
-        - Latest version
-    A very expensive function
-    Also decodes all bytes to strings
-    """
-    plugins = []
-    for plugin_name in subprocess.check_output(["asdf", "plugin-list"]).split():
-        plugin_name = plugin_name.decode()
-        log.info(f"Getting info for plugin {plugin_name}...")
-        latest = (
-            subprocess.check_output(["asdf", "latest", plugin_name]).split()[0].decode()
-        )
-
-        all_plugins = subprocess.check_output(["asdf", "list-all", plugin_name])
-        all = list(map(lambda x: x.decode(), all_plugins.split()))
-
-        # Remove unreleased versions - alpha, beta, rc, dev, 0a* (e.g. python 3.12.0a*)
-        all_versions = list(
-            filter(lambda x: not re.match(".+(alpha|beta|rc|dev|0a\d)", x), all)
-        )
-
-        asdf_list = subprocess.check_output(["asdf", "list", plugin_name])
-        installed_versions = list(
-            map(
-                lambda x: x.decode().replace(" ", "")
-                # 2024-01-04: asdf includes a * to indicate current active plugin version, so we need to remove it
-                # It was causing failures when extracting main and sub versions down stream
-                .replace("*", ""),
-                asdf_list.split(),
-            )
-        )
-
-        plugin = Plugin(
-            name=plugin_name,
-            installed=defaultdict.fromkeys(installed_versions),
-            latest=latest,
-            all_versions=all_versions,
-        )
-        log.debug(plugin)
-        plugins.append(plugin)
-
-    return plugins
-
-
-##############
+    log.info(f"Completed with {run_time:0.4f} seconds ({run_time/60:0.4f} mins)")
 
 
 async def get_plugins_info() -> List[Plugin]:
@@ -150,27 +96,46 @@ async def get_plugins_info() -> List[Plugin]:
     A very expensive function
     Also decodes all bytes to strings
     """
-    plugin_names = subprocess.check_output(["asdf", "plugin-list"])
-    plugin_names = list(map(lambda x: x.decode(), plugin_names.split()))
+    plugin_names = (await async_run("asdf plugin-list")).split()
 
     return await asyncio.gather(
-        *[create_plugin_info(plugin_name) for plugin_name in plugin_names]
+        *[
+            create_plugin_info(plugin_name)
+            for plugin_name in plugin_names
+            if plugin_name != "rust"
+        ],
+        async_run("asdf current"),
     )
 
 
 async def create_plugin_info(plugin_name: str) -> Plugin:
-    log.info(f"Getting info for plugin {plugin_name}...")
-    latest = await async_run(f"asdf list {plugin_name}")
+    log.debug(f"Getting info for plugin {plugin_name}...")
+    latest = await async_run(f"asdf latest {plugin_name}")
 
-    all_plugins = await async_run(f"asdf list-all {plugin_name}")
+    all_plugins = (await async_run(f"asdf list-all {plugin_name}")).split("\n")
 
     # Remove unreleased versions - alpha, beta, rc, dev, 0a* (e.g. python 3.12.0a*)
-    all_versions = list(
-        filter(lambda x: not re.match(".+([a-zA-z])", x), all_plugins.split("\n"))
-    )
+    all_versions = list(filter(lambda x: not re.match(".+([a-zA-z])", x), all_plugins))
 
-    asdf_list = await async_run(f"asdf list {plugin_name}")
-    # print(f"{asdf_list=}")
+    installed_versions = await get_installed_versions(plugin_name=plugin_name)
+    log.debug(f"{installed_versions=}")
+
+    installed_latest_versions = get_installed_latest_versions(
+        installed_versions, all_versions
+    )
+    log.debug(f"{installed_latest_versions=}")
+
+    plugin = Plugin(
+        name=plugin_name,
+        installed_latest_versions=installed_latest_versions,
+        latest=latest,
+    )
+    log.debug(plugin)
+    return plugin
+
+
+async def get_installed_versions(plugin_name: str) -> List[Plugin]:
+    asdf_list = (await async_run(f"asdf list {plugin_name}")).split("\n")
     installed_versions = list(
         map(
             lambda x: x.replace(" ", "")
@@ -181,14 +146,33 @@ async def create_plugin_info(plugin_name: str) -> Plugin:
         )
     )
 
-    plugin = Plugin(
-        name=plugin_name,
-        installed=defaultdict.fromkeys(installed_versions),
-        latest=latest,
-        all_versions=all_versions,
-    )
-    log.debug(plugin)
-    return plugin
+    # https://github.com/NeoHsu/asdf-hugo
+    # To install an extended Hugo version with Sass/SCSS support simply
+    # prefix the version number in the asdf install command with extended_.
+    if plugin_name == "gohugo":
+        installed_versions = list(
+            map(lambda x: x.strip("extended_"), installed_versions)
+        )
+    return installed_versions
+
+
+def get_installed_latest_versions(
+    installed_versions: list[str], all_versions: list[str]
+) -> dict[dict[str, str]]:
+    return {
+        version: check_latest_version(version, all_versions)
+        for version in installed_versions
+    }
+
+
+def check_latest_version(version: str, versions: list[str]) -> dict[str, str]:
+    subversion_result = search_for_versions(version, versions, 2)
+    version_result = search_for_versions(version, versions, 1)
+
+    return {
+        "latest_subversion": subversion_result[-1],
+        "latest_version": version_result[-1],
+    }
 
 
 async def async_run(cmd: str) -> str:
@@ -204,35 +188,6 @@ async def async_run(cmd: str) -> str:
     return stdout.decode().strip()
 
 
-# Check Updates
-
-
-def check_latest_versions(plugins: List[Plugin]):
-    """
-    Checks latest versions, subversions for each installed plugin version
-    """
-    log.info("Checking latest versions")
-    log.debug(type(plugins))
-    for plugin in plugins:
-        print("\n\n")
-        print(f"{type(plugin)=}")
-        log.info(f"Checking for {plugin.name}")
-        for version in plugin.installed.keys():
-            subversions_result = search_for_versions(version, plugin.all_versions, 2)
-            versions_result = search_for_versions(version, plugin.all_versions, 1)
-            if subversions_result and versions_result:
-                plugin.installed[version] = {
-                    "latest_subversion": subversions_result[-1],
-                    "latest_version": versions_result[-1],
-                }
-            else:
-                plugin.installed[version] = {
-                    "latest_subversion": "",
-                    "latest_version": "",
-                }
-    log.info("Completed checking latest versions")
-
-
 def search_for_versions(
     version: str, all_versions: List[str], num_chars: int = 2
 ) -> List:
@@ -244,7 +199,7 @@ def search_for_versions(
     """
     log.debug("Checking for version")
     subversion_part = ".".join(version.split(".")[:num_chars])
-    r = re.compile(subversion_part + "\.*")
+    r = re.compile(subversion_part + r"\.*")
     result = list(filter(r.match, all_versions))
     log.debug(f"Matches for {r}:{result}")
     return result
@@ -253,19 +208,16 @@ def search_for_versions(
 # Report Generation
 
 
-def display_report(plugins: List[Plugin]):
-    log.info("Generating report")
+def display_report(asdf_current: str, plugins: List[Plugin]):
+    log.debug("Generating report")
     status, commands = generate_status_and_update_commands(plugins)
 
-    print()
-    log.info(f"{Colors.light_blue}› Show 'asdf current' output:")
-    subprocess.check_call(["asdf", "current"])
+    log.info(f"{Colors.light_blue}› Show 'asdf current' output:\n{asdf_current}{Colors.default}")
 
-    print()
     log.info(f"{Colors.light_yellow}› asdf Update Summary:{Colors.default}")
     headers = ["PLUGIN", "INSTALLED", "LATEST", "VERSION", "SUBVERSION"]
     print(
-        f"{headers[0]: <15}{headers[1]: <15}{headers[2]: <15}{headers[3]: <25}{headers[4]}"
+        f"{headers[0]: <15}{headers[1]: <15}{headers[2]: <20}{headers[3]: <25}{headers[4]}"
     )
     # PLUGIN      INSTALLED      LATEST       VERSION                SUBVERSION
     # nodejs      14.20.1        19.3.0       14.20.1 -> 14.21.2     14.20.1 good
@@ -285,14 +237,15 @@ def generate_status_and_update_commands(plugins: List[Plugin]) -> Tuple[List, Li
     Generate status and commands for each installed plugin version by
     comparing subversion and version against respective latest
     """
-    log.info("Generating status and update commands")
+    log.debug("Generating status and update commands")
     commands, status = [], []
+
     for plugin in plugins:
         # Ignore terraform as different verions are required for work purposes
         if plugin.name == "terraform":
             continue
 
-        for version, updates in plugin.installed.items():
+        for version, updates in plugin.installed_latest_versions.items():
             plugin_status = [plugin.name, version, f"{Colors.magenta}{plugin.latest}"]
             version_status, version_command = compare_versions(
                 plugin.name, version, updates["latest_version"], Colors.cyan
@@ -319,6 +272,8 @@ def compare_versions(
     """
     Compare versions, captures status and creates update commands
     """
+    status = f"{Colors.green}{installed} good{Colors.default}"
+    update_command = ""
     if installed != latest:
         log.debug(
             f"{Colors.red}WARNING: Need to update {plugin_name} {installed} to "
@@ -331,9 +286,6 @@ def compare_versions(
             f"&& asdf reshim {plugin_name} {latest} && asdf global {plugin_name} {latest}"
             f"{Colors.default}"
         )
-    else:
-        status = f"{Colors.green}{installed} good{Colors.default}"
-        update_command = ""
 
     return status, update_command
 
