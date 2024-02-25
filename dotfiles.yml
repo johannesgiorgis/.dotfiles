@@ -61,7 +61,7 @@
     - {
         role: infrastructure/popos-initial-configuration,
         tags: [popos-initial-configuration],
-        when: ansible_os_family == "Debian",
+        when: ansible_os_family == "Pop!_OS",
       }
     - {
         role: infrastructure/linux-lightdm,
