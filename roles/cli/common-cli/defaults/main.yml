@@ -3,15 +3,20 @@
 
 # cargo uses the `community.general.cargo` module
 
-common_packages:
+packages:
   - ack:
     default: ack
+  - act:
+    homebrew: act
   - bat:
     default: bat
   - broot:
+    homebrew: broot
     cargo: broot
   - cowsay:
     default: cowsay
+  - coreutils:
+    homebrew: coreutils
   - csvkit:
     default: csvkit
   - curl:
@@ -46,6 +51,8 @@ common_packages:
     default: jq
   - mdp:
     default: mdp
+  - mlocate:
+    apt: mlocate
   - ncdu:
     default: ncdu
   - neofetch:
@@ -59,6 +66,7 @@ common_packages:
   - ripgrep:
     default: ripgrep
   - sd:
+    homebrew: sd
     cargo: sd
   - shellcheck:
     default: shellcheck
@@ -66,17 +74,18 @@ common_packages:
     default: speedtest-cli
   - tldr:
     default: tldr
+  - timewarrior:
+    default: timewarrior 
   - tree:
     default: tree
   - watch:
     default: watch
+  - wifi-password:
+    homebrew: wifi-password
   - wget:
     default: wget
+  - xclip:
+    apt: xclip
   - zoxide:
-    default: zoxide
-
-# Packages that are easier installed via cargo than package manager
-# due to linux difficulties/differences
-cargo_packages:
-  - broot
-  - sd
+    homebrew: zoxide
+    cargo: zoxide

@@ -1,2 +1,2 @@
-# dependencies:
-#   - role: infrastructure/rust
+dependencies:
+  - role: infrastructure/rust

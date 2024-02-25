@@ -2,11 +2,12 @@
 # Jump helps you navigate faster by learning your habits
 # https://github.com/gsamokovarov/jump
 
-- name: COMMON-CLI|JUMP - Install via homebrew
-  when: ansible_pkg_mgr == 'homebrew'
-  homebrew:
-    name: jump
-    state: present
+# TODO: Work on replacing with zoxide
+# - name: COMMON-CLI|JUMP - Install via homebrew
+#   when: ansible_pkg_mgr == 'homebrew'
+#   homebrew:
+#     name: jump
+#     state: present
 
 
 - name: COMMON-CLI|JUMP - Install for Darwin

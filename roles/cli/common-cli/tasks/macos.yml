@@ -1,21 +1,22 @@
 ---
 # macos cli tools
 
-- name: COMMON-CLI|MACOS - Install CLI tools
-  when: ansible_os_family in ["Darwin"]
-  block:
-    - name: MACOS-CLI - Tap into homebrew & custom taps
-      homebrew_tap:
-        tap: "{{ item }}"
-        state: present
-      loop: []
+# TODO: Replace after testing replacement on MacOS
+# - name: COMMON-CLI|MACOS - Install CLI tools
+#   when: ansible_os_family in ["Darwin"]
+#   block:
+#     - name: MACOS-CLI - Tap into homebrew & custom taps
+#       homebrew_tap:
+#         tap: "{{ item }}"
+#         state: present
+#       loop: []
 
-    - name: MACOS-CLI - formulae are present via homebrew
-      homebrew:
-        name: "{{ item }}"
-        state: present
-      loop:
-        - coreutils
-        - wifi-password
+#     - name: MACOS-CLI - formulae are present via homebrew
+#       homebrew:
+#         name: "{{ item }}"
+#         state: present
+#       loop:
+#         - coreutils
+#         - wifi-password
 
   
