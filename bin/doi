@@ -290,6 +290,8 @@ function ensure_ansible_is_present() {
             install_ansible_base_and_collections_on_debian
 
         elif [[ "$release_code" == "jammy" ]]; then
+            sudo apt install -y software-properties-common
+            sudo add-apt-repository --yes --update ppa:ansible/ansible
             apt-get update
             apt-get install -y ansible
 

@@ -16,9 +16,6 @@
       shell: >
         curl -s https://api.github.com/repos/gsamokovarov/jump/releases/latest 
         | jq -r '.name'
-      # TODO: Test in Linux and remove
-      # args:
-      #   warn: false
       register: output
 
     - name: COMMON-CLI|JUMP - Install {{ output.stdout }} Debian package

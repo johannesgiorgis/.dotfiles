@@ -5,15 +5,12 @@
 
 - name: DOCKER-COMPOSE - Getting latest version from Github API
   shell: >
-    curl -s https://api.github.com/repos/docker/compose/releases/latest 
-    | jq -r '.tag_name'
-  # TODO: Test in Linux and remove
-  # args:
-  #   warn: false
+      curl -s https://api.github.com/repos/docker/compose/releases/latest 
+      | jq -r '.tag_name'
   register: output
 
 - name: DOCKER-COMPOSE - Install Docker Compose
   get_url:
-    url: "https://github.com/docker/compose/releases/download/{{ output.stdout }}/docker-compose-linux-{{ ansible_machine }}"
-    dest: /usr/local/bin/docker-compose
-    mode: 0755
+      url: "https://github.com/docker/compose/releases/download/{{ output.stdout }}/docker-compose-linux-{{ ansible_machine }}"
+      dest: /usr/local/bin/docker-compose
+      mode: 0755

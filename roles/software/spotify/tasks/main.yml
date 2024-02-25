@@ -14,7 +14,7 @@
 
     - name: Install Spotify key (apt)
       apt_key:
-        url: https://download.spotify.com/debian/pubkey_0D811D58.gpg
+        url: https://download.spotify.com/debian/pubkey_6224F9941A8AA6D1.gpg
         state: present
 
     - name: Install Spotify repository (apt)
@@ -28,3 +28,4 @@
       apt:
         name: spotify-client
         state: present
+        update_cache: true

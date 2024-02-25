@@ -1,45 +1,30 @@
-# main task for awscli
+# AWS CLI
+# https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html
 
----
-- name: AWSCLI - awscli is present (darwin)
+- name: AWSCLI - Install for Darwin
+  when: ansible_os_family in ["Darwin"]
   homebrew:
     name: awscli
     state: present
 
 
-# asdf alternative
-# - name: AWSCLI - Set awscli Versions
-#   set_fact:
-#     awscli_versions:
-#       - 2.5.2
-
-
-# - name: AWSCLI - awscli & awscli packages are present
-#   block:
-#     - name: AWSCLI - Add awscli plugin for asdf (https://github.com/MetricMike/asdf-awscli.git)
-#       command: asdf plugin-add awscli https://github.com/MetricMike/asdf-awscli.git
-#       register: awscli_add
-#       failed_when: awscli_add == 2
-
-#     - name: AWSCLI - Install awscli versions
-#       command: asdf install awscli {{ item }}
-#       loop: "{{ awscli_versions }}"
-#       loop_control:
-#         label: "{{ item }}"
-
-#     - name: AWSCLI - Set global version for awscli to {{ awscli_versions[0] }}
-#       command: asdf global awscli {{ awscli_versions[0] }}
-
-#     - name: AWSCLI - check aws installed
-#       command: which aws
-#       register: which_aws
-
-#     - name: AWSCLI - which aws?
-#       debug: msg="which aws?{{ which_aws.stdout }}"
-
-#     - name: AWSCLI - check aws version
-#       command: aws --version
-#       register: aws_version
-
-#     - name: AWSCLI - aws version
-#       debug: msg="aws version?{{ aws_version.stdout }}"
+- name: AWSCLI - Install for Debian
+  when: ansible_os_family in ["Debian"]
+  become: "{{ should_be_root }}"
+  block:
+    - name: Get archive and unzip it
+      ansible.builtin.unarchive:
+        src: https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip
+        dest: /tmp
+        remote_src: yes
+    
+    - name: Install awscli
+      shell: |
+        sudo /tmp/aws/install -i /usr/local/aws-cli -b /usr/local/bin
+    
+    - name: Verify AWS installation
+      command: which aws
+      register: which_aws
+    
+    - name: AWSCLI - which aws?
+      debug: msg="which aws?{{ which_aws.stdout }}"
