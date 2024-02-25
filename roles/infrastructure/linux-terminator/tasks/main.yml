@@ -1,36 +1,30 @@
 ---
-# main tasks for linux-terminator
+# Multiple GNOME terminals in one window!
+# https://gnome-terminator.org/
 
-- name: terminator is present
-  become: "{{ should_be_root }}"
-  when: ansible_os_family in ["Debian"]
+- name: TERMINATOR - Install, get plugins and symlink config (Linux)
   block:
-    - name: terminator is present (linux)
+    - name: TERMINATOR - Install
       package:
         name: terminator
         state: present
 
-
-    # Configure
-    - name: Create terminator plugin directory
-      # command: "mkdir ~/.config/terminator/plugins"
-      # args:
-      #   creates: "{{ dotfiles_user_home}}/.config/terminator/plugins"
-      # TODO: Test in Linux and remove
-      # warn: false
+    - name: TERMINATOR - Create terminator plugin directory
       file:
         path: "{{ dotfiles_user_home }}/.config/terminator/plugins"
         state: directory
         mode: "775"
     
-    - name: Get terminator-themes plugin
+    - name: TERMINATOR - Get terminator-themes plugin
       get_url:
         url: "https://git.io/v5Zww"
         dest: "{{ dotfiles_user_home }}/.config/terminator/plugins/terminator-themes.py"
     
-    - name: Symlink terminator config file
+    - name: TERMINATOR - Symlink terminator config file
       file:
         src: "{{ playbook_dir }}/files/linux/terminator-config"
         dest: "{{ dotfiles_user_home }}/.config/terminator/config"
         state: link
         force: yes
+  become: "{{ should_be_root }}"
+  when: ansible_os_family in ["Debian"]

@@ -43,8 +43,6 @@
     - name: DOCKER - Add Docker repository
       shell: >
         curl -sSL {{ docker_apt_gpg_key }} | apt-key add -
-      args:
-        warn: false
 
     - name: Add Docker repository.
       apt_repository:
