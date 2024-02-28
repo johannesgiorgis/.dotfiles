@@ -7,7 +7,6 @@
     - { role: cli/atest, tags: [atest] }
     - { role: cli/common-cli, tags: [common-cli] }
     - { role: cli/taskwarrior, tags: [taskwarrior] }
-    - { role: cli/timewarrior, tags: [timewarrior] }
     - { role: cli/vim, tags: [vim] }
     - { role: cli/youtube-dl, tags: [youtube-dl] }
 
@@ -15,18 +14,18 @@
     - { role: infrastructure/bin-folder, tags: [bin-folder] }
     - { role: infrastructure/docker, tags: [docker] }
     - { role: infrastructure/fonts-firacode, tags: [fonts-firacode] }
-    - { 
-      role: infrastructure/git,
-      tags: [git-personal],
-      user_name: "Johannes Giorgis",
-      user_email: "johannesgiorgis@users.noreply.github.com"
-    }
-    - { 
-      role: infrastructure/git,
-      tags: [git-professional],
-      user_name: "Johannes Giorgis",
-      user_email: "80792713+johannesgiorgis-galvanize@users.noreply.github.com"
-    }
+    - {
+        role: infrastructure/git,
+        tags: [git-personal],
+        user_name: "Johannes Giorgis",
+        user_email: "johannesgiorgis@users.noreply.github.com",
+      }
+    - {
+        role: infrastructure/git,
+        tags: [git-professional],
+        user_name: "Johannes Giorgis",
+        user_email: "80792713+johannesgiorgis-galvanize@users.noreply.github.com",
+      }
     - {
         role: infrastructure/linux-dconf-settings,
         tags: [linux-dconf-settings],

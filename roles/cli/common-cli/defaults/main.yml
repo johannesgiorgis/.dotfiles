@@ -1,102 +1,91 @@
 # defaults task for common-cli
 ---
 
-common_packages:
+# cargo uses the `community.general.cargo` module
+
+packages:
   - ack:
-    default:
-      - ack
+    default: ack
+  - act:
+    homebrew: act
   - bat:
-    default:
-      - bat
+    default: bat
+  - broot:
+    homebrew: broot
+    cargo: broot
   - cowsay:
-    default:
-      - cowsay
+    default: cowsay
+  - coreutils:
+    homebrew: coreutils
   - csvkit:
-    default:
-      - csvkit
+    default: csvkit
   - curl:
-    default:
-      - curl
+    default: curl
   - diffstat:
-    default:
-      - diffstat
+    default: diffstat
   - entr:
-    default:
-      - entr
+    default: entr
   - exa:
-    default:
-      - exa
+    default: exa
   - fd-find:
-    default:
-      - fd-find
-    homebrew:
-      - fd
+    default: fd-find
+    homebrew: fd
   - fortune:
-    default:
-      - fortune
+    default: fortune
   - fzf:
-    default:
-      - fzf
+    default: fzf
   - gawk:
-    default:
-      - gawk
+    default: gawk
   - gh:
-    default:
-      - gh
+    default: gh
+  - git-delta:
+    default: git-delta
   - gpg:
-    default:
-      - gpg
-    homebrew:
-      - gnupg
+    default: gpg
+    homebrew: gnupg
   - htop:
-    default:
-      - htop
+    default: htop
   - httpie:
-    default:
-      - httpie
+    default: httpie
   - jq:
-    default:
-      - jq
+    default: jq
   - mdp:
-    default:
-      - mdp
+    default: mdp
+  - mlocate:
+    apt: mlocate
   - ncdu:
-    default:
-      - ncdu
+    default: ncdu
   - neofetch:
-    default:
-      - neofetch
+    default: neofetch
   - neovim:
-    default:
-      - neovim
+    default: neovim
   - pandoc:
-    default:
-      - pandoc
+    default: pandoc
   - rename:
-    default:
-      - rename
+    default: rename
   - ripgrep:
-    default:
-      - ripgrep
-  # Fixed in upcoming changes!
-  # - sd:
-  #   default:
-  #     - sd
+    default: ripgrep
+  - sd:
+    homebrew: sd
+    cargo: sd
   - shellcheck:
-    default:
-      - shellcheck
+    default: shellcheck
   - speedtest-cli:
-    default:
-      - speedtest-cli
+    default: speedtest-cli
   - tldr:
-    default:
-      - tldr
+    default: tldr
+  - timewarrior:
+    default: timewarrior 
   - tree:
-    default:
-      - tree
+    default: tree
   - watch:
-    default:
-      - watch
+    default: watch
+  - wifi-password:
+    homebrew: wifi-password
   - wget:
-    default:
-      - wget
+    default: wget
+  - xclip:
+    apt: xclip
+  - zoxide:
+    homebrew: zoxide
+    cargo: zoxide

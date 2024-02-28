@@ -2,21 +2,45 @@
 # main task for common-cli
 
 - name: COMMON-CLI - common-cli are present
-  become: "{{ should_be_root }}"
 
   block:
-    - name: COMMON-CLI - common-cli packages are present
+    - name: COMMON-CLI - Install packages via default package manager
+      become: "{{ should_be_root }}"
       package:
         name: "{{ item[ansible_pkg_mgr] | default(item['default']) }}"
         state: latest
-      loop: "{{ common_packages }}"
+      # Filter out cargo packages (better than conditional clause)
+      loop: "{{ packages | selectattr('default', 'defined')}}"
 
-    - import_tasks: broot.yml
-    - import_tasks: delta.yml
+
+    - name: COMMON-CLI|APT - Install packages via apt (Debian)
+      when: ansible_os_family in ["Debian"]
+      package:
+        name: "{{ item[ansible_pkg_mgr] | default(item['default']) }}"
+        state: latest
+      loop: "{{ packages | selectattr('apt', 'defined')}}"
+
+
+    # some packages are easier to install via cargo
+    - name: COMMON-CLI|CARGO - Install packages via cargo (Darwin)
+      when: ansible_os_family in ["Debian"]
+      community.general.cargo:
+        name: "{{ item['cargo'] }}"
+        executable: "{{ ansible_env.HOME }}/.cargo/bin/cargo"
+        locked: true
+      loop: "{{ packages | selectattr('cargo', 'defined') | select('homebrew', 'undefined') }}"
+
+
+    - name: COMMON-CLI|HOMEBREW - Install packages via homebrew (Darwin)
+      when: ansible_os_family in ["Darwin"]
+      package:
+        name: "{{ item[ansible_pkg_mgr] | default(item['default']) }}"
+        state: latest
+      loop: "{{ packages | selectattr('homebrew', 'defined') | selectattr('default', 'undefined') }}"
+
     - import_tasks: jump.yml
     - import_tasks: noti.yml
-    - import_tasks: linux.yml
-    - import_tasks: macos.yml
+    # - import_tasks: macos.yml
 
 
 # EXA

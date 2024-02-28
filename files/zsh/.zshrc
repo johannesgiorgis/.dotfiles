@@ -670,6 +670,10 @@ zstyle ':completion:*:complete:(cd|pushd):*' tag-order \
 
 # rust binaries
 
+if test -d "$HOME/.cargo/bin"; then
+    export PATH="$HOME/.cargo/bin:$PATH"
+fi
+
 # /home/johannes/.asdf/installs/rust/stable/bin/rg
 # export PATH="$HOME/.asdf/installs/rust/stable/bin:$PATH"
 #rust_install_dir="$HOME/.asdf/installs/rust/stable"
