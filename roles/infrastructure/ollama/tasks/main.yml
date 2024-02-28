@@ -1,0 +1,18 @@
+# Get up and running with large language models, locally. 
+# https://ollama.com/
+
+
+- name: OLLAMA - Install for Linux
+  become: "{{ should_be_root }}"
+  when: ansible_os_family in ["Debian"]
+  ansible.builtin.shell:
+    cmd: curl -fsSL https://ollama.com/install.sh | sh
+  args:
+    creates: /usr/local/bin/ollama
+
+
+- name: OLLAMA - present via homebrew cask
+  when: ansible_os_family in ["Darwin"]
+  homebrew_cask:
+    name: ollama
+    state: present
