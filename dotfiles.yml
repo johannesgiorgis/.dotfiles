@@ -51,6 +51,7 @@
         tags: [macos-initial-configuration],
         when ansible_os_family == "Darwin",
       }
+    - { role: infrastructure/ollama, tags: [ollama] }
     - { role: infrastructure/rancher, tags: [rancher] }
     # - { role: infrastructure/ssh-key, tags: [ssh-key] }
     - { role: infrastructure/wallpaper, tags: [wallpaper] }
