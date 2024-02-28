@@ -14,7 +14,6 @@ on:
       - main
 
 jobs:
-
   shellcheck:
     name: Shellcheck
     runs-on: ubuntu-latest
@@ -24,7 +23,7 @@ jobs:
         uses: ludeeus/action-shellcheck@master
         # only scan files in `bin/` ignoring icalBuddy file (since its an executable)
         with:
-          scandir: './bin'
+          scandir: "./bin"
           ignore_names: >-
             icalBuddy
 
@@ -48,10 +47,10 @@ jobs:
         working-directory: bin
         run: |
           pwd
-          bash doi -t timewarrior
+          bash doi -t taskwarrior
           command -v ansible
-          command -v timew
-      
+          command -v task
+
       - name: Install zsh (Ubuntu) # Runs faster than MacOS
         if: matrix.os == 'ubuntu-latest'
         working-directory: bin
@@ -62,7 +61,7 @@ jobs:
           test -f $HOME/.p10k.zsh
           test -f $HOME/.zshenv
           echo "TESTING COMMANDS"
-      
+
       - name: Verify zsh (Ubuntu)
         if: matrix.os == 'ubuntu-latest'
         shell: zsh {0}
@@ -71,5 +70,5 @@ jobs:
           echo "POST exec zsh"
           command -v p10k
 
-      - name: Check installed versions 
+      - name: Check installed versions
         run: ./.cisupport/post.sh
