@@ -18,8 +18,9 @@ function print_stamp() { echo -e "\n$(date +'%F %T') $*"; }
 
 print_stamp "$0 Started"
 
-fetch_url=$(git remote -v | head -1 | awk -F' ' '{print $2}')
-push_url=$(git remote -v | tail -1 | awk -F' ' '{print $2}')
+# Filter by origin to deal with forked repos
+fetch_url=$(git remote -v | grep origin | head -1 | awk -F' ' '{print $2}')
+push_url=$(git remote -v | grep origin | tail -1 | awk -F' ' '{print $2}')
 
 # Verify no difference between fetch and push URLs
 echo ""
@@ -66,9 +67,9 @@ else
 	echo "Git will be set to the Personal Github URL"
 fi
 
-# new_git_url=$(echo "$fetch_url" | sed "s/github.com/$PERSONAL_GITHUB_URL/g")
+new_git_url=$(echo "$fetch_url" | sed "s/github.com/$PERSONAL_GITHUB_URL/g")
 # TODO: Test and verify this!
-new_git_url=${fetch_url//github.com/$PERSONAL_GITHUB_URL/}
+# new_git_url=${fetch_url//github.com/$PERSONAL_GITHUB_URL/} # 2024-01-24: Broken! Reverting to previous
 echo -e "\nNew Git URL:$new_git_url"
 
 echo -e '\nSET:\n'

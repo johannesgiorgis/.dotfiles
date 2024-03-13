@@ -1,6 +1,6 @@
 
 # source: https://lildude.co.uk/speeding-up-my-zsh-shell
-[ -z "$ZPROF" ] || zmodload zsh/zprof 
+[ -z "$ZPROF" ] || zmodload zsh/zprof
 
 # DEBUG
 GITSTATUS_LOG_LEVEL=DEBUG
@@ -60,7 +60,7 @@ setopt EXTENDED_HISTORY          # Write the history file in the ':start:elapsed
 setopt HIST_EXPIRE_DUPS_FIRST    # Expire a duplicate event first when trimming history.
 setopt HIST_IGNORE_SPACE         # Do not record an event starting with a space.
 setopt HIST_SAVE_NO_DUPS         # Do not write a duplicate event to the history file.
-setopt INC_APPEND_HISTORY        # Ensure commands are added to the history immediately 
+setopt INC_APPEND_HISTORY        # Ensure commands are added to the history immediately
 setopt HIST_IGNORE_DUPS       # ignore duplicated commands history list
 setopt HIST_VERIFY            # show command with history expansion to user before running it
 
@@ -203,8 +203,6 @@ alias cg='cd `git rev-parse --show-toplevel`'
 alias gil="git log --pretty=format:'%H' -n 1 | pbcopy"
 
 # python virtual environment management
-
-alias venv='python3 -m venv .venv && source .venv/bin/activate && pip install --upgrade pip setuptools > /dev/null'
 alias va='source .venv/bin/activate'
 
 # Control output of less
@@ -298,7 +296,7 @@ fi
 
 
 ###############################################################################################
-# >>> ##################################### FUNCTIONS 
+# >>> ##################################### FUNCTIONS
 
 function af() { # list all functions
     # inspiration: https://www.freecodecamp.org/news/self-documenting-makefile/
@@ -447,6 +445,16 @@ function take() {
 
 # <<< Oh My Zsh inspired
 
+# Moved to a function to also take care of installing depedencies from requirements.txt when present
+function venv() {
+    python3 -m venv .venv \
+        && source .venv/bin/activate \
+        && pip install --upgrade pip setuptools > /dev/null
+    if [[ -f requirements.txt ]]; then
+        pip install -r requirements.txt
+    fi
+}
+
 # >>> Debian/Linux
 
 if [ "${kernel_name}" = "Debian" -o "${kernel_name}" = "Linux" ]; then
@@ -459,15 +467,15 @@ if [ "${kernel_name}" = "Debian" -o "${kernel_name}" = "Linux" ]; then
     function apts() { # apt search for specific package (linux)
         apt search "$1" | grep "^$1"
     }
-    
+
     function aptl() { # apt list installed for specific package (linux)
         apt list --installed | grep "$1"
     }
-    
+
     function apti() { # apt install for specific package (linux)
         sudo apt install "$1" -y
     }
-    
+
 fi
 
 # <<< Debian/Linux
@@ -547,7 +555,7 @@ function get_params() { # get aws ssm parameters
 function awsprofiles() { # list aws profiles from config file
 	# config=$(cat $HOME/.aws/config | grep '\[' | sed 's/\[profile //; s/\]//')
     # ignore commented lines + specific profiles
-    # extract files starting with [profile 
+    # extract files starting with [profile
     # clean up & sort
     config=$(cat $HOME/.aws/config |\
         rg -v '^;|sso-session|default|johannes-gov' |\
@@ -584,17 +592,17 @@ function refresh_sso() {
     assumed_role_name=$(echo $temp_identity | jq -r .Arn | cut -d/ -f2)
     session_name=$(echo $temp_identity | jq -r .Arn | cut -d/ -f3)
     sso_region=$(aws --profile "$profile" configure get sso_region)
-    
+
 	if [[ $sso_region == 'us-east-1' ]]; then
         sso_region_string=''
     else
         sso_region_string="${sso_region}/"
 	fi
 	role_arn="arn:aws:iam::${account_id}:role/aws-reserved/sso.amazonaws.com/${sso_region_string}${assumed_role_name}"
-    
+
 	echo "=> requesting temporary credentials"
     request_credentials $profile $role_arn $session_name
-    
+
 	if [ $? -ne 0 ]; then
         aws sso login --profile "$profile"
 		if [ $? -ne 0 ]; then
@@ -614,7 +622,7 @@ function refresh_sso() {
 
 # <<< AWS
 
-# <<< ##################################### FUNCTIONS 
+# <<< ##################################### FUNCTIONS
 ###############################################################################################
 
 
@@ -635,6 +643,10 @@ DEFAULT_USER=$(whoami)
 
 if command -v aws 1>/dev/null 2>&1; then
     export AWS_CLI_AUTO_PROMPT=on-partial
+    autoload bashcompinit && bashcompinit
+    autoload -Uz compinit && compinit
+
+    complete -C '/opt/homebrew/bin/aws_completer' aws
 fi
 
 # <<< ##################################### COMPLETIONS
@@ -749,7 +761,7 @@ unsetopt SHARE_HISTORY
 
 
 ### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
-export PATH="$HOME/.rd/bin:$PATH"
+# export PATH="$HOME/.rd/bin:$PATH" # commented out as I had to use Docker Desktop
 ### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
 
 
@@ -762,7 +774,6 @@ if command -v broot 1>/dev/null 2>&1; then
 	[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 fi
 
-[ -z "$ZPROF" ] || zprof
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
@@ -779,3 +790,14 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
+
+# pnpm
+export PNPM_HOME="/Users/jgiorgis/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
+
+
+[ -z "$ZPROF" ] || zprof
