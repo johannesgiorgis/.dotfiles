@@ -126,10 +126,15 @@
       when: ansible_os_family == "Darwin" and ansible_pkg_mgr == 'homebrew'
 
 
-- name: ZSH - Create ~/.zfunc folder
+- name: ZSH - Create folders [~/.zfunc|~/zsh/(cache|completions)]
   ansible.builtin.file:
-    path: "{{ dotfiles_user_home}}/.zfunc"
+    path: "{{ item }}"
     state: directory
+  loop:
+    - "{{ dotfiles_user_home }}/.zfunc"
+    - "{{ ansible_env.ZDOTDIR }}/cache"
+    - "{{ ansible_env.ZDOTDIR }}/cache/completions"
+
 
 
 # FONTS
