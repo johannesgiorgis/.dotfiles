@@ -1,13 +1,22 @@
 #!/usr/bin/env bash
 
-# Create Github SSH Key
+# Create Github SSH Key for Personal
 
-echo "Please enter the value for ssh_key_filename (default:id_rsa_personal_github)"
-read -r ssh_key_filename
+if [ ! -x "$(command -v gh)" ]
+then
+    echo "ERROR - gh is not present. Install first!"
+    exit 1
+fi
+
+read -p "Enter the ssh_key_filename (default:id_rsa_personal_github): " -r ssh_key_filename
 ssh_key_filename="${ssh_key_filename:-id_rsa_personal_github}"
 
-echo "Please enter the value for email"
-read -r email_address
+read -p "Enter your email address: " -r email_address
+
+if [ -z "$email_address" ];
+then
+    echo "ERROR: Add a valid email address"
+fi
 
 echo -e "\n
     ssh_key_file_name:$ssh_key_filename
