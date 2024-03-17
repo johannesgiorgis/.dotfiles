@@ -33,4 +33,12 @@
         - onedrive
         - microsoft-remote-desktop
 
+    - name: WORK-MACOS-SOFTWARE|Install via mas
+      community.general.mas:
+        id: "{{ item.id }}"
+        state: present
+      loop:
+        - "{{ mas_apps['okta_verify'] }}"
+
+
   when: ansible_os_family in ["Darwin"]

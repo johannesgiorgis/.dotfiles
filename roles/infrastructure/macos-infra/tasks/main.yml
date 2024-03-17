@@ -40,7 +40,7 @@
         id: "{{ item.id }}"
         state: present
       loop:
-        - { id: 1056643111, name: Clocker }
-        - { id: 549083868,  name: DisplayMenu }
+        - "{{ mas_apps['clocker'] }}"
+        - "{{ mas_apps['displaymenu'] }}"
 
   when: ansible_os_family in ["Darwin"]
