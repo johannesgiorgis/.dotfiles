@@ -25,10 +25,14 @@
       with_items:
         - { user_name: "{{ user_name }}", user_email: "{{ user_email }}"}
 
-    #- meta: end_play
-    - name: GIT - configure gitconfig files
+    - name: GIT - configure gitconfig file (professional)
       include_tasks: "configure-gitconfig-each.yml"
       loop:
-        # - .gitconfig
-        - .gitconfig-personal
         - .gitconfig-professional
+      tags: [git-professional]
+
+    - name: GIT - configure gitconfig file (personal)
+      include_tasks: "configure-gitconfig-each.yml"
+      loop:
+        - .gitconfig-personal
+      tags: [git-personal]

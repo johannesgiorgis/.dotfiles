@@ -106,6 +106,15 @@ main() {
         command_options="${command_options} -e ansible_python_interpreter=/usr/bin/python3.10"
     fi
 
+    # Handle git-personal vs git-professional
+    if [[ "$tags" == *"git-personal"* ]]; then
+        command_options="${command_options} --skip-tags git-professional"
+    fi
+
+    if [[ "$tags" == *"git-professional"* ]]; then
+        command_options="${command_options} --skip-tags git-personal"
+    fi
+
     echo "ansible-playbook $command_options"
     # shellcheck disable=SC2086
     ansible-playbook $command_options
