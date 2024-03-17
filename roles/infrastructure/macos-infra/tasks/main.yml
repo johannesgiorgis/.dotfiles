@@ -10,7 +10,7 @@
         tap: "{{ item }}"
         state: present
       loop:
-        - homebrew/cask-drivers # logitech-options
+        # - homebrew/cask-drivers # logitech-options
         - jakehilborn/jakehilborn # displayplacer
 
     - name: MACOS-INFRA - formulae are present via homebrew
@@ -31,7 +31,7 @@
         - appcleaner
         - iterm2
         - logi-options-plus
-        - logitech-unifying
+        # - logitech-unifying
         - omnidisksweeper
         - rectangle
     

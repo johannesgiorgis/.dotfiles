@@ -16,7 +16,7 @@
       loop: 
         - checkov
         - tfsec
-        - kreuzwerker/taps/m1-terraform-provider-helper
+        # - kreuzwerker/taps/m1-terraform-provider-helper # 2024-03: Not available
 
     - name: WORK-MACOS-SOFTWARE - casks are present via homebrew casks
       homebrew_cask:
