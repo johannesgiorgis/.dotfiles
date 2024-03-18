@@ -3,7 +3,7 @@
 mas_apps:
   bitwarden: { id: 1352778147, name: Bitwarden }
   clocker: { id: 1056643111, name: Clocker }
-  displaymenu: { id: 549083868,  name: 'Display Menu' }
+  display_menu: { id: 549083868,  name: 'Display Menu' }
   kindle: { id: 302584613, name: Kindle }
   okta_verify: { id: 490179405, name: 'Okta Verify' }
   trello: { id: 1278508951, name: Trello }

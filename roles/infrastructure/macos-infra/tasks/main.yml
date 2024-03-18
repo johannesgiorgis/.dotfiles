@@ -28,7 +28,7 @@
       loop:
         - aerial
         - alt-tab
-        - appcleaner
+        # - appcleaner # 2024-03-17: failing to install due to SHA1 mismatch. TODO: Fix later
         - iterm2
         - logi-options-plus
         # - logitech-unifying
@@ -41,6 +41,6 @@
         state: present
       loop:
         - "{{ mas_apps['clocker'] }}"
-        - "{{ mas_apps['displaymenu'] }}"
+        - "{{ mas_apps['display_menu'] }}"
 
   when: ansible_os_family in ["Darwin"]
