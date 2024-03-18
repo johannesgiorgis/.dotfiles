@@ -28,7 +28,7 @@
         name: "{{ item['cargo'] }}"
         executable: "{{ ansible_env.HOME }}/.cargo/bin/cargo"
         locked: true
-      loop: "{{ packages | selectattr('cargo', 'defined') | select('homebrew', 'undefined') }}"
+      loop: "{{ packages | selectattr('cargo', 'defined') | selectattr('homebrew', 'undefined') }}"
 
 
     - name: COMMON-CLI|HOMEBREW - Install packages via homebrew (Darwin)
@@ -43,8 +43,12 @@
     # - import_tasks: macos.yml
 
 
-# EXA
-- name: COMMON-CLI|EXA - get completions from github
+# EZA
+- name: COMMON-CLI|EZA - get completions from github
   ansible.builtin.get_url:
-    url: https://github.com/ogham/exa/blob/master/completions/zsh/_exa
-    dest: "{{ dotfiles_user_home }}/.zfunc/_exa"
+    url: https://github.com/eza-community/eza/tree/main/completions/zsh/_eza
+    dest: "{{ dotfiles_user_home }}/.zfunc/_eza"
+
+- name: COMMON-CLI|BROOT - Initialize manually
+  debug:
+    msg: "Run broot manually to initialize"

@@ -67,6 +67,7 @@ else
 	echo "Git will be set to the Personal Github URL"
 fi
 
+# shellcheck disable=SC2001
 new_git_url=$(echo "$fetch_url" | sed "s/github.com/$PERSONAL_GITHUB_URL/g")
 # TODO: Test and verify this!
 # new_git_url=${fetch_url//github.com/$PERSONAL_GITHUB_URL/} # 2024-01-24: Broken! Reverting to previous

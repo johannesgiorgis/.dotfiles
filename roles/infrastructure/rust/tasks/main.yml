@@ -3,6 +3,21 @@
 # https://github.com/ProfessorManhattan/ansible-rust/tree/master
 
 
+# - name: hello
+#   ansible.builtin.shell:
+#     cmd: echo $ZSH_CACHE_DIR
+#   register: results
+
+# - name: hello
+#   debug:
+#     msg: "Results: {{ results }}"
+
+# - name: hello
+#   debug:
+#     msg: "R:{{ ansible_env.ZDOTDIR }}"
+
+# - meta: end_play
+
 - name: check if cargo is installed
   shell: command -v cargo
   register: cargo_exists
@@ -33,11 +48,12 @@
         mode: 0700
         recurse: yes
 
-    - name: RUST - create ~/.zfunc/_rustup
+    # omz's rust plugin expects in a different location than others
+    - name: RUST - create ~/zsh/cache/completions/(_cargo|_rustup)
       ansible.builtin.shell: |
-        rustup completions zsh > ~/.zfunc/_rustup
-        rustup completions zsh cargo > ~/.zfunc/_cargo
+        rustup completions zsh cargo > "{{ ansible_env.ZDOTDIR }}/cache/completions/_cargo"
+        rustup completions zsh > "{{ ansible_env.ZDOTDIR }}/cache/completions/_rustup"
       args:
         creates: 
-          - ~/.zfunc/_rustup
-          - ~/.zfunc/_cargo
+          - "{{ ansible_env.ZDOTDIR }}/cache/completions/_cargo"
+          - "{{ ansible_env.ZDOTDIR }}/cache/completions/_rustup"

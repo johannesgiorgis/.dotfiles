@@ -10,7 +10,7 @@
         tap: "{{ item }}"
         state: present
       loop:
-        - homebrew/cask-drivers # logitech-options
+        # - homebrew/cask-drivers # logitech-options
         - jakehilborn/jakehilborn # displayplacer
 
     - name: MACOS-INFRA - formulae are present via homebrew
@@ -28,10 +28,10 @@
       loop:
         - aerial
         - alt-tab
-        - appcleaner
+        # - appcleaner # 2024-03-17: failing to install due to SHA1 mismatch. TODO: Fix later
         - iterm2
         - logi-options-plus
-        - logitech-unifying
+        # - logitech-unifying
         - omnidisksweeper
         - rectangle
     
@@ -40,7 +40,7 @@
         id: "{{ item.id }}"
         state: present
       loop:
-        - { id: 1056643111, name: Clocker }
-        - { id: 549083868,  name: DisplayMenu }
+        - "{{ mas_apps['clocker'] }}"
+        - "{{ mas_apps['display_menu'] }}"
 
   when: ansible_os_family in ["Darwin"]

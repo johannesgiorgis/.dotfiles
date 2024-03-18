@@ -4,7 +4,7 @@
 - name: KINDLE|MacOS|Install via mas-cli
   when: ansible_os_family in ["Darwin"]
   community.general.mas:
-    id: 302584613  # Kindle
+    id: "{{ mas_apps['kindle'].id }}"
     state: present
 
 

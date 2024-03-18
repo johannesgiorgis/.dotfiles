@@ -16,7 +16,7 @@
       loop: 
         - checkov
         - tfsec
-        - kreuzwerker/taps/m1-terraform-provider-helper
+        # - kreuzwerker/taps/m1-terraform-provider-helper # 2024-03: Not available
 
     - name: WORK-MACOS-SOFTWARE - casks are present via homebrew casks
       homebrew_cask:
@@ -32,5 +32,13 @@
         - nosql-workbench
         - onedrive
         - microsoft-remote-desktop
+
+    - name: WORK-MACOS-SOFTWARE|Install via mas
+      community.general.mas:
+        id: "{{ item.id }}"
+        state: present
+      loop:
+        - "{{ mas_apps['okta_verify'] }}"
+
 
   when: ansible_os_family in ["Darwin"]

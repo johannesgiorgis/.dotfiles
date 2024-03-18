@@ -4,7 +4,7 @@
 - name: BITWARDEN|MacOS|Install via mas-cli
   when: ansible_os_family in ["Darwin"]
   community.general.mas:
-    id: 1352778147  # Bitwarden
+    id: "{{ mas_apps['bitwarden'].id }}"
     state: present
 
 
