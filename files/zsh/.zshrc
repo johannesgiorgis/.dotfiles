@@ -801,4 +801,3 @@ esac
 
 
 [ -z "$ZPROF" ] || zprof
-source /Users/jgiorgis/.config/broot/launcher/bash/br
