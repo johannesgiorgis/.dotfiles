@@ -447,10 +447,14 @@ function take() {
 
 # Moved to a function to also take care of installing depedencies from requirements.txt when present
 function venv() {
-    python3 -m venv .venv \
-        && source .venv/bin/activate \
-        && pip install --upgrade pip setuptools > /dev/null
+    echo "creating virtual environment under .venv/..."
+    python3 -m venv .venv
+    echo "activating virtual environment..."
+    source .venv/bin/activate
+    echo "upgrading pip & setuptools..."
+    pip install --upgrade pip setuptools > /dev/null
     if [[ -f requirements.txt ]]; then
+        echo "found requirements.txt file - installing packages..."
         pip install -r requirements.txt
     fi
 }
