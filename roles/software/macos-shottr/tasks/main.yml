@@ -1,0 +1,9 @@
+---
+# https://shottr.cc/
+# MacOS Screenshot Tool
+
+- name: SHOTTR - is present (darwin)
+  homebrew_cask:
+    name: shottr
+    state: present
+  when: ansible_os_family == "Darwin"
