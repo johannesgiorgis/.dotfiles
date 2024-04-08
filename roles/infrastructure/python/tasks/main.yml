@@ -72,8 +72,9 @@
       tags: [pipx]
 
     - name: PYTHON - Install pipx (darwin)
+      # Encountered `zsh: command not found: register-python-argcomplete` issue
       shell: |
-        brew install pipx
+        brew install pipx python-argcomplete
         pipx ensurepath
       when: ansible_os_family in ["Darwin"]
       tags: [pipx]
