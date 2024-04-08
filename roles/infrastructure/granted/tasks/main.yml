@@ -20,3 +20,6 @@
     msg: "TODO: Implement for debian?"
     # TODO: Use https://docs.commonfate.io/granted/getting-started
  
+- name: GRANTED - Add autocomplete
+  command: granted completion -s zsh
+
