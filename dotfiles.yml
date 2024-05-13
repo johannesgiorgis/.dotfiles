@@ -73,6 +73,7 @@
     # programming languages/frameworks managed by asdf
     - { role: infrastructure/asdf, tags: [asdf] }
     - { role: infrastructure/awscli, tags: [awscli] }
+    - { role: infrastructure/deno, tags: [deno] }
     - { role: infrastructure/gohugo, tags: [gohugo] }
     - { role: infrastructure/golang, tags: [golang] }
     - { role: infrastructure/nodejs, tags: [nodejs] }
