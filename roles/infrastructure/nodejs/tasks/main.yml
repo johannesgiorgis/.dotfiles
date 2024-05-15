@@ -27,6 +27,7 @@
 - name: NODEJS - Set NodeJS Versions
   set_fact:
     nodejs_versions:
+      - 20.12.2
       - 18.17.1
       - 16.20.2
 

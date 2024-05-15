@@ -152,20 +152,20 @@ alias rd=rmdir
 
 alias history='history -i'
 
-if command -v exa 1>/dev/null 2>&1; then
+if command -v eza 1>/dev/null 2>&1; then
     # source: https://github.com/DarrinTisdale/zsh-aliases-exa
     # general use
-    alias ls='exa'                                                         # ls
-    alias l='exa -lbF --git'                                               # list, size, type, git
+    alias ls='eza'                                                         # ls
+    alias l='eza -lbF --git'                                               # list, size, type, git
     alias lt='ls -laaF -snew'                                              # list new files last
-    alias ll='exa -lbGF --git'                                             # long list
-    alias llm='exa -lbGF --git --sort=modified'                            # long list, modified date sort
-    alias la='exa -lbhHigUmuSa --time-style=long-iso --git --color-scale'  # all list
-    alias lx='exa -lbhHigUmuSa@ --time-style=long-iso --git --color-scale' # all + extended list
+    alias ll='eza -lbGF --git'                                             # long list
+    alias llm='eza -lbGF --git --sort=modified'                            # long list, modified date sort
+    alias la='eza -lbhHigUmuSa --time-style=long-iso --git --color-scale'  # all list
+    alias lx='eza -lbhHigUmuSa@ --time-style=long-iso --git --color-scale' # all + extended list
 
     # speciality views
-    alias lS='exa -1'			                                           # one column, just names
-    alias lta='exa --tree --level=2'                                       # tree
+    alias lS='eza -1'			                                           # one column, just names
+    alias lta='eza --tree --level=2'                                       # tree
 
 else
     # Default for ls
@@ -447,10 +447,14 @@ function take() {
 
 # Moved to a function to also take care of installing depedencies from requirements.txt when present
 function venv() {
-    python3 -m venv .venv \
-        && source .venv/bin/activate \
-        && pip install --upgrade pip setuptools > /dev/null
+    echo "creating virtual environment under .venv/..."
+    python3 -m venv .venv
+    echo "activating virtual environment..."
+    source .venv/bin/activate
+    echo "upgrading pip & setuptools..."
+    pip install --upgrade pip setuptools > /dev/null
     if [[ -f requirements.txt ]]; then
+        echo "found requirements.txt file - installing packages..."
         pip install -r requirements.txt
     fi
 }
@@ -743,6 +747,10 @@ if command -v broot 1>/dev/null 2>&1; then
 	source ${HOME}/.config/broot/launcher/bash/br
 fi
 
+if command -v fzf 1>/dev/null 2>&1; then
+    eval "$(fzf --zsh)"
+fi
+
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
@@ -762,6 +770,9 @@ unsetopt SHARE_HISTORY
 
 ### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
 # export PATH="$HOME/.rd/bin:$PATH" # commented out as I had to use Docker Desktop
+if test -d "$HOME/.rd/bin"; then
+    export PATH="$HOME/.rd/bin:$PATH"
+fi
 ### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
 
 

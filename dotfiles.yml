@@ -26,6 +26,7 @@
         user_name: "Johannes Giorgis",
         user_email: "80792713+johannesgiorgis-galvanize@users.noreply.github.com",
       }
+    - { role: infrastructure/granted, tags: [granted] }
     - {
         role: infrastructure/linux-dconf-settings,
         tags: [linux-dconf-settings],
@@ -105,6 +106,7 @@
     - { role: software/linux-timeshift, tags: [linux-timeshift] }
     - { role: software/linux-thunderbird, tags: [linux-thunderbird] }
     - { role: software/macos-shureplus-motiv, tags: [macos-shureplus-motiv] }
+    - { role: software/macos-shottr, tags: [macos-shottr] }
     - { role: software/meld, tags: [meld] }
     - { role: software/nordvpn, tags: [nordvpn] }
     - { role: software/notesnook, tags: [notesnook] }

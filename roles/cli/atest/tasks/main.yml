@@ -1,5 +1,5 @@
 ---
-# main task for broot
+# Testing Role for playing with various Ansible capabilities
 
 # - name: Testing in
 #   shell: >
@@ -75,18 +75,75 @@
 
 
 # https://techviewleo.com/ansible-check-if-software-package-is-installed/
-- name: Check if app is installed
-  ansible.builtin.package:
-    name: bitwarden
-    state: present
-  check_mode: true
-  register: package_check
-  ignore_errors: true
+# - name: Check if app is installed
+#   ansible.builtin.package:
+#     name: bitwarden
+#     state: present
+#   check_mode: true
+#   register: package_check
+#   ignore_errors: true
 
-- debug:
-    msg: "Package is installed: {{ package_check }}"
-  when: package_check is succeeded
+# - debug:
+#     msg: "Package is installed: {{ package_check }}"
+#   when: package_check is succeeded
 
-- debug:
-    msg: "Installing package"
-  when: package_check is failed
+# - debug:
+#     msg: "Installing package"
+#   when: package_check is failed
+
+
+# =========================================================================================
+
+# >> Explore how to centralize Mac App Store (MAS) Apps
+
+# - name: setting version
+#   set_fact:
+#     mas_apps1:
+#       okta_verify: 490179405 # Okta Verify
+
+# - name: DEBUG
+#   debug:
+#     msg: 
+#       - "Mas: {{ mas_apps1 }}"
+#       - "1st app: {{ mas_apps1['okta_verify'] }}"
+
+# - name: Loop through the Apps
+#   debug:
+#     msg: "Here is {{ item.key }}|{{ item.value }}"
+#   loop: "{{ mas_apps1 | dict2items }}"
+
+# - name: Loop through the Apps
+#   debug:
+#     msg: "Here is {{ item }}"
+#   loop: 
+#     - "{{ mas_apps1['okta_verify'] }}"
+
+- name: setting version
+  set_fact:
+    mas_apps2:
+      okta_verify:  { id: 490179405, name: 'Okta Verify' }
+
+- name: DEBUG
+  debug:
+    msg: 
+      - "Mas: {{ mas_apps2 }}"
+      # - "1st app: {{ mas_apps1['okta_verify'] }}"
+
+- name: Loop through the Apps
+  debug:
+    msg: "Here is {{ item.key }}|{{ item.value }}"
+  loop: "{{ mas_apps2 | dict2items }}"
+
+- name: Loop through the Apps
+  debug:
+    msg: "Here is {{ item.id | type_debug }}"
+  loop: 
+    - "{{ mas_apps2['okta_verify'] }}"
+
+- name: Access App Directly
+  debug:
+    msg: "Here is {{ mas_apps2['okta_verify'].id | type_debug }}"
+
+# << Explore how to centralize Mac App Store (MAS) Apps
+
+# =========================================================================================

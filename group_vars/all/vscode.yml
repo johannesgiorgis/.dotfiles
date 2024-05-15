@@ -4,19 +4,18 @@ visual_studio_code_extensions:
   - alexcvzz.vscode-sqlite
   - ban.spellright
   - bierner.markdown-emoji
-  - DavidAnson.vscode-markdownlint
+  - davidanson.vscode-markdownlint
   - donjayamanne.githistory
   - dotiful.dotfiles-syntax-highlighting
   - eamodio.gitlens
   - equinusocio.vsc-material-theme-icons
   - esbenp.prettier-vscode
   - formulahendry.code-runner
-  - GitHub.remotehub
   - golang.go
-  - Gruntfuggly.todo-tree
+  - gruntfuggly.todo-tree
   - hashicorp.terraform
   - hediet.vscode-drawio
-  # - kiteco.kite
+  - johnpapa.vscode-peacock
   - mgmcdermott.vscode-language-babel
   - mrmlnc.vscode-duplicate
   - ms-azuretools.vscode-docker
@@ -29,12 +28,13 @@ visual_studio_code_extensions:
   - ms-vscode.remote-repositories
   - ms-vsliveshare.vsliveshare
   - njpwerner.autodocstring
+  - perkovec.emoji
+  - redhat.ansible
   - redhat.vscode-commons
   - redhat.vscode-yaml
   - rpinski.shebang-snippets
   - rust-lang.rust
   - samuelcolvin.jinjahtml
-  - Shan.code-settings-sync
   - shd101wyy.markdown-preview-enhanced
   - vscodevim.vim
   - wayou.vscode-todo-highlight

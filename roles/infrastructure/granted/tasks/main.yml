@@ -1,0 +1,25 @@
+# https://www.granted.dev/
+# https://github.com/common-fate/granted
+# The easiest way to access your cloud
+
+- name: GRANTED|DARWIN - Install
+  when: ansible_os_family in ["Darwin"]
+  block:
+    - name: GRANTED|DARWIN - Tap common-fate/granted
+      homebrew_tap:
+        tap: common-fate/granted
+        state: present
+    
+    - name: GRANTED|DARWIN - Install
+      homebrew:
+        name: granted
+        state: present
+
+- name: GRANTED|Debian|Not implemented
+  debug:
+    msg: "TODO: Implement for debian?"
+    # TODO: Use https://docs.commonfate.io/granted/getting-started
+ 
+- name: GRANTED - Add autocomplete
+  command: granted completion -s zsh
+
