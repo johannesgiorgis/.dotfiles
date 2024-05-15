@@ -126,10 +126,11 @@
       when: ansible_os_family == "Darwin" and ansible_pkg_mgr == 'homebrew'
 
 
-- name: DEBUG
-  debug:
-    msg:
-      - "ansible_env: {{ ansible_env }}"
+# 2024-04-14: Help debug issue when using ansible_env.ZDOTDIR lead to CI failures
+# - name: DEBUG
+#   debug:
+#     msg:
+#       - "ansible_env: {{ ansible_env }}"
 
 - name: ZSH - Create folders [~/.zfunc|~/zsh/(cache|completions)]
   ansible.builtin.file:
@@ -137,8 +138,8 @@
     state: directory
   loop:
     - "{{ dotfiles_user_home }}/.zfunc"
-    - "{{ ansible_env.ZDOTDIR }}/cache"
-    - "{{ ansible_env.ZDOTDIR }}/cache/completions"
+    - "{{ dotfiles_user_home }}/zsh/cache"
+    - "{{ dotfiles_user_home }}/zsh/cache/completions"
 
 
 

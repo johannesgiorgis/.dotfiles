@@ -47,13 +47,17 @@
         state: directory
         mode: 0700
         recurse: yes
+    
+    - name: set up zsh completions directory
+      set_fact:
+        zsh_completions_dir: "{{ dotfiles_user_home }}/zsh/cache/completions"
 
     # omz's rust plugin expects in a different location than others
     - name: RUST - create ~/zsh/cache/completions/(_cargo|_rustup)
       ansible.builtin.shell: |
-        rustup completions zsh cargo > "{{ ansible_env.ZDOTDIR }}/cache/completions/_cargo"
-        rustup completions zsh > "{{ ansible_env.ZDOTDIR }}/cache/completions/_rustup"
+        rustup completions zsh cargo > "{{ zsh_completions_dir }}/_cargo"
+        rustup completions zsh > "{{ zsh_completions_dir }}/_rustup"
       args:
         creates: 
-          - "{{ ansible_env.ZDOTDIR }}/cache/completions/_cargo"
-          - "{{ ansible_env.ZDOTDIR }}/cache/completions/_rustup"
+          - "{{ zsh_completions_dir }}/_cargo"
+          - "{{ zsh_completions_dir }}/_rustup"
