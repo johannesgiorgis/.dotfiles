@@ -1,0 +1,63 @@
+---
+# main task for deno
+
+- name: DENO|Ensure dependencies for deno are present
+  block:
+    - name: DENO|Ensure deno system dependencies are present (debian)
+      apt:
+        name:
+          # - dirmngr
+          # - gpg
+          - curl
+          - git
+          # - gawk
+          - gunzip
+          - unzip
+        state: present
+      when: ansible_os_family in ["Debian"]
+      become: "{{ should_be_root }}"
+
+    - name: DENO|Ensure deno system dependencies are present (darwin)
+      homebrew:
+        name:
+          # - gpg
+          # - gawk
+          - curl
+          - git
+          - unzip
+        state: present
+      when: ansible_os_family in ["Darwin"]
+
+
+
+- name: DENO|Set NodeJS Versions
+  set_fact:
+    plugin_url: https://github.com/asdf-community/asdf-deno.git
+    versions:
+      - 1.43.3
+
+
+# Install
+- name: DENO|Ensure deno & deno packages are present
+  block:
+    - name: DENO|Add deno plugin for asdf ({{ plugin_url }})
+      command: asdf plugin-add deno {{ plugin_url }}
+      register: deno_add
+      failed_when: deno_add == 2
+
+    # 2024 May - no way to specify default packages during installation
+    # https://github.com/asdf-community/asdf-deno/issues/36
+    # - name: DENO|Symlink .default-npm-packages
+    #   file:
+    #     src: "{{ dotfiles_home }}/files/.default-npm-packages"
+    #     dest: "{{ dotfiles_user_home }}/.default-npm-packages"
+    #     state: link
+
+    - name: DENO|Install deno versions
+      command: asdf install deno {{ item }}
+      loop: "{{ versions }}"
+      loop_control:
+        label: "{{ item }}"
+
+    - name: DENO|Set global version for deno to {{ versions[0] }}
+      command: asdf global deno {{ versions[0] }}
