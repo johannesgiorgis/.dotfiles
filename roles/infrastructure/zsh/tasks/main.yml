@@ -126,6 +126,11 @@
       when: ansible_os_family == "Darwin" and ansible_pkg_mgr == 'homebrew'
 
 
+- name: DEBUG
+  debug:
+    msg:
+      - "ansible_env: {{ ansible_env }}"
+
 - name: ZSH - Create folders [~/.zfunc|~/zsh/(cache|completions)]
   ansible.builtin.file:
     path: "{{ item }}"
