@@ -747,6 +747,10 @@ if command -v broot 1>/dev/null 2>&1; then
 	source ${HOME}/.config/broot/launcher/bash/br
 fi
 
+if command -v fzf 1>/dev/null 2>&1; then
+    eval "$(fzf --zsh)"
+fi
+
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
@@ -766,6 +770,9 @@ unsetopt SHARE_HISTORY
 
 ### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
 # export PATH="$HOME/.rd/bin:$PATH" # commented out as I had to use Docker Desktop
+if test -d "$HOME/.rd/bin"; then
+    export PATH="$HOME/.rd/bin:$PATH"
+fi
 ### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
 
 
