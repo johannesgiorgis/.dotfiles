@@ -26,7 +26,8 @@ packages:
   - entr:
     default: entr
   - eza:
-    default: eza
+    homebrew: eza
+    cargo: eza
   - fd-find:
     default: fd-find
     homebrew: fd
