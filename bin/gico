@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+# Git Clone Personal
+
+# GLOBAL VARIABLES
+PERSONAL_GITHUB_URL="github.com-personal"
+
+repo=$1
+
+if [[ -z $repo ]]; then
+    echo "Please provide a repository name"
+    echo "Usage:
+    ${0##*/} git@github.com:johannesgiorgis/new-computer-setup.git
+    "
+    exit 1
+fi
+
+user=$(whoami)
+
+if [[ $user == "jgiorgis" && "$repo" == *"github.com:johannesgiorgis"* ]]; then
+    echo "Cloning personal repo"
+    new_git_url=$(echo "$repo" | sed "s/github.com/$PERSONAL_GITHUB_URL/g")
+    git clone $new_git_url
+else
+    echo "Normal git clone"
+    git clone $repo
+fi
