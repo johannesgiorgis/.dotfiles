@@ -109,7 +109,7 @@ def get_plugins_info() -> List[Plugin]:
 
         # Remove unreleased versions - alpha, beta, rc, dev, 0a* (e.g. python 3.12.0a*)
         all_versions = list(
-            filter(lambda x: not re.match(".+(alpha|beta|rc|dev|0a\d)", x), all)
+            filter(lambda x: not re.match(r".+(alpha|beta|rc|dev|0a\d)", x), all)
         )
 
         asdf_list = subprocess.check_output(["asdf", "list", plugin_name])
@@ -168,7 +168,7 @@ def search_for_versions(
     """
     log.debug("Checking for version")
     subversion_part = ".".join(version.split(".")[:num_chars])
-    r = re.compile(subversion_part + "\.*")
+    r = re.compile(subversion_part + r"\.*")
     result = list(filter(r.match, all_versions))
     log.debug(f"Matches for {r}:{result}")
     return result
