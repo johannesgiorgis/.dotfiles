@@ -7,18 +7,12 @@
     state: present
   when: ansible_os_family in ["Debian"]
 
-
 - name: fonts-firacode is present on mac os x
   block:
     - name: Install dependencies for fonts-firacode
       package:
         name:
           - svn
-        state: present
-
-    - name: Access caskroom/fonts via brew tap
-      homebrew_tap:
-        name: homebrew/cask-fonts
         state: present
 
     - name: font-fira-* are present via brew cask

@@ -1,6 +1,5 @@
 # defaults task for common-cli
 ---
-
 # cargo uses the `community.general.cargo` module
 
 packages:
@@ -13,6 +12,8 @@ packages:
   - broot:
     homebrew: broot
     cargo: broot
+  - codesnap: # https://github.com/codesnap-rs/codesnap
+    default: codesnap
   - cowsay:
     default: cowsay
   - coreutils:
@@ -76,7 +77,7 @@ packages:
   - tldr:
     default: tldr
   - timewarrior:
-    default: timewarrior 
+    default: timewarrior
   - tree:
     default: tree
   - watch:
