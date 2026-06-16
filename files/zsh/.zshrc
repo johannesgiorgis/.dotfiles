@@ -3,7 +3,7 @@
 [ -z "$ZPROF" ] || zmodload zsh/zprof
 
 # DEBUG
-GITSTATUS_LOG_LEVEL=DEBUG
+#GITSTATUS_LOG_LEVEL=DEBUG
 
 # alias set-dns="sudo sed -i.old 's/# macOS Notice/nameserver 8.8.8.8/' /var/run/resolv.conf; dscacheutil -flushcache"
 # SBR_AUTO_INIT=true
@@ -31,7 +31,7 @@ fpath+=~/.zfunc
 # autoload -Uz compinit
 autoload -Uz compaudit compinit zrecompile
 autoload -U +X bashcompinit && bashcompinit
-compinit
+autoload -U colors && colors
 
 ZSH_THEME="powerlevel10k"
 
@@ -73,23 +73,21 @@ plugins=(
     virtualenv
     golang
     asdf
-    ansible
-    command-not-found
     history
-    pipenv
-    fzf
     npm
-    node
-    pip
     python
     rsync
     rust
     terraform
     web-search
-    yarn
     zsh-interactive-cd
     zsh-autosuggestions
+	  zsh-completions
     zsh-syntax-highlighting
+    # 2025 Jun 15 - Suggested Plugins
+    you-should-use
+    forgit
+    colored-man-pages
 )
 
 
@@ -118,6 +116,8 @@ do
     fi
 done
 
+compinit -C
+
 # Load all of the plugins that were defined in ~/.zshrc
 for plugin in $plugins
 do
@@ -140,6 +140,7 @@ done
 
 # kernel name
 kernel_name="$(uname -s)"
+# kernel_name=$OSTYPE
 
 ###############################################################################################
 # >>> ##################################### ALIAS
@@ -208,6 +209,10 @@ if command -v less 1>/dev/null 2>&1; then
 	export PAGER=less
 	export LESS=FRdiX
 	export LESSCHARSET=utf-8
+fi
+
+if command -v bat 1>/dev/null 2>&1; then
+    export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 fi
 
 if command -v nvim 1>/dev/null 2>&1; then
@@ -488,20 +493,21 @@ if [[ "${kernel_name}" == "Darwin" ]]; then
     # Brew
 
     if command -v brew 1>/dev/null 2>&1; then
-        function bup() { # brew update/upgrade formula & casks
+        function bupa() { # brew update/upgrade formula & casks
             brew update
             result=$(brew outdated)
             if [[ $result != "" ]]; then
                 echo "Upgrading Formulae"
                 echo -e "$result\n"
-                brew upgrade
+                # default brew behavior was changed to confirm upgrades sometime in May/June 2026
+                brew upgrade --yes
             fi
 
             greedy_result=$(brew outdated --greedy-auto-updates)
             if [[ $greedy_result != "" ]]; then
                 echo -e "\nUpgrading Casks with auto updates"
                 echo -e "$greedy_result\n"
-                brew upgrade --greedy-auto-updates
+                brew upgrade --greedy-auto-updates --yes
             fi
 
             brew cleanup
@@ -630,7 +636,7 @@ function refresh_sso() {
 ###############################################################################################
 # >>> ##################################### WORK STUFF
 
-DEFAULT_USER=$(whoami)
+DEFAULT_USER=$(whoami) ## optimization to avoid unnecessary subprocess
 
 # Load work related stuff
 [[ ! -f $HOME/.zsh_work.zsh ]] || source $HOME/.zsh_work.zsh
@@ -644,8 +650,8 @@ DEFAULT_USER=$(whoami)
 
 if command -v aws 1>/dev/null 2>&1; then
     export AWS_CLI_AUTO_PROMPT=on-partial
-    autoload bashcompinit && bashcompinit
-    autoload -Uz compinit && compinit
+    #autoload bashcompinit && bashcompinit
+    #autoload -Uz compinit && compinit
 
     complete -C '/opt/homebrew/bin/aws_completer' aws
 fi
@@ -669,12 +675,12 @@ export PATH=~/.bin:$PATH
 #setopt auto_cd
 #cdpath=($HOME/work $HOME/work/github)
 
-zstyle ':completion:*' group-name ''
-zstyle ':completion:*:descriptions' format %d
-zstyle ':completion:*:descriptions' format %B%d%b 				# bold
-zstyle ':completion:*:descriptions' format %S%d%s        # invert/standout
+#zstyle ':completion:*' group-name ''
+#zstyle ':completion:*:descriptions' format %d
+#zstyle ':completion:*:descriptions' format %B%d%b 				# bold
+#zstyle ':completion:*:descriptions' format %S%d%s        # invert/standout
 # zstyle ':completion:*:descriptions' format %U%d%u        # underline
-zstyle ':completion:*:descriptions' format %F{green}%d%f # green foreground
+#zstyle ':completion:*:descriptions' format %F{green}%d%f # green foreground
 # zstyle ':completion:*:descriptions' format %K{blue}%d%k  # blue background
 zstyle ':completion:*:complete:(cd|pushd):*' tag-order \
 'local-directories named-directories path-directories'
@@ -772,26 +778,37 @@ fi
 # Created by `pipx` on 2022-12-25 23:07:43
 export PATH="$PATH:$HOME/.local/bin"
 
-if command -v broot 1>/dev/null 2>&1; then
-	export NVM_DIR="$HOME/.nvm"
-	[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
-	[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
-fi
+## 2026 June 15 - Commented out nvm and conda as they may no longer be in use
+## Claude Code recommended the lazy load approach to nvm so keeping here for reference if/when nvm is used
+#export NVM_DIR="$HOME/.nvm"
+# lazy-load nvm on first use
+#nvm() {
+#	unfunction nvm
+#	[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && source "/opt/homebrew/opt/nvm/nvm.sh"
+#	nvm "$@"
+#}
+
+#if command -v nvm 1>/dev/null 2>&1; then
+#	export NVM_DIR="$HOME/.nvm"
+#	[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
+#	[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+#fi
 
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('$HOME/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "$HOME/miniconda3/etc/profile.d/conda.sh" ]; then
-        . "$HOME/miniconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="$HOME/miniconda3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
+#__conda_setup="$('$HOME/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+#
+#if [ $? -eq 0 ]; then
+#    eval "$__conda_setup"
+#else
+#    if [ -f "$HOME/miniconda3/etc/profile.d/conda.sh" ]; then
+#        . "$HOME/miniconda3/etc/profile.d/conda.sh"
+#    else
+#        export PATH="$HOME/miniconda3/bin:$PATH"
+#    fi
+#fi
+#unset __conda_setup
 # <<< conda initialize <<<
 
 
@@ -803,5 +820,11 @@ case ":$PATH:" in
 esac
 # pnpm end
 
+# command-not-found (handled by oh-my-zsh command-not-found plugin)
+# HOMEBREW_COMMAND_NOT_FOUND_HANDLER="$(brew --repository)/Library/Homebrew/command-not-found/handler.sh"
+# if [ -f "$HOMEBREW_COMMAND_NOT_FOUND_HANDLER" ]; then
+#   source "$HOMEBREW_COMMAND_NOT_FOUND_HANDLER";
+# fi
+# command-not-found
 
 [ -z "$ZPROF" ] || zprof
