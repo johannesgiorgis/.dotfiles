@@ -9,36 +9,66 @@ on:
       - "**.sh"
       - "**zsh"
       - "**.zshrc"
+      - "roles/**"
+      - "group_vars/**"
+      - "dotfiles.yml"
+      - "hosts"
+      - "requirements.yml"
   pull_request:
     branches:
       - main
+
+permissions:
+  contents: read
 
 jobs:
   shellcheck:
     name: Shellcheck
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v7
       - name: Run ShellCheck
-        uses: ludeeus/action-shellcheck@master
+        uses: ludeeus/action-shellcheck@2.0.0
         # only scan files in `bin/` ignoring icalBuddy file (since its an executable)
         with:
           scandir: "./bin"
           ignore_names: >-
             icalBuddy
 
+  ansible-lint:
+    name: Ansible Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.x"
+
+      - name: Install ansible + ansible-lint
+        run: pip install ansible ansible-lint
+
+      - name: Install pinned collections
+        run: ansible-galaxy collection install -r requirements.yml
+
+      - name: Ansible syntax check
+        run: ansible-playbook dotfiles.yml -i hosts --syntax-check
+
+      - name: Ansible lint (min profile)
+        run: ansible-lint --profile min dotfiles.yml
+
   tests:
     runs-on: ${{ matrix.os }}
     strategy:
-      # cancel all in-progress and queued jobs in the matrix if any job in the matrix fails
-      fail-fast: true
+      # don't cancel the other OS leg if one fails - want full signal from both
+      fail-fast: false
       matrix:
         os:
           - ubuntu-latest
           - macos-latest
 
     steps:
-      - uses: actions/checkout@main
+      - uses: actions/checkout@v7
 
       - name: Check versions of pre-installed software/system
         run: ./.cisupport/pre.sh
