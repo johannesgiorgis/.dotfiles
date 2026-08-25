@@ -19,9 +19,9 @@ user=$(whoami)
 
 if [[ $user == "jgiorgis" && "$repo" == *"github.com:johannesgiorgis"* ]]; then
     echo "Cloning personal repo"
-    new_git_url=$(echo "$repo" | sed "s/github.com/$PERSONAL_GITHUB_URL/g")
-    git clone $new_git_url
+    new_git_url="${repo//github.com/$PERSONAL_GITHUB_URL}"
+    git clone "$new_git_url"
 else
     echo "Normal git clone"
-    git clone $repo
+    git clone "$repo"
 fi

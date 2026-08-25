@@ -31,6 +31,7 @@ echo "Ansible_dir:$ANSIBLE_DIR"
 
 PLAYBOOK_FILE="${ANSIBLE_DIR}/dotfiles.yml"
 HOSTS_FILE="${ANSIBLE_DIR}/hosts"
+REQUIREMENTS_FILE="${ANSIBLE_DIR}/requirements.yml"
 
 
 function usage() {
@@ -77,6 +78,7 @@ main() {
     print_info "ask_become_pass?${ask_become_pass}"
 
     ensure_ansible_is_present
+    ensure_collections_are_present
 
     # search for tag
     if [[ "$to_find" != "" ]]; then
@@ -297,7 +299,7 @@ function ensure_ansible_is_present() {
             apt-get install -y ansible
 
         elif [[ "$release_code" == "focal" ]]; then
-            install_ansible_base_and_collections_on_debian
+            install_ansible_base_on_debian
 
         elif [[ "$release_code" == "jammy" ]]; then
             sudo apt install -y software-properties-common
@@ -310,6 +312,11 @@ function ensure_ansible_is_present() {
             exit 1
         fi
     fi
+}
+
+function ensure_collections_are_present() {
+    print_info "› Ensuring pinned ansible collections are present..."
+    ansible-galaxy collection install -r "${REQUIREMENTS_FILE}"
 }
 
 function ensure_homebrew_is_present() {
@@ -348,17 +355,14 @@ function ensure_homebrew_is_present() {
 # ansible-test/focal,focal 2.10.11-1ppa~focal all
 # ansible-tower-cli/focal,focal 3.3.0-1.1 all
 # ansible-tower-cli-doc/focal,focal 3.3.0-1.1 all
-function install_ansible_base_and_collections_on_debian() {
-    print_info "Install ansible-base + collections on debian"
+function install_ansible_base_on_debian() {
+    print_info "Install ansible-base on debian"
     # https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#installing-ansible-on-ubuntu
     sudo apt update
     sudo apt install software-properties-common
     # sudo add-apt-repository --yes --update ppa:ansible/ansible
     sudo apt install ansible-base -V -y
-
-    # install collections
-    ansible-galaxy collection install community.general
-    success "Install ansible-base + collections on debian"
+    success "Install ansible-base on debian"
 }
 
 
