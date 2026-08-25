@@ -44,6 +44,7 @@ fi
 if [[ -z "$ZSH_CACHE_DIR" ]]; then
   ZSH_CACHE_DIR="$ZDOTDIR/cache"
 fi
+mkdir -p "$ZSH_CACHE_DIR/completions"
 
 
 # Uncomment the following line if you want to disable marking untracked files
