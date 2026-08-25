@@ -12,15 +12,15 @@
   become: "{{ should_be_root }}"
   block:
 
-    - name: Install Spotify key (apt)
-      apt_key:
-        url: https://download.spotify.com/debian/pubkey_6224F9941A8AA6D1.gpg
-        state: present
-
     - name: Install Spotify repository (apt)
       when: ansible_os_family in ["Debian"]
-      apt_repository:
-        repo: deb http://repository.spotify.com stable non-free
+      ansible.builtin.deb822_repository:
+        name: spotify
+        types: deb
+        uris: http://repository.spotify.com
+        suites: stable
+        components: non-free
+        signed_by: https://download.spotify.com/debian/pubkey_6224F9941A8AA6D1.gpg
         state: present
 
     - name: Install Spotify (apt)

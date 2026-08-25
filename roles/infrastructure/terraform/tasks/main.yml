@@ -20,9 +20,8 @@
 - name: TERRAFORM - terraform is present
   block:
     - name: TERRAFORM - Add terraform plugin for asdf (https://github.com/Banno/asdf-hashicorp.git)
-      command: asdf plugin-add terraform https://github.com/Banno/asdf-hashicorp.git
+      command: asdf plugin add terraform https://github.com/Banno/asdf-hashicorp.git
       register: terraform_add
-      failed_when: terraform_add == 1
 
     - name: TERRAFORM - Install terraform versions
       command: asdf install terraform {{ item }}
@@ -31,5 +30,5 @@
         label: "{{ item }}"
 
     - name: TERRAFORM - Set global version for terraform to {{ terraform_versions[0] }}
-      command: asdf global terraform {{ terraform_versions[0] }}
+      command: asdf set --home terraform {{ terraform_versions[0] }}
 

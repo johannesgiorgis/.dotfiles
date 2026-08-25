@@ -44,6 +44,7 @@ fi
 if [[ -z "$ZSH_CACHE_DIR" ]]; then
   ZSH_CACHE_DIR="$ZDOTDIR/cache"
 fi
+mkdir -p "$ZSH_CACHE_DIR/completions"
 
 
 # Uncomment the following line if you want to disable marking untracked files
@@ -72,17 +73,15 @@ plugins=(
     virtualenv
     golang
     asdf
-    # ansible
+    ansible
     command-not-found
     history
-    #pipenv
-    fd
-    #fzf
+    pipenv
+    fzf
     npm
     node
     pip
     python
-    ripgrep
     rsync
     rust
     terraform
@@ -91,8 +90,6 @@ plugins=(
     zsh-interactive-cd
     zsh-autosuggestions
     zsh-syntax-highlighting
-    #taskwarrior
-    #timewarrior
 )
 
 
@@ -745,10 +742,6 @@ fi
 
 if command -v broot 1>/dev/null 2>&1; then
 	source ${HOME}/.config/broot/launcher/bash/br
-fi
-
-if command -v fzf 1>/dev/null 2>&1; then
-    eval "$(fzf --zsh)"
 fi
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.

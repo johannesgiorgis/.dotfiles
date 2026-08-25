@@ -1,14 +1,45 @@
 ---
 # main task for asdf
+# asdf v0.16+ is a compiled Go binary (no more shims-via-bash-install) -
+# https://asdf-vm.com/guide/upgrading-to-v0-16.html
 
-- name: ASDF - Getting latest version from Github API
-  shell: >
-    curl -s https://api.github.com/repos/asdf-vm/asdf/releases/latest
-    | jq -r '.tag_name'
-  register: output
+- name: ASDF - present via homebrew (macOS)
+  when: ansible_os_family == "Darwin"
+  homebrew:
+    name: asdf
+    state: present
 
-- name: ASDF - Clone asdf repository {{ output.stdout }}
-  git:
-    repo: https://github.com/asdf-vm/asdf.git
-    dest: "~/.asdf"
-    version: "{{ output.stdout }}"
+- name: ASDF - install for debian machine
+  when: ansible_os_family in ["Debian"]
+  block:
+    - name: ASDF - Getting latest version from Github API
+      shell: >
+        curl -s https://api.github.com/repos/asdf-vm/asdf/releases/latest
+        | jq -r '.tag_name'
+      register: output
+      changed_when: false
+
+    - name: ASDF - Create temporary download directory
+      tempfile:
+        state: directory
+        suffix: ".asdf_binary_download_dir"
+      register: asdf_binary_download_dir
+
+    - name: ASDF - Download asdf {{ output.stdout }} to {{ asdf_binary_download_dir.path }}
+      ansible.builtin.unarchive:
+        src: "https://github.com/asdf-vm/asdf/releases/download/{{ output.stdout }}/asdf-{{ output.stdout }}-{{ ansible_system | lower }}-{{ machine_map[ansible_machine] }}.tar.gz"
+        dest: "{{ asdf_binary_download_dir.path }}/"
+        remote_src: yes
+
+    - name: ASDF - Install to /usr/local/bin/
+      command: install asdf /usr/local/bin/
+      args:
+        chdir: "{{ asdf_binary_download_dir.path }}"
+      become: "{{ should_be_root }}"
+
+  always:
+    - name: ASDF - Delete binary download directory - {{ asdf_binary_download_dir.path }}
+      file:
+        path: "{{ asdf_binary_download_dir.path }}"
+        state: absent
+      changed_when: no

@@ -41,9 +41,8 @@
 
   block:
     - name: PYTHON - Add python plugin for asdf (https://github.com/danhper/asdf-python.git)
-      command: asdf plugin-add python https://github.com/danhper/asdf-python.git
+      command: asdf plugin add python https://github.com/danhper/asdf-python.git
       register: python_add
-      failed_when: python_add == 1
 
     - name: PYTHON - Install {{ python_versions }}
       command: asdf install python {{ item }}
@@ -52,7 +51,7 @@
         label: "{{ item }}"
 
     - name: PYTHON - Set global version to {{ python_versions[0] }}
-      command: asdf global python {{ python_versions[0] }}
+      command: asdf set --home python {{ python_versions[0] }}
 
     - name: PYTHON - Install python3-pip and python3-venv for system python3 (debian)
       apt:

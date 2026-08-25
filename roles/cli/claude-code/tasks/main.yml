@@ -1,0 +1,7 @@
+---
+# main task for vim
+
+- name: CLAUDE-CODE|Install native binary
+  ansible.builtin.shell: curl -fsSL https://claude.ai/install.sh | bash # noqa: command-instead-of-module risky-shell-pipe
+  args:
+    creates: "{{ ansible_env.HOME }}/.local/bin/claude"

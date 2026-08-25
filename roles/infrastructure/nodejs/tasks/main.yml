@@ -36,9 +36,8 @@
 - name: NODEJS - Ensure nodejs & nodejs packages are present
   block:
     - name: NODEJS - Add nodejs plugin for asdf (https://github.com/asdf-vm/asdf-nodejs.git)
-      command: asdf plugin-add nodejs https://github.com/asdf-vm/asdf-nodejs.git
+      command: asdf plugin add nodejs https://github.com/asdf-vm/asdf-nodejs.git
       register: nodejs_add
-      failed_when: nodejs_add == 2
 
     - name: NODEJS - Symlink .default-npm-packages
       file:
@@ -53,4 +52,4 @@
         label: "{{ item }}"
 
     - name: NODEJS - Set global version for nodejs to {{ nodejs_versions[0] }}
-      command: asdf global nodejs {{ nodejs_versions[0] }}
+      command: asdf set --home nodejs {{ nodejs_versions[0] }}

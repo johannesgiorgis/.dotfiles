@@ -11,11 +11,10 @@
         name: taskwarrior
         state: latest
 
-    - name: task, taskd, tasksh are present (homebrew)
+    - name: task, tasksh are present (homebrew)
       when: ansible_pkg_mgr == 'homebrew'
       homebrew:
         name:
           - task
-          - taskd
           - tasksh
         state: present

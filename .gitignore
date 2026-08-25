@@ -13,6 +13,10 @@
 # asdf
 .tool-versions
 
+# ansible-lint's project-local collection cache (auto-created from requirements.yml,
+# reproducible on demand - not source)
+.ansible/
+
 # Git Ignore for zsh files
 
 */zsh/.zcomp*

@@ -69,6 +69,19 @@
         state: link
 
 
+# Create these before the fragile theme/plugin block below - the shell needs
+# them to start cleanly, so they must not be hostage to an optional step
+# (git clone, external script, homebrew tap) failing partway through.
+- name: ZSH - Create folders [~/.zfunc|~/zsh/(cache|completions)]
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+  loop:
+    - "{{ dotfiles_user_home }}/.zfunc"
+    - "{{ dotfiles_user_home }}/zsh/cache"
+    - "{{ dotfiles_user_home }}/zsh/cache/completions"
+
+
 - name: ZSH - Get theme and plugins
   block:
     - name: ZSH - Get powerlevel10k theme
@@ -117,13 +130,11 @@
           - "Stdout: {{ results.stdout_lines }}"
           - "Stderr: {{ results.stderr_lines }}"
 
-
-    # Required for command-not-found plugin
-    - name: ZSH - Tap homebrew/command-not-found (homebrew)
-      homebrew_tap:
-        tap: homebrew/command-not-found
-        state: present
-      when: ansible_os_family == "Darwin" and ansible_pkg_mgr == 'homebrew'
+    # Removed 2026-08-25: "ZSH - Tap homebrew/command-not-found (homebrew)" used to
+    # live here. Homebrew permanently deprecated/emptied that tap - the
+    # command-not-found oh-my-zsh plugin already checks Homebrew's own built-in
+    # handler path first (Library/Homebrew/command-not-found/handler.sh), so the
+    # tap was both broken and unnecessary. See docs/2026-08-25-repo-health-audit.md.
 
 
 # 2024-04-14: Help debug issue when using ansible_env.ZDOTDIR lead to CI failures
@@ -131,16 +142,6 @@
 #   debug:
 #     msg:
 #       - "ansible_env: {{ ansible_env }}"
-
-- name: ZSH - Create folders [~/.zfunc|~/zsh/(cache|completions)]
-  ansible.builtin.file:
-    path: "{{ item }}"
-    state: directory
-  loop:
-    - "{{ dotfiles_user_home }}/.zfunc"
-    - "{{ dotfiles_user_home }}/zsh/cache"
-    - "{{ dotfiles_user_home }}/zsh/cache/completions"
-
 
 
 # FONTS

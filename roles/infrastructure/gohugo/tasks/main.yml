@@ -15,9 +15,8 @@
 - name: GOHUGO - gohugo is present
   block:
     - name: GOHUGO - Add gohugo plugin for asdf ({{ plugin_url }})
-      command: asdf plugin-add gohugo {{ plugin_url }}
+      command: asdf plugin add gohugo {{ plugin_url }}
       register: gohugo_add
-      failed_when: gohugo_add == 2
 
     - name: GOHUGO - Install gohugo versions
       command: asdf install gohugo {{ item }}
@@ -26,5 +25,5 @@
         label: "{{ item }}"
 
     - name: GOHUGO - Set global version for gohugo to {{ gohugo_versions[0] }}
-      command: asdf global gohugo {{ gohugo_versions[0] }}
+      command: asdf set --home gohugo {{ gohugo_versions[0] }}
   
