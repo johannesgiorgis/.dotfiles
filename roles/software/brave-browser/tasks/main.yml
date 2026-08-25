@@ -13,16 +13,15 @@
 
     - name: BRAVE-BROWESER - brave browser is present for debian system
       block:
-        - name: BRAVE-BROWESER - Install key
-          apt_key:
-            url: https://brave-browser-apt-release.s3.brave.com/brave-core.asc
-            keyring: /etc/apt/trusted.gpg.d/brave-browser-release.gpg
-            state: present
-
         - name: BRAVE-BROWESER - Install repository
-          apt_repository:
-            repo: deb [arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main
-            filename: brave-browser-release
+          ansible.builtin.deb822_repository:
+            name: brave-browser-release
+            types: deb
+            uris: https://brave-browser-apt-release.s3.brave.com/
+            suites: stable
+            components: main
+            architectures: amd64
+            signed_by: https://brave-browser-apt-release.s3.brave.com/brave-core.asc
             state: present
 
         - name: BRAVE-BROWESER - Install for Debian 

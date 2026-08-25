@@ -16,16 +16,15 @@
         name: apt-transport-https
         state: present
 
-    - name: PLEX - Add Plex apt key (Ubuntu & Debian with systemd)
-      apt_key:
-        url: https://downloads.plex.tv/plex-keys/PlexSign.key
-        state: present
-
     - name: PLEX - Add Plex apt repo (Ubuntu & Debian with systemd)
-      apt_repository:
-        repo: deb https://downloads.plex.tv/repo/deb public main
+      ansible.builtin.deb822_repository:
+        name: plexmediaserver
+        types: deb
+        uris: https://downloads.plex.tv/repo/deb
+        suites: public
+        components: main
+        signed_by: https://downloads.plex.tv/plex-keys/PlexSign.key
         state: present
-      changed_when: false
 
     - name: PLEX - Apt install Plex
       apt:

@@ -9,18 +9,19 @@
           - wget
         state: present
 
-    - name: install key (apt)
-      apt_key:
-        url: "{{ visual_studio_code_mirror }}/keys/microsoft.asc"
-        state: present
-
     - name: Install VS Code repo (apt)
-      apt_repository:
-        repo: "deb [arch=amd64] {{ visual_studio_code_mirror }}/repos/vscode stable main"
-        filename: vscode
+      ansible.builtin.deb822_repository:
+        name: vscode
+        types: deb
+        uris: "{{ visual_studio_code_mirror }}/repos/vscode"
+        suites: stable
+        components: main
+        architectures: amd64
+        signed_by: "{{ visual_studio_code_mirror }}/keys/microsoft.asc"
         state: present
 
     - name: install VS Code (apt)
       apt:
         name: "{{ visual_studio_code_package }}{{ (visual_studio_code_version | length > 0) | ternary('=' + visual_studio_code_version, '') }}"
         state: present
+        update_cache: true

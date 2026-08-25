@@ -25,30 +25,23 @@
 
     - name: set info
       set_fact:
-        docker_apt_repository: "deb [arch=amd64] {{ docker_repo_url }}/ubuntu {{ ansible_distribution_release }} stable"
         docker_apt_gpg_key: "{{ docker_repo_url }}/ubuntu/gpg"
 
-    - name: DOCKER - Add Docker apt key
-      ansible.builtin.get_url:
-        url: "{{ docker_apt_gpg_key }}"
-        dest: /etc/apt/trusted.gpg.d/docker.asc
-        mode: '0644'
-        force: true
-      register: add_repository_key
-      # ignore_errors: "{{ docker_apt_ignore_key_error }}"
-
-    - debug:
-        msg: "repository: {{ docker_apt_repository }}"
-
     - name: DOCKER - Add Docker repository
-      shell: >
-        curl -sSL {{ docker_apt_gpg_key }} | apt-key add -
-
-    - name: Add Docker repository.
-      apt_repository:
-        repo: "{{ docker_apt_repository }}"
+      ansible.builtin.deb822_repository:
+        name: docker
+        types: deb
+        uris: "{{ docker_repo_url }}/ubuntu"
+        suites: "{{ ansible_distribution_release }}"
+        components: stable
+        architectures: amd64
+        signed_by: "{{ docker_apt_gpg_key }}"
         state: present
+
+    - name: DOCKER - Update apt cache after adding repository
+      ansible.builtin.apt:
         update_cache: true
+      changed_when: false
   
     - name: DOCKER - Install Docker
       package:
