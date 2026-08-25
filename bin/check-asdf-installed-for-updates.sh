@@ -35,7 +35,7 @@ main() {
         plugin_task_file="${INFRA_ROLES}/${plugin}/tasks/main.yml"
         # echo $plugin_task_file
         latest_version=$(asdf latest "$plugin")
-        plugin_all_versions=$(asdf list-all "$plugin")
+        plugin_all_versions=$(asdf list all "$plugin")
         installed_versions=$(echo "$asdf_list" |\
             rg -U "${plugin}(\n( +.+))*" |
             grep -v "$plugin" |\

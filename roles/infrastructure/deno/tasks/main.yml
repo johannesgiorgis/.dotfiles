@@ -41,9 +41,8 @@
 - name: DENO|Ensure deno & deno packages are present
   block:
     - name: DENO|Add deno plugin for asdf ({{ plugin_url }})
-      command: asdf plugin-add deno {{ plugin_url }}
+      command: asdf plugin add deno {{ plugin_url }}
       register: deno_add
-      failed_when: deno_add == 2
 
     # 2024 May - no way to specify default packages during installation
     # https://github.com/asdf-community/asdf-deno/issues/36
@@ -60,4 +59,4 @@
         label: "{{ item }}"
 
     - name: DENO|Set global version for deno to {{ versions[0] }}
-      command: asdf global deno {{ versions[0] }}
+      command: asdf set --home deno {{ versions[0] }}
