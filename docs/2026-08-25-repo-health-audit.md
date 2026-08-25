@@ -10,34 +10,133 @@ Every finding below cites a real `file:line` that was actually read, or a WebSea
 source for external facts (package status, deprecations, tool versions). Nothing here is
 speculative.
 
-## How to read this
+This doc is the **living tracker** for this work, not a one-time report — it's meant to
+be picked up across many separate Claude Code sessions on this repo, worked through
+incrementally.
 
-Findings are grouped by domain, each ranked critical → low. **"Live outage"** means: if
-you ran the relevant tag on a fresh machine today, it would fail or silently do the wrong
-thing — not a style nit. Start there.
+## How to use this doc
+
+1. Read the **Status** table below (Severity, Needs, current Status).
+2. Pick the next `Open` (or `Partial`) row whose **Needs** matches what you have right
+   now — `either`, or the OS you're actually on. Skip rows needing Linux if you're on
+   macOS, and vice versa.
+3. Implement the fix. Verify it as concretely as you can — run the actual role/task,
+   check real output, don't just eyeball the diff.
+4. Update **two** places: the table row's Status cell, and that finding's own section
+   further down with a short "✅ Resolved `<date>`" note (what changed, how it was
+   verified). Nothing gets deleted — mark resolved, keep the original finding as the
+   record of what was wrong. Add one line to the **Change log** at the bottom.
+5. If something's a genuine open decision rather than a bug (architecture calls like
+   COSMIC vs. GNOME, asdf vs. mise) — don't guess. Either ask, or drop it in
+   **Notes / open questions** below and move to the next row.
+
+Status markers, used throughout:
+- ✅ **Resolved** — fixed and verified
+- ⚠️ **Partial** — some of it done, rest genuinely blocked or deferred (with the reason)
+- ⏭️ **Skipped** — deliberately deferred (with the reason)
+- *(no marker / "Open")* — still open
 
 ---
 
-## 0. Fix-first list (live outages)
+## Status
 
-These will actually break a fresh setup run, today, in the order you're most likely to
-hit them:
+**At a glance:** 5 resolved, 1 partial, 1 skipped, 12 open — of the 12 open, 3 are gated
+on having a Linux/Pop!_OS box (`#4`, `#5`, and the PPA remainder of `#8`); the other 9 are
+actionable right now regardless of which machine you're on.
 
-1. **`bin/doi`'s ansible bootstrap doesn't recognize current Ubuntu/Pop!_OS** — fails
-   before anything else runs. [§6.1](#sec-6-1)
-1. **Every asdf-managed language role uses command syntax asdf removed in v0.16** —
-   `python`, `nodejs`, `golang`, `deno`, `terraform`, `gohugo` all fail outright.
-   [§3](#sec-3)
-1. **`dotfiles.yml`'s `when:` for `macos-initial-configuration` is missing its colon** —
-   the role runs unconditionally on every OS, not just Darwin. [§1.1](#sec-1-1)
-1. **GNOME-targeting roles (`linux-gnome-extensions`, `linux-gnome-tweaks`, most of
-   `linux-dconf-settings`) don't apply on current Pop!_OS**, which now defaults to the
-   COSMIC desktop. [§2.3](#sec-2-3)
-1. **`gnome-shell-extension-tool` (used to enable extensions) was removed from GNOME
-   Shell years ago** — even on a legacy-GNOME Pop!_OS box this silently no-ops.
-   [§2.2](#sec-2-2)
-1. **`authy` cask installs a dead app** — Twilio EOL'd all Authy desktop apps in March
-   2024. [§4](#sec-4)
+| # | Finding | Severity | Domain | Effort | Needs | Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| 1 | asdf v0.16 syntax break (6 roles + install role) | Critical — live outage | Ansible/asdf | Low (patch) / Med (mise migration) | — | ✅ Resolved 2026-08-25 |
+| 2 | `bin/doi` fails to bootstrap on Ubuntu/Pop!_OS 24.04 (noble) | Critical — live outage | Tooling | Low | Linux | ⏭️ Skipped (macOS-only setup) |
+| 3 | `dotfiles.yml:54` missing colon on `when:` | High | Ansible | Trivial | — | ✅ Resolved 2026-08-25 |
+| 4 | Pop!_OS COSMIC breaks GNOME-targeting roles | Critical — strategic | Linux | High (rewrite) | Linux + decision | Open |
+| 5 | `gnome-shell-extension-tool` removed from GNOME | High | Linux | Trivial | Linux | Open |
+| 6 | `authy` cask installs EOL'd app | High | macOS | Trivial | — | ✅ Resolved 2026-08-25 |
+| 7 | `failed_when` type-mismatch, 6 roles | High | Ansible | Low | — | ✅ Resolved 2026-08-25 |
+| 8 | `apt_key`/`apt_repository` deprecated, 13 files/18 sites | High | Ansible/deprecation | Medium (mechanical) | Linux (remainder) | ⚠️ Partial 2026-08-25 — 7/11 files done, 4 PPA-based files open |
+| 9 | `state: latest`, 12 locations | High | Ansible | Low | either | Open |
+| 10 | Unpinned remote-installer scripts, 4 roles | Medium | Security | Low (document) | either | Open |
+| 11 | `apt-key add` over-broad trust (docker) | Medium | Security | Resolved by #8 | — | ✅ Resolved 2026-08-25 |
+| 12 | No collections `requirements.yml`/`ansible.cfg` | High | Ansible/reproducibility | Low | either | Open |
+| 13 | CI covers 2/88 roles; ansible-lint installed but unused | High | CI | Low | either | Open |
+| 14 | `docker/Dockerfile` pinned to EOL `ubuntu:18.04` | Medium | CI | Low | either | Open |
+| 15 | GitHub Actions on mutable refs (`@main`/`@master`/old `@v3`) | Low-Medium | Security/CI | Low | either | Open |
+| 16 | ~60 shell/command tasks missing idempotency guards | Medium | Ansible | Medium | either | Open |
+| 17 | `sshd_config` mode typo (`06444`) | Low | Security | Trivial | either | Open |
+| 18 | Stale docs/README references (branch, tagging, dead Makefile target) | Low | Maintainability | Low | either | Open |
+| 19 | Cross-platform stubs (granted/craftnotes/notesnook/box-drive Linux TODO) | Low | Cohesion | Medium | Linux + decision | Open |
+
+Detailed writeup for every row lives in the numbered sections below (§1–§6) — jump to §1
+"Ansible correctness & idempotency" for the Ansible-domain rows, §2 "Deprecations" for
+rows 4/5/8, §4 "macOS/Homebrew" for row 6, §5 "Security" for rows 10/11/15/17, and §6
+"CI, tooling & maintainability" for rows 2/13/14/18.
+
+## Next steps (suggested order)
+
+1. **Anything still blocking a real setup run**: #1 and #3 are done; #2 remains skipped
+   (needs Linux).
+1. **Cheap, high-leverage guardrail**: wire up `ansible-lint` + `--syntax-check` in CI
+   (#13) — the bug classes behind #3 and #7 get caught automatically going forward.
+1. **Finish the mechanical migration**: `apt_key`/`apt_repository` → `deb822_repository`
+   for the 4 remaining PPA-based files (#8 remainder) — needs real per-PPA key lookups,
+   ideally verified on Linux.
+1. **Cleanup pass**: `state: latest` → `present` (#9), `gnome-shell-extension-tool` fix
+   (#5, needs Linux).
+1. **Decide, don't just patch**: Pop!_OS/COSMIC (#4) and asdf-vs-mise are real
+   architectural questions, not line fixes — see Notes below.
+
+## Notes / open questions
+
+Loose threads that aren't clean findings — context for whoever (human or Claude) picks
+this up next:
+
+- **Decision needed:** is the actual target Pop!_OS machine running COSMIC or the legacy
+  GNOME session? This determines whether #4/#5/#19 and the `linux-gnome-*`/
+  `linux-dconf-settings` roles are still relevant as-is or need a real rewrite. See §2.3.
+- **Decision needed, non-urgent:** stay on asdf (patched, done 2026-08-25) or migrate to
+  `mise`? Currently staying on asdf — see §3's recommendation for the tradeoff.
+- **PPA key lookups owed** for §2.1's remaining 4 files (`audacity`,
+  `linux-conky-manager` ×2, `linux-kazam`, `obs-studio`) — need each PPA's real
+  `ppa.launchpadcontent.net` URL and GPG key fingerprint before migrating off
+  `apt_repository`. Don't guess these.
+- **Unverified on real Linux hardware:** the docker `deb822_repository` migration (§2.1)
+  and the asdf Debian install path (§3, `get_url`/`unarchive` fallback in
+  `roles/infrastructure/asdf/tasks/main.yml`) both only passed `--syntax-check` +
+  `ansible-lint` on this macOS machine — re-verify for real (`bash bin/doi -t docker`,
+  `bash bin/doi -t asdf`) the next time there's a Linux box available.
+- **Filename convention:** this doc is date-prefixed (`2026-08-25-...`) per this repo's
+  existing `docs/` convention for point-in-time docs, even though it's actually a living
+  tracker that'll get edited over weeks — deliberately not renaming it now (2026-08-25
+  conversation: keep the date, it marks when this effort started; revisit later based on
+  how it actually ends up getting used).
+
+---
+
+**Change log**
+- 2026-08-25: asdf v0.16 command-syntax break fixed in all 6 language roles + the asdf
+  install role itself (switched to `homebrew` on macOS), and the `failed_when`
+  type-mismatch in those same 6 roles fixed alongside it. Verified live on this machine
+  (`bash bin/doi -t asdf`, confirmed `asdf plugin add`/`asdf set --home` work against the
+  installed 0.20.0). See [§3](#sec-3), [§1.2](#sec-1-2). The `bin/doi` Ubuntu/Pop!_OS
+  bootstrap fix ([§6.1](#sec-6-1)) was explicitly skipped for now — current setup is
+  macOS-only.
+- 2026-08-25: `dotfiles.yml`'s missing `when:` colon fixed ([§1.1](#sec-1-1)), and the
+  `authy` role (dead app, Twilio EOL'd it in 2024) removed entirely ([§4](#sec-4)). The
+  two GNOME/Pop!_OS findings ([§2.2](#sec-2-2), [§2.3](#sec-2-3)) remain open and
+  untestable for now — no Linux box available to verify against.
+- 2026-08-25: `apt_key`/`apt_repository` → `deb822_repository` migrated for the 7 files
+  using a static repo URL + key URL (`docker`, `brave-browser`, `plex`, `spotify`,
+  `sublime-merge`, `sublime-text`, `vscode`) — also removed the dead docker `apt-key add`
+  task ([§1.3](#sec-1-3)) and closed the over-broad-trust security finding
+  ([§5.2](#sec-5-2)) as a side effect. The 4 PPA-based files (`audacity`,
+  `linux-conky-manager` ×2, `linux-kazam`, `obs-studio`) were deliberately left alone —
+  `deb822_repository` doesn't resolve PPA shorthand, so migrating those needs real
+  per-PPA key lookups rather than a mechanical swap. See [§2.1](#sec-2-1).
+- 2026-08-25: restructured this doc for cross-session use — moved Status table and next
+  steps to the top (was buried at the bottom as §7), added a Needs column (macOS/Linux/
+  either/decision) so a session can filter to what's actionable on whatever machine it's
+  on, added the "How to use this doc" protocol and this Notes section, and moved the
+  change log to the end. No findings content changed, only reorganized.
 
 ---
 
@@ -45,6 +144,10 @@ hit them:
 
 <a id="sec-1-1"></a>
 ### 1.1 `dotfiles.yml`: broken `when:` clause
+
+✅ **Resolved 2026-08-25** — colon added, confirmed in `dotfiles.yml` (now
+`when: ansible_os_family == "Darwin"`).
+
 `dotfiles.yml:54`:
 ```yaml
 - {
@@ -62,6 +165,11 @@ the role is completely ungated. On Linux this role still runs — creating
 
 <a id="sec-1-2"></a>
 ### 1.2 `failed_when` type-mismatch, repeated across 6 roles
+
+✅ **Resolved 2026-08-25** — dropped the broken `failed_when` line in all six roles
+(restores Ansible's default fail-on-nonzero-rc), fixed in the same pass as the asdf
+v0.16 syntax break in [§3](#sec-3). Left below for the record of what was wrong.
+
 Every asdf-plugin language role registers the `plugin-add` result and then compares the
 *whole result object* to an integer — always `False`, which silently disables Ansible's
 default fail-on-nonzero-rc behavior for that task:
@@ -83,6 +191,11 @@ the same pass since they're adjacent lines.
 
 <a id="sec-1-3"></a>
 ### 1.3 Dead, misleadingly-named task in the docker role
+
+✅ **Resolved 2026-08-25** — removed as part of the [§2.1](#sec-2-1) `deb822_repository`
+migration; the whole get_url-key + `apt-key add` + `apt_repository` dance was replaced
+by one `deb822_repository` task whose `signed_by` handles the key.
+
 `roles/infrastructure/docker/tasks/debian.yml:43-45`, named "Add Docker repository" but
 doesn't — it's `curl -sSL {{ docker_apt_gpg_key }} | apt-key add -`, redundant with the
 `get_url` task immediately above (which already places the key correctly via
@@ -165,6 +278,26 @@ make it obvious at a glance which modules come from an unpinned external collect
 
 <a id="sec-2-1"></a>
 ### 2.1 `apt_key` / `apt_repository` → `deb822_repository`
+
+✅ **Partially resolved 2026-08-25** — migrated the 7 files below that use a static repo
+URL + key URL (clean 1:1 swap to `deb822_repository`, `signed_by` given the key URL
+directly instead of a separate fetch-and-trust step): `docker` (also removed the dead
+`apt-key add` task, see [§1.3](#sec-1-3), and resolves [§5.2](#sec-5-2)), `brave-browser`,
+`plex`, `spotify`, `sublime-merge`, `sublime-text`, `vscode`. Verified with
+`ansible-playbook --syntax-check` (deprecation warnings for these 7 are gone) and
+`ansible-lint` (no module-arg errors on the new tasks) — not live-tested on Debian/Linux.
+
+**Still open, and NOT the same mechanical pattern** — `audacity`, `linux-conky-manager`
+(×2), `linux-kazam`, `obs-studio` all add a repo via **PPA shorthand**
+(`apt_repository: repo: ppa:owner/name`), not a static deb line + key URL. They have no
+`apt_key` task at all — `apt_repository`'s PPA handling auto-resolves the real repo URL
+and imports the signing key for you; `deb822_repository` has no PPA support, so migrating
+these means manually looking up each PPA's actual `ppa.launchpadcontent.net` URL and GPG
+key fingerprint per-PPA. Doing that blind risks a wrong/insecure key config — didn't want
+to guess. Leave on `apt_repository` for now (still functional, just deprecated, until
+ansible-core 2.25) and revisit with real lookups, ideally with a Linux box to verify
+against.
+
 Ansible itself surfaces this on every `--syntax-check` run:
 > `[DEPRECATION WARNING]: apt_repository has been deprecated. Use deb822_repository
 > instead. This feature will be removed from ansible-core version 2.25.`
@@ -260,6 +393,26 @@ going forward.
 <a id="sec-3"></a>
 ## 3. asdf & language version managers
 
+✅ **Resolved 2026-08-25** — took the "patch now" option from the recommendation below
+(not the mise migration). Changes made:
+- `roles/infrastructure/asdf/tasks/main.yml` rewritten to install via `homebrew` on
+  macOS (matches the rest of the repo's pattern) with a `get_url`/`unarchive` fallback
+  for Debian mirroring `common-cli/noti.yml`'s existing pattern — Debian path is
+  unverified (no Linux box to test against right now).
+- All six language roles (`python`, `nodejs`, `golang`, `deno`, `terraform`, `gohugo`):
+  `asdf plugin-add` → `asdf plugin add`, `asdf global` → `asdf set --home`.
+- `bin/check-asdf-installed-for-updates.sh`: `asdf list-all` → `asdf list all`.
+
+Verified live: `bash bin/doi -t asdf` installed asdf 0.20.0 via homebrew; then
+confirmed directly that `asdf global` now errors (`invalid command provided: global`)
+while `asdf set --home`/`asdf list all`/`asdf plugin add` are the real current
+subcommands (per `asdf --help`) — matching what the six edited roles now call.
+
+Left below (including the original "not yet fixed" framing) as the record of what was
+found and why.
+
+---
+
 **This is a live outage, not staleness.** asdf underwent a Go rewrite starting at v0.16.0
 (Feb 2025); current stable is v0.20.0. Verified against asdf's own upgrade guide
 (asdf-vm.com/guide/upgrading-to-v0-16.html). Two independent breaking effects on this
@@ -307,9 +460,9 @@ fine as-is.
 
 Two real options, not a false binary:
 
-1. **Patch the six roles to asdf's new syntax + fix the install role to build the Go
-   binary (or install via `homebrew` on macOS like every other role in this repo does).**
-   Small, low-risk, unblocks setup today.
+1. ✅ **Chosen 2026-08-25 — Patch the six roles to asdf's new syntax + fix the install
+   role to build the Go binary (or install via `homebrew` on macOS like every other role
+   in this repo does).** Small, low-risk, unblocks setup today.
 1. **Migrate to [mise](https://mise.jdx.dev/)** (formerly `rtx`). WebSearch turned up a
    consistent 2026 consensus recommending mise over asdf specifically for the failure
    mode hit here:
@@ -335,14 +488,14 @@ migration.
 <a id="sec-4"></a>
 ## 4. macOS / Homebrew
 
-- **`roles/software/authy/tasks/main.yml`** installs the Authy desktop app via
-  `homebrew_cask: name: authy`. Twilio discontinued **all** Authy desktop apps
-  (Win/Mac/Linux) on 2024-03-19 and force-logged-out desktop users; the cask now installs
-  a dead shell with no working backend.
+- ✅ **Resolved 2026-08-25** — **`roles/software/authy/tasks/main.yml`** installed the
+  Authy desktop app via `homebrew_cask: name: authy`. Twilio discontinued **all** Authy
+  desktop apps (Win/Mac/Linux) on 2024-03-19 and force-logged-out desktop users; the cask
+  installed a dead shell with no working backend.
   ([ghacks](https://www.ghacks.net/2024/01/08/authy-authenticator-apps-for-desktop-are-being-discontinued-in-august-2024/),
   [Twilio's own changelog](https://www.twilio.com/en-us/changelog/end-of-life--eol--of-twilio-authy-desktop-apps))
-  **Fix:** drop the role. Bitwarden (already in this repo) has built-in TOTP if a
-  desktop 2FA manager is still wanted.
+  Role and its `dotfiles.yml` entry removed. Bitwarden (already in this repo) has
+  built-in TOTP if a desktop 2FA manager is still wanted.
 - **`roles/infrastructure/macos-infra/tasks/main.yml:17`** — `appcleaner` cask commented
   out since 2024-03-17 citing a SHA1 mismatch (`# TODO: Fix later`). Verified AppCleaner
   is current in homebrew-cask today (v3.6.8); historical SHA1-mismatch reports trace to
@@ -403,12 +556,12 @@ deliberate trust-the-vendor decision.
 ### 5.2 `apt-key add` widens trust more than necessary
 `roles/infrastructure/docker/tasks/debian.yml:43-45`:
 `shell: curl -sSL {{ docker_apt_gpg_key }} | apt-key add -`. This is the same task
-flagged as dead/redundant in [§1.3](#sec-1-3)
-— it also makes the key trusted **system-wide for any repo**, not just Docker's, which is
-broader trust than necessary and is the deprecated mechanism generally. The
-`deb822_repository` migration in [§2.1](#sec-2-1)
-resolves both the deprecation and this over-broad-trust issue at once, since
-`signed_by:` scopes the key to that one repo.
+flagged as dead/redundant in [§1.3](#sec-1-3) — it also makes the key trusted
+**system-wide for any repo**, not just Docker's, which is broader trust than necessary
+and is the deprecated mechanism generally.
+
+✅ **Resolved 2026-08-25** — the `deb822_repository` migration in [§2.1](#sec-2-1) removed
+this task entirely; `signed_by:` now scopes the key to just the Docker repo.
 
 ### 5.3 `sshd_config` file mode typo
 `roles/infrastructure/linux-openssh/tasks/main.yml:26`: `mode: 06444` (unquoted) — almost
@@ -457,7 +610,18 @@ No world-writable file modes found.
 ## 6. CI, tooling & maintainability
 
 <a id="sec-6-1"></a>
-### 6.1 `bin/doi` bootstrap fails on current Ubuntu/Pop!_OS `bin/doi:283-312`, `ensure_ansible_is_present()` — the Linux branch matches `lsb_release -c -s` against `bionic` (18.04, EOL Apr 2023), `focal` (20.04), and `jammy` (22.04) only. Anything else — including **`noble`, Ubuntu/Pop!_OS 24.04, the current LTS** — falls through to `fail "ERROR: Unknown linux release code..."; exit 1`.  Bootstrapping ansible itself is step zero of the whole repo; this fails before any role runs, on the OS version this repo is meant to target right now
+### 6.1 `bin/doi` bootstrap fails on current Ubuntu/Pop!_OS
+
+⏭️ **Skipped 2026-08-25** — current machine setup is macOS-only, so this wasn't
+exercised. Still open; needed before this repo is run again on a fresh Ubuntu/Pop!_OS
+box.
+
+`bin/doi:283-312`, `ensure_ansible_is_present()` — the Linux branch matches
+`lsb_release -c -s` against `bionic` (18.04, EOL Apr 2023), `focal` (20.04), and `jammy`
+(22.04) only. Anything else — including **`noble`, Ubuntu/Pop!_OS 24.04, the current
+LTS** — falls through to `fail "ERROR: Unknown linux release code..."; exit 1`.
+Bootstrapping ansible itself is step zero of the whole repo; this fails before any role
+runs, on the OS version this repo is meant to target right now.
 
 **Fix:** add a `noble` branch, or better, stop keying off codename entirely — a plain
 `apt install ansible` has worked uniformly across these releases for years.
@@ -512,46 +676,3 @@ already installed.
   `dotfiles.yml` today), just describes an approach later superseded. No consolidation
   needed elsewhere in `docs/`; `docs/todo.md`'s "Potential Installations" list has likely
   grown stale over the years and is worth a separate prune pass.
-
----
-
-## 7. Summary table
-
-| # | Finding | Severity | Domain | Effort |
-| --- | --- | --- | --- | --- |
-| 1 | asdf v0.16 syntax break (6 roles + install role) | Critical — live outage | Ansible/asdf | Low (patch) / Med (mise migration) |
-| 2 | `bin/doi` fails to bootstrap on Ubuntu/Pop!_OS 24.04 (noble) | Critical — live outage | Tooling | Low |
-| 3 | `dotfiles.yml:54` missing colon on `when:` | High | Ansible | Trivial |
-| 4 | Pop!_OS COSMIC breaks GNOME-targeting roles | Critical — strategic | Linux | High (rewrite) |
-| 5 | `gnome-shell-extension-tool` removed from GNOME | High | Linux | Trivial |
-| 6 | `authy` cask installs EOL'd app | High | macOS | Trivial |
-| 7 | `failed_when` type-mismatch, 6 roles | High | Ansible | Low |
-| 8 | `apt_key`/`apt_repository` deprecated, 13 files/18 sites | High | Ansible/deprecation | Medium (mechanical) |
-| 9 | `state: latest`, 12 locations | High | Ansible | Low |
-| 10 | Unpinned remote-installer scripts, 4 roles | Medium | Security | Low (document) |
-| 11 | `apt-key add` over-broad trust (docker) | Medium | Security | Resolved by #8 |
-| 12 | No collections `requirements.yml`/`ansible.cfg` | High | Ansible/reproducibility | Low |
-| 13 | CI covers 2/88 roles; ansible-lint installed but unused | High | CI | Low |
-| 14 | `docker/Dockerfile` pinned to EOL `ubuntu:18.04` | Medium | CI | Low |
-| 15 | GitHub Actions on mutable refs (`@main`/`@master`/old `@v3`) | Low-Medium | Security/CI | Low |
-| 16 | ~60 shell/command tasks missing idempotency guards | Medium | Ansible | Medium |
-| 17 | `sshd_config` mode typo (`06444`) | Low | Security | Trivial |
-| 18 | Stale docs/README references (branch, tagging, dead Makefile target) | Low | Maintainability | Low |
-| 19 | Cross-platform stubs (granted/craftnotes/notesnook/box-drive Linux TODO) | Low | Cohesion | Medium |
-
----
-
-## Suggested sequencing
-
-1. **Unblock the current machine setup**: fix the asdf syntax (#1, patch not migrate),
-   the `bin/doi` bootstrap codename check (#2), and the `dotfiles.yml` colon (#3). All
-   small, all currently blocking a real setup run.
-1. **Cheap, high-leverage guardrail**: wire up `ansible-lint` + `--syntax-check` in CI
-   (#13) — this class of bug (#3, #7) gets caught automatically going forward.
-1. **Mechanical migration**: `apt_key`/`apt_repository` → `deb822_repository` across the
-   11 affected files (#8) — one pattern, repeated, also closes the security gap (#11).
-1. **Cleanup pass**: `state: latest` → `present` (#9), drop the `authy` role (#6), fix
-   `gnome-shell-extension-tool` (#5), the docker dead task (#11 covered by #8).
-1. **Decide, don't just patch**: Pop!_OS/COSMIC (#4) and asdf-vs-mise are both real
-   architectural questions, not line fixes — worth a deliberate follow-up conversation
-   each, once the fire-fighting above is done.
