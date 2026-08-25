@@ -5,6 +5,7 @@
   roles:
     # cli
     - { role: cli/atest, tags: [atest] }
+    - { role: cli/claude-code, tags: [claude-code] }
     - { role: cli/common-cli, tags: [common-cli] }
     - { role: cli/taskwarrior, tags: [taskwarrior] }
     - { role: cli/vim, tags: [vim] }
