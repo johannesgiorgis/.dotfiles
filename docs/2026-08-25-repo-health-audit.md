@@ -34,15 +34,19 @@ Status markers, used throughout:
 - ✅ **Resolved** — fixed and verified
 - ⚠️ **Partial** — some of it done, rest genuinely blocked or deferred (with the reason)
 - ⏭️ **Skipped** — deliberately deferred (with the reason)
+- ❎ **Not an issue** — reviewed and intentionally declined, with the reasoning (this is
+  feedback from the repo owner overriding the original finding, not an "oops, ignore it")
 - *(no marker / "Open")* — still open
 
 ---
 
 ## Status
 
-**At a glance:** 5 resolved, 1 partial, 1 skipped, 12 open — of the 12 open, 3 are gated
-on having a Linux/Pop!_OS box (`#4`, `#5`, and the PPA remainder of `#8`); the other 9 are
-actionable right now regardless of which machine you're on.
+**At a glance:** 11 resolved, 2 partial, 1 skipped, 1 not-an-issue, 8 open (23 total;
+#20/#21/#22/#23 were all caught live during this session's own work — CI and a real
+reported bug — not the original 6-agent audit sweep) — of the 8 open, 2 are gated on
+having a Linux/Pop!_OS box (`#4`, `#5`); the rest are actionable right now regardless of
+which machine you're on.
 
 | # | Finding | Severity | Domain | Effort | Needs | Status |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -54,36 +58,46 @@ actionable right now regardless of which machine you're on.
 | 6 | `authy` cask installs EOL'd app | High | macOS | Trivial | — | ✅ Resolved 2026-08-25 |
 | 7 | `failed_when` type-mismatch, 6 roles | High | Ansible | Low | — | ✅ Resolved 2026-08-25 |
 | 8 | `apt_key`/`apt_repository` deprecated, 13 files/18 sites | High | Ansible/deprecation | Medium (mechanical) | Linux (remainder) | ⚠️ Partial 2026-08-25 — 7/11 files done, 4 PPA-based files open |
-| 9 | `state: latest`, 12 locations | High | Ansible | Low | either | Open |
+| 9 | `state: latest`, 12 locations | High → n/a | Ansible | — | — | ❎ Not an issue (repo owner call, 2026-08-25) |
 | 10 | Unpinned remote-installer scripts, 4 roles | Medium | Security | Low (document) | either | Open |
 | 11 | `apt-key add` over-broad trust (docker) | Medium | Security | Resolved by #8 | — | ✅ Resolved 2026-08-25 |
-| 12 | No collections `requirements.yml`/`ansible.cfg` | High | Ansible/reproducibility | Low | either | Open |
-| 13 | CI covers 2/88 roles; ansible-lint installed but unused | High | CI | Low | either | Open |
+| 12 | No collections `requirements.yml`/`ansible.cfg` | High | Ansible/reproducibility | Low | — | ✅ Resolved 2026-08-25 |
+| 13 | CI covers 2/88 roles; ansible-lint installed but unused | High | CI | Low | either | ⚠️ Partial 2026-08-25 — ansible-lint+syntax-check now run in CI on all 88 roles statically; functional smoke-test coverage still 2/88 |
 | 14 | `docker/Dockerfile` pinned to EOL `ubuntu:18.04` | Medium | CI | Low | either | Open |
-| 15 | GitHub Actions on mutable refs (`@main`/`@master`/old `@v3`) | Low-Medium | Security/CI | Low | either | Open |
+| 15 | GitHub Actions on mutable refs (`@main`/`@master`/old `@v3`) | Low-Medium | Security/CI | Low | either | ✅ Resolved 2026-08-25 |
 | 16 | ~60 shell/command tasks missing idempotency guards | Medium | Ansible | Medium | either | Open |
 | 17 | `sshd_config` mode typo (`06444`) | Low | Security | Trivial | either | Open |
 | 18 | Stale docs/README references (branch, tagging, dead Makefile target) | Low | Maintainability | Low | either | Open |
 | 19 | Cross-platform stubs (granted/craftnotes/notesnook/box-drive Linux TODO) | Low | Cohesion | Medium | Linux + decision | Open |
+| 20 | `bin/gico` unquoted `git clone $var` (SC2086) + SC2001 style hit | Low | Shell/correctness | Trivial | — | ✅ Resolved 2026-08-25 |
+| 21 | `taskd` Homebrew formula removed upstream, `taskwarrior` role installs it unconditionally | High | macOS | Trivial | — | ✅ Resolved 2026-08-25 |
+| 22 | `zsh` role: dead `homebrew_tap` task, unprotected `block`, cascaded into a broken live shell | High | Ansible/zsh | Low | — | ✅ Resolved 2026-08-25 |
+| 23 | Dead/never-existed oh-my-zsh plugin entries: `fd`, `ripgrep`, `timewarrior` | Low | Shell/maintainability | Trivial | — | ✅ Resolved 2026-08-25 |
 
-Detailed writeup for every row lives in the numbered sections below (§1–§6) — jump to §1
+Detailed writeup for every row lives in the numbered sections below (§1–§7) — jump to §1
 "Ansible correctness & idempotency" for the Ansible-domain rows, §2 "Deprecations" for
-rows 4/5/8, §4 "macOS/Homebrew" for row 6, §5 "Security" for rows 10/11/15/17, and §6
-"CI, tooling & maintainability" for rows 2/13/14/18.
+rows 4/5/8, §4 "macOS/Homebrew" for row 6, §5 "Security" for rows 10/11/15/17, §6
+"CI, tooling & maintainability" for rows 2/13/14/18, and §7 "Zsh / shell configuration"
+for rows 22/23.
 
 ## Next steps (suggested order)
 
 1. **Anything still blocking a real setup run**: #1 and #3 are done; #2 remains skipped
    (needs Linux).
-1. **Cheap, high-leverage guardrail**: wire up `ansible-lint` + `--syntax-check` in CI
-   (#13) — the bug classes behind #3 and #7 get caught automatically going forward.
+1. ✅ **Done 2026-08-25 — cheap, high-leverage guardrail**: `ansible-lint` +
+   `--syntax-check` now run in CI (#13) — the bug classes behind #3 and #7 get caught
+   automatically going forward.
 1. **Finish the mechanical migration**: `apt_key`/`apt_repository` → `deb822_repository`
    for the 4 remaining PPA-based files (#8 remainder) — needs real per-PPA key lookups,
    ideally verified on Linux.
-1. **Cleanup pass**: `state: latest` → `present` (#9), `gnome-shell-extension-tool` fix
-   (#5, needs Linux).
+1. **Cleanup pass**: `gnome-shell-extension-tool` fix (#5, needs Linux). (#9 closed as
+   not-an-issue, see below — no action needed.)
 1. **Decide, don't just patch**: Pop!_OS/COSMIC (#4) and asdf-vs-mise are real
    architectural questions, not line fixes — see Notes below.
+1. **Remaining CI/reproducibility loose ends**: #12's `requirements.yml` wiring is
+   ✅ done 2026-08-25 (`bin/doi`'s remaining) — expand functional smoke-test coverage
+   past `taskwarrior`/`zsh` (#13 remainder), add an `ansible.cfg` (#12 remainder), and
+   update `docker/Dockerfile`'s EOL base image (#14).
 
 ## Notes / open questions
 
@@ -104,6 +118,13 @@ this up next:
   `roles/infrastructure/asdf/tasks/main.yml`) both only passed `--syntax-check` +
   `ansible-lint` on this macOS machine — re-verify for real (`bash bin/doi -t docker`,
   `bash bin/doi -t asdf`) the next time there's a Linux box available.
+- **When to consolidate CI onto a local `make` target — the rule that came out of
+  [§6.7](#sec-6-7):** worth it when CI is slow/heavy, or when you want pre-commit-style
+  local checks; not worth it just because a marketplace action's config could
+  theoretically drift from a local script. Applied: reverted the shellcheck job back to
+  `ludeeus/action-shellcheck` (cheap, fast, no real local-loop benefit); kept/added it for
+  `ansible-lint` via `make lint` (CI pip-installs ansible from scratch every run — a real
+  cost the local machine doesn't pay since it's already installed).
 - **Filename convention:** this doc is date-prefixed (`2026-08-25-...`) per this repo's
   existing `docs/` convention for point-in-time docs, even though it's actually a living
   tracker that'll get edited over weeks — deliberately not renaming it now (2026-08-25
@@ -136,7 +157,89 @@ this up next:
   steps to the top (was buried at the bottom as §7), added a Needs column (macOS/Linux/
   either/decision) so a session can filter to what's actionable on whatever machine it's
   on, added the "How to use this doc" protocol and this Notes section, and moved the
-  change log to the end. No findings content changed, only reorganized.
+  change log below Notes, ahead of the detailed findings (§1–§6) rather than being the
+  very first thing in the file. No findings content changed, only reorganized.
+- 2026-08-25: added an `ansible-lint`/`--syntax-check` job to CI ([§6.4](#sec-6-4)),
+  using the `min` profile deliberately (repo-wide FQCN/style debt would fail the default
+  profile immediately). Required creating `requirements.yml` (pins `community.general`)
+  so the collection resolves in a clean CI environment — partially resolves
+  [§1.7](#sec-1-7)/#12, though `bin/doi`'s local bootstrap doesn't consume it yet.
+  Extended the workflow's `push.paths` filter to actually include `roles/**`/
+  `dotfiles.yml`/`group_vars/**` (previously a direct push to `main` touching a role
+  wouldn't trigger CI at all). Also pinned all GitHub Actions to real versions
+  ([§5.5](#sec-5-5)) and added a `permissions: contents: read` block ([§5.6](#sec-5-6)).
+  Verified by running the exact same steps in a clean local venv before writing the
+  workflow file — both syntax-check and lint passed clean.
+- 2026-08-25: `state: latest` (#9, [§1.4](#sec-1-4)) closed as **not an issue** on repo
+  owner feedback — idempotency here means "the right tool is present," not "the version
+  never changes"; that's already handled explicitly for languages/frameworks via asdf.
+  Left `virtualbox` flagged as the one package worth watching if a rerun ever behaves
+  unexpectedly, not because it's currently broken.
+- 2026-08-25: wired `requirements.yml` into `bin/doi`'s local bootstrap (#12
+  [§1.7](#sec-1-7)) — new `ensure_collections_are_present()`, called unconditionally on
+  every run so a local machine's collections stay in sync with the same pin CI checks,
+  not just on first install. Removed the old ad-hoc unpinned collection install that only
+  ran on fresh Debian `focal` machines. Verified live on this box. `ansible.cfg` is the
+  only piece of #12 still open.
+- 2026-08-25: first real CI run after pinning `action-shellcheck` and extending trigger
+  paths turned up two genuinely new bugs the original 6-agent audit sweep missed — added
+  as #20 and #21. **#20** ([§6.6](#sec-6-6)): `bin/gico` had real shellcheck findings
+  (SC2086 unquoted `git clone $var`, SC2001 style) — fixed and verified by reproducing
+  the action's exact file-scan logic locally, not just running shellcheck blind (which
+  gave a misleading result pointing at unrelated `.py` files never actually in scope).
+  **#21** ([§4](#sec-4)): the `taskwarrior` role's homebrew install list includes `taskd`,
+  a formula removed from homebrew-core upstream — caught by the `tests (macos-latest)`
+  job, the one piece of functional CI coverage this repo has. Fixed by dropping `taskd`;
+  verified live. Investigated with `gh` (user ran `gh auth login` mid-session) to pull
+  real job logs rather than guessing from the API's limited public annotations — also
+  ruled out a red herring (`aws/tap` Homebrew tap-trust warning in the same log) as
+  unrelated noise, not the actual cause.
+- 2026-08-25: added `bin/shellcheck-local.sh` + `make shellcheck` so shellcheck is easy
+  to run locally, then consolidated on repo owner's suggestion — CI's `shellcheck` job
+  now runs that same `make shellcheck` instead of a separately-configured marketplace
+  action ([§6.7](#sec-6-7)), removing `ludeeus/action-shellcheck` entirely and leaving a
+  single source of truth for file-selection/ignore logic. Caught and fixed a real
+  BSD-vs-GNU `find -perm` portability bug in the script itself before it ever reached CI.
+- 2026-08-25: reverted the shellcheck consolidation the same day it landed, after
+  thinking it through out loud — the job is cheap/fast (~1s) and push-and-check is
+  already as fast as running it locally, so there was no real benefit to offset the cost
+  of owning file-discovery logic ourselves. `bin/shellcheck-local.sh` removed;
+  `ludeeus/action-shellcheck@2.0.0` restored. See [§6.7](#sec-6-7) for the rule this
+  produced (consolidate when CI is slow/heavy or you want pre-commit checks, not by
+  default). Applied that rule to `ansible-lint` instead, where it actually fits — added
+  `make lint` (`ansible-galaxy collection install` + `--syntax-check` +
+  `ansible-lint --profile min`) and pointed the CI job at it. Unlike shellcheck, that job
+  genuinely does real setup work (pip-installs `ansible`+`ansible-lint` from scratch every
+  run) that the local machine skips entirely (already installed via `bin/doi`), so the
+  round-trip savings are real here. Verified locally: `make lint` passes clean.
+- 2026-08-25: closed out #12 ([§1.7](#sec-1-7)) — added `ansible.cfg` (`inventory`,
+  `roles_path`, `collections_path`, `retry_files_enabled`). Discovered along the way that
+  an untracked `.ansible/` directory had appeared at the repo root — `ansible-lint`'s own
+  dependency resolver, auto-installing collections into a project-local cache from
+  `requirements.yml`. Added it to `.gitignore` (derived/reproducible, not source) and
+  pointed the new `collections_path` at that same location so `ansible-galaxy`/
+  `ansible-playbook` are now consistent with what `ansible-lint` had already independently
+  chosen. Deliberately left `deprecation_warnings` at its default (shown) — those warnings
+  are the live signal for §2.1's remaining migration work, not noise to suppress. Verified
+  live: `ansible-config dump` confirms all four settings load from the new file; syntax
+  check, lint, and `bin/doi` all still pass using the new defaults (no more relying on
+  every caller passing `-i hosts` explicitly).
+- 2026-08-25: new §7 added for two zsh findings that came from a real bug report rather
+  than the original audit sweep. **#22**: root-caused actual reported crashes (process
+  substitution failures, a zsh malloc corruption crash, missing rust completions) to the
+  `zsh` role's `homebrew_tap: homebrew/command-not-found` task — a tap Homebrew
+  permanently deprecated — sitting in an unprotected `block:` *before* the task that
+  creates `~/zsh/cache/completions`; its failure silently aborted the rest of the play.
+  Deleted the dead task (confirmed unnecessary too — Homebrew moved command-not-found
+  into brew core itself), reordered the directory-creation task earlier, and added a
+  defensive `mkdir -p` directly in `.zshrc` so the shell self-heals regardless of ansible
+  run state. Verified live — repo owner re-ran the role for real (needed interactively
+  for an unrelated sudo prompt) and confirmed the crashes are gone. **#23**: traced
+  `fd`/`ripgrep` oh-my-zsh plugin entries through the vendored checkout's actual git
+  history — both were real plugins, removed by upstream 2026-07-23 as a breaking change
+  once package managers started bundling completions directly; `timewarrior` never
+  existed at all. Repo owner commented out the dead entries. Full audit of the rest of
+  the plugin list found nothing else needing attention.
 
 ---
 
@@ -203,19 +306,34 @@ doesn't — it's `curl -sSL {{ docker_apt_gpg_key }} | apt-key add -`, redundant
 is removed outright on modern Debian/Ubuntu, independent of the Ansible module
 deprecation. **Fix:** delete this task.
 
-### 1.4 `state: latest` breaks idempotent convergence — 12 locations
-All on `apt:` tasks (no `homebrew`/`pip`/`npm` instances found):
+<a id="sec-1-4"></a>
+### 1.4 `state: latest` — ❎ not an issue
 
+❎ **Not an issue — repo owner call, 2026-08-25.** The definition of "idempotent" this
+repo actually cares about is *the right tool is installed*, not *the exact version never
+changes*. Anything that genuinely needs version control — languages/frameworks — already
+gets it explicitly via asdf's `*_versions` lists (see [§3](#sec-3)), independent of this
+finding. For everything below, always-tracking-latest is the intended behavior, not a
+bug. No fix needed.
+
+One thing worth actually watching, not because it's broken now but because it's the kind
+of package where a `state: latest` auto-upgrade could bite: **`virtualbox`**
+(`roles/software/virtualbox/tasks/main.yml:12`) — a major-version bump to virtualization
+software can occasionally require reconfiguring or fail to boot existing VMs (see the
+Apple-Silicon caveat already noted in [§4](#sec-4)). Not a change to make now, just
+something to notice if a `bash bin/doi -t virtualbox` rerun ever does something
+surprising. Everything else in the list below (`vim`, `common-cli` tools, `youtube-dl`,
+`taskwarrior`, `google-chrome`, `sqlite-browser`, `meld`, `linux-openssh`) is a plain
+utility or a security-patched daemon where always-latest is straightforwardly desirable.
+
+Original finding, kept for the record: all on `apt:` tasks (no `homebrew`/`pip`/`npm`
+instances found) —
 `roles/cli/vim/tasks/main.yml:17`, `roles/cli/common-cli/tasks/main.yml:11,20,38`,
 `roles/cli/youtube-dl/tasks/main.yml:12,30,35`, `roles/cli/taskwarrior/tasks/main.yml:12`,
 `roles/software/google-chrome/tasks/main.yml:12`,
 `roles/software/sqlite-browser/tasks/main.yml:12`,
 `roles/software/virtualbox/tasks/main.yml:12`, `roles/software/meld/tasks/main.yml:12`,
 `roles/infrastructure/linux-openssh/tasks/main.yml:11`.
-
-Every rerun can silently upgrade these packages — the opposite of converging to a fixed,
-reproducible state. **Fix:** `state: present` unless you deliberately want
-always-latest for a specific package.
 
 ### 1.5 Idempotency guards missing on ~60 shell/command tasks
 Only a handful of roles follow the good check-then-install pattern — use these as the
@@ -254,6 +372,38 @@ Everything else re-executes and reports "changed" every run, even when nothing c
 
 <a id="sec-1-7"></a>
 ### 1.7 Reproducibility gap: no pinned collections
+
+✅ **Resolved 2026-08-25** — added `requirements.yml` at repo root, pinning
+`community.general: ">=13.3.0,<14.0.0"`; the CI lint job ([§6.4](#sec-6-4)) installs from
+it. As of 2026-08-25, `bin/doi` does too: added `ensure_collections_are_present()`
+(`bin/doi`), called unconditionally in `main()` right after `ensure_ansible_is_present`
+— so it runs on every invocation, not just a fresh install, keeping the local machine's
+collections in sync with the same pin CI checks against. Also removed the old
+`install_ansible_base_and_collections_on_debian`'s ad-hoc, unpinned, Debian-`focal`-only
+`ansible-galaxy collection install community.general` call (renamed to
+`install_ansible_base_on_debian`) — it was redundant with, and inconsistent with, the new
+unconditional step. Verified live: `bash bin/doi -f <nonexistent-tag>` (safe no-op path
+that still runs bootstrap) correctly resolved `requirements.yml` via `$ANSIBLE_DIR` and
+reported the pinned collection already satisfied. `shellcheck bin/doi` clean.
+
+**Closed out 2026-08-25:** added `ansible.cfg` at repo root —
+`inventory = hosts`, `roles_path = roles`, `collections_path = .ansible/collections`
+(repo-local, gitignored — matches the location `ansible-lint`'s own resolver had already
+independently chosen, discovered while investigating the untracked `.ansible/` directory;
+now `ansible-galaxy`/`ansible-playbook` are consistent with it instead of defaulting to
+`~/.ansible/collections`), `retry_files_enabled = False` (stops a failed play from
+dropping a `dotfiles.yml.retry` file into the repo root). Deliberately did **not** set
+`deprecation_warnings = False`, even though every `--syntax-check` run suggests it —
+those warnings are the live signal for [§2.1](#sec-2-1)'s remaining
+`apt_repository` → `deb822_repository` migration; silencing them would hide exactly the
+thing still tracked as open.
+
+Verified live: `ansible-config dump --only-changed` shows all four settings picked up
+from `ansible.cfg`; `ansible-playbook dotfiles.yml --syntax-check` (no `-i` flag) and
+`ansible-lint --profile min dotfiles.yml` (no flags) both still pass clean using the new
+defaults instead of relying on `bin/doi`/CI always passing `-i hosts` explicitly;
+`bash bin/doi -f <nonexistent-tag>` still runs cleanly end to end.
+
 `homebrew`, `homebrew_cask`, `mas`, `cargo`, and `github_release` all resolve to
 `community.general` modules (confirmed via `ansible-doc`; currently v13.3.0 on this
 machine), and nothing in the repo — no `requirements.yml`, no `ansible.cfg` — pins that
@@ -488,6 +638,14 @@ migration.
 <a id="sec-4"></a>
 ## 4. macOS / Homebrew
 
+- ✅ **Resolved 2026-08-25 (#21)** — **`roles/cli/taskwarrior/tasks/main.yml`** installed
+  `[task, taskd, tasksh]` via homebrew unconditionally, but the `taskd` formula (the
+  Taskwarrior sync server) has been removed from homebrew-core upstream — `brew install
+  taskd` now errors `No available formula with the name "taskd". Did you mean task or
+  tasksh?`. Caught by CI, not the original audit sweep (the `tests (macos-latest)` job
+  actually installs this role for real — the one piece of functional coverage this repo
+  has, and it just proved its worth). Fix: dropped `taskd` from the list. Verified live
+  (`bash bin/doi -t taskwarrior`): `task` and `tasksh` install cleanly, `failed=0`.
 - ✅ **Resolved 2026-08-25** — **`roles/software/authy/tasks/main.yml`** installed the
   Authy desktop app via `homebrew_cask: name: authy`. Twilio discontinued **all** Authy
   desktop apps (Win/Mac/Linux) on 2024-03-19 and force-logged-out desktop users; the cask
@@ -580,14 +738,31 @@ terminal for `eval`. Standard pattern for this kind of helper, but it means thes
 land in shell history/scrollback/terminal-recording tools with no redaction. Low
 actionability — flagging as an inherent design tradeoff, not a bug.
 
+<a id="sec-5-5"></a>
 ### 5.5 GitHub Actions pinned to mutable refs, not versions
+
+✅ **Resolved 2026-08-25** — `actions/checkout` pinned to `@v7` (both jobs, consistent),
+`actions/setup-python` (new, for the ansible-lint job) pinned to `@v7`. Confirmed via
+`git ls-remote --tags` that `v7` exists for both before using it.
+
+Update, same day: `ludeeus/action-shellcheck` was pinned to `@2.0.0` — briefly replaced
+with a local-script-based `make shellcheck` approach, then **reverted back to the
+action** on repo owner's call once actually thought through out loud — see
+[§6.7](#sec-6-7) for the reasoning (short version: the action is fast and cheap;
+consolidating onto a local script only pays off when CI is slow/heavy or you want
+pre-commit-style checks, neither true here). `@2.0.0` pin stands as originally landed.
+
 `.github/workflows/tests.yml`: `actions/checkout@v3` (two majors behind — v4/v5 current),
 `actions/checkout@main` (line 41, floating branch — code changes upstream run in your CI
 automatically with no version boundary), `ludeeus/action-shellcheck@master` (third-party
 action pinned to a mutable branch). **Fix:** pin to a release tag or commit SHA; bump
 checkout to current major; be consistent across both jobs in the same file.
 
+<a id="sec-5-6"></a>
 ### 5.6 No explicit `permissions:` block in the workflow
+
+✅ **Resolved 2026-08-25** — added a top-level `permissions: contents: read` block.
+
 Relies on the org/repo default `GITHUB_TOKEN` scope rather than declaring least-privilege
 explicitly. Low risk here (the workflow doesn't touch repo contents/PRs), but cheap to
 add: `permissions: contents: read`.
@@ -635,6 +810,17 @@ while. **Fix:** update the base image and re-verify the flow works, or mark/remo
 Docker testing path so it stops implying coverage it doesn't provide.
 
 ### 6.3 CI covers ~2% of roles
+
+⚠️ **Partially addressed 2026-08-25** — the new `ansible-lint` CI job (see
+[§6.4](#sec-6-4)) statically checks all 88 role directories on every push/PR (syntax +
+`--profile min` lint), so a structural break like [§1.1](#sec-1-1)'s missing colon or
+[§1.2](#sec-1-2)'s `failed_when` bug would now be caught everywhere, not just in the
+2 roles below. What's still true: none of that is a *functional* test — nothing actually
+installs software from the other 86 roles in CI, so a role that's syntactically valid but
+functionally broken (wrong package name, bad URL, wrong module args at runtime) still
+only gets caught by running it for real. Expanding functional coverage is a separate,
+larger effort (picking roles that are fast/deterministic/non-GUI enough to run in CI).
+
 `.github/workflows/tests.yml` smoke-tests 2 of 88 role directories (`taskwarrior`, `zsh`)
 across the macOS/Ubuntu matrix. Every other role — asdf, python, nodejs, terraform, all
 of `software/*`, all `macos-*`/`linux-*` infra roles — has zero CI coverage. Regressions
@@ -642,7 +828,35 @@ in those are only caught by running them for real on a machine being set up, whi
 worst possible time to discover a break (as this audit's asdf and bin/doi findings
 demonstrate directly).
 
+<a id="sec-6-4"></a>
 ### 6.4 `ansible-lint` is installed but never invoked
+
+✅ **Resolved 2026-08-25** — added a new `ansible-lint` job to
+`.github/workflows/tests.yml` (`ubuntu-latest`, `actions/setup-python@v7` +
+`pip install ansible ansible-lint`, then `ansible-galaxy collection install -r
+requirements.yml` so `community.general` modules resolve, then
+`ansible-playbook dotfiles.yml -i hosts --syntax-check` and
+`ansible-lint --profile min dotfiles.yml`). Deliberately used the `min` profile, not the
+default/production one — this repo trips FQCN, task-naming, and blank-line rules on
+nearly every file, and gating CI on the full style profile immediately would demand a
+repo-wide style rewrite just to turn linting on. `min` catches real correctness issues
+(bad module args, the exact `failed_when`-type-mismatch class of bug, unresolvable
+modules) without the noise; tightening the profile is a natural future step once that
+style backlog is worked down separately. Also extended the workflow's `push.paths`
+filter to include `roles/**`, `dotfiles.yml`, `group_vars/**`, and `requirements.yml` —
+previously a direct push to `main` touching a role wouldn't trigger CI at all (only
+`pull_request` had no path filter), which would have made the new job dead weight for
+how this repo is actually worked on.
+
+Verified before merging: ran the exact same steps in a clean local venv
+(`python3 -m venv`, `pip install ansible ansible-lint`,
+`ansible-galaxy collection install -r requirements.yml`) — both the syntax-check and
+`ansible-lint --profile min dotfiles.yml` passed cleanly (0 failures, 0 warnings, 137
+files processed). This also required creating `requirements.yml` (repo root, pins
+`community.general: ">=13.3.0,<14.0.0"`) — see [§1.7](#sec-1-7)/#12, partially resolved
+by this same change (the collection is now pinned and used by CI; `bin/doi`'s local
+bootstrap doesn't consume it yet, and there's still no `ansible.cfg`).
+
 `bin/doi:287` already does `brew install ansible ansible-lint` on macOS bootstrap — it's
 already a declared dependency — but there's no `.ansible-lint` config, no CI job, and no
 Makefile target that runs it. **This is the single highest-leverage fix available**: an
@@ -676,3 +890,164 @@ already installed.
   `dotfiles.yml` today), just describes an approach later superseded. No consolidation
   needed elsewhere in `docs/`; `docs/todo.md`'s "Potential Installations" list has likely
   grown stale over the years and is worth a separate prune pass.
+
+<a id="sec-6-6"></a>
+### 6.6 `bin/gico` — real shellcheck findings surfaced by the new CI job (#20)
+
+✅ **Resolved 2026-08-25.** With `ludeeus/action-shellcheck` pinned to `@2.0.0` (§5.5),
+the shellcheck job actually ran meaningfully for what's likely the first time in a while
+(this repo's work has been on a feature branch; the run that surfaced this was
+PR-triggered) and failed on real findings in `bin/gico` — the only file with any:
+- Line 22: `git clone $new_git_url` / line 26 `git clone $repo` — unquoted, SC2086. Real
+  bug: breaks on paths containing spaces or shell glob characters.
+- Line 22: `$(echo "$repo" | sed "s/.../.../")` — SC2001 style hit, bash parameter
+  expansion is both simpler and avoids a subshell + sed.
+
+Initially suspected the three `.py` files in `bin/` (`cdk-qualifier.py`,
+`check-asdf-updates.py`, `weekly-template.py`) — a naive `shellcheck <file>` over
+everything in `bin/` errors on all three (SC1071, "not a shell script"). That was a false
+lead: the action's own file-discovery logic (`action.yaml`) only matches known shell
+extensions, or extensionless+executable files with an `sh`-family shebang — `.py` files
+never match either branch, so they were never actually in scope. Confirmed by
+reproducing the action's exact `find` logic locally against `bin/` before and after the
+fix.
+
+**Fix:** quoted both `git clone` invocations, replaced the `sed` pipeline with
+`"${repo//github.com/$PERSONAL_GITHUB_URL}"`. Verified by reproducing the action's real
+scan set locally and running `shellcheck` with its actual default severity (`style`,
+which shows everything) against exactly those files — clean before only `gico`, clean
+across the board after.
+
+<a id="sec-6-7"></a>
+### 6.7 Shellcheck consolidation tried, then reverted — and applied to `ansible-lint` instead, where it actually fits
+
+⏭️ **Reverted 2026-08-25, same day it landed.** Briefly consolidated the shellcheck job
+onto a local script (`bin/shellcheck-local.sh` + `make shellcheck`, replacing
+`ludeeus/action-shellcheck` entirely) for the reasons in the original version of this
+section: single source of truth, nothing to keep in sync between CI config and a local
+script. Caught one real thing on the way — a BSD-vs-GNU `find -perm` portability bug
+(`+111` vs `/111`, neither works on both) — before it reached CI, by actually running the
+script rather than assuming it worked.
+
+**Reverted after talking it through.** Repo owner's reasoning, and it holds up: the
+shellcheck job is cheap and fast (~1s, `shellcheck` ships preinstalled on
+`ubuntu-latest`) — push-and-check is already as fast as running it locally, so there's no
+real feedback-loop benefit to a local target here, only the cost of owning file-discovery
+logic ourselves (and the portability bug above is exactly the kind of cost that
+predicts). The general rule that came out of this: **consolidating CI onto a local
+command pays off when CI is slow/heavy, or when you want pre-commit-style checks before
+a commit even happens — not by default just because duplication is possible.**
+`bin/shellcheck-local.sh` removed; `.github/workflows/tests.yml`'s `shellcheck` job is
+back to `ludeeus/action-shellcheck@2.0.0` exactly as landed in [§5.5](#sec-5-5).
+
+**Applied where it actually fits: `ansible-lint`.** Unlike shellcheck, that CI
+job pip-installs `ansible`+`ansible-lint` from scratch every run — genuinely not cheap —
+and the same tools are already sitting installed locally (via `bin/doi`'s own bootstrap),
+so a local target costs nothing to add and saves a real round-trip. Added `make lint`
+(`ansible-galaxy collection install -r requirements.yml` +
+`ansible-playbook --syntax-check` + `ansible-lint --profile min`) and changed the CI
+job's last three steps to just `make lint`. Verified locally: `make lint` passes clean
+(0 failures, 137 files). YAML validated.
+
+---
+
+<a id="sec-7"></a>
+## 7. Zsh / shell configuration
+
+Neither finding in this section came from the original 6-agent audit sweep — both surfaced
+from a real bug report (repo owner hit actual crashes on this machine) mid-session, then
+got investigated and fixed the same way as everything else in this doc.
+
+<a id="sec-7-1"></a>
+### 7.1 `zsh` role: dead `homebrew_tap` task, unprotected `block`, cascaded into a broken live shell (#22)
+
+✅ **Resolved 2026-08-25.** Reported symptom: every new terminal produced
+`plugin 'fd' not found`, `plugin 'ripgrep' not found`,
+`process substitution failed: no such file or directory` (×2), a real zsh crash
+(`malloc: *** error for object ... pointer being freed was not allocated`), and
+`rust.plugin.zsh:27: no such file or directory: .../zsh/cache/completions/_cargo`.
+
+**Root cause, confirmed from an actual run log the repo owner captured:**
+`roles/infrastructure/zsh/tasks/main.yml` had a task —
+`ZSH - Tap homebrew/command-not-found (homebrew)` — inside the same unprotected `block:`
+as the theme/plugin git clones, with no `rescue:`. That tap is permanently gone:
+```
+Error: homebrew/command-not-found was deprecated. This tap is now empty and all its
+contents were either deleted or migrated.
+```
+Because the task lived inside a `block:` with no `rescue:`, Ansible aborted the entire
+play at that point — confirmed via the actual recap: `failed=1`, and every task listed
+after it in the file never ran. The very next task in the file was
+`ZSH - Create folders [~/.zfunc|~/zsh/(cache|completions)]` — the one thing that creates
+`~/zsh/cache/completions`, which `.zshrc` sets `ZSH_CACHE_DIR` to and the `rust` oh-my-zsh
+plugin writes completion files into on every shell startup. That directory never got
+created. Every symptom above is a direct or indirect consequence of writes into a
+directory that doesn't exist — including the malloc crash, a known zsh failure mode when
+`=(...)` process substitution (used by `rust.plugin.zsh`) can't materialize its backing
+file combined with a backgrounded job (`&|`).
+
+The failure happened once, during initial machine setup, and was visible in the ansible
+output at the time — but nothing about a `homebrew_tap` failure message suggests "your
+shell will crash on every future startup," and the actual symptom didn't show up until a
+completely disconnected later moment (opening a new terminal). That gap between cause and
+visible effect is why this took investigation rather than being obvious from the error
+text alone.
+
+**Also confirmed unnecessary, not just broken:** Homebrew moved `command-not-found`
+handling into `brew` core itself
+([docs](https://github.com/Homebrew/brew/blob/main/docs/Command-Not-Found.md)) — the
+oh-my-zsh `command-not-found` plugin already checks that built-in path first
+(`Library/Homebrew/command-not-found/handler.sh`), confirmed present on this machine.
+The tap was superseded, not just deprecated; removing the task loses nothing.
+
+**Fix, three parts:**
+1. Deleted the `homebrew_tap` task entirely.
+1. Moved `Create folders [~/.zfunc|~/zsh/(cache|completions)]` to run immediately after
+   the `~/zsh` symlink step — before the fragile theme/plugin/tap block — so a future
+   failure anywhere in that block can never again cascade into a missing directory the
+   shell actually needs. General principle: "must have" (shell can't start cleanly
+   without it) should never be sequenced after "nice to have" (cosmetics) with no
+   isolation between them.
+1. Defensive fix in `.zshrc` itself: `mkdir -p "$ZSH_CACHE_DIR/completions"` right after
+   `ZSH_CACHE_DIR` is set — makes the shell self-healing regardless of whether ansible
+   setup ever completes cleanly, closing off this whole class of failure independent of
+   the role fix.
+
+**Verified live, not just by reading the diff:** `ansible-playbook --syntax-check` and
+`--list-tasks --tags zsh` confirmed the new order and that the dead task no longer
+appears. Repo owner ran `bash bin/doi -t zsh -a` for real (needed interactively for the
+sudo prompt on a separate task — I can't supply that through this interface) and
+confirmed the crash/process-substitution/malloc errors are gone; only the
+already-separately-tracked `fd`/`ripgrep` warnings remained (see [§7.2](#sec-7-2)).
+
+<a id="sec-7-2"></a>
+### 7.2 Dead/never-existed oh-my-zsh plugin entries: `fd`, `ripgrep`, `timewarrior` (#23)
+
+✅ **Resolved 2026-08-25** (repo owner commented out `fd`/`ripgrep`; `timewarrior` was
+already commented out). `files/zsh/.zshrc`'s `plugins=()` array included `fd` and
+`ripgrep`, both producing `[zsh] plugin '<name>' not found` at every shell startup —
+this repo's `.zshrc` uses a hand-rolled plugin loader (not upstream oh-my-zsh's) that
+checks `$ZDOTDIR/plugins/<name>/` and `$ZDOTDIR/ohmyzsh/plugins/<name>/` for a
+`<name>.plugin.zsh` file and warns if neither exists.
+
+Traced the actual history in the vendored oh-my-zsh git checkout (a real, full clone —
+`git log` has all 7864 commits despite the sparse checkout):
+
+| Plugin | Added | Removed | Commit | Reason |
+| --- | --- | --- | --- | --- |
+| `fd` | 2018-09-27 | 2024-07-23 | `c7c11e11` | "the `fd` plugin has been removed, as it only shipped its completion, which is now already included in all the usual package managers" (oh-my-zsh's own changelog, flagged as a BREAKING CHANGE) |
+| `ripgrep` | 2018-09-27 | 2024-07-23 | `09a3eb69` | same reasoning, same PR (#12576) |
+| `timewarrior` | — | — | — | **never existed** — no add or delete history at all, unlike `fd`/`ripgrep` which were real and got deliberately retired |
+
+Confirmed both tools' completions already work independent of any oh-my-zsh plugin:
+Homebrew installs `_fd`/`_rg` directly into `/opt/homebrew/share/zsh/site-functions`,
+already on `$FPATH`. Removing the dead entries loses no functionality.
+
+**Full plugin-list audit while investigating (not just the two reported):** checked every
+other active entry in `plugins=()` against the vendored oh-my-zsh checkout for existence
+and any deprecation notice. All confirmed current and valid — nothing else in the active
+list needs attention. Two commented-out entries worth noting for whenever they're
+revisited: `fzf` would be redundant even if re-enabled (`.zshrc` already initializes fzf
+directly via `eval "$(fzf --zsh)"` elsewhere); `taskwarrior` is a valid, currently-unused
+plugin — notable since this repo's `taskwarrior` role (§4/#21) does install the tool
+itself, just not its shell integration.
