@@ -40,5 +40,10 @@ list-ansible-tags:		## list ansible tags
 zsh-sections:		## display zshrc sections
 	rg '<<<|>>>' ~/zsh/.zshrc
 
+lint:		## ansible syntax-check + lint (same checks CI runs)
+	ansible-galaxy collection install -r requirements.yml
+	ansible-playbook dotfiles.yml -i hosts --syntax-check
+	ansible-lint --profile min dotfiles.yml
+
 ci: 		## CI - Github Actions Test
 	act push
