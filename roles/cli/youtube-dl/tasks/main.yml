@@ -1,7 +1,10 @@
 ---
 # main task for youtube-dl
+# NOTE: youtube-dl's own formula was removed from homebrew-core (development stalled
+# upstream) - this role now installs yt-dlp, the actively maintained fork, instead.
+# Keeping the role/tag name as `youtube-dl` to avoid churning tags/docs that reference it.
 
-- name: youtube-dl and dependencies are present
+- name: yt-dlp and dependencies are present
   become: "{{ should_be_root }}"
 
   block:
@@ -29,7 +32,7 @@
         name: atomicparsley
         state: latest
 
-    - name: youtube-dl is present
+    - name: yt-dlp is present
       package:
-        name: youtube-dl
+        name: yt-dlp
         state: latest
