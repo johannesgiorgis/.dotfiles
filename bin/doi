@@ -46,6 +46,7 @@ function usage() {
     ${0##*/} # will display all available tags
     ${0##*/} -t zsh -a
     ${0##*/} -t meld,broot
+    ${0##*/} -t meld broot
     ${0##*/} -f macos
     "
 }
@@ -68,6 +69,15 @@ main() {
         esac
     done
     shift $((OPTIND -1))
+
+    # -t only ever captures one OPTARG (getopts limitation), so anything left
+    # over on the command line here is extra space-separated tags, e.g.
+    # `-t vim bitwarden`. Fold them in alongside the comma-separated syntax
+    # (`-t vim,bitwarden`) so either delimiter - or a mix of both - works.
+    if [[ $# -gt 0 ]]; then
+        extra_tags="$*"
+        tags="${tags}${tags:+,}${extra_tags// /,}"
+    fi
 
     start=$(date +%s)
     echo "${SCRIPT_BREAK}"
