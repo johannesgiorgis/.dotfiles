@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
 ######################################################################
 #
@@ -32,21 +33,21 @@ done
 shift $((OPTIND-1))
 
 
-if [[ "$instance_id" == "" ]];
+if [[ "${instance_id:-}" == "" ]];
 then
 	echo "ERROR: No instance id provided! Please specify -i <instance_id>" >&2
 	print_usage
 	exit 1
 fi
 
-if [[ "$name" == "" ]];
+if [[ "${name:-}" == "" ]];
 then
 	echo "ERROR: No name provided! Please specify -n <name>" >&2
 	print_usage
 	exit 1
 fi
 
-if [[ "$profile" == "" ]];
+if [[ "${profile:-}" == "" ]];
 then
 	echo "ERROR: No AWS Profile provided! Please specify -p <aws profile>" >&2
 	print_usage

@@ -1,10 +1,11 @@
 #!/bin/env bash
+set -euo pipefail
 
 # Convert Markdown files to MediaWiki files
 
 echo 'hello'
 
-input_file=$1
+input_file="${1:-}"
 output_file="$(basename "$input_file" .md).mediawiki"
 
 echo "Converting '${input_file}' to '${output_file}'..."

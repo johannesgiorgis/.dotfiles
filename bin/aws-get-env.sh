@@ -1,8 +1,9 @@
 #!/bin/env bash
+set -euo pipefail
 
 # Get AWS Access Key ID and Secret Access Key to source into ENV
 
-if [[ "$1" == "" ]]; then
+if [[ "${1:-}" == "" ]]; then
   echo "Usage: eval \$( ${0##*/} aws-profile )"
   echo "  This script will emit 'export' statements for the AWS CLI to use from the specified profile."
   echo ""
