@@ -1,0 +1,126 @@
+Macbook Pro 16 (Personal)
+
+# MAC APP STORE
+λ  mas list
+1402042596  AdBlock       (4.0.3)
+1432731683  Adblock Plus  (2.2.22)
+1352778147  Bitwarden     (2026.7.0)
+1056643111  Clocker       (26.16)
+ 549083868  Display Menu  (2.2.6)
+ 682658836  GarageBand    (10.4.14)
+ 408981434  iMovie        (10.4.4)
+ 409183694  Keynote       (14.5)
+ 302584613  Kindle        (7.65)
+ 409203825  Numbers       (14.5)
+ 490179405  Okta Verify   (9.67.1)
+ 409201541  Pages         (14.5)
+1278508951  Trello        (2.16.7)
+
+# BREW PACKAGES
+λ  brew leaves -r
+ack
+act
+ansible
+atomicparsley
+awscli
+bat
+broot
+btop
+coreutils
+cowsay
+csvkit
+curl
+diffstat
+entr
+eza
+fd
+fortune
+fzf
+gawk
+gh
+git
+git-delta
+git-lfs
+gnupg
+homebrew-ffmpeg/ffmpeg/ffmpeg
+htop
+httpie
+icu4c@76
+jakehilborn/jakehilborn/displayplacer
+jq
+jump
+mas
+mdp
+mypy
+ncdu
+neofetch
+neovim
+noti
+pandoc
+pipx
+pkgconf
+python-argcomplete
+rename
+ripgrep
+sd
+shellcheck
+speedtest-cli
+subversion
+timewarrior
+tldr
+unzip
+vim
+watch
+wget
+wifi-password
+youtube-dl
+zlib
+zoxide
+zsh
+
+# DOCTOR
+λ  brew doctor
+Please note that these warnings are just used to help the Homebrew maintainers
+with debugging if you file an issue. If everything you use Homebrew for is
+working fine: please don't worry or file an issue; just ignore this. Thanks!
+
+Warning: Some installed casks are deprecated or disabled.
+You should find replacements for the following casks:
+  diffmerge
+  logitech-options
+  qview
+
+Warning: Some installed kegs have no formulae!
+This means they were either deleted or installed manually.
+You should find replacements for the following formulae:
+  neofetch
+  youtube-dl
+  openssl@1.1
+
+Warning: Some installed formulae are deprecated or disabled.
+You should find replacements for the following formulae:
+  icu4c@76
+  openssl@1.1
+  python-argcomplete
+  speedtest-cli
+  tldr
+
+Warning: You have the following deprecated, official taps tapped:
+  Homebrew/homebrew-command-not-found
+  Homebrew/homebrew-cask-fonts
+  Homebrew/homebrew-services
+  Homebrew/homebrew-cask-drivers
+Untap them with brew untap.
+
+Warning: The following repositories are on the deprecated "master" branch.
+The "master" branch sync will stop and this warning will become an error
+when Homebrew 5.2.0 is released (no earlier than 2026-06-10).
+Run brew update to migrate to "main":
+  homebrew/cask-fonts
+  homebrew/services
+  homebrew/cask-drivers
+
+Warning: Homebrew's "sbin" was not found in your PATH but you have installed
+formulae that put executables in /opt/homebrew/sbin.
+Consider setting your PATH for example like so:
+  echo 'export PATH="/opt/homebrew/sbin:$PATH"' >> /Users/johannes/zsh/.zshrc

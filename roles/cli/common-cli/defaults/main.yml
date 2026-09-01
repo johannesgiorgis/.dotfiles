@@ -57,8 +57,8 @@ packages:
     apt: mlocate
   - ncdu:
     default: ncdu
-  - neofetch:
-    default: neofetch
+  - fastfetch: # successor to neofetch (archived upstream 2024) - see docs/2026-08-25-repo-health-audit.md §7 / 2026-08-15-macbook-air-13-setup.md
+    default: fastfetch
   - neovim:
     default: neovim
   - pandoc:

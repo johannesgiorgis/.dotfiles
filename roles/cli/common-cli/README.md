@@ -19,7 +19,7 @@ This `common-cli` role installs the following command line tools:
 - jump
 - mdp
 - ncdu
-- neofetch
+- fastfetch
 - pandoc
 - rename
 - ripgrep

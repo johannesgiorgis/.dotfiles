@@ -42,11 +42,11 @@ Status markers, used throughout:
 
 ## Status
 
-**At a glance:** 11 resolved, 2 partial, 1 skipped, 1 not-an-issue, 8 open (23 total;
-#20/#21/#22/#23 were all caught live during this session's own work — CI and a real
-reported bug — not the original 6-agent audit sweep) — of the 8 open, 2 are gated on
-having a Linux/Pop!_OS box (`#4`, `#5`); the rest are actionable right now regardless of
-which machine you're on.
+**At a glance:** 13 resolved, 2 partial, 1 skipped, 1 not-an-issue, 8 open (25 total;
+#20/#21/#22/#23/#24/#25 were all caught live during this session's own work — CI and
+real reported bugs — not the original 6-agent audit sweep) — of the 8 open, 2 are gated
+on having a Linux/Pop!_OS box (`#4`, `#5`); the rest are actionable right now regardless
+of which machine you're on.
 
 | # | Finding | Severity | Domain | Effort | Needs | Status |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -73,6 +73,8 @@ which machine you're on.
 | 21 | `taskd` Homebrew formula removed upstream, `taskwarrior` role installs it unconditionally | High | macOS | Trivial | — | ✅ Resolved 2026-08-25 |
 | 22 | `zsh` role: dead `homebrew_tap` task, unprotected `block`, cascaded into a broken live shell | High | Ansible/zsh | Low | — | ✅ Resolved 2026-08-25 |
 | 23 | Dead/never-existed oh-my-zsh plugin entries: `fd`, `ripgrep`, `timewarrior` | Low | Shell/maintainability | Trivial | — | ✅ Resolved 2026-08-25 |
+| 24 | `common-cli` role: dead `neofetch` Homebrew formula (unprotected block) silently killed every later task — `act`/`broot`/`coreutils`/`eza`/`sd`/`wifi-password`/`zoxide`/`noti`/`uv` all went uninstalled | High | Ansible/macOS | Trivial | — | ✅ Resolved 2026-08-30 |
+| 25 | `youtube-dl` role installs a Homebrew formula removed from homebrew-core upstream | Medium | macOS | Trivial | — | ✅ Resolved 2026-08-30 |
 
 Detailed writeup for every row lives in the numbered sections below (§1–§7) — jump to §1
 "Ansible correctness & idempotency" for the Ansible-domain rows, §2 "Deprecations" for
@@ -168,6 +170,15 @@ this up next:
   `dotfiles.yml`/`group_vars/**` (previously a direct push to `main` touching a role
   wouldn't trigger CI at all). Also pinned all GitHub Actions to real versions
   ([§5.5](#sec-5-5)) and added a `permissions: contents: read` block ([§5.6](#sec-5-6)).
+- 2026-08-30: diffing a fresh MacBook Air 13 setup against a MacBook Pro 16 install
+  snapshot turned up two more dead-upstream-formula bugs, same shape as #21/#22:
+  `common-cli`'s `neofetch` (formula removed from homebrew-core, and being early in an
+  unprotected block's loop meant its failure silently killed every later task in that
+  role — `eza`/`coreutils`/`zoxide`/`broot`/`act`/`sd`/`wifi-password`/`noti`/`uv` all
+  went uninstalled) and `youtube-dl`'s own formula (also removed upstream). Fixed by
+  swapping to the actively-maintained successors, `fastfetch` and `yt-dlp` respectively.
+  Both verified live and fully resolved (`bash bin/doi -t common-cli` and
+  `-t youtube-dl`, `failed=0` on each). See [§4](#sec-4).
   Verified by running the exact same steps in a clean local venv before writing the
   workflow file — both syntax-check and lint passed clean.
 - 2026-08-25: `state: latest` (#9, [§1.4](#sec-1-4)) closed as **not an issue** on repo
@@ -654,6 +665,39 @@ migration.
   [Twilio's own changelog](https://www.twilio.com/en-us/changelog/end-of-life--eol--of-twilio-authy-desktop-apps))
   Role and its `dotfiles.yml` entry removed. Bitwarden (already in this repo) has
   built-in TOTP if a desktop 2FA manager is still wanted.
+- ✅ **Resolved 2026-08-30 (#24)** — **`roles/cli/common-cli/defaults/main.yml`**
+  declared `neofetch` (its author archived the project in 2024; the formula has since
+  been pulled from homebrew-core entirely — `brew install neofetch` now errors `No
+  available formula with the name "neofetch"`). `tasks/main.yml`'s first install task
+  loops over every `default`-keyed package inside an unprotected `block:` with no
+  `rescue:`; Ansible loops run every item even after one fails, but the *task* itself
+  still reports failed once the loop finishes, and that failure aborted the block right
+  there — so the homebrew-only task (`act`, `broot`, `coreutils`, `eza`, `sd`,
+  `wifi-password`, `zoxide`) and the `jump.yml`/`noti.yml`/`uv.yml` imports scheduled
+  after it in the same block never ran. Same failure shape as #22 (a dead/removed
+  Homebrew reference inside an unprotected block killing everything scheduled after it).
+  Caught by diffing a fresh MacBook Air 13 setup against a MacBook Pro 16 snapshot
+  (`docs/2026-08-23-macbookpro16-installed-apps.txt`) — `brew leaves -r` on the Air was
+  missing exactly the tools that live after `neofetch` in `defaults/main.yml`'s list.
+  Fix: replaced `neofetch` with **`fastfetch`**, its actively-maintained, drop-in
+  successor (Homebrew's own tagline: "Like neofetch, but much faster because written
+  mostly in C"). Verified live (`bash bin/doi -t common-cli`, twice): `failed=0`, and
+  every previously-missing tool now resolves on `$PATH` (`fastfetch`, `act`, `broot`,
+  `eza`, `sd`, `wifi-password`, `zoxide`, `noti`, `uv`; `coreutils` installs
+  `g`-prefixed binaries so it has no bare `coreutils` command, confirmed via
+  `brew list coreutils` instead).
+- ✅ **Resolved 2026-08-30 (#25)** — **`roles/cli/youtube-dl/tasks/main.yml`** installs
+  `youtube-dl` via the default package manager. That formula has also been removed from
+  homebrew-core (`brew install youtube-dl` errors the same way `neofetch` did) — flagged
+  independently in the MacBook Pro 16 snapshot's own `brew doctor` output ("kegs have no
+  formulae... neofetch, youtube-dl"). Development on youtube-dl itself has stalled
+  upstream; **`yt-dlp`** is the actively-maintained fork (superset of features, same CLI
+  shape for most flags). Fix: swapped the installed package to `yt-dlp`; deliberately
+  kept the role directory/tag name as `youtube-dl` to avoid churning the tag and the
+  docs/history that reference it, with a comment explaining why. Verified live
+  (`bash bin/doi -t youtube-dl` — takes ~4.4 min, this role also rebuilds
+  `homebrew-ffmpeg/ffmpeg/ffmpeg` from source with `with-fdk-aac`): `failed=0`, `yt-dlp`
+  resolves on `$PATH` alongside `atomicparsley` and the rebuilt `ffmpeg`.
 - **`roles/infrastructure/macos-infra/tasks/main.yml:17`** — `appcleaner` cask commented
   out since 2024-03-17 citing a SHA1 mismatch (`# TODO: Fix later`). Verified AppCleaner
   is current in homebrew-cask today (v3.6.8); historical SHA1-mismatch reports trace to
