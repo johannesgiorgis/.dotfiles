@@ -42,9 +42,10 @@ Status markers, used throughout:
 
 ## Status
 
-**At a glance:** 13 resolved, 2 partial, 1 skipped, 1 not-an-issue, 8 open (25 total;
+**At a glance:** 13 resolved, 2 partial, 1 skipped, 1 not-an-issue, 12 open (29 total;
 #20/#21/#22/#23/#24/#25 were all caught live during this session's own work — CI and
-real reported bugs — not the original 6-agent audit sweep) — of the 8 open, 2 are gated
+real reported bugs — not the original 6-agent audit sweep; #26–#29 came from diffing a
+work MacBook Pro 16 software snapshot against the roles) — of the 12 open, 2 are gated
 on having a Linux/Pop!_OS box (`#4`, `#5`); the rest are actionable right now regardless
 of which machine you're on.
 
@@ -75,12 +76,16 @@ of which machine you're on.
 | 23 | Dead/never-existed oh-my-zsh plugin entries: `fd`, `ripgrep`, `timewarrior` | Low | Shell/maintainability | Trivial | — | ✅ Resolved 2026-08-25 |
 | 24 | `common-cli` role: dead `neofetch` Homebrew formula (unprotected block) silently killed every later task — `act`/`broot`/`coreutils`/`eza`/`sd`/`wifi-password`/`zoxide`/`noti`/`uv` all went uninstalled | High | Ansible/macOS | Trivial | — | ✅ Resolved 2026-08-30 |
 | 25 | `youtube-dl` role installs a Homebrew formula removed from homebrew-core upstream | Medium | macOS | Trivial | — | ✅ Resolved 2026-08-30 |
+| 26 | Jira/Atlassian CLI (`acli`) installed manually on work machine, no role captures it | Low | Software inventory | Low | macOS | Open |
+| 27 | Work-machine CLI tools & Mac App Store apps installed but never added to roles | Low | Software inventory | Medium | macOS | Open |
+| 28 | Homebrew casks installed but uncaptured, incl. `iterm2` (the actual terminal) with zero role | Low | Software inventory | Medium | macOS | Open |
+| 29 | `flux` role installs cask `flux`; this machine actually has `flux-app` (upstream rename) | Low | macOS/Homebrew | Trivial | macOS | Open |
 
-Detailed writeup for every row lives in the numbered sections below (§1–§7) — jump to §1
+Detailed writeup for every row lives in the numbered sections below (§1–§8) — jump to §1
 "Ansible correctness & idempotency" for the Ansible-domain rows, §2 "Deprecations" for
 rows 4/5/8, §4 "macOS/Homebrew" for row 6, §5 "Security" for rows 10/11/15/17, §6
-"CI, tooling & maintainability" for rows 2/13/14/18, and §7 "Zsh / shell configuration"
-for rows 22/23.
+"CI, tooling & maintainability" for rows 2/13/14/18, §7 "Zsh / shell configuration"
+for rows 22/23, and §8 "Software inventory gaps" for rows 26–29.
 
 ## Next steps (suggested order)
 
@@ -251,6 +256,19 @@ this up next:
   once package managers started bundling completions directly; `timewarrior` never
   existed at all. Repo owner commented out the dead entries. Full audit of the rest of
   the plugin list found nothing else needing attention.
+- 2026-09-01: captured a software snapshot of a second machine, a work MacBook Pro 16 —
+  `docs/2026-09-01-work-macbookpro16-installed-apps.txt` — and diffed
+  `brew leaves -r`/`brew list --cask`/`mas list` against every role and
+  `group_vars/all/mas.yml`. New §8 added with 4 findings (#26–#29): the
+  Jira/Atlassian CLI (`acli`) is installed but has no role; several CLI tools
+  (`ansible-lint`, `yamllint`, `bfg`, `git-secrets`, `pnpm`, `postgresql@14`,
+  `subversion`, `mypy`) and 7 Mac App Store apps are installed but uncaptured; several
+  Homebrew casks are uncaptured, notably `iterm2` (the actual terminal) having zero
+  role; and the `flux` role's cask name (`flux`) has drifted from what's actually
+  installed (`flux-app`), same shape as the neofetch/youtube-dl formula-rename bugs
+  (#24/#25). None of these are bugs against this repo's actual goal (capturing the
+  journey, not 100% reproducibility) — left as Open, prioritization is the repo owner's
+  call.
 
 ---
 
@@ -1095,3 +1113,50 @@ revisited: `fzf` would be redundant even if re-enabled (`.zshrc` already initial
 directly via `eval "$(fzf --zsh)"` elsewhere); `taskwarrior` is a valid, currently-unused
 plugin — notable since this repo's `taskwarrior` role (§4/#21) does install the tool
 itself, just not its shell integration.
+
+<a id="sec-8"></a>
+## 8. Software inventory gaps (work MacBook Pro 16)
+
+Not correctness bugs — this repo's stated goal is capturing the journey of software
+actually used, not 100% reproducibility, so none of #26–#29 block anything. Found by
+diffing this machine's `brew leaves -r`, `brew list --cask`, and `mas list` (captured in
+`docs/2026-09-01-work-macbookpro16-installed-apps.txt`) against every role and
+`group_vars/all/mas.yml`.
+
+<a id="sec-8-1"></a>
+### 8.1 Jira/Atlassian CLI (`acli`) — #26
+`acli` (Atlassian's official CLI, covers Jira) is installed via
+`brew install atlassian/acli/acli` (1.3.29-stable on this machine) but has no role, and
+no other Jira/Atlassian CLI tool (e.g. `ankitpokhrel/jira-cli`) appears anywhere in the
+repo either. Was installed by hand, never captured back.
+
+### 8.2 Work-machine CLI tools & Mac App Store apps installed but uncaptured — #27
+**CLI (`brew leaves -r`, no role installs these):** `ansible-lint`, `yamllint` — ironic
+given CLAUDE.md's own lint conventions reference them, but nothing installs them, only
+documents using them once present; `bfg` (BFG Repo-Cleaner); `git-secrets`; `pnpm`;
+`postgresql@14`; `subversion`; `mypy`. Lower-signal, likely transitive/manual GUI-lib
+installs rather than tools actually reached for: `gdk-pixbuf`, `libffi`, `pango`,
+`pkgconf`.
+
+**Mac App Store (`mas list`, not in `group_vars/all/mas.yml`):** Adblock Plus, Be
+Focused, GIPHY Capture, Lightshot Screenshot, Microsoft To Do, Monosnap, Okta Extension
+App.
+
+### 8.3 Homebrew casks installed but uncaptured — #28
+`brew list --cask` vs `roles/software/*` + `roles/work-macos-software`: `iterm2` is the
+notable one — it's the actual terminal in daily use and has zero role anywhere. Also
+uncaptured: `arc`, `cursor`, `zed`, `alt-tab`, `rectangle`, `aerial`, `obsidian`,
+`superlist`, `omnidisksweeper`, `ungoogled-chromium`, `chatgpt`, `claude`,
+`claude-code-history-viewer`, `logi-options-plus`, `aws-vault-binary`.
+`roles/work-macos-software` covers `microsoft-word`/`excel`/`powerpoint` but not the
+also-installed `microsoft-onenote`, `microsoft-outlook`, `microsoft-teams`,
+`microsoft-auto-update`. Separately, `diffmerge` is installed but flagged deprecated by
+`brew doctor` and has no role — likely fine as a legacy leftover to note rather than a
+role to add.
+
+### 8.4 `flux` role cask name has drifted from upstream — #29
+`roles/software/flux/tasks/main.yml:6` installs cask `flux`; this machine's actual
+installed cask is `flux-app` (upstream rename). Same shape as #21/#22/#24/#25 — a role
+referencing a Homebrew name that's since moved — just not yet hit at install time since
+`flux` may still resolve today. Worth confirming which cask name is currently correct
+before the old one breaks like the others did.
