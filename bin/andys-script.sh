@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 my_file="${HOME}/.config/term_counter"
 

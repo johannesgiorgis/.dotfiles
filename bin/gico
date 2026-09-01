@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
 # Git Clone Personal
 
 # GLOBAL VARIABLES
 PERSONAL_GITHUB_URL="github.com-personal"
 
-repo=$1
+repo="${1:-}"
 
 if [[ -z $repo ]]; then
     echo "Please provide a repository name"

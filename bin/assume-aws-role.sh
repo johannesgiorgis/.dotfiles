@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
 # Assume a role in AWS and print the credentials to stdout.
 # https://repost.aws/knowledge-center/iam-assume-role-cli

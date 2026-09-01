@@ -1,0 +1,7 @@
+---
+# Keep bare `ansible-lint` invocations (editor, terminal, future sessions) consistent
+# with what CI/`make lint` actually enforces. Without this, the default/production
+# profile surfaces hundreds of pre-existing findings (FQCN, key-order, var-naming, etc.)
+# that aren't part of this repo's lint gate - see docs/2026-08-25-repo-health-audit.md
+# §1.7 for why `min` was chosen deliberately.
+profile: min

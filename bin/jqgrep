@@ -1,7 +1,13 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
 # Parse arguments:
 FLAGS=""
+# COMMANDS/KEYS/VALUES are only ever set by the disabled getopts block below;
+# default them so `set -u` doesn't crash on a reference to a never-set flag.
+COMMANDS=""
+KEYS=""
+VALUES=""
 # if ! TEMP=$(getopt -n "$0" -o ckvimnpsx -- "$@"); then exit 1; fi
 # eval set -- "$TEMP"
 # while true; do
@@ -34,9 +40,9 @@ if [[ "$KEYS" == "" && "$VALUES" == "" ]]; then
   VALUES=1
 fi
 
-PATTERN="$1"
+PATTERN="${1:-}"
 # shellcheck disable=SC2034
-FILE="$2"
+FILE="${2:-}"
 if [[ "$PATTERN" == "" ]]; then
   echo "Usage: ${0##*/} [-c|-k|-v|-i|-m|-n|-p|-s|-x] pattern [json-files...]
   This program will search json files for the given pattern as a key or

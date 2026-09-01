@@ -132,8 +132,7 @@ function compare_subversions() {
         success "No need to update $plugin $installed_version!"
         STATUS="${STATUS}|$installed_version good\n"
     else
-        #shellcheck disable=SC2154
-        warn "${red}NEED TO UPDATE $plugin $installed_version to $latest_subversion${DEFAULT}"
+        warn "${RED}NEED TO UPDATE $plugin $installed_version to $latest_subversion${DEFAULT}"
         STATUS="${STATUS}|$installed_version -> $latest_subversion\n"
         command="asdf install $plugin $latest_subversion && asdf uninstall $plugin $installed_version && asdf reshim $plugin $latest_subversion && asdf global $plugin $latest_subversion"
         UPDATE_SUBVERSIONS="${UPDATE_SUBVERSIONS}${command}\n"
