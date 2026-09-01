@@ -7,6 +7,9 @@
 # work zsh stuff
 *zsh_work*
 
+# work-specific local scripts (contain internal AWS profile/account names)
+bin/claude-bedrock
+
 # macos stuff
 .DS_Store
 

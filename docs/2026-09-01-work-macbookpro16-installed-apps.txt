@@ -1,0 +1,115 @@
+Macbook Pro 16 (Work)
+
+# MAC APP STORE
+λ  mas list
+1432731683  Adblock Plus          (2.2.22)
+ 973134470  Be Focused            (2.6)
+1352778147  Bitwarden             (2026.7.0)
+1056643111  Clocker               (26.16)
+ 549083868  Display Menu          (2.2.6)
+ 668208984  GIPHY CAPTURE         (4.3.2)
+ 302584613  Kindle                (7.64)
+ 526298438  Lightshot Screenshot  (2.22)
+1274495053  Microsoft To Do       (2.177)
+ 540348655  Monosnap              (7.0)
+1439967473  Okta Extension App    (6.47.0)
+ 490179405  Okta Verify           (9.69.0)
+
+# BREW PACKAGES
+λ  brew leaves -r
+ack
+act
+ansible
+ansible-lint
+asdf
+atlassian/acli/acli
+awscli
+bat
+bfg
+broot
+btop
+checkov
+codesnap
+common-fate/granted/granted
+coreutils
+cowsay
+csvkit
+curl
+diffstat
+entr
+eza
+fd
+fortune
+fzf
+gawk
+gdk-pixbuf
+gh
+git
+git-delta
+git-lfs
+git-secrets
+gnupg
+htop
+httpie
+jakehilborn/jakehilborn/displayplacer
+jq
+libffi
+mas
+mdp
+mypy
+ncdu
+neofetch
+neovim
+noti
+pandoc
+pango
+pipx
+pkgconf
+pnpm
+postgresql@14
+python-argcomplete
+rename
+ripgrep
+sd
+shellcheck
+speedtest-cli
+subversion
+tfsec
+timewarrior
+tldr
+vim
+watch
+wget
+wifi-password
+yamllint
+zlib
+zoxide
+zsh
+
+# DOCTOR
+λ  brew doctor
+Please note that these warnings are just used to help the Homebrew maintainers
+with debugging if you file an issue. If everything you use Homebrew for is
+working fine: please don't worry or file an issue; just ignore this. Thanks!
+
+Warning: Some installed casks are deprecated or disabled.
+You should find replacements for the following casks:
+  diffmerge
+  lepton
+
+Warning: Some installed kegs have no formulae!
+This means they were either deleted or installed manually.
+You should find replacements for the following formulae:
+  neofetch
+
+Warning: Some installed formulae are deprecated or disabled.
+You should find replacements for the following formulae:
+  icu4c@76
+  postgresql@14
+  python-argcomplete
+  speedtest-cli
+  tldr
+
+Warning: You have the following deprecated, official taps tapped:
+  Homebrew/homebrew-command-not-found
+Untap them with `brew untap`.
